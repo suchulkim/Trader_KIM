@@ -232,6 +232,46 @@
     gap:24px;
   }
 
+  .live-dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    border-radius:50%;
+    background:var(--up);
+    margin-right:6px;
+    animation:live-pulse 1.6s ease-in-out infinite;
+    vertical-align:middle;
+  }
+  @keyframes live-pulse{
+    0%{opacity:1;}
+    50%{opacity:.35;}
+    100%{opacity:1;}
+  }
+  .live-flow-content{
+    font-size:14px;
+    color:var(--text-soft);
+  }
+  .live-flow-content .flow-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:8px 0;
+    border-bottom:1px solid var(--border);
+  }
+  .live-flow-content .flow-row:last-of-type{border-bottom:none;}
+  .live-flow-content .flow-name{color:var(--text);}
+  .live-flow-content .flow-value{font-weight:700; font-variant-numeric: tabular-nums;}
+  .live-flow-content .flow-meta{
+    font-size:12px;
+    color:var(--text-soft);
+    margin-top:8px;
+  }
+  .live-flow-content .flow-warn{
+    color:var(--neg-text);
+    font-size:12.5px;
+    margin-top:8px;
+  }
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -246,21 +286,34 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.07 (월) · 업데이트</span>
+      <span>2026.09.08 (화) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 6:24 (KST) · 미국 9/4(금) 정규장 종가 기준</span>
+      <span>기준시각 오전 (KST) · 가격은 미국 9/4(금) 정규장 종가 기준(9/7 노동절 휴장) · 국내 증시는 9/8(화) 장중 반영</span>
     </div>
     <h1>iShares MSCI South Korea ETF (EWY) 주가 분석 리포트<span class="ticker">NYSEARCA · Perpetual: EWYUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
         <div class="price-main">$188.87</div>
-        <div class="chg-up">9/4(금) 종가 +4.60%(+$8.31) · 장중 고점 $189.20 · SMA200 저항선 상방 돌파 후 마감</div>
+        <div class="chg-up">9/4(금) 종가 +4.60%(+$8.31) · 장중 고점 $189.20 · SMA200 저항선 상방 돌파 후 마감 · 9/8 프리마켓 $189.54(+0.35%)</div>
       </div>
       <div class="price-sub">
         8월 말 저점($164대)에서 반등 이후 9월 초 상승세를 이어가며 9/4 하루 +4.6% 급등, $188.87에 마감했습니다.
         52주 범위는 $72.58~$220.89이며, 1년 총수익률은 +130%대를 유지하며 AI·메모리 슈퍼사이클 랠리가
-        여전히 유효합니다. 다만 외국인 누적 순매도와 FOMC(9/17) 대기 심리가 추가 상승의 관건으로 남아 있습니다.
+        여전히 유효합니다. 미국 증시는 9/7(월) 노동절 휴장으로 9/4 종가가 최신 데이터이며, 국내에서는 9/8(화)
+        코스피가 0.58% 내린 6,954.52로 마감한 가운데도 삼성전자·SK하이닉스는 금리 인상 경계에도 강보합권을 지켰습니다.
+        무엇보다 <b>9월 들어 외국인이 코스피 현물·선물에서 순매수로 전환</b>한 점이 8개월 만의 유의미한 수급 반전으로,
+        FOMC(9/17) 결과와 함께 추가 상승의 핵심 변수로 부상했습니다.
+      </div>
+    </div>
+
+    <div class="chart-card" id="live-flow-card">
+      <div class="cap">
+        <span class="live-dot"></span>
+        로컬 자동수집 · 외국인 순매수 (Windows 작업 스케줄러로 fetch_foreign_flow.py 실행 시 갱신)
+      </div>
+      <div id="live-flow-content" class="live-flow-content">
+        데이터 파일(foreign_flow_data.js)을 아직 찾지 못했습니다. fetch_foreign_flow.py를 먼저 실행해 주세요.
       </div>
     </div>
 
@@ -293,14 +346,14 @@
     <table>
       <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
       <tr>
-        <td><b>8월 수출 사상급 · 반도체 역대 최고</b></td>
-        <td>한국 8월 수출 982.5억 달러(전년比 +68.7%)로 역대 3위, 반도체 수출 466.5억 달러(+209%)로 사상 최대 경신. 3개월 연속 400억 달러 돌파. 1~8월 누적 반도체 수출도 169.6% 급증</td>
-        <td>AI·메모리 슈퍼사이클 펀더멘털 재확인. EWY가 SMA200 돌파 후 $188대까지 재상승하는 핵심 근거</td>
+        <td><b>수출 사상 최대 행진 지속</b></td>
+        <td>8월 수출 982.5억 달러(전년比 +68.7%)로 역대 3위, 반도체 수출 466.5억 달러(+209%)로 사상 최대. 9월 5일 기준 연간 누적 수출액이 벌써 7,094억 달러로 지난해 연간 실적을 117일 앞당겨 돌파. 1~8월 누적 반도체 수출 2,812억 달러(+169.6%)</td>
+        <td>AI·메모리 슈퍼사이클 펀더멘털이 숫자로 재확인되는 국면. EWY가 SMA200 돌파 후 $188대까지 재상승하는 핵심 근거</td>
       </tr>
       <tr>
-        <td><b>외국인 수급 부진 지속</b></td>
-        <td>2026년 들어 코스피 외국인 누적 순매도 약 170조원 규모. 8개월 중 순매수는 1월·4월 단 2개월. 9월 초에도 순매도 우위가 이어지는 모습</td>
-        <td>미국 국채금리·국제유가 변동에 따른 위험자산 회피 심리가 원인. 외국인 매수 전환 없이는 추가 상승 폭 제한적</td>
+        <td><b>외국인 수급, 8개월 만의 반전</b></td>
+        <td>2026년 누적 코스피 외국인 순매도는 약 170조원(1월·4월 단 2개월만 순매수)이었으나, <b>9월 들어 현물 1.1조원 · 선물 2.9조원 순매수로 전환</b>. 콜옵션 매수·풋옵션 매도 등 옵션시장에서도 상승 베팅이 늘어난 모습</td>
+        <td>위험회피 심리 완화의 신호로 해석. 다만 연간 누적 순매도 규모가 워낙 커 추세적 전환인지는 좀 더 지켜볼 필요</td>
       </tr>
       <tr>
         <td><b>글로벌 AI CapEx 우려 완화</b></td>
@@ -308,21 +361,22 @@
         <td>EWY 내 비중이 높은 SK하이닉스·삼성전자 센티먼트 개선에 기여, 9/4 급등 배경 중 하나</td>
       </tr>
       <tr>
-        <td><b>대형 반도체주 개별 흐름</b></td>
-        <td>9/4 기준 삼성전자 255,500원(+2.20%), SK하이닉스 1,647,000원(+3.20%)으로 반등. 이전 약세 구간에서 자사주 매입 물량이 하방 지지</td>
-        <td>지수 대비 대형주 쏠림이 일부 완화됐으나, 자사주 매입·소각 기대감은 여전히 유효한 지지 요인</td>
+        <td><b>대형 반도체주 강세, 지수 하락에도 방어</b></td>
+        <td>9/4 삼성전자 255,500원(+2.20%)·SK하이닉스 1,647,000원(+3.20%)으로 반등한 데 이어, 9/8 장중에도 삼성전자 272,500원(+0.93%)·SK하이닉스 1,837,000원(+3.03%)으로 강세. 같은 날 코스피 지수는 0.58% 하락한 6,954.52 마감</td>
+        <td>금리 인상 경계감 속에서도 반도체 랠리가 지수 약세를 상쇄하는 구도. 자사주 매입·소각 기대감도 여전히 유효한 지지 요인</td>
       </tr>
       <tr>
-        <td><b>FOMC(9/17) 대기 모드</b></td>
-        <td>잭슨홀 이후 연준 매파 스탠스 확산 여부를 시장이 주시. 9/4 NFP 발표 이후에도 FOMC까지 관망 심리 지속</td>
-        <td>고용·금리 결과에 따라 장기금리·반도체 밸류에이션 부담이 좌우될 전망</td>
+        <td><b>FOMC(9/17) 대기 모드 — 인상 가능성까지 반영</b></td>
+        <td>파월 후임으로 5월 취임한 <b>케빈 워시 신임 의장 체제</b>의 FOMC. 9/5 기준 예측시장·CME 데이터는 25bp <b>금리 인상</b> 확률을 약 55~60%까지 반영 중이며, 9/10 PPI·9/11 CPI 결과가 최종 변수</td>
+        <td>과거 '인하 기대'와는 정반대로 밸류에이션 부담이 커질 수 있는 리스크 요인. CPI·PPI 결과에 따라 EWY 변동성 확대 가능</td>
       </tr>
     </table>
 
     <div class="callout">
-      → EWY는 8월 저점 이후 반등하며 9/4에 SMA200 상단을 돌파하고 $188.87에 마감했습니다.
-      <b>8월 반도체 수출 사상 최대</b>와 글로벌 AI CapEx 우려 완화가 상승 동력이었으나,
-      <b>외국인 누적 170조원 순매도</b>와 FOMC(9/17) 결과가 SMA200 안착·추가 상승의 관건입니다.
+      → EWY는 8월 저점 이후 반등하며 9/4에 SMA200 상단을 돌파하고 $188.87에 마감했습니다(미국 증시는 9/7 노동절 휴장으로 9/4 종가가 최신).
+      <b>사상 최대 수출 행진</b>과 <b>9월 외국인 순매수 전환</b>이 새로운 상승 동력으로 더해졌으나,
+      <b>케빈 워시 체제 첫 FOMC(9/17)의 금리 인상 가능성(약 55~60%)</b>과 9/10~11 PPI·CPI 결과가
+      SMA200 안착·추가 상승의 관건입니다.
     </div>
   </section>
 
@@ -356,20 +410,20 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>8월 반도체 수출 466.5억 달러(+209% YoY) 사상 최대 — 3개월 연속 400억 달러 돌파, AI·메모리 슈퍼사이클 펀더멘털 재확인</li>
+        <li>연간 누적 수출 7,094억 달러로 지난해 실적을 117일 앞당겨 돌파 — 반도체 수출(1~8월 +169.6%)이 견인, AI·메모리 슈퍼사이클 펀더멘털 재확인</li>
+        <li>9월 들어 외국인 코스피 현물·선물 동반 순매수 전환(현물 1.1조원·선물 2.9조원) — 8개월 만의 유의미한 수급 반전</li>
         <li>SK하이닉스·삼성전자 대규모 자사주 매입·소각 및 주주환원 정책은 여전히 유효한 하방 지지 요인</li>
         <li>EWY 1년 총수익률 +130%대 유지 — 구조적 강세 사이클 지속, 9/4 SMA200 돌파 성공</li>
         <li>Meta 등 하이퍼스케일러 AI CapEx 확대 신호로 글로벌 반도체 센티먼트 개선</li>
-        <li>원화 강세(환율 하락) 여지 — 외국인 투자 메리트 개선 가능성</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>외국인 코스피 누적 순매도 약 170조원(2026년 8개월 중 순매수 단 2개월) — 수급 전환 없이는 추가 상승 제한적</li>
-        <li>미국 국채금리·국제유가 변동에 따른 위험자산 회피(리스크오프) 심리 재확산 가능</li>
-        <li>FOMC(9/17) 결과에 따라 연준 매파 스탠스 확산 시 밸류에이션 부담 확대 가능</li>
+        <li>9월 순매수에도 불구, 2026년 누적 외국인 순매도는 여전히 약 170조원 — 추세적 전환인지는 추가 확인 필요</li>
+        <li>케빈 워시 신임 연준 의장 체제 첫 9월 FOMC(9/17)에서 25bp <b>금리 인상 확률이 약 55~60%</b>로 시장에 반영 — 인하가 아닌 인상 우려는 새로운 리스크</li>
+        <li>9/10 PPI·9/11 CPI 결과가 FOMC 직전 최종 변수로, 예상치 상회 시 밸류에이션 부담 확대 가능</li>
         <li>반도체 비중 과다(삼성·SK하이닉스 합산 ~43%)로 개별 종목 변동성에 ETF가 민감하게 반응</li>
         <li>단기 급등 후 차익실현 매물 출회 가능성 — $190 전후 저항 구간 주의</li>
       </ul>
@@ -377,9 +431,9 @@
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>SMA200 안착 및 외국인 순매수 전환 시 $200대 재도전, 반도체 수출 호조 지속 시 52주 고점($220) 경신 가능</div>
-      <div class="scenario base"><b>기본</b>$175~$200 박스권에서 FOMC(9/17) 결과를 소화하며 등락, 외국인 수급 개선 여부와 대형 반도체주 개별 이슈에 따른 변동성 지속</div>
-      <div class="scenario bear"><b>약세</b>연준 매파 확인 및 외국인 매도 심화 시 SMA200 재이탈 후 8월 저점($164) 재테스트 가능</div>
+      <div class="scenario bull"><b>강세</b>CPI 안정 확인 및 FOMC 동결 시 SMA200 안착 후 $200대 재도전, 외국인 순매수 지속되면 52주 고점($220) 경신 가능</div>
+      <div class="scenario base"><b>기본</b>$175~$200 박스권에서 9/10~11 PPI·CPI와 FOMC(9/17) 결과를 소화하며 등락, 외국인 수급 지속 여부와 대형 반도체주 개별 이슈에 따른 변동성 지속</div>
+      <div class="scenario bear"><b>약세</b>CPI 서프라이즈·FOMC 금리 인상 확정 및 외국인 매도 재개 시 SMA200 재이탈 후 8월 저점($164) 재테스트 가능</div>
     </div>
   </section>
 
@@ -389,18 +443,28 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>지속</td>
-        <td>외국인 코스피 수급 전환 여부(2026년 누적 약 170조원 순매도), 삼성전자·SK하이닉스 자사주 매입·소각 진행상황</td>
+        <td>9월 10일 (목)</td>
+        <td>미국 8월 PPI(생산자물가지수) 발표 — FOMC 직전 마지막 인플레 힌트</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 파월 의장 기자회견</td>
+        <td>9월 11일 (금)</td>
+        <td>미국 8월 CPI(소비자물가지수) 발표 — 25bp 인상 vs 동결 확률을 가를 핵심 지표</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (9/15~16 회의, 점도표 포함 SEP 발표) — 3:30 케빈 워시 신임 의장 취임 후 첫 기자회견. 9/5 기준 25bp 인상 확률 약 55~60% 반영 중</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>지속</td>
+        <td>외국인 코스피 수급(9월 순매수 전환 지속 여부, 2026년 누적 약 170조원 순매도 규모), 삼성전자·SK하이닉스 자사주 매입·소각 진행상황</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
         <td>10월 초 (예정)</td>
-        <td>9월 한국 반도체·전체 수출 통계 발표 — 8월 사상 최대치 이후 연속 여부 확인</td>
+        <td>9월 한국 반도체·전체 수출 통계 발표 — 연간 누적 7,094억 달러(9/5 기준) 흐름의 연속 여부 확인</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
@@ -416,8 +480,45 @@
     </table>
   </section>
 
+  <!-- 4. 단기 가격 핵심 체크리스트 -->
+  <section>
+    <h2>4. 단기 가격 핵심 체크리스트</h2>
+    <p style="font-size:14px; color:var(--text-soft); margin:0 0 16px;">
+      단기(수 시간~며칠) EWY·코스피 가격 움직임을 볼 때 반드시 확인해야 할 핵심 항목만 정리했습니다.
+    </p>
+
+    <div class="factor-block">
+      <h4>1. 수급 흐름</h4>
+      <ul class="plain">
+        <li>외국인 코스피 현물·선물 순매수/순매도 여부 (9월 전환된 순매수 기조가 이어지는지, 연간 누적 170조원 순매도 추세가 실제로 바뀌는지)</li>
+        <li>삼성전자·SK하이닉스 개별 수급과 자사주 매입·소각 진행상황 (지수 대비 대형주 쏠림 여부)</li>
+      </ul>
+    </div>
+
+    <div class="factor-block">
+      <h4>2. 레버리지 · 청산 (OKX EWYUSDT.P 무기한선물)</h4>
+      <ul class="plain">
+        <li>현재가 위·아래에 큰 청산 구간이 어디에 있는지</li>
+        <li>롱 청산 물량이 많은지, 숏 청산 물량이 많은지 (비대칭 여부)</li>
+      </ul>
+    </div>
+
+    <div class="factor-block">
+      <h4>3. 매크로 · 외부 이벤트</h4>
+      <ul class="plain">
+        <li>예정된 중요 지표 발표 (PPI 9/10, CPI 9/11, FOMC 9/17 — 케빈 워시 체제 첫 회의이자 25bp 인상 확률 55~60% 반영 중)</li>
+        <li>원/달러 환율 및 코스피 지수 단기 방향성, 미국 반도체주(엔비디아 등) 동조 흐름</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      → 위 항목만 꾸준히 체크해도 단기 움직임의 대부분을 파악할 수 있습니다. 특히 <b>외국인 수급 전환 + 청산 구간 + PPI·CPI·FOMC 일정</b>이
+      겹칠 때 변동성이 커지는 경향이 있습니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.07 오전 6:24 (KST) / 미국 9/4(금) 정규장 종가. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 가격 데이터 기준: 미국 9/4(금) 정규장 종가(9/7 노동절 휴장). 국내 증시·수급 데이터는 2026.09.08(화) 기준. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 
 </div>
@@ -460,6 +561,82 @@
     });
   }
   initWidgets();
+</script>
+
+<!-- 로컬 자동수집 데이터 파일: fetch_foreign_flow.py가 이 파일을 주기적으로 갱신합니다 -->
+<script src="foreign_flow_data.js"></script>
+<script type="text/javascript">
+(function(){
+  var el = document.getElementById('live-flow-content');
+  if (!el) return;
+
+  function fmtEok(won){
+    if (won === undefined || won === null) return '-';
+    var eok = won / 100000000; // 억원 단위로 환산
+    var sign = eok > 0 ? '+' : '';
+    return sign + eok.toLocaleString('ko-KR', {maximumFractionDigits: 1}) + '억원';
+  }
+
+  function colorFor(won){
+    if (won === undefined || won === null) return 'var(--text)';
+    return won >= 0 ? 'var(--pos-text)' : 'var(--neg-text)';
+  }
+
+  function render(){
+    var d = window.__EWY_FOREIGN_FLOW__;
+    if (!d) {
+      // 스크립트 로드 자체에 실패한 경우 (파일 없음 등) - 기본 안내 문구 유지
+      return;
+    }
+    if (!d.date && !d.kospi_market && (!d.tickers || Object.keys(d.tickers).length === 0)) {
+      // 아직 한 번도 수집되지 않은 초기 더미 파일 상태
+      el.innerHTML = '데이터 파일은 있지만 아직 수집된 값이 없습니다. fetch_foreign_flow.py를 실행해 주세요.' +
+        (d.error ? '<div class="flow-warn">⚠ ' + d.error + '</div>' : '');
+      return;
+    }
+
+    function dateSuffix(item){
+      // 개별 항목의 기준일이 전체 기준일(d.date)과 다르면(예: 재시도로 전 영업일 데이터를
+      // 대신 가져온 경우) 괄호로 표시해 혼동을 막습니다.
+      if (item && item.기준일 && item.기준일 !== d.date) {
+        return ' <span style="font-size:11px; font-weight:400; color:var(--text-soft);">(' + item.기준일 + ')</span>';
+      }
+      return '';
+    }
+
+    var rows = '';
+    if (d.kospi_market && d.kospi_market.순매수 !== undefined) {
+      rows += '<div class="flow-row"><span class="flow-name">코스피 전체 외국인 순매수</span>' +
+        '<span class="flow-value" style="color:' + colorFor(d.kospi_market.순매수) + '">' +
+        fmtEok(d.kospi_market.순매수) + dateSuffix(d.kospi_market) + '</span></div>';
+    }
+    if (d.tickers) {
+      Object.keys(d.tickers).forEach(function(name){
+        var t = d.tickers[name];
+        if (t && t.순매수 !== undefined) {
+          rows += '<div class="flow-row"><span class="flow-name">' + name + ' 외국인 순매수</span>' +
+            '<span class="flow-value" style="color:' + colorFor(t.순매수) + '">' +
+            fmtEok(t.순매수) + dateSuffix(t) + '</span></div>';
+        }
+      });
+    }
+
+    if (!rows) {
+      rows = '수집된 항목이 없습니다.';
+    }
+
+    var meta = '기준일 ' + (d.date || '-') + ' · 수집시각 ' + (d.fetched_at || '-') +
+      ' (같은 폴더의 fetch_foreign_flow.py 마지막 실행 기준)';
+
+    var html = rows + '<div class="flow-meta">' + meta + '</div>';
+    if (d.error) {
+      html += '<div class="flow-warn">⚠ ' + d.error + '</div>';
+    }
+    el.innerHTML = html;
+  }
+
+  render();
+})();
 </script>
 
 </body>
