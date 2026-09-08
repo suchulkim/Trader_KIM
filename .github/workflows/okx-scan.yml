@@ -31,7 +31,7 @@ jobs:
           python-version: '3.12'
 
       - name: 의존성 설치
-        run: pip install requests python-dotenv
+        run: pip install requests python-dotenv pykrx beautifulsoup4
 
       - name: 패턴 스캔 실행 (OKX API 호출 → HTML/JS 생성)
         env:
@@ -44,6 +44,43 @@ jobs:
           SECOND_OUTPUT_DIR: ""
         run: python scanner/okx_3candle_pattern_multi_tf.py
 
+      # 아래 3개(외국인 순매수/MSTR 공시/ETF 자금흐름)는 원본 데이터 자체가
+      # 5분 단위로 안 바뀝니다(KRX 수급은 수십 분 지연, SEC 공시는 하루 몇 건
+      # 이하, Farside ETF 자금흐름은 하루 1회 갱신). 워크플로우는 5분마다
+      # 돌지만 이 스텝들은 :00, :30 — 즉 30분마다만 실제로 실행되도록
+      # 걸러줍니다. 더 자주/덜 자주 돌리고 싶으면 아래 MIN 비교값을 바꾸세요.
+      - name: 30분 주기 체크
+        id: throttle
+        run: |
+          MIN=$(date -u +%M)
+          if [ "$MIN" = "00" ] || [ "$MIN" = "30" ]; then
+            echo "run=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "run=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: 외국인 순매수 / MSTR 공시 / ETF 자금흐름 조회 (30분마다)
+        if: steps.throttle.outputs.run == 'true'
+        # 셋 중 하나가 실패해도(사이트 구조 변경, 일시적 차단 등) 핵심인
+        # 패턴 스캔 결과 커밋까지 막지 않도록 워크플로우 실패로 이어지지
+        # 않게 합니다.
+        continue-on-error: true
+        env:
+          # KRX_ID/KRX_PW는 저장소 Settings → Secrets and variables → Actions
+          # 에서 등록해야 합니다 (Settings → Secrets and variables → Actions →
+          # New repository secret). data.krx.co.kr에 회원가입한 아이디/비밀번호.
+          KRX_ID: ${{ secrets.KRX_ID }}
+          KRX_PW: ${{ secrets.KRX_PW }}
+          OUTPUT_DIR: ${{ github.workspace }}
+          SECOND_OUTPUT_DIR: ""
+        # 셋을 한 run 블록 안에서 개별로 || 처리합니다 (기본 셸이 set -e라
+        # 그냥 나열만 하면 앞에서 하나 실패 시 뒤 스크립트가 아예 안 돌기
+        # 때문). 하나가 실패해도 나머지 둘은 계속 실행됩니다.
+        run: |
+          python scanner/fetch_foreign_flow.py || echo "[WARN] fetch_foreign_flow.py 실패 (계속 진행)"
+          python scanner/mstr_filing_tracker.py || echo "[WARN] mstr_filing_tracker.py 실패 (계속 진행)"
+          python scanner/etf_flow_scraper.py || echo "[WARN] etf_flow_scraper.py 실패 (계속 진행)"
+
       - name: 변경사항 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
@@ -55,6 +92,14 @@ jobs:
 
           # 결과 파일만 추가 (로그 CSV, 워치리스트 자동생성 파일 등은 저장소에 남기지 않음)
           git add okx_3candle_pattern.html pattern_summary.js
+
+          # foreign_flow_data.js / mstr_filing_data.js / etf_flow_data.js는
+          # 아직 한 번도 생성된 적 없는 최초 실행 시에는 파일이 없을 수 있어,
+          # git add가 "pathspec did not match" 로 전체 실패하지 않도록 파일이
+          # 실제로 있을 때만 하나씩 add합니다.
+          for f in foreign_flow_data.js mstr_filing_data.js etf_flow_data.js; do
+            [ -f "$f" ] && git add "$f"
+          done
 
           if git diff --cached --quiet; then
             echo "변경된 내용 없음 - 커밋 생략"
