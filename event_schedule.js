@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-04 (KST)
+ * 마지막 자동 업데이트: 2026-09-08 (KST) — PPI(9/10) 추가
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
@@ -48,6 +48,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-09-10", timeKST: "09:00", dateLabel: "9월 10일 (목)",
     event: "NVIDIA 배당 기준일 (Ex-Dividend, $0.25/주)",
     tickers: ["NVDA"], importance: 2, note: null },
+
+  { dateKST: "2026-09-10", timeKST: "21:30", dateLabel: "9월 10일 (목)",
+    event: "미국 8월 생산자물가지수(PPI)",
+    tickers: ["SPY","QQQ","EWY","KORU","BTC","ETH","XAU"], importance: 5,
+    note: "FOMC 직전 핵심 인플레이션 지표 · 미국 현지 8:30 AM ET" },
 
   { dateKST: "2026-09-11", timeKST: "01:00", dateLabel: "9월 11일 (금)",
     event: "EIA 주간 원유재고 발표 (노동절로 일정 지연)",
