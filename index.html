@@ -170,7 +170,13 @@
     font-weight: 800;
     color: var(--accent);
     letter-spacing: -0.2px;
-    margin: 32px 0 14px;
+    margin: 32px 0 6px;
+  }
+  .section-note {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin: 0 0 12px;
+    line-height: 1.45;
   }
   footer {
     margin-top: 40px;
@@ -436,11 +442,13 @@
   <div class="count" id="count"></div>
 
   <div class="section-title">🏦 ETF 자금흐름 (BTC · ETH)</div>
+  <div class="section-note">업데이트 시간 (한국시간): 미국 시장 마감 후 다음날 오전 5~7시 전후 발행사 공개 → 집계 사이트·로컬 스케줄러 기준 오전~낮에 반영</div>
   <div class="grid" id="etfFlowGrid">
     <div class="etf-empty">ETF 자금흐름 데이터 불러오는 중... (로컬에서 market_intel 스크립트를 먼저 실행해 주세요)</div>
   </div>
 
   <div class="section-title">📄 MSTR SEC 8-K 공시 (확정)</div>
+  <div class="section-note">업데이트 시간 (한국시간): 보통 월요일 저녁 9시 전후 (미국 동부시간 오전 8시 SEC 공시) · 확정 데이터만 표시</div>
   <div id="mstrFiling">
     <div class="etf-empty">MSTR 공시 데이터 불러오는 중... (mstr_filing.js 확인 필요)</div>
   </div>
