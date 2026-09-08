@@ -223,6 +223,42 @@
   }
   .callout b{color:var(--text);}
 
+  .checklist{margin:0; padding:0; list-style:none;}
+  .checklist li{
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    margin-bottom:8px;
+    font-size:14px;
+    box-shadow:var(--shadow);
+  }
+  .checklist .box{
+    flex-shrink:0;
+    width:19px;
+    height:19px;
+    border-radius:5px;
+    border:1.5px solid var(--text-soft);
+    margin-top:1px;
+  }
+  .checklist .item-title{font-weight:600; margin-bottom:2px;}
+  .checklist .item-desc{color:var(--text-soft); font-size:13px;}
+  .checklist .tag{
+    display:inline-block;
+    font-size:11px;
+    font-weight:600;
+    padding:1px 7px;
+    border-radius:5px;
+    margin-left:6px;
+    vertical-align:middle;
+  }
+  .tag.urgent{background:var(--neg-bg); color:var(--neg-text);}
+  .tag.watch{background:var(--chip-bg); color:var(--text-soft);}
+  .tag.event{background:var(--pos-bg); color:var(--pos-text);}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -237,20 +273,20 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.09 (수) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/3 16:00 ET) 기준</span>
+      <span>기준시각 오전 0:41 (KST) · 美 정규장 장중(9/8 11:41 ET) 실시간 기준</span>
     </div>
     <h1>NVIDIA (NVDA) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: NVDAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$228.54</div>
-        <div class="chg-up">일봉 +1.84% (+$4.13) · 3거래일 연속 상승</div>
+        <div class="price-main">$226.93</div>
+        <div class="chg-down">장중 -1.49% (-$3.43) · 전일(9/4) 종가 $230.36 대비 하락 전환</div>
       </div>
       <div class="price-sub">
-        9/3(현지시간) Hugging Face 인수($12.9B) 발표와 9/2 브로드컴의 AI 인프라 대규모 수주 공개(Anthropic·OpenAI·Meta향)에 힘입어 반등세 지속.
-        52주 최고가 $236.54 대비 약 -3.4% 지점까지 복귀. 시가총액 약 $5.52T.
+        美 증시 전반 약세(S&P500 -0.36%, 다우 -0.95%) 속 동반 조정 — 이란발 호르무즈 해협 긴장으로 유가 급등(+1.88%, $93.20), 깜짝 호조 고용지표發 9월 FOMC 금리 인상 경계감, 캐나다 보복관세 발효(9/8)가 복합 악재로 작용.
+        같은 시간 인텔(+5.54%)·오라클(+3.67%)은 강세여서 반도체 내 순환매 성격. 52주 최고가 $236.54 대비 약 -4.1% 지점. 시가총액 약 $5.48T.
       </div>
     </div>
   </header>
@@ -273,8 +309,8 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 말 조정($217선) 이후 3거래일 연속 반등하며 $228선까지 회복, 52주 고점($236.54) 근접 구간 재진입. 단기 모멘텀 개선 흐름.<br>
-      <b>15분봉</b>: 9/3 Hugging Face 인수 발표 직후 장중 상승폭 확대, 거래량 동반 증가. 실시간 지표는 상단 차트 참고.
+      <b>일봉</b>: 8월 말 조정($217선) 이후 9/4까지 4거래일 연속 반등하며 $230선을 회복했으나, 9/8 장중 매크로 악재(유가 급등·금리 경계감)로 상승폭 반납하며 $227선 부근 조정. 52주 고점($236.54) 근접 구간에서 숨 고르기 국면.<br>
+      <b>15분봉</b>: 9/8 개장 이후 매도 우위 흐름, 오전 중 낙폭 확대. 실시간 지표는 상단 차트 참고.
     </div>
   </section>
 
@@ -286,31 +322,33 @@
       <ul class="plain">
         <li>Q2 FY2027 실적 호조 — 매출 $96.2B(+106% YoY), 데이터센터 $89.0B(+117%), Non-GAAP EPS $2.22 (컨센 상회)</li>
         <li>Q3 가이던스 매출 $108B(±2%) — 중국 데이터센터 가정 없이도 강한 성장 제시</li>
-        <li>Hugging Face 인수 발표(9/3, $12.9B) — "AI 개발자용 깃허브"로 불리는 오픈소스 모델 허브 확보, 소프트웨어·개발자 생태계 지배력 강화 (클로징은 2027년 상반기 예상)</li>
+        <li>Hugging Face 인수 발표(9/3, $12.93B) — "AI 개발자용 깃허브"로 불리는 오픈소스 모델 허브 확보, "탈중앙화 플랫폼"이라는 반독점 방어 논리로 규제 우회 자신감 표명. 소프트웨어·개발자 생태계 지배력 강화 (클로징은 2027년 상반기 예상)</li>
         <li>브로드컴 실적에서 확인된 대규모 AI 인프라 수주(Anthropic 10GW+, OpenAI 5GW+, Meta 3GW+) — AI CAPEX 사이클 견조함 재확인, 반도체 섹터 전반 랠리</li>
-        <li>Blackwell·Vera Rubin 플랫폼 수요 지속, Rubin은 CES 2026 이후 양산 본격화 국면</li>
-        <li>애널리스트 목표주가 잇달아 상향 — 씨티 $315, JP모건 $320, 골드만삭스 $300, Phillip Securities $300, Wedbush $345 등, 평균 목표가 약 $324 (Buy/Strong Buy 우세, Hold 소수)</li>
-        <li>시가총액 약 $5.52T, AI GPU 독점적 지위 유지</li>
+        <li>Blackwell·Vera Rubin 플랫폼 수요 지속, Rubin은 CES 2026 양산 발표 이후 GW당 매출이 Blackwell 대비 크게 개선($40B/GW vs $25B/GW)되는 차세대 수익성 동력으로 부각</li>
+        <li>AWS 등 하이퍼스케일러의 GPU 추가 투입 발표(2029 회계연도까지 200만개 추가), 상위 5개 하이퍼스케일러 2027년 합산 CAPEX 약 $1.3T 전망 — 수요 사이클 지속 시사</li>
+        <li>애널리스트 목표주가 잇달아 상향 — 씨티 $315, JP모건 $320, 골드만삭스 $300, Phillip Securities $300, Wedbush $345 등, 스톡애널리시스 집계 기준 평균 목표가 $325.99(현재가 대비 +43.6%), 60개 기관 중 Strong Buy 48 · Buy 9 · Hold 2 · Strong Sell 1로 압도적 매수 우위</li>
+        <li>시가총액 약 $5.48T, AI GPU 독점적 지위 유지</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
+        <li>9/8 매크로 트리플 악재 — ①이란·호르무즈 해협 긴장에 유가 급등(WTI +1.88%, $93.20)으로 인플레이션 압력 재부각 ②9/5 발표된 깜짝 호조 고용지표로 9월 FOMC(9/15~16) '금리 인하' 대신 '인상' 경계감 부상, 국채금리 상승 ③캐나다 대미 보복관세 9/8 발효로 무역분쟁 재점화 — 성장주·반도체 전반 밸류에이션 압박</li>
         <li>순환금융(벤더 파이낸싱) 우려 지속 — OpenAI향 최대 $250B 컴퓨팅 지원 계약 보도 이후 5년물 CDS(신용부도스와프) 프리미엄이 사상 최대 폭으로 상승한 바 있어 재무 레버리지 경계감 상존</li>
-        <li>Hugging Face 인수는 규제(반독점) 승인이 필요해 2027년 상반기까지 클로징 불확실성 존재</li>
+        <li>메모리 공급계약 $279B 규모로 재고 부담 우려, 매출채권회수기간(DSO) 45일→60일로 늘어나며 현금흐름 모니터링 필요, Q4 매출총이익률 71~72%대 하단 압박 전망</li>
+        <li>Hugging Face 인수는 규제(반독점) 승인이 필요해 2027년 상반기까지 클로징 불확실성 존재 — NVIDIA 측 "탈중앙화 플랫폼"이라는 방어 논리를 내세우고 있으나 규제당국 반응은 아직 불명확</li>
         <li>일부 애널리스트는 하향 조정 — Seaport Research(매도, $180), Itau BBA($256→$218) 등 밸류에이션 부담 지적</li>
         <li>중국 데이터센터 매출 제외 가이던스 — H20 등 수출 라이선스 정책 변동성, 지정학 리스크 상존</li>
         <li>계절성 변수 — 9월은 과거 변동성이 컸던 달(2023년 -10.3%, 2025년 +7.1% 등 연도별 편차 큼)</li>
-        <li>매크로(금리·유가) 및 반도체 섹터 전반 약세 시 동반 조정 가능성</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>52주 신고가 $236.54 돌파 시 신고가 랠리 지속하며 $240대 진입. Hugging Face 통합 시너지·Rubin 램프 가속 확인 시 추가 상승 여력</div>
-      <div class="scenario base"><b>기본</b>$220~$235 박스권 등락. FOMC(9/15~16)와 HF 인수 규제 이슈를 소화하며 방향성 탐색, 11월 실적 전까지 관망 심리 병존</div>
-      <div class="scenario bear"><b>약세</b>$215 이탈 시 순환금융 우려·매크로 악재 재부각되며 $205~$210 지지선 재테스트 가능</div>
+      <div class="scenario bull"><b>강세</b>52주 신고가 $236.54 돌파 시 신고가 랠리 지속하며 $240대 진입. Hugging Face 통합 시너지·Rubin 램프 가속 확인, FOMC 매파 우려 완화 시 추가 상승 여력</div>
+      <div class="scenario base"><b>기본</b>$218~$233 박스권 등락. FOMC(9/15~16) 금리 경로와 HF 인수 규제 이슈, 중동發 유가 변수를 소화하며 방향성 탐색, 11월 실적 전까지 관망 심리 병존</div>
+      <div class="scenario bear"><b>약세</b>$215 이탈 시 순환금융 우려·매파적 FOMC·유가발 인플레이션 악재가 겹치며 $205~$210 지지선 재테스트 가능</div>
     </div>
   </section>
 
@@ -385,8 +423,77 @@
     </table>
   </section>
 
+  <section>
+    <h2>5. NVIDIA 단기 핵심 체크리스트</h2>
+    <ul class="checklist">
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">FOMC 9/15(화)~16(수) 금리 결정<span class="tag urgent">최우선</span></div>
+          <div class="item-desc">9/5 깜짝 호조 고용지표 이후 '인하 지속' 대신 '인상 가능성'까지 거론되는 상황. 성명서 톤·점도표 변화가 성장주·반도체 밸류에이션에 직접 영향.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">유가·중동(호르무즈 해협) 리스크<span class="tag urgent">최우선</span></div>
+          <div class="item-desc">이란 관련 긴장 고조로 WTI 급등(9/8 +1.88%, $93.20). 유가 추가 상승 시 인플레이션 재부각 → 금리 경로 및 성장주 할인율에 부담.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">52주 고점 $236.54 재도전 여부<span class="tag watch">기술적</span></div>
+          <div class="item-desc">현재가 $226.93, 고점 대비 -4.1%. 돌파 시 신고가 랠리, $215 이탈 시 $205~210 지지선 재테스트 시나리오로 갈림.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">9/10(목) 배당락일<span class="tag event">일정</span></div>
+          <div class="item-desc">주당 $0.25 배당, 기준일 이후 이론상 배당분만큼 주가 조정. 단기 변동성 요인으로 인지 필요.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">Hugging Face 인수 반독점 심사 진행상황<span class="tag watch">규제</span></div>
+          <div class="item-desc">NVIDIA 측 "탈중앙화 플랫폼" 논리로 반독점 우려 방어 중이나 규제당국 공식 반응은 아직 없음. 클로징 목표는 2027년 상반기 — 부정적 시그널 발생 시 즉각 확인.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">반도체 섹터 내 순환매 흐름<span class="tag watch">섹터</span></div>
+          <div class="item-desc">9/8 인텔(+5.54%)·오라클(+3.67%) 강세 vs NVDA 약세(-1.49%) 대비. 자금이 AI 밸류체인 내 다른 종목으로 일시 이동하는지, 추세 전환 신호인지 며칠간 확인 필요.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">메모리 재고·매출채권(DSO) 지표<span class="tag watch">펀더멘털</span></div>
+          <div class="item-desc">$279B 규모 메모리 공급계약에 따른 재고 부담, DSO 45일→60일 확대 — 다음 실적에서 매출총이익률(현 71~72%대 하단 전망)과 함께 현금흐름 체크포인트.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">11/18~25(예상) Q3 FY2027 실적 발표<span class="tag event">일정</span></div>
+          <div class="item-desc">Blackwell/Rubin 가이던스 지속 여부, HF 인수 진행상황, 중국 매출 정책 변화가 핵심 관전 포인트.</div>
+        </div>
+      </li>
+      <li>
+        <div class="box"></div>
+        <div>
+          <div class="item-title">무역분쟁 확산 여부(캐나다 보복관세 등)<span class="tag watch">매크로</span></div>
+          <div class="item-desc">9/8 캐나다 대미 보복관세 발효. 추가 무역 마찰 확산 시 공급망·매크로 심리 전반에 부담 가능성.</div>
+        </div>
+      </li>
+    </ul>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 16:00 EDT 정규장 마감(KST 2026.09.04 오전 5:00 환산) / Q2 실적은 FY2027 Q2(2026.08.26 발표) 기준 / Hugging Face 인수는 2026.09.03 발표 기준.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.08 11:41 EDT 정규장 장중 실시간(KST 2026.09.09 오전 0:41 환산) / Q2 실적은 FY2027 Q2(2026.08.26 발표) 기준 / Hugging Face 인수는 2026.09.03 발표·이후 반독점 이슈는 2026.09.08 보도 기준 / 애널리스트 목표주가는 stockanalysis.com 집계 기준.
   </footer>
 
 </div>
