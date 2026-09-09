@@ -8,38 +8,20 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-08 (KST) — PPI(9/10) 추가
+ * 마지막 자동 업데이트: 2026-09-09 (KST)
+ *   — 9/9(수) 이전 경과 일정 제거
+ *   — TSLA·AMZN·PLTR·MSTR·SNDK 3분기 실적 발표일을 TipRanks 컨펌(Confirmed) 기준으로 정정
+ *   — NVDA Q3 FY2027 실적일은 소스 간 상충(11/17 vs 11/25 현지) — 잠정치 유지, 근접 시 재확인 필요
+ *   — CRCL 3분기 실적일은 공식 미발표, 전년 패턴(11/12 개장전) 기준 추정치로 보정
+ *   — 워치리스트 전 종목(ETH·BTC·ONDO·SOL·SNDK·CRCL·SKHY·TSLA·AAPL·SPY·MSTR·GOOGL·SOXL·NVDA·QQQ·XAU·MU·AMD·PLTR·EWY·TSM·META·AVGO·KORU·CL) 일정 재점검
+ *   — SK하이닉스(SKHY) 3분기 실적(추정, 10/29) 신규 추가, OPEC+ 10월·11월 월례회의(추정) 신규 추가
+ *   — ONDO: 다음 대규모 언락은 2027-01-18로 이번 캘린더 범위(~2026-12) 밖이라 항목 추가 없음
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
-  { dateKST: "2026-09-04", timeKST: "06:45", dateLabel: "9월 4일 (금)",
-    event: "테슬라 Cybercab 런치 이벤트 (Austin, 라이브스트림)",
-    tickers: ["TSLA"], importance: 5, note: "미국 현지 9/3 16:45 CDT 진행" },
-
-  { dateKST: "2026-09-04", timeKST: "21:30", dateLabel: "9월 4일 (금)",
-    event: "미국 8월 비농업고용(NFP)",
-    tickers: ["SPY","QQQ","EWY","KORU","BTC","XAU","AVGO"], importance: 5,
-    note: "고용 둔화 시 9월 FOMC 금리 인하 기대 강화 가능성" },
-
-  { dateKST: "2026-09-05", timeKST: "05:00", dateLabel: "9월 5일 (토)",
-    event: "Alphabet(GOOGL) 배당락일 (주당 $0.22)",
-    tickers: ["GOOGL"], importance: 2, note: "미국 현지 9/4(금) 기준" },
-
-  { dateKST: "2026-09-06", timeKST: "20:00", dateLabel: "9월 6일 (일)",
-    event: "OPEC+ 10월 산유량 결정 회의",
-    tickers: ["CL"], importance: 4, note: "동결 유력, 증산 폭 서프라이즈 시 유가 변동성 확대" },
-
-  { dateKST: "2026-09-08", timeKST: "09:00", dateLabel: "9월 8일 (화)",
-    event: "Solana Agave v4.3 스테이크 가중치 전환 1단계",
-    tickers: ["SOL"], importance: 2, note: "9/8·9/14·9/21 단계적 적용" },
-
-  { dateKST: "2026-09-09", timeKST: "09:00", dateLabel: "9월 9일 (수)",
-    event: "Solana Transaction V1 메인넷 적용",
-    tickers: ["SOL"], importance: 3, note: null },
-
   { dateKST: "2026-09-10", timeKST: "02:00", dateLabel: "9월 10일 (목)",
     event: "Apple 신제품 이벤트 '서프라이즈 앤 샤인' (아이폰18 프로 · 첫 폴더블 아이폰)",
-    tickers: ["AAPL","AVGO"], importance: 5, note: "AVGO는 공급망 수혜 관점" },
+    tickers: ["AAPL","AVGO"], importance: 5, note: "美 현지 9/9(수) 오전 10시(PT) 진행. AVGO는 공급망 수혜 관점" },
 
   { dateKST: "2026-09-10", timeKST: "14:30", dateLabel: "9월 10일 (목)",
     event: "TSMC 8월 매출 발표",
@@ -47,7 +29,7 @@ const SEPTEMBER_2026_SCHEDULE = [
 
   { dateKST: "2026-09-10", timeKST: "09:00", dateLabel: "9월 10일 (목)",
     event: "NVIDIA 배당 기준일 (Ex-Dividend, $0.25/주)",
-    tickers: ["NVDA"], importance: 2, note: null },
+    tickers: ["NVDA"], importance: 2, note: "지급일 10/1" },
 
   { dateKST: "2026-09-10", timeKST: "21:30", dateLabel: "9월 10일 (목)",
     event: "미국 8월 생산자물가지수(PPI)",
@@ -78,7 +60,7 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-09-17", timeKST: "03:00", dateLabel: "9월 17일 (목)",
     event: "FOMC 금리결정 발표 (9/15~16 회의, SEP·점도표 포함)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "03:30 파월 의장 기자회견 — 전 자산군 공통 최상위 변수" },
+    importance: 5, note: "강한 8월 고용지표 이후 25bp '인상' 확률까지 논의되는 이례적 국면. 03:30 파월 의장 기자회견" },
 
   { dateKST: "2026-09-17", timeKST: "09:00", dateLabel: "9월 17일 (목)",
     event: "구글 광고기술(AdX) 반독점 구제조치 세부안 공개(예정)",
@@ -88,13 +70,13 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "아이폰18 시리즈 정식 출시",
     tickers: ["AAPL"], importance: 4, note: null },
 
-  { dateKST: "2026-09-18", timeKST: "22:00", dateLabel: "9월 18일 (금)",
-    event: "9월 트리플위칭(선물·옵션 동시만기)",
-    tickers: ["AVGO","SPY","QQQ"], importance: 3, note: null },
-
   { dateKST: "2026-09-18", timeKST: "17:00", dateLabel: "9월 18일 (금)",
     event: "이더리움 9월 옵션 만기",
     tickers: ["ETH"], importance: 3, note: null },
+
+  { dateKST: "2026-09-18", timeKST: "22:00", dateLabel: "9월 18일 (금)",
+    event: "9월 트리플위칭(선물·옵션 동시만기)",
+    tickers: ["AVGO","SPY","QQQ"], importance: 3, note: null },
 
   { dateKST: "2026-09-21", timeKST: "09:00", dateLabel: "9월 21일 (월)",
     event: "Solana Agave v4.3 스테이크 가중치 전환 최종단계",
@@ -111,6 +93,10 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-09-25", timeKST: "17:00", dateLabel: "9월 25일 (금)",
     event: "Deribit 비트코인 월간 옵션 만기(추정)",
     tickers: ["BTC"], importance: 3, note: "만기 규모에 따라 단기 변동성 확대 가능" },
+
+  { dateKST: "2026-10-04", timeKST: "20:00", dateLabel: "10월 4일 (일)",
+    event: "OPEC+ 8개국 회의 — 11월 산유량 결정(추정)",
+    tickers: ["CL"], importance: 3, note: "매월 첫째 일요일 전후 화상회의 패턴, 정확한 일자는 공식 발표 전 추정" },
 
   { dateKST: "2026-09-28", timeKST: "09:00", dateLabel: "9월 28일 (월)",
     event: "Solana Alpenglow 기능 단계적 활성화 시작",
@@ -138,15 +124,15 @@ const SEPTEMBER_2026_SCHEDULE = [
 
   { dateKST: "2026-10-15", timeKST: "09:00", dateLabel: "10월 15일 (목)",
     event: "TSMC 3분기 실적 발표(미확정 추정)",
-    tickers: ["TSM"], importance: 5, note: null },
+    tickers: ["TSM"], importance: 5, note: "9/1 기준 회사 공식 일정 미게시, 과거 패턴 기반 추정 — 근접 시 재확인 필요" },
 
   { dateKST: "2026-10-22", timeKST: "09:00", dateLabel: "10월 22일 (목)",
     event: "한국은행 금융통화위원회 (기준금리 결정)",
     tickers: ["EWY","KORU"], importance: 4, note: "현 기준금리 2.50%" },
 
-  { dateKST: "2026-10-22", timeKST: "17:00", dateLabel: "10월 22일 (목)",
-    event: "테슬라 3분기 실적 발표(미확정 추정)",
-    tickers: ["TSLA"], importance: 5, note: "마진·인도량·가이던스 핵심" },
+  { dateKST: "2026-10-23", timeKST: "05:00", dateLabel: "10월 23일 (금)",
+    event: "Amazon(AMZN) 3분기 실적 발표(확정)",
+    tickers: ["AMZN"], importance: 5, note: "美 현지 10/22 장마감 후 — TipRanks 컨펌 기준으로 정정(기존 추정 10/30→10/22)" },
 
   { dateKST: "2026-10-28", timeKST: "05:00", dateLabel: "10월 28일 (수)",
     event: "Alphabet(GOOGL) 3분기 실적 발표",
@@ -161,42 +147,58 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "Meta(META) 3분기 실적 발표",
     tickers: ["META"], importance: 5, note: "美 현지 10/28 장마감 후" },
 
+  { dateKST: "2026-10-29", timeKST: "06:00", dateLabel: "10월 29일 (목)",
+    event: "테슬라 3분기 실적 발표(확정)",
+    tickers: ["TSLA"], importance: 5, note: "美 현지 10/28 장마감 후 — TipRanks 컨펌 기준으로 정정(기존 추정 10/22→10/28). 마진·인도량·가이던스 핵심" },
+
+  { dateKST: "2026-10-29", timeKST: "16:00", dateLabel: "10월 29일 (목)",
+    event: "SK하이닉스 3분기 실적 발표(추정)",
+    tickers: ["SKHY","EWY","KORU"], importance: 4, note: "회사 공식 일정 미발표, 전년 3분기(2025-10-29) 발표 패턴 기준 추정. HBM 가격/수요 가이던스 핵심 — 근접 시 재확인 필요" },
+
   { dateKST: "2026-10-30", timeKST: "05:00", dateLabel: "10월 30일 (금)",
     event: "Apple(AAPL) 4분기 실적 발표",
-    tickers: ["AAPL"], importance: 5, note: null },
-
-  { dateKST: "2026-10-30", timeKST: "06:00", dateLabel: "10월 30일 (금)",
-    event: "Amazon(AMZN) 3분기 실적 발표(미확정 추정)",
-    tickers: ["AMZN"], importance: 5, note: "美 현지 10/29 장마감 후" },
-
-  { dateKST: "2026-10-31", timeKST: "09:00", dateLabel: "10월 31일 (토)",
-    event: "MicroStrategy(MSTR)·SK하이닉스·Circle(CRCL) 3분기 실적 발표(잠정)",
-    tickers: ["MSTR","SKHY","CRCL"], importance: 4, note: "공식 일정 미확정, 10월말~11월초 예상" },
-
-  { dateKST: "2026-11-02", timeKST: "09:00", dateLabel: "11월 2일 (월)",
-    event: "Palantir(PLTR) 3분기 실적 발표(미확정 추정)",
-    tickers: ["PLTR"], importance: 5, note: null },
+    tickers: ["AAPL"], importance: 5, note: "美 현지 10/29 장마감 후" },
 
   { dateKST: "2026-11-04", timeKST: "06:00", dateLabel: "11월 4일 (수)",
     event: "AMD 3분기 실적 발표",
     tickers: ["AMD"], importance: 5, note: "美 현지 11/3 장마감 후" },
 
-  { dateKST: "2026-11-05", timeKST: "09:00", dateLabel: "11월 5일 (목)",
-    event: "SanDisk(SNDK) 다음 분기 실적 발표(추정)",
-    tickers: ["SNDK"], importance: 4, note: "11/5~6 사이 예상" },
+  { dateKST: "2026-11-05", timeKST: "06:00", dateLabel: "11월 5일 (목)",
+    event: "MicroStrategy(MSTR) 3분기 실적 발표(확정)",
+    tickers: ["MSTR"], importance: 4, note: "美 현지 11/4 장마감 후 — TipRanks 컨펌 기준으로 정정(기존 추정 10/31→11/4)" },
+
+  { dateKST: "2026-11-06", timeKST: "06:00", dateLabel: "11월 6일 (금)",
+    event: "SanDisk(SNDK) FY2027 1분기 실적 발표(확정)",
+    tickers: ["SNDK"], importance: 4, note: "美 현지 11/5 장마감 후 — TipRanks 컨펌 기준으로 정정" },
+
+  { dateKST: "2026-11-10", timeKST: "06:00", dateLabel: "11월 10일 (화)",
+    event: "Palantir(PLTR) 3분기 실적 발표(확정)",
+    tickers: ["PLTR"], importance: 5, note: "美 현지 11/9 장마감 후 — TipRanks 컨펌 기준으로 정정(기존 추정 11/2→11/9)" },
 
   { dateKST: "2026-11-10", timeKST: "09:00", dateLabel: "11월 10일 (화)",
     event: "Apple(AAPL) 배당락일",
     tickers: ["AAPL"], importance: 1, note: null },
 
-  { dateKST: "2026-11-20", timeKST: "06:00", dateLabel: "11월 20일 (금)",
-    event: "NVIDIA Q3 FY2027 실적 발표(예상)",
-    tickers: ["NVDA"], importance: 5, note: "11/18~25 사이 예상, Blackwell/Rubin 가이던스 핵심" },
+  { dateKST: "2026-11-01", timeKST: "20:00", dateLabel: "11월 1일 (일)",
+    event: "OPEC+ 8개국 회의 — 12월 산유량 결정(추정)",
+    tickers: ["CL"], importance: 3, note: "매월 첫째 일요일 전후 화상회의 패턴, 정확한 일자는 공식 발표 전 추정" },
+
+  { dateKST: "2026-11-13", timeKST: "21:00", dateLabel: "11월 13일 (금)",
+    event: "Circle(CRCL) 3분기 실적 발표(미확정 추정)",
+    tickers: ["CRCL"], importance: 4, note: "공식 일정 미발표. 전년 3분기(2025.11.12 개장 전) 패턴 기준 추정 — 근접 시 재확인 필요" },
+
+  { dateKST: "2026-11-26", timeKST: "06:00", dateLabel: "11월 26일 (목)",
+    event: "NVIDIA Q3 FY2027 실적 발표(잠정)",
+    tickers: ["NVDA"], importance: 5, note: "소스 간 상충(TipRanks 11/25 vs WallStreetHorizon 11/17, 모두 '컨펌' 표기) — 공식 발표 전 잠정치, 근접 시 재확인 필요. Blackwell/Rubin 가이던스 핵심" },
+
+  { dateKST: "2026-11-26", timeKST: "10:00", dateLabel: "11월 26일 (목)",
+    event: "한국은행 금융통화위원회 (기준금리 결정, 2026년 마지막 회의)",
+    tickers: ["EWY","KORU"], importance: 4, note: "2026년 정례회의 일정(1/15·2/26·4/10·5/28·7/16·8/27·10/22·11/26) 마지막 회차" },
 
   { dateKST: "2026-12-10", timeKST: "04:00", dateLabel: "12월 10일 (목)",
     event: "FOMC 금리결정 발표 (12/8~9 회의)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "2026년 마지막 FOMC" },
+    importance: 5, note: "2026년 마지막 FOMC (EST 전환으로 발표시각 04:00 KST)" },
 
   { dateKST: "2026-12-11", timeKST: "06:00", dateLabel: "12월 11일 (금)",
     event: "Broadcom(AVGO) 4분기 실적 발표",
