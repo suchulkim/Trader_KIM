@@ -43,6 +43,12 @@
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
   .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:460px; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+
   section{margin-top:36px;}
   h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
     display:flex; align-items:center; gap:8px;}
@@ -70,6 +76,21 @@
   .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
+
+  /* 매출구조도 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(237,28,36,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
   .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
   @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
@@ -79,91 +100,207 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.12 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:05 (KST, 美 정규장 마감 기준)</span>
+      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준</span>
     </div>
     <h1>AMD (Advanced Micro Devices) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AMDUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$456.22</div>
-        <div class="chg-down">일봉 -0.18% (-$0.84) · 8/4 실적발표 직후 고점($518.58) 대비 조정 중</div>
+        <div class="price-main">$515.78</div>
+        <div class="chg-up">9/11 종가 +2.34% · 반도체·AI株 전반 랠리에 동반 반등 · 9/10 $503.60(-3.36%) 대비 회복</div>
       </div>
-      <div class="price-sub">2분기 실적 서프라이즈(8/4)로 장중 +7% 급등했으나 익일 -7% 급락(밸류에이션 부담·마진 압축 우려). 이후 반도체 관세 우려·국채금리 상승으로 AI 대형주 전반이 조정받으며 $450선에서 등락.</div>
+      <div class="price-sub">
+        9/9 $521.09 → 9/10 $503.60(-3.36%) → 9/11 $515.78(+2.34%)로 3거래일 연속 큰 폭 등락. Piper Sandler의 신규
+        커버리지(목표주가 $600·비중확대) 발표에도 반도체 섹터 전반의 매크로 조정에 동반 하락했다가, 9/11에는 시장
+        전반의 반등과 함께 되돌림. 8월 실적 발표 후 고점($518.58) 부근에서 등락하며 $500선 지지력을 테스트하는
+        흐름입니다. 52주 최고가 $584.73 대비 약 -11.8% 지점.
       </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · AMDUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div id="tv_amd_daily" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div id="tv_amd_15m" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AMDUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_amd_daily" style="height:100%; width:100%;"></div>
-      </div>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>반도체 섹터 전반 변동성 확대</b></td>
+        <td>9/9 $521.09 → 9/10 $503.60(-3.36%) → 9/11 $515.78(+2.34%)로 3거래일 연속 ±2~3%대 등락. 국채금리 상승과
+        CPI 발표를 앞둔 매크로 불확실성 속에 NVDA·Intel 등 반도체 대형주 전반이 함께 출렁이며 AMD 개별 이슈보다
+        섹터 전반 수급 문제 성격이 강함</td>
+        <td>펀더멘털과 무관한 단기 변동성 — 섹터 전반이 반등하면 동반 회복 가능</td>
+      </tr>
+      <tr>
+        <td><b>Piper Sandler 신규 커버리지에도 주가 하락</b></td>
+        <td>9/9~10 Piper Sandler가 AMD에 대해 Overweight·목표주가 $600으로 신규 커버리지를 개시, GPU 잠재력과 AI
+        관련 계약을 근거로 제시했으나 발표 당일에도 주가는 반도체 섹터 전반 조정에 동반 하락(-3.36%)</td>
+        <td>호재성 뉴스가 주가를 견인하지 못한 것은 매크로 변수가 개별 호재를 압도하고 있다는 신호 — NVDA·Palantir
+        협업 사례와 유사한 패턴</td>
+      </tr>
+      <tr>
+        <td><b>8월 CPI 예상외 강세 → 금리 인상 우려 부각</b></td>
+        <td>9/11 발표된 8월 CPI가 헤드라인 +0.4%(전년비 3.4%), 근원 CPI +0.3%(예상 상회, 전년비 2.4%)로 인플레
+        재가속. 9/15~16 FOMC에서 25bp <b>금리 인상</b> 확률이 약 70%까지 급등했으나, 같은 날 반도체·AI株는 오히려
+        반등하며 기술적 되돌림 성격의 강세를 보임</td>
+        <td>9/17(KST) FOMC 결과가 단기 최대 변수 — 매크로 리스크는 여전히 살아있는 상태</td>
+      </tr>
+      <tr>
+        <td><b>우호적 뉴스플로우 지속</b></td>
+        <td>Citi는 AMD를 $237B 규모 서버 CPU 시장의 '핵심 수혜주'로 지목, Xanadu Quantum과 신규 소프트웨어 스택
+        'Backline' 출시 발표(9/9) 등 개별 호재가 이어지는 중</td>
+        <td>펀더멘털 모멘텀은 견조하나 단기적으로는 매크로 변수에 가려지는 국면</td>
+      </tr>
+      <tr>
+        <td><b>실적 발표 후 고점 대비 조정 지속</b></td>
+        <td>6월 말 사상 최고가($580.91) 및 8/4 실적 발표 직후 단기 고점($518.58) 대비 조정, $500선 부근에서
+        지지력 테스트가 계속되는 중</td>
+        <td>$480~$500 구간이 다음 지지선으로 부각</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → AMD는 Piper Sandler 신규 커버리지·Citi의 긍정적 코멘트·Xanadu Quantum 파트너십 등 개별 호재가 이어지고
+      있음에도, <b>반도체 섹터 전반의 변동성 확대</b>와 <b>8월 CPI發 9/17 FOMC 금리 인상 우려(약 70%)</b>가 겹치며
+      최근 3거래일간 큰 폭의 등락을 반복했습니다. NVDA와 마찬가지로 펀더멘털보다 매크로·섹터 수급 변수가 단기
+      주가를 지배하는 국면입니다.
     </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AMDUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_amd_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 8월 고점 이후 하락채널 형성, $450선 지지 테스트. <b>15분봉</b>: 단기 이평선 하회, 반등 시도와 매도 압력이 교차하는 구간.</div>
   </section>
 
+  <!-- 2. 향후 전망 -->
   <section>
     <h2>2. 향후 전망</h2>
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
-      <ul class="plain"><li>2분기 매출 $11.54B(+50% YoY), 데이터센터 $6.7B(+107%) — 어닝 서프라이즈</li><li>Non-GAAP EPS $1.66(컨센서스 $1.62 상회, 전년比 +246%)</li><li>3분기 가이던스 매출 ~$13B(±$0.3B), YoY +41%</li><li>Cisco·Humain과 사우디아라비아 AI 인프라 확장 파트너십, Instinct 시스템 가동</li><li>Helios/MI450 램프업 지속, OpenAI 등 대형 AI 고객 파이프라인</li><li>애널리스트 컨센서스 Strong Buy, 목표주가 상단 $600대 제시</li></ul>
+      <ul class="plain">
+        <li>2분기 매출 $11.54B(+50% YoY), 데이터센터 $6.72B(+107%) — 어닝 서프라이즈, Non-GAAP EPS $1.66(컨센서스 상회, +246% YoY)</li>
+        <li>3분기 가이던스 매출 ~$13B(±$0.3B, +41% YoY), 하반기 서버 CPU 매출 +80% 이상·2027년 +70% 이상 전망</li>
+        <li>Helios/MI450 램프업 본격화, MI500(2027) 로드맵 확인 — 데이터센터 부문 2027년 매출 2배 이상 전망</li>
+        <li>Piper Sandler($600 목표가·Overweight), Citi 등 우호적 애널리스트 커버리지 확대 — $237B 서버 CPU 시장 핵심 수혜주로 지목</li>
+        <li>Xanadu Quantum과 신규 소프트웨어 스택(Backline) 공개, Cisco·Humain 사우디 AI 인프라 파트너십 지속</li>
+        <li>컨센서스 목표주가 평균 $615(현재가 대비 +19% 상승여력), 44명 매수·0명 매도로 Strong Buy 등급 유지</li>
+      </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain"><li>순이익 대비 밸류에이션 높음(약 48배 수준) — 멀티플 압축 리스크</li><li>비GAAP 총마진 약 56%로 역사적 수준 하회, 영업비용 YoY +40% 마진 압박</li><li>게이밍 부문 매출 -31% YoY</li><li>반도체 관세·미중 수출통제 우려, 국채금리 상승에 따른 AI 대형주 밸류에이션 부담</li><li>8월 실적발표 후 고점 대비 조정 흐름, 기술적 하락채널 진행 중</li></ul>
+      <ul class="plain">
+        <li>순이익 대비 밸류에이션 매우 높은 수준(PER 120배 이상) — 멀티플 압축 리스크 상존</li>
+        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률이 약 70%까지 상승 — 반도체 섹터 전반 할인율 부담</li>
+        <li>비GAAP 총마진 약 56%로 역사적 수준 하회, 영업비용 YoY +40% 급증에 따른 마진 압박 지속</li>
+        <li>게이밍 부문 매출 -31% YoY로 부진</li>
+        <li>최근 3거래일 연속 ±2~3%대 등락 — 개별 펀더멘털과 무관한 섹터 수급 변수에 노출된 상태</li>
+      </ul>
     </div>
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$450선 지지 확인 후 반등, $480~$500대 회복 시도</div>
-      <div class="scenario base"><b>기본</b>$430~$470 박스권, FOMC(9/17)·3분기 실적(11월) 대기하며 방향성 탐색</div>
-      <div class="scenario bear"><b>약세</b>$430 붕괴 시 밸류에이션 재조정으로 $400 부근까지 추가 하락</div>
+      <div class="scenario bull"><b>강세</b>$520선 회복 후 $550~$580대 재도전, FOMC 동결(또는 예상 부합) 확인 시 안도 랠리 가능</div>
+      <div class="scenario base"><b>기본</b>$480~$520 박스권에서 FOMC(9/17) 결과와 반도체 섹터 전반 수급을 주시하며 등락</div>
+      <div class="scenario bear"><b>약세</b>$480 붕괴 시 밸류에이션 재조정으로 $430~$450 부근까지 추가 조정 가능</div>
     </div>
   </section>
 
+  <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>3. 핵심 실적 구조 (FY2026 2분기)</h2>
+    <h2>3. 매출구조/수익구조 (FY2026 2분기 기준)</h2>
     <table>
-<tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-<tr><td>🖥️ 데이터센터</td><td class="num">$6.72B</td><td class="num" style="color:var(--pos-text)">+107%</td><td class="num">58.2%</td></tr>
-<tr><td>💻 클라이언트</td><td class="num">$3.06B</td><td class="num" style="color:var(--pos-text)">+23%</td><td class="num">26.5%</td></tr>
-<tr><td>🎮 게이밍</td><td class="num">$0.78B</td><td class="num" style="color:var(--neg-text)">-31%</td><td class="num">6.8%</td></tr>
-<tr><td>🔧 임베디드</td><td class="num">$0.98B</td><td class="num" style="color:var(--pos-text)">+19%</td><td class="num">8.5%</td></tr>
-<tr><td><b>합계</b></td><td class="num"><b>$11.54B</b></td><td class="num"><b>+50%</b></td><td class="num"><b>100%</b></td></tr>
-</table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>🖥️ 데이터센터</td><td class="num">$6.72B</td><td class="num" style="color:var(--pos-text)">+107%</td><td class="num">58.2%</td></tr>
+      <tr><td>💻 클라이언트</td><td class="num">$3.06B</td><td class="num" style="color:var(--pos-text)">+23%</td><td class="num">26.5%</td></tr>
+      <tr><td>🎮 게이밍</td><td class="num">$0.78B</td><td class="num" style="color:var(--neg-text)">-31%</td><td class="num">6.8%</td></tr>
+      <tr><td>🔧 임베디드</td><td class="num">$0.98B</td><td class="num" style="color:var(--pos-text)">+19%</td><td class="num">8.5%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$11.54B</b></td><td class="num"><b>+50%</b></td><td class="num"><b>100%</b></td></tr>
+    </table>
     <h3>수익성 지표</h3>
     <table>
-<tr><th>지표</th><th class="num">Q2 FY2026</th><th class="num">전년동기</th><th class="num">비고</th></tr>
-<tr><td>GAAP EPS</td><td class="num">$1.38</td><td class="num">$0.54</td><td class="num" style="color:var(--pos-text)">+156%</td></tr>
-<tr><td>Non-GAAP EPS</td><td class="num">$1.66</td><td class="num">$0.48</td><td class="num" style="color:var(--pos-text)">+246%</td></tr>
-<tr><td>Non-GAAP 총마진</td><td class="num">약 56%</td><td class="num">-</td><td class="num">역사적 수준 하회</td></tr>
-<tr><td>3분기 매출 가이던스</td><td class="num">~$13.0B(±$0.3B)</td><td class="num">-</td><td class="num" style="color:var(--pos-text)">YoY +41% 전망</td></tr>
-</table>
-<div class="callout">→ 데이터센터가 매출의 58%를 차지하며 실적을 견인. <b>Helios/MI450 램프업</b>과 대형 AI 고객사향 Instinct GPU 공급 확대가 3분기 이후 핵심 변수입니다. 다만 총마진 하락·영업비용 급증은 수익성 측면의 주의 요인입니다.</div>
+      <tr><th>지표</th><th class="num">Q2 FY2026</th><th class="num">전년동기</th><th class="num">비고</th></tr>
+      <tr><td>GAAP EPS</td><td class="num">$1.38</td><td class="num">$0.54</td><td class="num" style="color:var(--pos-text)">+156%</td></tr>
+      <tr><td>Non-GAAP EPS</td><td class="num">$1.66</td><td class="num">$0.48</td><td class="num" style="color:var(--pos-text)">+246%</td></tr>
+      <tr><td>Non-GAAP 총마진</td><td class="num">약 56%</td><td class="num">-</td><td class="num">역사적 수준 하회</td></tr>
+      <tr><td>3분기 매출 가이던스</td><td class="num">~$13.0B(±$0.3B)</td><td class="num">-</td><td class="num" style="color:var(--pos-text)">YoY +41% 전망</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.03 (美 현지)</td><td class="num">-</td><td class="num">FY2026 3분기</td></tr>
+    </table>
+
+    <h3>매출구조도 (가치 축적 구조)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>고객 수요</b>
+          <div class="desc">하이퍼스케일러·클라우드·PC OEM·게임사·임베디드 고객</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>하드웨어 판매</b>
+          <div class="desc">EPYC 서버 CPU + Instinct GPU(데이터센터), Ryzen(클라이언트), Radeon(게이밍), 임베디드 SoC</div>
+        </div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box accent">
+          <b>소프트웨어 생태계</b>
+          <div class="desc">ROCm 오픈소스 스택, Xanadu Quantum 협업 'Backline'</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q2 FY26 $11.54B, 데이터센터 비중 58%) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>재투자 — R&D·파운드리 발주</b>
+          <div class="desc">Helios/MI450·MI500 차세대 아키텍처 개발, TSMC 등 파운드리向 생산능력 확보</div>
+        </div>
+        <div class="flow-box reward">
+          <b>재투자 — 전략적 파트너십</b>
+          <div class="desc">Cisco·Humain 사우디 AI 인프라, OpenAI 등 대형 AI 고객向 공급 계약 확대</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>생태계 락인 강화 → 차기 수요 창출</b>
+          <div class="desc">ROCm 다운로드 10배 증가 등 개발자 생태계 확대, 차세대 GPU·CPU 수요로 환류</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      → 데이터센터가 매출의 58%를 차지하며 실적을 견인하는 구조이며, 벌어들인 현금은 <b>차세대 R&D</b>와
+      <b>대형 AI 고객·파트너십 확장</b>에 재투자되고 있습니다. <b>Helios/MI450 램프업</b>과 대형 AI 고객사向
+      Instinct GPU 공급 확대가 3분기 이후 핵심 변수이며, 다만 총마진 하락·영업비용 급증은 수익성 측면의 주의
+      요인으로 남아 있습니다.
+    </div>
   </section>
 
+  <!-- 4. 주요 일정 -->
   <section>
     <h2>4. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr><td>지속</td><td>Helios(MI450) 초기 출하·램프업, Cisco·Humain 사우디 AI 인프라 프로젝트 진행</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-<tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 (9/15~16 회의)</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 (10/27~28 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-<tr><td>11월 4일 (수) 새벽 (오전 6시경)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후)</td><td><span class="star">★★★★★</span></td></tr>
-<tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 금리 <b>인상</b> 확률 약 70%까지 상승</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>11월 4일 (수) 새벽 (오전 6시경)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후) — 서버 CPU·Helios 매출 가이던스 핵심 관전포인트</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 美 정규장 마감(2026.09.04 오전 5:05 KST).
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성)
   </footer>
 </div>
 
@@ -171,7 +308,7 @@
 <script type="text/javascript">
   new TradingView.widget({
     "container_id": "tv_amd_daily",
-    "width": "100%", "height": 460,
+    "width": "100%", "height": 440,
     "symbol": "OKX:AMDUSDT.P",
     "interval": "D",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
@@ -182,7 +319,7 @@
   });
   new TradingView.widget({
     "container_id": "tv_amd_15m",
-    "width": "100%", "height": 460,
+    "width": "100%", "height": 440,
     "symbol": "OKX:AMDUSDT.P",
     "interval": "15",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
