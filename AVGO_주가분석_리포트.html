@@ -43,6 +43,12 @@
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
   .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:460px; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+
   section{margin-top:36px;}
   h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
     display:flex; align-items:center; gap:8px;}
@@ -70,6 +76,21 @@
   .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
+
+  /* 매출구조도 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
   .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
   @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
@@ -79,70 +100,123 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.12 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각: 9/3(현지시간) 정규장 마감 (KST 9/4 오전) · 실적 발표 익일</span>
+      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준 · 실적 발표(9/2) 후 9거래일 경과</span>
     </div>
     <h1>Broadcom Inc. (AVGO) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AVGOUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$357.16</div>
-        <div class="chg-down">일봉 −2.74% · 실적 발표 직후 시간외 한때 −6%대 급락 후 익일 정규장서 낙폭 일부 축소</div>
+        <div class="price-main">$361.99</div>
+        <div class="chg-up">9/11 종가 +0.32% · 실적 발표 직후 저점($353.70) 대비 완만히 회복 중</div>
       </div>
-      <div class="price-sub">9/2(현지시간) 장 마감 후 발표된 2026회계연도 3분기 실적은 매출 $296억(+86% YoY)·비GAAP EPS $3.32로 컨센서스(매출 약 $292억/EPS $3.21)를 상회했으나, 4분기 매출 가이던스($348억)가 월가 컨센서스($350~350.5억)에 소폭 못 미치며 실적 발표 후 매물 출회. 5월 사상 최고가($442.71) 대비 약 −19% 조정된 상태.</div>
+      <div class="price-sub">
+        9/2(현지시간) 발표된 2026회계연도 3분기 실적(매출 $296억 +86% YoY, 비GAAP EPS $3.32)은 컨센서스를 상회했으나
+        4분기 매출 가이던스가 기대치에 소폭 못 미치며 실적 발표 직후 $353~360 박스권까지 급락. 이후 Google
+        TPU·Anthropic 공급 확대 등 펀더멘털 재확인 뉴스에 힘입어 9/11 $361.99까지 완만히 회복했으나, 6월 사상
+        최고가($480.77) 대비로는 여전히 약 -24.7% 조정된 상태입니다.
       </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · AVGOUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div id="tv_avgo_daily" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div id="tv_avgo_15m" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </header>
 
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AVGOUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:650px; width:100%;">
-        <div id="tv_avgo_daily" style="height:100%; width:100%;"></div>
-      </div>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>실적 발표 후 가이던스 미스로 급락, 이후 완만히 회복</b></td>
+        <td>9/2 발표한 3분기 실적은 매출·EPS 모두 컨센서스를 상회했으나 4분기 매출 가이던스($348억)가 시장 기대치에
+        소폭 못 미치며 주가가 $353~360 박스권까지 급락. 이후 9/11까지 $361.99로 완만히 회복하며 낙폭을 일부 되돌림</td>
+        <td>"매도 후 재평가" 패턴 — 실적 자체보다 가이던스 눈높이 차이가 단기 낙폭을 키운 요인</td>
+      </tr>
+      <tr>
+        <td><b>Google TPU·Anthropic 공급 확대 재확인</b></td>
+        <td>실적 콜에서 Anthropic向 Google Ironwood TPU 출하 가속화 언급, 2027년 5GW 배치·추가 10GW 가시성 제시.
+        Google에 매년 수백억 달러 규모 프로세서를 수년간 공급할 것이라는 CEO 코멘트가 이어짐</td>
+        <td>커스텀 AI 반도체 사업의 장기 수요 가시성을 재확인시키며 저가 매수세 유입에 기여</td>
+      </tr>
+      <tr>
+        <td><b>OpenAI·Anthropic의 투자등급 확보 추진</b></td>
+        <td>OpenAI와 Anthropic이 상장 후 투자등급(Investment-Grade) 신용등급을 확보해 채권시장에서 저비용 자금
+        조달을 추진 중이라는 보도 — NVDA에 대한 의존도(백스톱 구조)를 낮추고 자금조달 경로를 다변화하려는 움직임</td>
+        <td>브로드컴을 포함한 대체·보완 공급망(커스텀 ASIC) 업체들의 장기 수주 기반이 넓어질 수 있다는 기대로 연결</td>
+      </tr>
+      <tr>
+        <td><b>VMware 라이선싱 정책 관련 EU 반독점 조사</b></td>
+        <td>VMware 라이선싱 정책 변경(구독형 전환)에 대해 EU 규제당국이 유럽 클라우드 사업자들을 대상으로 조사에
+        착수했다는 보도 — 인프라소프트웨어 부문(매출 비중 약 30%)의 리스크 요인으로 부각</td>
+        <td>단기 매출 영향은 제한적이나, 장기적으로 라이선싱 모델 변경 압력 가능성</td>
+      </tr>
+      <tr>
+        <td><b>애널리스트 목표주가 상향 지속</b></td>
+        <td>실적 발표 이후 Cantor Fitzgerald $600, Bernstein·BMO Capital $575 등 목표주가 상향이 이어졌고, Piper
+        Sandler도 신규 커버리지를 개시하는 등 우호적 리포트가 지속</td>
+        <td>단기 주가 조정에도 불구하고 매수 심리(Strong Buy 컨센서스)는 유지되는 배경</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 실적 자체는 견조했지만 4분기 가이던스가 시장의 과도한 눈높이에 못 미치며 단기 급락을 촉발했습니다. 이후
+      <b>Google·Anthropic向 커스텀 AI 반도체 수요의 장기 가시성</b>이 재확인되고 애널리스트들의 목표주가 상향이
+      이어지며 낙폭을 일부 되돌리는 국면입니다. 다만 <b>VMware EU 반독점 조사</b>라는 새로운 리스크가 인프라소프트웨어
+      부문에 부각되고 있어 지켜볼 필요가 있습니다.
     </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AVGOUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:650px; width:100%;">
-        <div id="tv_avgo_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>가격 레벨</b>: 5월 사상 최고가 $442.71 대비 약 −19% 조정, 20일 이동평균선 대비 약 −7.7% / 50일 이동평균선 대비 약 −7.6% 하회. <b>지지·저항</b>: 단기 지지 $350(심리적 지지선) / 저항 $407.50. <b>추세</b>: 연초 대비 상승률은 약 +1%에 그쳐, 필라델피아 반도체지수(SOX, 연초 대비 +64%) 대비 큰 폭 언더퍼폼 중이며 실적 가이던스 미스로 단기 조정 국면.</div>
   </section>
 
+  <!-- 2. 향후 전망 -->
   <section>
     <h2>2. 향후 전망</h2>
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>3분기 매출 $296억(+86% YoY), 비GAAP EPS $3.32 — 컨센서스(매출 약 $292억/EPS $3.21) 상회</li>
-        <li>AI 반도체 매출 $167억(+221% YoY, +54% QoQ), 4분기는 $217억(+236% YoY) 가이던스 — AI 매출 가속 지속</li>
-        <li>실적 콜에서 FY27 AI 반도체 매출 전망을 기존 $1,000억에서 $1,150억으로 상향 — Bernstein은 FY28 $2,300억 도달 가능성 제시(목표가 $575)</li>
-        <li>OpenAI 첫 커스텀칩 'Jalapeño' 공개(6월) 및 10GW 규모 AI 가속기 배치 계약(2026년 하반기~2029년), Google TPU 협력을 통한 Anthropic向 약 3.5GW 확장(2027년 배치 시작) — Macquarie는 Anthropic 단독으로 FY28 $400억+ 매출 전망</li>
-        <li>실적 발표 후 월가 목표주가 잇단 상향: Cantor Fitzgerald $600, Bernstein·BMO Capital $575, Morgan Stanley $505 — BMO는 "6대 AI 고객사" 확보 언급</li>
+        <li>3분기 매출 $296억(+86% YoY), 비GAAP EPS $3.32 — 컨센서스(매출 약 $293.6억/EPS $3.24) 상회</li>
+        <li>AI 반도체 매출 $167억(+221% YoY), 4분기는 $217억(+236% YoY) 가이던스 — AI 매출 가속 지속</li>
+        <li>실적 콜에서 FY27 AI 반도체 매출 전망을 $1,000억→$1,150억으로 상향, Anthropic 2027년 5GW 배치·추가 10GW 가시성, Google향 연간 수백억 달러 규모 프로세서 공급 지속 언급</li>
+        <li>OpenAI 커스텀칩 'Jalapeño', Meta 'MTIA' 양산 출하 지속 — 고객 다변화 진행 중</li>
+        <li>실적 발표 후 목표주가 잇단 상향: Cantor Fitzgerald $600, Bernstein·BMO Capital $575 — Piper Sandler 등 신규 커버리지도 우호적</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>4분기 매출 가이던스 $348억, 컨센서스($350~350.5억) 소폭 하회 — 이번 급락의 직접 트리거</li>
-        <li>인프라소프트웨어(VMware) 매출 $87.5억(+29% YoY)로 반등했으나, 직전 2개 분기 성장 둔화(1%→9%) 흐름 대비 고마진 캐시카우의 지속가능성은 지켜볼 변수</li>
-        <li>밸류에이션 부담: CY2027 PER 약 18.5배로 엔비디아 대비 30%p 이상 프리미엄 — RBC캐피탈은 Sector Perform·목표가 $400 유지로 신중론</li>
-        <li>실적 발표 후 급락 패턴 반복 — 직전 분기(6/3 발표) 익일 −12%대 급락 이력, 이번에도 유사한 흐름</li>
-        <li>반도체 업종 전반 밸류에이션 압축(Evercore ISI 진단) 및 10년물 국채금리 4.8%대로 성장주 전반 압박</li>
+        <li>4분기 매출 가이던스가 시장 기대치에 소폭 못 미쳐 실적 발표 직후 단기 급락 — 눈높이 조정 필요</li>
+        <li>VMware 라이선싱 정책 변경에 대한 EU 반독점 조사 착수 — 인프라소프트웨어(매출 비중 약 30%) 부문 리스크</li>
+        <li>밸류에이션 부담 지속 — 엔비디아 대비 프리미엄 밸류에이션, RBC캐피탈은 Sector Perform·목표가 $400으로 신중론 유지</li>
+        <li>실적 발표 후 급락 패턴 반복 — 최근 분기 연속으로 발표 직후 매물 출회 이력</li>
+        <li>고객 집중도 리스크 — Google·OpenAI·Anthropic·Meta 등 소수 대형 AI 고객사에 매출 의존도가 높음</li>
       </ul>
     </div>
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>단기 낙폭과대 되돌림 + FOMC 완화적 스탠스 시 저항선 $407.50 상향 돌파 시도, 사상 최고가($442.71) 재도전</div>
-      <div class="scenario base"><b>기본</b>$350~$407 박스권 내 변동성 지속, 실적 재료 소화하며 20일선 회복 시도 vs 가이던스 실망 매물 공방</div>
-      <div class="scenario bear"><b>약세</b>심리적 지지선 $350 붕괴 시 추가 조정 국면 장기화, 반도체 업종 전반 밸류에이션 조정 동반 가능</div>
+      <div class="scenario bull"><b>강세</b>$370~$390 저항대 회복 후 FOMC 결과 우호적일 시 사상 최고가($480.77) 재도전 시도</div>
+      <div class="scenario base"><b>기본</b>$350~$390 박스권 내 등락, 4분기 가이던스 소화 및 FOMC(9/17) 결과 대기</div>
+      <div class="scenario bear"><b>약세</b>심리적 지지선 $350 붕괴 시 VMware 리스크 부각과 맞물려 추가 조정 국면 장기화 가능</div>
     </div>
   </section>
 
+  <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출 구조 (2026 회계연도 3분기, 8/2 마감분)</h2>
+    <h2>3. 매출구조/수익구조 (2026회계연도 3분기, 8/2 마감분)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
       <tr><td>🖥️ 반도체 솔루션</td><td class="num">$208.4억</td><td class="num" style="color:var(--pos-text)">+127%</td><td class="num">70.4%</td></tr>
@@ -150,24 +224,71 @@
       <tr><td style="padding-left:24px; color:var(--text-soft); font-size:13px;">↳ 非AI 반도체</td><td class="num">$41.4억</td><td class="num" style="color:var(--pos-text)">+12%</td><td class="num">14.0%</td></tr>
       <tr><td>🧩 인프라 소프트웨어(VMware 등)</td><td class="num">$87.5억</td><td class="num" style="color:var(--pos-text)">+29%</td><td class="num">29.6%</td></tr>
       <tr><td><b>합계</b></td><td class="num"><b>$296억</b></td><td class="num"><b>+86%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.12.11 (예정)</td><td class="num">-</td><td class="num">FY2026 4분기</td></tr>
     </table>
-    <div class="callout">→ AI 반도체가 전사 매출의 56%까지 확대. 비GAAP 매출총이익률 74.9%(GAAP 69.2%). 4분기 가이던스는 총매출 <b>$348억(+93% YoY)</b>, AI 반도체 <b>$217억(+236% YoY)</b>, 비GAAP 영업이익률 약 66%. 회사는 실적 콜에서 <b>FY27 AI 매출 전망을 $1,000억→$1,150억으로 상향</b>했으며, <b>Q4 가이던스 달성 여부와 VMware 부문 마진 안정성</b>이 다음 분기까지 핵심 변수입니다.</div>
+
+    <h3>매출구조도 (가치 축적 구조)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>고객 수요</b>
+          <div class="desc">Google·OpenAI·Meta·Anthropic 등 소수 대형 AI 고객사 + 엔터프라이즈(VMware)</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>커스텀 AI 반도체(XPU)</b>
+          <div class="desc">Google TPU(Ironwood), OpenAI 'Jalapeño', Meta 'MTIA' 등 고객 맞춤형 설계</div>
+        </div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box accent">
+          <b>네트워킹·인프라SW</b>
+          <div class="desc">이더넷 스위칭·광통신 부품 + VMware 구독형 소프트웨어</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q3 FY26 $296억, AI 반도체 비중 56%) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>재투자 — 커스텀 칩 R&D</b>
+          <div class="desc">차세대 XPU 설계, TSMC 등 파운드리向 생산능력 확보</div>
+        </div>
+        <div class="flow-box reward">
+          <b>주주환원 — 배당·자사주</b>
+          <div class="desc">분기 배당(주당 $0.65) 및 잉여현금흐름 기반 자본배분</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>고객 락인 강화 → 차기 수주 확보</b>
+          <div class="desc">고객 맞춤 설계 특성상 전환비용이 높아 장기 공급계약(Anthropic 5GW+10GW 등)으로 연결</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout">
+      → 브로드컴의 매출은 <b>소수 대형 AI 고객사에 특화된 커스텀 반도체(XPU) 설계</b>를 중심으로 성장하고 있으며,
+      이는 높은 고객 락인 효과를 만들지만 동시에 <b>고객 집중도 리스크</b>이기도 합니다. 벌어들인 현금은 차세대
+      칩 R&D와 배당 등 주주환원에 배분되고 있으며, <b>4분기 가이던스 달성 여부와 VMware 부문 마진 안정성</b>이
+      다음 분기까지 핵심 변수입니다.
+    </div>
   </section>
 
+  <!-- 4. 주요 일정 -->
   <section>
     <h2>4. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 4일 (금) 오후 9:30</td><td>美 8월 비농업고용지표(NFP) 발표 — FOMC 직전 마지막 주요 고용지표</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>9월 10일 (목) 오전 2:00</td><td>Apple 신제품 발표 이벤트 "Surprise and Shine"(현지 9/9) — 美 반도체 생산·부품 발주 관련 코멘트 주목</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>9월 17일 (목) 오전 3:00</td><td><b>FOMC 금리결정 및 파월 기자회견</b>(현지 9/16 2pm ET)</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 및 파월 기자회견 (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승</td><td><span class="star">★★★★★</span></td></tr>
       <tr><td>9월 18일 (금)</td><td>9월 분기 옵션·선물 동시만기(트리플위칭) — 변동성 확대 구간</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>12월 11일 (금) 오전 (예정, KST)</td><td>2026회계연도 4분기(FY26 Q4) 실적 발표(현지 12/10 장마감 후) — Q4 가이던스($348억) 달성 여부 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>9월 21일 (월)</td><td>분기 배당 기준일(Ex-Dividend, 주당 $0.65)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 11일 (금) 오전 (예정)</td><td>2026회계연도 4분기(FY26 Q4) 실적 발표(美 현지 12/10 장마감 후) — Q4 가이던스($348억) 달성 여부·VMware 부문 마진 확인</td><td><span class="star">★★★★★</span></td></tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03(현지시간)/09.04(KST), 브로드컴 2026회계연도 3분기 실적 발표(2026.09.02 현지시간 장마감 후) 및 최신 시황 반영.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 2026회계연도 3분기 실적(2026.09.02 현지시간 장마감 후 발표) 반영 (KST 2026.09.12 기준 작성)
   </footer>
 </div>
 
@@ -175,7 +296,7 @@
 <script type="text/javascript">
   new TradingView.widget({
     "container_id": "tv_avgo_daily",
-    "width": "100%", "height": 630,
+    "width": "100%", "height": 440,
     "symbol": "OKX:AVGOUSDT.P",
     "interval": "D",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
@@ -186,7 +307,7 @@
   });
   new TradingView.widget({
     "container_id": "tv_avgo_15m",
-    "width": "100%", "height": 630,
+    "width": "100%", "height": 440,
     "symbol": "OKX:AVGOUSDT.P",
     "interval": "15",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
