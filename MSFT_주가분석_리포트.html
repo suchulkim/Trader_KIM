@@ -351,7 +351,7 @@
     </div>
 
     <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · MSFTUSDT.P (OKX) · 15분봉 / 1시간봉 — 아래 탭에서 전환 가능</div>
+      <div class="cap">📊 실시간 차트 · MSFTUSDT.P (OKX) · 15분봉 / 일봉 — 아래 탭에서 전환 가능</div>
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
@@ -362,10 +362,10 @@
           </div>
         </div>
         <div>
-          <div class="cap" style="margin-top:4px;">1시간봉</div>
+          <div class="cap" style="margin-top:4px;">일봉</div>
           <div class="tv-widget-container">
             <div class="tradingview-widget-container">
-              <div id="tv_msft_1h" style="height:100%; width:100%;"></div>
+              <div id="tv_msft_1d" style="height:100%; width:100%;"></div>
             </div>
           </div>
         </div>
@@ -605,7 +605,7 @@
     });
   }
   makeMSFTWidget("tv_msft_15m", "15");
-  makeMSFTWidget("tv_msft_1h", "60");
+  makeMSFTWidget("tv_msft_1d", "D");
 </script>
 
 </body>
