@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSFT 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#8a92ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric: tabular-nums;}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 8px;
+    font-size:14.5px;
+  }
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:14px;
+  }
+  ul.plain li{margin-bottom:6px;}
+
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  .kpi-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
+    gap:10px;
+    margin:14px 0;
+  }
+  .kpi{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    box-shadow:var(--shadow);
+  }
+  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
+  .kpi .value{font-size:18px; font-weight:700;}
+  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  /* 매출구조도(가치 축적 구조) 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(138,146,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
+  /* 세그먼트별 매출 막대그래프 */
+  .bar-chart{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 18px 8px;
+    box-shadow:var(--shadow);
+  }
+  .bar-row{
+    margin-bottom:16px;
+  }
+  .bar-row:last-child{margin-bottom:6px;}
+  .bar-label{
+    display:flex;
+    justify-content:space-between;
+    font-size:13.5px;
+    margin-bottom:6px;
+  }
+  .bar-label .name{font-weight:600;}
+  .bar-label .val{color:var(--text-soft); font-variant-numeric:tabular-nums;}
+  .bar-track{
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+    border:1px solid var(--border);
+  }
+  .bar-fill{
+    height:100%;
+    border-radius:6px 0 0 6px;
+    display:flex;
+    align-items:center;
+    justify-content:flex-end;
+    padding-right:8px;
+    font-size:11px;
+    font-weight:700;
+    color:#0e1015;
+  }
+  .bar-fill.ic{background:var(--accent);}
+  .bar-fill.pbp{background:var(--pos-text);}
+  .bar-fill.mpc{background:#e0a800;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.14 (월) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 KST 기준, 미국 현지 9/11(금) 정규장 마감 및 9/14 데이터 반영</span>
+    </div>
+    <h1>마이크로소프트 (MSFT) 주가 분석 리포트<span class="ticker">Perpetual: MSFTUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main">$494.77</div>
+        <div class="chg-up">9/11(금) 종가 $495.63(+0.65%) · 9/14 장중 $492.58~$498.97 박스권 · 2026년 연초 대비 약 +2% 그친 횡보 국면</div>
+      </div>
+      <div class="price-sub">
+        MSFT는 지난 10월 고점 $553.72(52주 최고) 이후 조정을 거쳐, 7/29 FY2026 4분기 실적 서프라이즈(+8% 시간외 상승, 3거래일 누적 약 +25% 랠리)로 한때 $513대까지 회복했으나
+        이후 재차 밀리며 현재 $490~500 박스권에 머물러 있습니다. 연초 이후 상승률은 +2% 안팎으로 사실상 횡보 중이며, AI 인프라 투자(capex) 확대가 수익성에 주는 부담과
+        Azure 고성장이라는 상반된 요인이 팽팽히 맞서는 국면입니다. 시가총액은 약 $3.68T, P/E 27.6배, 배당수익률 0.73% 수준입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · MSFTUSDT.P (OKX) · 15분봉 / 1시간봉 — 아래 탭에서 전환 가능</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_msft_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">1시간봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_msft_1h" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <table>
+      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td><b>FY2026 4분기 실적 서프라이즈 & Azure 100B 돌파</b></td>
+        <td>7/29 발표된 4분기 매출 $90.0B(+18%), GAAP EPS $4.81(예상 $4.24 상회). Azure 매출 성장률이 직전분기 40%에서 43%로 가속되며 컨센서스(39~40%)를 크게 상회, FY2026 연간 Azure 매출이 사상 최초로 $100B 돌파(+41%). 발표 직후 주가 +8% 급등, 3거래일간 누적 약 +25% 랠리</td>
+        <td>Azure가 여전히 가장 강력한 주가 동력임을 재확인 — 이후 랠리의 출발점이자 현재 박스권의 상단 기준</td>
+      </tr>
+      <tr>
+        <td><b>FY2027 대규모 capex 가이던스에 따른 밸류에이션 부담</b></td>
+        <td>4분기 capex $41B(+69% YoY), CFO 에이미 후드는 FY2027 연간 capex를 $255~260B로 제시(FY2026 대비 약 +35%). AI 데이터센터·GPU 투자가 매출 성장 속도를 웃돌 수 있다는 우려로 매출총이익률은 67.9%까지 2년 연속 하락, 영업이익률은 46.8%로 방어</td>
+        <td>"AI 투자가 수익화 속도보다 빠르다"는 약세론의 핵심 근거 — 랠리 이후 주가가 재차 눌리는 배경</td>
+      </tr>
+      <tr>
+        <td><b>OpenAI·Anthropic 지분 관련 비영업적 손익 변동성</b></td>
+        <td>4분기 Anthropic 투자평가이익 $3.2B 반영(1년 전 OpenAI 관련 평가손 $1.575B와 대비), FY2026 전체로는 투자평가이익이 순이익률을 약 4%p 끌어올림. 회사 자체도 OpenAI 관련 손익을 제외한 비GAAP 지표를 별도 제시</td>
+        <td>분기별 GAAP EPS의 변동성을 키우는 요인 — 실적 발표 시 헤드라인 EPS와 비GAAP EPS 괴리에 유의 필요</td>
+      </tr>
+      <tr>
+        <td><b>Xbox·More Personal Computing 부문 구조조정</b></td>
+        <td>4분기 More Personal Computing 매출 $12.85B(-4.4%), Xbox 콘텐츠·서비스 매출 -10%, PC OEM/디바이스 매출 -7%(가트너 PC 출하량 -4.2%와 궤를 같이함). Xbox 신임 대표 아샤 샤르마가 인력 감축 및 스튜디오 4곳 분사를 발표</td>
+        <td>3대 세그먼트 중 유일한 역성장 부문 — 전체 실적에서 차지하는 비중은 작지만(연간 매출의 약 16%) 소비자 사업 둔화 신호로 해석</td>
+      </tr>
+      <tr>
+        <td><b>매크로 역풍 — 강한 고용지표發 '금리 인상' 논의</b></td>
+        <td>9월 초 예상치를 크게 웃돈 미국 8월 비농업고용(+16.2만 vs 예상 +5.6만)으로 9/17 FOMC에서 '인하'가 아닌 '인상' 가능성이 부각, 빅테크 전반에 매도 압력. 증권 집단소송(class action) 제기 등 AI 관련 공시 리스크도 잡음으로 작용</td>
+        <td>개별 종목 이슈보다 지수 전반의 매크로 불확실성이 최근 며칠간의 변동성을 주도</td>
+      </tr>
+    </table>
+
+    <div class="callout">
+      → 7월 실적 발표는 <b>Azure 가속(43%)과 $100B 돌파</b>라는 구조적 호재로 강한 랠리를 만들었으나, 곧바로 제시된
+      <b>FY2027 capex $255~260B 가이던스</b>가 수익성 우려를 자극하며 상승분을 되돌렸습니다. 여기에 9월 초
+      매크로 불확실성(고용지표發 금리 인상 논의)까지 겹치며, 현재는 <b>$490~500 박스권에서 연초 대비 사실상
+      제자리인 횡보 국면</b>이 이어지고 있습니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <div class="label">52주 최고가</div>
+        <div class="value">$553.72</div>
+        <div class="sub">2025년 10월 고점, 현재가 대비 약 -11%</div>
+      </div>
+      <div class="kpi">
+        <div class="label">7월 실적 랠리 고점</div>
+        <div class="value">$513.80</div>
+        <div class="sub">8/28 기록, 단기 저항으로 작용 중</div>
+      </div>
+      <div class="kpi">
+        <div class="label">52주 최저가</div>
+        <div class="value">$349.20</div>
+        <div class="sub">붕괴 시 장기 지지 참고선(현재가 대비 약 -29%)</div>
+      </div>
+    </div>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li>Azure 매출 성장률이 4개 분기 연속 가속(40%→43%)되며 FY2027 1분기 가이던스도 약 45%로 제시 — AI 클라우드 수요가 공급(용량)을 웃도는 상황 지속</li>
+        <li>커머셜 이연매출(RPO)이 전년비 +84%인 $678B로 급증, 후드 CFO는 프론티어 AI 랩 외 기업들에서도 백로그가 늘고 있다고 언급 — 수요 저변 확대 신호</li>
+        <li>Microsoft 365 Copilot 유료 시트 3,000만 돌파(2분기 만에 약 +50%), GitHub Copilot 사용자 5,000만 — AI 제품의 실질 수익화 진행 중</li>
+        <li>애널리스트 컨센서스는 여전히 압도적 매수 우위("Strong Buy"), 12개월 목표주가 평균 $570~590선(현재가 대비 약 +15~19% 상단 여력)</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li>FY2027 capex 가이던스 $255~260B(전년비 +35%)가 매출 성장 속도를 앞지를 수 있다는 우려 — 매출총이익률 67.9%로 2년 연속 하락</li>
+        <li>More Personal Computing(Windows·Xbox·PC) 부문 유일하게 역성장(-4.4%), Xbox 구조조정·스튜디오 분사 등 소비자 사업 둔화</li>
+        <li>AI 인프라 관련 공시를 둘러싼 증권 집단소송이 다수 제기된 상태 — 법적 리스크 자체보다 투자심리 잡음으로 작용</li>
+        <li>구글(클라우드 부문 $15B 유럽 AI 인프라 투자 등), 오라클·아마존 등 경쟁사의 AI 클라우드 투자 확대로 Azure 성장 프리미엄에 대한 재평가 압력 상존</li>
+        <li>9/17 FOMC(금리 인상 논의), 9/30 근원 PCE 등 매크로 이벤트가 밸류에이션 배수 자체에 부담을 줄 수 있는 구간</li>
+      </ul>
+    </div>
+
+    <h3>시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull"><b>강세</b>$513~520(7월 랠리 고점) 돌파 시 8월 고점 $514 이후 미확인 구간인 $540~553(52주 최고가)까지 재도전, 10/27 3분기 실적에서 Azure 45% 가이던스 재확인 시 랠리 재개 가능</div>
+      <div class="scenario base"><b>기본</b>$480~500 박스권에서 FOMC(9/17)·PCE(9/30)를 소화하며 등락, 10/27 실적 발표 전까지 방향성 탐색 국면 지속</div>
+      <div class="scenario bear"><b>약세</b>$480 이탈 시 7월 실적 발표 이전 저항이었던 $450대까지 조정, FOMC 매파적 서프라이즈나 capex 관련 마진 우려가 부각될 경우 $430선까지 되돌림 가능</div>
+    </div>
+  </section>
+
+  <!-- 3. 매출구조/수익구조 -->
+  <section>
+    <h2>3. 매출구조 · 수익구조 (매출구조도)</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
+      마이크로소프트는 Productivity and Business Processes(생산성·비즈니스), Intelligent Cloud(인텔리전트 클라우드), More Personal Computing(개인용 컴퓨팅) 3개
+      세그먼트로 매출을 보고합니다. FY2026(2025.7~2026.6) 연간 매출은 $331.8B(+18%)이며, 세그먼트별 비중은 다음과 같습니다.
+    </p>
+
+    <div class="bar-chart">
+      <div class="bar-row">
+        <div class="bar-label"><span class="name">Productivity and Business Processes</span><span class="val">$140.0B · +16% YoY</span></div>
+        <div class="bar-track"><div class="bar-fill pbp" style="width:100%">42.2%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="name">Intelligent Cloud (Azure 포함)</span><span class="val">$137.8B · +30% YoY</span></div>
+        <div class="bar-track"><div class="bar-fill ic" style="width:98.5%">41.5%</div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label"><span class="name">More Personal Computing</span><span class="val">$54.1B · -1% YoY</span></div>
+        <div class="bar-track"><div class="bar-fill mpc" style="width:38.6%">16.3%</div></div>
+      </div>
+    </div>
+
+    <div class="flow-diagram" style="margin-top:16px;">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>사용자 · 기업 활동</b>
+          <div class="desc">Office/Teams 사용, Azure 워크로드 실행, LinkedIn·Dynamics 이용, Windows PC·Xbox 게임, Bing 검색 등</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>Productivity and Business Processes</b>
+          <div class="desc">Microsoft 365 구독, LinkedIn, Dynamics 365 — 시트·구독 기반 반복 매출</div>
+        </div>
+        <div class="flow-box accent">
+          <b>Intelligent Cloud</b>
+          <div class="desc">Azure(사용량 기반 종량제), 서버 제품, GitHub — AI 인프라 수요가 핵심 성장축</div>
+        </div>
+        <div class="flow-box">
+          <b>More Personal Computing</b>
+          <div class="desc">Windows 라이선스, Surface·디바이스 판매, Xbox 콘텐츠·구독, Bing 광고</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 매출 인식(구독료 + 사용량 과금 + 라이선스·하드웨어 판매 + 광고) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>비용 · 재투자 (Capex)</b>
+          <div class="desc">AI 데이터센터·GPU·커스텀 실리콘 투자로 FY2027 $255~260B 계획 — Intelligent Cloud 성장을 뒷받침하는 선행투자, 매출총이익률 하방 압력 요인</div>
+        </div>
+        <div class="flow-box reward">
+          <b>주주환원 (배당·자사주매입)</b>
+          <div class="desc">분기 배당 주당 $0.91(연 19년 연속 증액), 배당성향 약 20%로 낮아 여력 충분 — 잉여현금흐름의 상당 부분은 여전히 AI 인프라 재투자로 배분</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>영업이익 · 마진 구조</b>
+          <div class="desc">FY2026 영업이익률 46.8%(사상 최고) — Intelligent Cloud의 영업레버리지(영업이익 +28%)와 Productivity의 약 60% 세그먼트 마진이 More Personal Computing의 부진과 AI 투자 비용 증가를 상쇄</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      → 매출 구조상 <b>Productivity(42%)와 Intelligent Cloud(41%)가 사실상 쌍두마차</b>이며, 특히 Azure의
+      가속(43%→45% 가이던스)이 전체 성장률을 견인하고 있습니다. 다만 이 성장을 지지하는 <b>AI 데이터센터 capex가
+      매출 증가 속도(+18%)보다 훨씬 빠르게(+35% 계획) 불어나는 구조</b>라, "언제 이 투자가 이익으로 전환되는가"가
+      향후 주가의 핵심 변수로 남아 있습니다. More Personal Computing은 전체의 16%에 불과해 실적 영향은 제한적입니다.
+    </div>
+  </section>
+
+  <!-- 4. 주요일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표(9/15~16 회의, 점도표 포함 SEP) — 강한 8월 고용지표 이후 25bp '인상' 확률이 50%대 후반까지 상승한 이례적 국면. 오전 3:30 파월 의장 기자회견 — 빅테크 전반의 최상위 변수</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 30일 (수) 밤 9:30</td>
+        <td>미국 8월 근원 PCE 물가지수 — 연준이 가장 선호하는 인플레이션 지표, FOMC 직후 정책 경로 확인 변수</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 2일 (금) 밤 9:30</td>
+        <td>미국 9월 소비자물가지수(CPI) — 9월 FOMC 결과 확인 이후 첫 인플레 지표, 10월 FOMC 전망에 직결</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 27일 (화, 美 현지) 장마감 후 — KST 10월 28일 (수) 오전 약 6:00(비공식)</td>
+        <td>Microsoft FY2027 1분기(2026.7~9월) 실적 발표(미확정, 관례상 예상일) — Azure 성장률 45% 가이던스 실제 부합 여부, FY2027 capex 집행 속도가 핵심 관전 포인트</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표(10/27~28 회의) — 9월 회의 이후 정책 경로 재확인</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>11월 19~20일 (목~금, 비공식 예상)</td>
+        <td>MSFT 분기 배당 배당락일(예상) — 주당 $0.91, 19년 연속 증액 기조 유지 전망. 지급일은 12월 11일 예상</td>
+        <td><span class="star">★</span><span class="star-dim">★★★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.14 (미국 동부시간 발표분 포함) · FY2026 4분기(7/29) 및 3분기 실적 발표 자료, SEC 8-K 공시 반영.
+    상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+  </footer>
+
+</div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+  function makeMSFTWidget(containerId, interval){
+    new TradingView.widget({
+      "container_id": containerId,
+      "autosize": false,
+      "width": "100%",
+      "height": 630,
+      "symbol": "OKX:MSFTUSDT.P",
+      "interval": interval,
+      "timezone": "Asia/Seoul",
+      "theme": "dark",
+      "style": "1",
+      "locale": "kr",
+      "toolbar_bg": "#161a21",
+      "enable_publishing": false,
+      "hide_top_toolbar": false,
+      "hide_legend": false,
+      "save_image": false,
+      "studies": ["MASimple@tv-basicstudies"]
+    });
+  }
+  makeMSFTWidget("tv_msft_15m", "15");
+  makeMSFTWidget("tv_msft_1h", "60");
+</script>
+
+</body>
+</html>
