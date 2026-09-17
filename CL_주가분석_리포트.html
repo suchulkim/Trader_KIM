@@ -79,18 +79,24 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) 새벽 · 업데이트</span>
+      <span>2026.09.17 (목) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 KST (미국 동부시간 9/3(목) 장중 기준) · NYMEX WTI 선물 기준</span>
+      <span>기준시각 오후 9:00 (KST, 미국 동부시간 9/16(수) 마감 기준) · NYMEX WTI 선물 기준</span>
     </div>
     <h1>WTI 원유(Crude Oil) 분석 리포트<span class="ticker">NYMEX · Perpetual: CLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$91.69</div>
-        <div class="chg-up">+$0.68 (+0.75%) · 6주래 최고치 부근, $92 저항 시험</div>
+        <div class="price-main" id="clPriceMain">$102.14 <span id="clLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-down" id="clPriceChange">24H -0.22% (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">브렌트 $105.81 동반 약세 · 9/10~11 사우디 파이프라인 피격 급등분 일부 되돌림 · <span id="clLiveTime">가격 갱신 중…</span></div>
       </div>
-      <div class="price-sub">9/1 미군의 이란 유조선·군사시설 타격("탱커 대 탱커" 보복 정책)과 호르무즈 해협 통항 불안이 지정학적 리스크 프리미엄을 지지. 브렌트도 $94~96대에서 동반 강세.</div>
+      <div class="price-sub">
+        9/10~11 이라크발 드론 공격으로 사우디 동서송유관(호르무즈 우회 핵심 루트)이 가동 중단되고, 비슷한 시기 예멘 후티 반군이
+        바브엘만데브 해협 예멘측 연안을 완전 장악하며 WTI는 $91대에서 $106~108대까지 급등했습니다. 이번 주 들어 사우디의
+        오만 소하르 경유 대체 물량 공급과 美 에너지장관의 "수일 내 복구" 발언으로 낙폭을 일부 되돌리며 $102대에서 등락 중이나,
+        호르무즈 해협은 개전(2/28) 이후 여전히 사실상 폐쇄 상태이고 두 개의 핵심 초크포인트가 동시에 위협받는 이례적 상황은 지속되고 있습니다.
+      </div>
     </div>
   </header>
 
@@ -108,7 +114,7 @@
         <div id="tv_cl_15m" style="height:100%; width:100%;"></div>
       </div>
     </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: $80선 반등 이후 꾸준히 우상향, 6주래 최고치를 경신하며 $92 저항대 시험 중. <b>15분봉</b>: 이란-호르무즈 관련 헤드라인마다 급변동, 방향성 탐색 구간 지속.</div>
+    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 9/10~11 파이프라인 피격 헤드라인에 $106~108대까지 급등한 뒤 이번 주 되돌림, $98~106 구간에서 새로운 박스권 형성 중. <b>15분봉</b>: 파이프라인 복구 소식·해협 통항 헤드라인마다 급변동, 단기 방향성 탐색 지속.</div>
   </section>
 
   <section>
@@ -116,31 +122,42 @@
     <table>
       <tr><th style="width:20%">원인</th><th>내용</th><th style="width:26%">영향</th></tr>
       <tr>
-        <td>美-이란 전쟁 확전<br>("탱커 대 탱커" 보복)</td>
-        <td>9/1(화) 미군이 이란 군사 목표물 약 100곳과 이란 국적 유조선 2척을 드론으로 최초 타격. IRGC의 상선·美 기지 공격 시도에 대한 트럼프 행정부의 신규 억지 정책 가동에 따른 보복</td>
-        <td>지정학적 리스크 프리미엄 재차 확대. 다만 美 당국자는 "최소 한 달간 위협 감소 효과" 언급, 단기 안정 기대도 공존</td>
+        <td>사우디 동서송유관 피격·폐쇄<br>(9/10~11)</td>
+        <td>이라크 영토에서 발진한 드론이 사우디 동서송유관(리야드·메디나 인근 펌프장) 타격, 사우디는 예방 차원에서 가동을 중단. 이 파이프라인은 호르무즈 봉쇄 이후 하루 최대 500만b/d를 홍해 얀부항으로 우회시키던 핵심 대체 루트였음</td>
+        <td>브렌트 $110, WTI $106~108대까지 급등(5월래 첫 $100 상회 마감). 美 에너지장관은 "수일 내 복구" 언급했으나, 위성사진상 펌프장 손상이 심각해 전문가들은 "수개월" 복구 가능성도 제기</td>
       </tr>
       <tr>
-        <td>호르무즈 해협 부분 통항</td>
-        <td>8/31 유조선 2척이 정체불명 발사체에 피격(기뢰 제거 후 첫 상선 피격 사례), 9/1엔 미 해군 호위 하 약 40척 통항. 2분기 평균 통항량은 평시(일 2,000~2,160만 배럴) 대비 약 490만 배럴까지 급감했다가 완만히 회복 중</td>
-        <td>물리적 공급 차질 지속되나 완전 봉쇄는 아님. 사우디 동서송유관(700만b/d), UAE 하브샨-푸자이라 송유관(180만b/d) 등 우회 경로가 부분 보완</td>
+        <td>후티 반군 바브엘만데브 해협 완전 장악</td>
+        <td>예멘 후티가 모카항·페림(마윤)섬·하니시 제도를 잇달아 점령하며 홍해 연안(바브엘만데브 예멘측)을 사상 처음으로 완전 장악. 글로벌 해상무역의 약 10%, 해상 원유 물동량의 5~7%가 통과하는 길목</td>
+        <td>호르무즈에 이어 <b>두 번째 핵심 초크포인트</b>가 동시에 위협받는 이례적 국면 조성. 다만 후티 측은 "항행 자유는 보장"이라 언급, 즉각적 전면 봉쇄로 이어지지는 않음</td>
       </tr>
       <tr>
-        <td>OPEC+ 9월 증산 완료 · 10월 정책 회의(9/6)</td>
-        <td>8/2 합의로 2023년 도입된 자발적 감산 188만b/d 전량 해제 완료. 사우디·러시아·이라크 등 핵심 7개국이 9/6(일) 화상회의에서 10월 산유량 정책을 논의하며, 델리게이트들은 동결 유력 전망</td>
-        <td>명목 공급 여력은 확대됐으나 실제 증산 여지는 제한적. 동결 확정 시 공급 측 서프라이즈는 크지 않을 전망</td>
+        <td>호르무즈 해협 — 사실상 폐쇄 지속</td>
+        <td>2/28 개전 이후 정상 통항(하루 약 2,000만b/d 상당)이 크게 제한된 상태가 반년 넘게 지속. 美 에너지장관에 따르면 이번 주 약 1,800만 배럴만 통과(주간 기준, 평시 대비 극히 제한적)</td>
+        <td>걸프산과 걸프 외 원유 간 가격 괴리 확대 — 이라크 바스라 미디엄이 무르반 대비 배럴당 $43 디스카운트로 거래되며 물리적 병목의 심각성을 반영</td>
       </tr>
       <tr>
-        <td>美 원유재고 예상 초과 감소</td>
-        <td>8/28일 종료 주간 상업용 원유재고(SPR 제외) 450만 배럴 감소해 4억2,450만 배럴(5년 평균 대비 +1%) 기록</td>
-        <td>단기 수급 타이트 신호, 가격 하단 지지</td>
+        <td>이번 주 반등분 되돌림 조짐</td>
+        <td>사우디가 오만 소하르항 인근 선박 대 선박(STS) 환적으로 아시아 정유사에 대체 물량 공급 중. 美 에너지장관의 "일시적 중단, 수일 내 복구" 발언도 시장 심리 안정에 기여</td>
+        <td>브렌트·WTI 모두 9/13~15 고점 대비 되돌림 진행, $100선 부근에서 지지·저항 공방</td>
       </tr>
       <tr>
-        <td>이라크 수출 증가 · 러시아 보상감산 계획</td>
-        <td>이라크는 9월 수출 확대가 예상되는 반면, 러시아는 과거 초과생산분에 대한 보상감산(compensatory cuts)으로 연말까지 생산을 축소할 계획</td>
-        <td>공급 측 시그널이 엇갈리며 단기 변동성 확대 요인으로 작용</td>
+        <td>美 원유재고 — 예상보다 완만한 감소</td>
+        <td>EIA(9/16 발표, 9/11 종료 주간) 상업용 원유재고(SPR 제외) 64만 배럴 감소해 4억2,340만 배럴 기록. API의 711만 배럴 증가 추정치와 정반대 결과로 시장 혼선</td>
+        <td>실수급이 헤드라인 리스크만큼 타이트하지는 않을 수 있다는 신호. 다만 美 SPR은 사상 최저 수준에 근접해 완충 여력은 제한적</td>
+      </tr>
+      <tr>
+        <td>OPEC+ 10월 생산 동결</td>
+        <td>9/6 회의에서 6개월 연속 증산 후 처음으로 10월 산유량 동결 결정. 이미 완료된 188만b/d 감산 해제와 별개로, 2023년 도입된 추가 감산 층은 2026년 말까지 유지</td>
+        <td>호르무즈발 공급 차질로 실제 생산이 쿼터를 계속 밑돌아 "서류상 조정"에 그친다는 평가(Rystad Energy). 2027년 쿼터 산정을 위한 생산능력 실사가 9월 말 완료, 11월 전체회의에서 논의 예정</td>
       </tr>
     </table>
+
+    <div class="callout">
+      → 9월 중순은 <b>호르무즈에 이어 바브엘만데브까지 위협받는 이례적 이중 초크포인트 리스크</b>로 WTI가 $91대에서
+      $106~108대까지 급등했습니다. 이번 주 들어 사우디의 우회 공급과 "수일 내 복구" 발언에 낙폭을 일부 되돌렸지만,
+      <b>파이프라인 실제 복구 속도와 후티의 추가 행동 여부</b>가 향후 방향성의 핵심 변수입니다.
+    </div>
   </section>
 
   <section>
@@ -148,28 +165,28 @@
     <div class="factor-block pos">
       <h4>🟢 상방 요인</h4>
       <ul class="plain">
-        <li>이란-美 "탱커 대 탱커" 보복 사이클 지속·확전 시 리스크 프리미엄 재확대 가능</li>
-        <li>호르무즈 통항량이 여전히 평시 대비 큰 폭 낮은 수준(4.9M b/d대)에서 회복 중</li>
-        <li>美 원유재고 예상 초과 감소(-450만 배럴)로 단기 수급 타이트</li>
-        <li>러시아 보상감산 이행 시 OPEC+ 실질 공급 축소 효과</li>
-        <li>OPEC+ 9/6 회의에서 10월 산유량 동결 결정 시 추가 공급 확대 차단</li>
+        <li>사우디 동서송유관 손상이 위성사진 기준 예상보다 심각 — "수일" 아닌 "수주~수개월" 복구 가능성 상존</li>
+        <li>후티의 바브엘만데브 완전 장악으로 두 번째 핵심 초크포인트 리스크가 새롭게 부상, 호르무즈는 여전히 사실상 폐쇄</li>
+        <li>리비아도 석유시설경비대 항의로 하마다-자위야 송유관 차단, 유전 가동 중단·불가항력 선언 가능성</li>
+        <li>美 SPR 사상 최저 수준 근접, 中 수입 확대로 글로벌 재고 buffer 자체가 취약한 상태</li>
+        <li>바스라 미디엄-무르반 스프레드($43) 등 걸프 내외 가격 괴리가 물리적 병목이 완화되지 않았음을 시사</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 하방 요인</h4>
       <ul class="plain">
-        <li>美 원유 생산 사상 최대치(약 13.6백만b/d, 글로벌 공급 약 16%) 지속</li>
-        <li>사우디·UAE 우회 송유관 가동 확대로 호르무즈 의존도 점진적 완화</li>
-        <li>美 당국자의 "최소 한 달간 위협 감소" 발언 등 단기 안정 신호</li>
-        <li>이라크 9월 수출 확대 전망</li>
-        <li>OPEC+ 자발적 감산 전량 해제로 명목 공급 여력 확대</li>
+        <li>사우디, 오만 소하르 경유 STS 환적으로 대체 공급 경로 이미 가동 — 완전 봉쇄는 아님</li>
+        <li>美 에너지장관의 "일시적 중단, 수일 내 복구" 발언으로 공급 우려 일부 완화</li>
+        <li>EIA 재고 감소폭(-64만 배럴)이 API 추정치(+711만 배럴) 대비 훨씬 완만 — 실수급이 헤드라인만큼 타이트하지 않을 가능성</li>
+        <li>OPEC+는 10월 동결이지만 2027년 쿼터 재조정 논의가 진행 중 — 전쟁 종식 시 증산 여력 대기</li>
+        <li>러-우크라 에너지시설 공격 휴전 시도 등 다른 지역 리스크는 오히려 완화 조짐</li>
       </ul>
     </div>
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>보복 공격이 재확산되거나 호르무즈 통항이 재차 급감할 경우 $92 저항 돌파, $100대 재진입 시도</div>
-      <div class="scenario base"><b>기본</b>$88~$93 박스권, OPEC+ 9/6 회의 결과(동결 유력)와 이란 관련 헤드라인에 연동한 변동성 장세</div>
-      <div class="scenario bear"><b>약세</b>"최소 한 달 위협 감소" 효과가 이어지고 우회 송유관·이라크 수출 증가가 공급을 보완할 경우 $80대 중후반으로 되돌림</div>
+      <div class="scenario bull"><b>강세</b>사우디 파이프라인 복구가 지연(수주 이상)되거나 후티가 바브엘만데브 통항을 실제로 저지할 경우 브렌트 $110~120, WTI $106~115 재진입</div>
+      <div class="scenario base"><b>기본</b>$98~$106 박스권에서 파이프라인 복구 속도·양대 해협 통항량을 확인하며 등락, 10/4 OPEC+ 회의 대기</div>
+      <div class="scenario bear"><b>약세</b>파이프라인이 실제로 수일 내 복구되고 양대 해협 리스크가 동시에 진정될 경우 $90대 중반까지 되돌림 가능(다만 2월 개전 이후 이어진 구조적 전쟁 프리미엄 감안 시 $85 이하 재진입 가능성은 낮음)</div>
     </div>
   </section>
 
@@ -177,29 +194,31 @@
     <h2>4. 글로벌 원유 공급 구조 (주요 산유국 비중)</h2>
     <table>
       <tr><th>산유국</th><th class="num">생산량(원유+응축유)</th><th class="num">글로벌 비중</th><th>비고</th></tr>
-      <tr><td>🇺🇸 미국</td><td class="num">약 13.6M b/d</td><td class="num">약 16%</td><td>셰일 생산 사상 최대, 실질적 스윙 프로듀서</td></tr>
-      <tr><td>🇷🇺 러시아</td><td class="num">약 9.9M b/d</td><td class="num">약 11%</td><td>보상감산 계획으로 연말까지 소폭 축소 예정</td></tr>
-      <tr><td>🇸🇦 사우디아라비아</td><td class="num">약 9.5M b/d</td><td class="num">약 11%</td><td>OPEC 최대 생산국, 호르무즈 우회용 동서송유관(700만b/d) 확대 가동</td></tr>
-      <tr><td>🇮🇶 이라크</td><td class="num">약 4.5M b/d</td><td class="num">약 5%</td><td>9월 수출 확대 전망, OPEC+ JMMC 핵심 참여국</td></tr>
-      <tr><td>🇨🇦 캐나다</td><td class="num">약 5.6M b/d</td><td class="num">약 6%</td><td>대미 수출 최대 공급원</td></tr>
-      <tr><td><b>상위 5개국 합계</b></td><td class="num"><b>-</b></td><td class="num"><b>약 49%</b></td><td><b>나머지 51%는 이란·UAE·쿠웨이트 등 기타 산유국</b></td></tr>
+      <tr><td>🇺🇸 미국</td><td class="num">약 13.6M b/d</td><td class="num">약 16%</td><td>셰일 생산 사상 최대, 실질적 스윙 프로듀서, 전쟁 리스크에서 상대적으로 자유로운 공급원</td></tr>
+      <tr><td>🇷🇺 러시아</td><td class="num">약 9.9M b/d</td><td class="num">약 11%</td><td>보상감산 계획으로 연말까지 소폭 축소 예정, 우크라 에너지시설 공격 휴전 시도 진행 중</td></tr>
+      <tr><td>🇸🇦 사우디아라비아</td><td class="num">약 8~9M b/d</td><td class="num">약 10%</td><td>동서송유관 피격으로 생산이 1990년 이후 최저 수준까지 위축, 오만 경유 STS 환적으로 일부 보완</td></tr>
+      <tr><td>🇮🇶 이라크</td><td class="num">약 4.5M b/d</td><td class="num">약 5%</td><td>동서송유관 공격 발원지로 지목, 이라크 정부는 9/30까지 친이란 민병대 무장해제 시한 설정</td></tr>
+      <tr><td>🇨🇦 캐나다</td><td class="num">약 5.6M b/d</td><td class="num">약 6%</td><td>대미 수출 최대 공급원, 중동 리스크에서 자유로운 대체 공급처로 부각</td></tr>
+      <tr><td><b>상위 5개국 합계</b></td><td class="num"><b>-</b></td><td class="num"><b>약 48%</b></td><td><b>나머지는 이란·UAE·쿠웨이트·리비아(가동 중단 위기) 등 기타 산유국</b></td></tr>
     </table>
-    <div class="callout">→ 원유는 개별 기업이 아닌 원자재로, 매출구조 대신 <b>글로벌 생산 비중</b>으로 대체 표기합니다. 현재 유가는 펀더멘털(수급)보다 <b>중동 지정학 리스크 프리미엄</b>이 지배적 변수이며, 이란-美 보복 사이클의 향방과 호르무즈 해협 통항 회복 속도가 단기 가격의 핵심입니다.</div>
+    <div class="callout">→ 원유는 개별 기업이 아닌 원자재로, 매출구조 대신 <b>글로벌 생산 비중</b>으로 대체 표기합니다. 현재 유가는 펀더멘털(수급)보다 <b>호르무즈·바브엘만데브 이중 초크포인트 리스크</b>가 지배적 변수이며, 사우디 파이프라인 복구 속도와 후티의 추가 행동 여부가 단기 가격의 핵심입니다.</div>
   </section>
 
   <section>
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 6일 (일) 오후 8:00</td><td>OPEC+ 핵심 7개국(사우디·러시아·이라크·쿠웨이트·알제리·카자흐스탄·오만) 화상회의 — 10월 생산 정책 논의, 동결 유력</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>매주 수요일 밤 11:30 (정규 일정)</td><td>EIA 주간 원유재고 발표 — 다음 발표는 노동절 연휴로 <b>9월 11일(금) 새벽 1:00</b>로 지연(9/4 종료 주간분)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표(회의: 美 현지 9/15~16) — 달러화 방향에 따른 유가 영향</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>수시</td><td>이란-美 "탱커 대 탱커" 보복 공방, 호르무즈 해협 유조선 피격·통항 재개 관련 헤드라인</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>9월 30일 (수)</td><td>이라크 정부가 설정한 친이란 민병대 무장해제 시한 — 동서송유관 공격 발원지로 지목된 민병대 대응 여부, 불이행 시 재차 공격 리스크</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 2일 (금) 밤 9:30</td><td>미국 9월 소비자물가지수(CPI) — 달러화·수요 전망 경로에 영향</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 4일 (일)</td><td>OPEC+ 핵심 7개국 회의 — 11월 생산 정책 논의, 10월 동결 이후 방향성 결정</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>매주 수요일 밤 11:30 (정규 일정)</td><td>EIA 주간 원유재고 발표 — API 추정치와의 괴리 여부가 매번 변동성 트리거</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표(회의: 美 현지 10/27~28) — 9월 인상 이후 추가 긴축 경로, 달러화 방향에 따른 유가 영향</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>수시</td><td>사우디 동서송유관 복구 상황, 후티의 바브엘만데브 관련 행동, 호르무즈 해협 통항 헤드라인 — 현재 가장 강력한 가격 변수</td><td><span class="star">★★★★★</span></td></tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. WTI는 진행 중인 중동 전쟁으로 지정학 헤드라인에 따라 일중 변동성이 매우 클 수 있어 유의가 필요합니다. 데이터 기준: 2026.09.04 (KST) 새벽 / 미국 동부시간 9/3(목) 장중.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. WTI는 진행 중인 중동 전쟁과 두 개의 핵심 해상 초크포인트(호르무즈·바브엘만데브) 리스크로 지정학 헤드라인에 따라 일중 변동성이 매우 클 수 있어 유의가 필요합니다. 데이터 기준: 2026.09.17 (KST) 오후 9시 / 미국 동부시간 9/16(수) 마감. 가격은 OKX 퍼블릭 API(CLUSDT.P)를 통해 30초마다 자동 갱신됩니다.
   </footer>
 </div>
 
@@ -227,6 +246,56 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 WTI(CL) 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
+  (function(){
+    const priceEl = document.getElementById('clPriceMain');
+    const changeEl = document.getElementById('clPriceChange');
+    const timeEl = document.getElementById('clLiveTime');
+
+    function fmtUSD(n){
+      return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateClPrice(){
+      try{
+        const tickerRes = await fetch('https://www.okx.com/api/v5/market/ticker?instId=CL-USDT-SWAP');
+        const tickerJson = await tickerRes.json();
+        const t = tickerJson && tickerJson.data && tickerJson.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const changePct = open24h ? ((last - open24h) / open24h) * 100 : null;
+
+        if(priceEl){
+          priceEl.innerHTML = fmtUSD(last) + ' <span id="clLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1f7a3d;margin-left:4px;vertical-align:middle;" title="실시간 연결됨"></span>';
+        }
+        if(changeEl && changePct !== null){
+          const sign = changePct >= 0 ? '+' : '';
+          changeEl.textContent = `24H ${sign}${changePct.toFixed(2)}%`;
+          changeEl.className = changePct >= 0 ? 'chg-up' : 'chg-down';
+        }
+        if(timeEl){
+          timeEl.textContent = '실시간 반영 · ' + fmtTimeKST();
+        }
+      }catch(err){
+        if(timeEl){
+          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요) · 마지막 표시값 유지';
+        }
+        const dot = document.getElementById('clLiveDot');
+        if(dot){ dot.style.background = '#c53030'; }
+        console.error('CL live price fetch error:', err);
+      }
+    }
+
+    updateClPrice();
+    setInterval(updateClPrice, 30000);
+  })();
 </script>
 </body>
 </html>
