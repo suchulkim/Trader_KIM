@@ -720,12 +720,14 @@
   function ampmLabelKST(ts) {
     // OKX 12시간봉은 UTC 00:00/12:00 기준으로 마감되므로 KST로는 09시/21시에 시작한다.
     // "오전/오후" 대신 실제 캔들 시작 시각(9시 또는 21시)을 그대로 라벨로 쓴다.
+    // 일부 브라우저/웹뷰는 Intl.DateTimeFormat의 timeZone 옵션(Asia/Seoul)을 제대로
+    // 지원하지 않고 시스템 시간대로 조용히 대체해버려 라벨이 어긋날 수 있으므로,
+    // 브라우저 시간대 DB에 의존하지 않도록 UTC 시각에 KST 고정 오프셋(+9시간)을
+    // 직접 더해서 계산한다 (한국은 서머타임이 없어 오프셋이 항상 +9로 고정).
     if (!ts) return '';
-    const hour = parseInt(
-      new Intl.DateTimeFormat('en-US', { timeZone: 'Asia/Seoul', hour: '2-digit', hour12: false }).format(new Date(ts)),
-      10
-    );
-    return (hour % 24) + '시';
+    const kstMs = ts + 9 * 60 * 60 * 1000;
+    const hour = new Date(kstMs).getUTCHours();
+    return hour + '시';
   }
 
   function candleInfo(candle) {
