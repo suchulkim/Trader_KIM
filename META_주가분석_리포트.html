@@ -269,22 +269,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.04 (금) · 업데이트</span>
+      <span>2026.09.17 (목) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 4:40 (KST) · 美 동부 9/3(목) 오후 3:38 EDT 정규장 마감 전</span>
+      <span>기준시각 오후 9:00 (KST) · 당일 FOMC 발표분 반영</span>
     </div>
     <h1>Meta Platforms (META) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: METAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$613.35</div>
-        <div class="chg-up">장중 +3.46%(+$20.49) · 신규 AI모델 공개 및 광고 AI 개선 기대감에 급등, 8월 저점 이후 상승추세 재가속</div>
+        <div class="price-main" id="metaPriceMain">$680.90 <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-up" id="metaPriceChange">전일比 +1.9% (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">9/4 대비 약 +11% 추가 상승, 52주 신고가($790.80) 대비 약 -14% · <span id="metaLiveTime">가격 갱신 중…</span></div>
       </div>
       <div class="price-sub">
-        9/2 저녁(현지) 신규 AI모델 'Muse Spark 1.3' 공개(코딩·에이전틱 성능이 OpenAI·Anthropic 프론티어 모델에 근접) 및
-        AI 광고랭킹 고도화(GEM 랭킹 등)로 페이스북 광고 클릭 +8.3%·전환 +15.7% 효과가 부각되며 9/3 장중 +3~4%대 급등.
-        8/29 전후 $170억 규모 청소년 안전 소송 합의 이후의 반등 흐름이 AI 모멘텀과 맞물려 이어지는 모습이며,
-        여전히 52주 신고가($790대) 대비로는 약 22~24% 낮은 구간입니다.
+        9/4 리포트($613.35) 이후 AI 모멘텀이 이어지며 META는 $680 부근까지 추가 상승했습니다. 9/15 신규 구독 서비스
+        'Meta One' 출시(AI 역량 수익화 신규 채널), 9/10 이사회가 분기 배당($0.525/주, 배당락일 9/21 현지) 공식 승인,
+        Wedbush의 목표주가 상향($595→$650) 등이 호재로 작용했습니다. 다만 9/17(KST) FOMC 25bp 인상 발표와 함께
+        빅테크 전반이 숨 고르기 구간에 진입했고, TikTok과의 광고 마찰 등 잡음도 병존합니다.
       </div>
     </div>
 
@@ -317,36 +318,37 @@
     <table>
       <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
       <tr>
-        <td><b>Muse Spark 1.3 AI모델 공개</b></td>
-        <td>9/2 Meta가 최신 AI모델 'Muse Spark 1.3'을 공개, 코딩·에이전틱(자율수행) 성능 벤치마크에서 OpenAI·Anthropic 프론티어 모델과 견줄 수준으로 향상. AI 담당 임원 Alexandr Wang은 "프론티어 모델과 매우 경쟁력 있는 수준"이라 평가, 향후 개인용 AI 에이전트 개발의 기반으로 언급</td>
-        <td>대규모 AI 투자(CapEx)의 결과물이 가시화되고 있다는 신호로 해석되며 9/3 주가 급등의 직접적 트리거로 작용</td>
+        <td><b>'Meta One' 구독 서비스 출시 (9/15)</b></td>
+        <td>Meta가 AI 역량을 수익화하기 위한 신규 구독 프로그램 'Meta One'을 공개. 광고 매출 일변도였던 수익구조에 신규 채널을 추가하려는 시도</td>
+        <td>광고 의존도(매출의 약 98%)를 다변화하려는 신호로 긍정 해석, 다만 초기 단계라 실질 매출 기여는 아직 미미</td>
       </tr>
       <tr>
-        <td><b>AI 광고 랭킹·전환 개선</b></td>
-        <td>사용자 이해 모델·GEM 광고랭킹·시퀀스러닝 고도화로 페이스북 광고 클릭 +8.3%, 전환 +15.7% 향상. Meta 비즈니스 AI 에이전트를 주간 100만개 이상 업체가 사용 중이며 Advantage+ 광고솔루션은 연환산 매출 $750억 규모로 성장</td>
-        <td>AI 투자가 핵심 수익원인 광고 사업의 효율 개선으로 직접 연결되고 있음을 보여주는 근거로, 밸류에이션 재평가에 우호적</td>
+        <td><b>분기 배당 공식 승인 (9/10)</b></td>
+        <td>이사회가 주당 $0.525 분기 배당을 공식 승인, 배당락일 9/21(현지) 확정(직전 리포트의 "추정치"가 실제로 확정됨)</td>
+        <td>주주환원 정책 재확인, 일정 확정에 따른 단기 변동성 요인(배당락 효과) 예상</td>
       </tr>
       <tr>
-        <td><b>대규모 청소년 안전 소송 합의</b></td>
-        <td>8/26 다수 주(州) 검찰총장이 제기한 소셜미디어 청소년 피해 소송에 대해 $170억 규모 합의 확정, 10대 이용자 대상 신규 안전장치 도입 의무화. 다만 뉴멕시코주 등 일부 개별 소송은 별도로 진행 중(1심 배상판결 $4.25억에 대한 항소 절차 포함)</td>
-        <td>장기간 시장을 짓눌러온 대형 법적 리스크가 상당 부분 해소되며 8월 저점 반등의 초기 트리거로 작용, 다만 리스크가 완전히 해소된 것은 아님</td>
+        <td><b>월가 목표주가 상향 · AI 모멘텀 지속</b></td>
+        <td>Wedbush가 목표주가를 $595→$650로 상향, Goldman Sachs는 Buy 등급 재확인. Muse AI 에이전트가 "business-in-a-box" 서비스로 소상공인 대상 확장되며 지속적으로 강세 논쟁(Bullish Wall Street Debate)을 촉발</td>
+        <td>애널리스트 커뮤니티 내 AI 투자 성과에 대한 긍정론이 확산되며 9/4 이후 추가 상승(+11%대)의 배경으로 작용</td>
       </tr>
       <tr>
-        <td><b>2분기 실적 후 CapEx 충격(배경)</b></td>
-        <td>7/29 실적에서 매출은 컨센서스 상회($608억, +28%YoY)했으나 EPS 미스($6.18 vs 컨센 $7.22), 2026년 CapEx 가이던스 $1,300~1,450억으로 상향, 분기 잉여현금흐름 급감(-$7.84억)에 시간외 -8~10% 급락</td>
-        <td>8월 한 달간 하락 압력의 배경이 된 이벤트로, 이후의 반등은 이 충격을 되돌리는 동시에 AI 투자 성과를 증명해가는 과정으로 볼 수 있음</td>
+        <td><b>FOMC 25bp 금리인상 확정 (9/17)</b></td>
+        <td>9/16(현지) FOMC가 기준금리를 3.75~4.00%로 인상(2023년 이후 첫 인상), 연말 점도표 중간값 4.1%로 매파적</td>
+        <td>빅테크 전반에 밸류에이션 부담 요인 — META도 개별 호재와 매크로 역풍을 동시에 소화하는 국면</td>
       </tr>
       <tr>
-        <td><b>OpenAI發 광고시장 경쟁 리스크</b></td>
-        <td>OpenAI의 광고 사업이 빠르게 성장하며 Google·Meta의 디지털 광고 점유율을 잠식할 수 있다는 우려가 여전히 잔존(Evercore ISI 등)</td>
-        <td>핵심 수익원인 광고 사업에 대한 장기 경쟁 구도 재편 우려, 밸류에이션 상단을 제약하는 요인으로 계속 작용</td>
+        <td><b>TikTok과의 광고 마찰 · 경쟁 리스크 잔존</b></td>
+        <td>TikTok이 자사·YouTube를 압박하는 내용의 Meta 광고 게재를 거부(Axios 보도). OpenAI發 광고시장 진출 우려도 여전</td>
+        <td>단기 주가 영향은 제한적이나, 숏폼 콘텐츠·광고 경쟁 구도가 여전히 진행형임을 보여주는 잡음성 이벤트</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 8월 말 소송 리스크 해소로 시작된 반등이, 9/2~3 <b>Muse Spark 1.3 공개와 AI 광고효율 개선 지표</b>를 계기로
-      한 단계 더 강해졌습니다. CapEx 부담과 OpenAI發 경쟁 우려라는 배경 리스크는 여전하지만, "AI 투자 대비 실질적 성과가
-      나오고 있다"는 서사가 힘을 얻으며 밸류에이션 재평가 랠리가 이어지는 국면입니다.
+      → 9/4 이후 META는 <b>Meta One 구독 출시·배당 확정·목표주가 상향</b>이 겹치며 $613 → $680대까지 약 11% 추가 상승했습니다.
+      다만 9/17 FOMC 인상으로 빅테크 전반의 매크로 부담이 재부각되며 상승 속도는 다소 조절되는 모습입니다.
+      52주 신고가($790.80) 대비로는 여전히 약 14% 낮은 구간으로, AI 투자 성과가 10/28(현지) 3분기 실적에서
+      숫자로 재확인될지가 다음 추세의 분수령입니다.
     </div>
   </section>
 
@@ -357,41 +359,41 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Muse Spark 1.3 등 신규 AI모델이 프론티어급 성능에 근접, 개인 AI 에이전트·비즈니스 AI 에이전트 등 제품화 성과 가시화 시작</li>
-        <li>AI 광고랭킹 고도화로 광고 클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 매출 $750억 — CapEx 투자와 광고 실적 개선의 연결고리 확인</li>
-        <li>2분기 매출 $608억(+28%YoY), 광고매출 +27%, 일일활성사용자(DAP) 36.0억(+3%YoY) — 핵심 사업 견조</li>
-        <li>대형 소송 리스크 상당 부분 해소로 불확실성 축소, 저평가 인식 확산에 따른 재평가 랠리 지속 가능성</li>
-        <li>WhatsApp 유료 메시징 등 신규 수익원(Family of Apps 기타매출) +73%YoY로 고성장 — 광고 의존도 다변화 신호</li>
+        <li>Meta One 구독 출시로 광고 일변도 수익구조에 신규 채널 추가 시도 — 장기적 매출 다변화 신호</li>
+        <li>AI 광고랭킹 고도화 효과(클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)가 3분기 실적에서 추가 확인될 가능성</li>
+        <li>Wedbush 목표주가 상향($650), Goldman Buy 유지 등 월가 컨센서스 개선 흐름</li>
+        <li>분기 배당 $0.525 공식 승인 — 주주환원 정책 지속, 안정적 현금흐름 방증</li>
+        <li>Muse AI 에이전트의 소상공인 대상 제품화(business-in-a-box) — AI 투자의 실질 매출 전환 경로 확대</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>2026년 CapEx $1,300~1,450억 가이던스로 대폭 상향, 분기 잉여현금흐름 사실상 소진(-$7.84억) — AI 투자 부담 지속, 실제 ROI는 아직 초기 단계</li>
-        <li>2분기 EPS 컨센서스 미스로 서프라이즈 행진 종료, 3분기 매출 가이던스도 컨센서스 소폭 하회 — Q3 실적(10월 말 발표)에서 재확인 필요</li>
-        <li>OpenAI 등 신규 경쟁자의 광고시장 진출 — 장기 점유율 리스크 지속</li>
+        <li>FOMC 25bp 인상(2023년 이후 첫 인상) 확정, 매파적 점도표 — 빅테크 밸류에이션 전반에 부담</li>
+        <li>2026년 CapEx $1,300~1,450억 가이던스, 분기 FCF 급감 이력 — AI 투자 부담은 여전히 진행형</li>
+        <li>OpenAI 등 신규 경쟁자의 광고시장 진출 + TikTok과의 광고 마찰 — 장기 경쟁 구도 리스크 지속</li>
         <li>Reality Labs 누적 손실 $800억 이상 지속 — 장기 수익성에 대한 의문 여전</li>
-        <li>뉴멕시코주 등 일부 청소년 관련 개별 소송·항소 절차가 잔존 — $170억 합의로 모든 법적 리스크가 해소된 것은 아님</li>
-        <li>52주 신고가 대비 약 22~24% 낮은 구간 — 시장이 아직 AI 투자 성과에 대해 완전히 확신하지 못하고 있음을 시사</li>
+        <li>9/4 이후 단기간 11%대 급등에 따른 밸류에이션 부담 — 과열 신호(RSI 과매수 구간 진입 이력) 주시 필요</li>
+        <li>뉴멕시코주 등 일부 청소년 관련 개별 소송·항소 절차 잔존</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$620~630 저항 돌파 시 8월 이전 고점권($680~700대) 재도전, AI모델 성과의 매출 기여가 3분기 실적(10/28)에서 숫자로 확인될 경우 52주 신고가($790대) 방향으로 재평가 지속</div>
-      <div class="scenario base"><b>기본</b>$580~630 박스권에서 AI 투자 성과와 CapEx 부담을 동시에 소화, FOMC(9/17)·10월 말 3분기 실적 대기 심리 지속</div>
-      <div class="scenario bear"><b>약세</b>$580 지지선 붕괴 시 CapEx 부담·경쟁 리스크 재부각되며 8월 저점권($520~540대) 재테스트 가능</div>
+      <div class="scenario bull"><b>강세</b>Meta One·AI 광고효율 개선이 10/28 3분기 실적에서 숫자로 확인될 경우 52주 신고가($790.80) 재도전</div>
+      <div class="scenario base"><b>기본</b>$650~700 박스권에서 FOMC發 매크로 흐름과 10월 말 3분기 실적을 동시 대기, 단기 과열 해소 과정 병행</div>
+      <div class="scenario bear"><b>약세</b>$650 지지선 붕괴 시 CapEx 부담·경쟁 리스크 재부각되며 $600 부근까지 되돌림 가능</div>
     </div>
   </section>
 
   <!-- 3. 매출구조 -->
   <section>
-    <h2>3. 매출 구조 (2026년 2분기 기준)</h2>
+    <h2>3. 매출 구조 (2026년 2분기 기준, 10/28 3분기 실적 발표 대기 중)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
       <tr><td>📢 광고(Family of Apps - Advertising)</td><td class="num">$59.36B</td><td class="num" style="color:var(--pos-text)">+27%</td><td class="num">97.6%</td></tr>
-      <tr><td>💬 기타(WhatsApp 유료메시징 등)</td><td class="num">$1.00B</td><td class="num" style="color:var(--pos-text)">+73%</td><td class="num">1.6%</td></tr>
+      <tr><td>💬 기타(WhatsApp 유료메시징, Meta One 등)</td><td class="num">$1.00B</td><td class="num" style="color:var(--pos-text)">+73%</td><td class="num">1.6%</td></tr>
       <tr><td>🥽 Reality Labs(AI글래스·Quest)</td><td class="num">$0.43B</td><td class="num" style="color:var(--pos-text)">+16%</td><td class="num">0.7%</td></tr>
       <tr><td><b>합계</b></td><td class="num"><b>$60.8B</b></td><td class="num"><b>+28%</b></td><td class="num"><b>100%</b></td></tr>
     </table>
@@ -415,12 +417,11 @@
     </div>
 
     <div class="callout">
-      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조로, OpenAI 등 신규 경쟁자의 광고시장 진출이
-      장기적으로 부담이 될 수 있는 이유입니다. 다만 최근 공개된 AI 광고랭킹 고도화(광고 클릭 +8.3%·전환 +15.7%,
-      Advantage+ 연환산 $750억)는 이 광고 매출 자체의 질을 AI로 끌어올리고 있다는 근거로, 3분기 실적(10/28 발표)에서
-      숫자로 확인될지가 핵심 관전 포인트입니다. Reality Labs는 매출 비중이 1% 미만에 불과하지만 영업손실은 분기당
-      $46억에 달해, 손익 기여도와 매출 비중의 괴리가 매우 큰 사업부입니다. WhatsApp 유료 메시징 등 신규 수익원(+73%YoY)이
-      아직 작지만 가장 빠르게 성장하는 부문입니다.
+      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조는 아직 변화가 없으나, 9/15 출시된
+      <b>Meta One 구독 서비스</b>는 "기타" 부문(현재 1.6%)에 향후 반영될 신규 채널입니다. AI 광고랭킹 고도화
+      (광고 클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)는 광고 매출 자체의 질을 끌어올리는 효과이며,
+      3분기 실적(10/28 발표)에서 두 흐름(신규 채널 매출 기여 + 기존 광고 효율 개선)이 숫자로 얼마나 확인되는지가
+      핵심 관전 포인트입니다. Reality Labs는 매출 비중 1% 미만에 영업손실은 분기당 $46억으로 손익 괴리가 여전히 큽니다.
     </div>
   </section>
 
@@ -430,13 +431,13 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (미국 현지 9/15~16 회의, 점도표 포함 SEP 발표) — 오전 3:30경 파월 의장 기자회견</td>
+        <td>9월 17일 (목) 오전 3:00 <b>[발표 완료]</b></td>
+        <td>FOMC 금리결정 발표 — 25bp 인상 확정(3.75~4.00%), 2023년 이후 첫 인상</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 중순 (17~22일경, 미확정)</td>
-        <td>3분기 배당 배당락일(ex-dividend date) 예상 — 직전 분기 기준 주당 $0.525, 시장 예상치는 9/17~21일 사이(공식 발표 전 추정치로 변동 가능)</td>
+        <td>9월 22일 (화) 밤~9월 23일 (수) 새벽</td>
+        <td>배당락일(ex-dividend date, 미 현지 9/21 월) — 주당 $0.525 배당 공식 확정분</td>
         <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
       </tr>
       <tr>
@@ -446,19 +447,19 @@
       </tr>
       <tr>
         <td>지속</td>
-        <td>OpenAI 광고사업 확장 및 Muse Spark 1.3 후속 제품화(개인 AI 에이전트 등) 뉴스플로우 — 광고 점유율·AI 투자 성과 검증 지속 주시</td>
+        <td>Meta One 구독 초기 반응, OpenAI 광고사업 확장·TikTok 마찰 등 뉴스플로우 — 신규 수익원 안착 여부와 광고 경쟁구도 지속 주시</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
         <td>10월 29일 (목) 오전 5~6시경</td>
-        <td>FY2026 3분기 실적 발표 (미국 현지 10/28(수) 정규장 마감 후, 한국시간 익일 새벽 콘퍼런스콜) — EPS 컨센서스 약 $6.75, CapEx 가이던스 추가 조정 및 AI 광고효율 개선의 실적 반영 여부가 핵심</td>
+        <td>FY2026 3분기 실적 발표 (미국 현지 10/28(수) 정규장 마감 후, 한국시간 익일 새벽 콘퍼런스콜) — Meta One 초기 기여, AI 광고효율 개선의 실적 반영, CapEx 가이던스 추가 조정이 핵심</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.04 오전 4:40 (KST) / 美 동부 2026.09.03(목) 오후 3:38 EDT 장중(정규장 마감 전) 기준. 실적은 META FY2026 Q2(발표일 2026.07.29) 기준이며, 3분기 실적은 2026.10.28(현지) 발표 예정입니다. 배당락일은 시장 추정치로 공식 공시와 다를 수 있습니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.17 오후 9시 (KST). 실적은 META FY2026 Q2(발표일 2026.07.29) 기준이며, 3분기 실적은 2026.10.28(현지) 발표 예정입니다. 가격은 OKX 퍼블릭 API(METAUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 
 </div>
@@ -501,6 +502,56 @@
     });
   }
   initWidgets();
+</script>
+<script type="text/javascript">
+  // 실시간 META 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
+  (function(){
+    const priceEl = document.getElementById('metaPriceMain');
+    const changeEl = document.getElementById('metaPriceChange');
+    const timeEl = document.getElementById('metaLiveTime');
+
+    function fmtUSD(n){
+      return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateMetaPrice(){
+      try{
+        const tickerRes = await fetch('https://www.okx.com/api/v5/market/ticker?instId=META-USDT-SWAP');
+        const tickerJson = await tickerRes.json();
+        const t = tickerJson && tickerJson.data && tickerJson.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const changePct = open24h ? ((last - open24h) / open24h) * 100 : null;
+
+        if(priceEl){
+          priceEl.innerHTML = fmtUSD(last) + ' <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#5fd188;margin-left:4px;vertical-align:middle;" title="실시간 연결됨"></span>';
+        }
+        if(changeEl && changePct !== null){
+          const sign = changePct >= 0 ? '+' : '';
+          changeEl.textContent = `전일比 ${sign}${changePct.toFixed(2)}%`;
+          changeEl.className = changePct >= 0 ? 'chg-up' : 'chg-down';
+        }
+        if(timeEl){
+          timeEl.textContent = '실시간 반영 · ' + fmtTimeKST();
+        }
+      }catch(err){
+        if(timeEl){
+          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요, 미장 마감 시간에는 갱신이 제한될 수 있음) · 마지막 표시값 유지';
+        }
+        const dot = document.getElementById('metaLiveDot');
+        if(dot){ dot.style.background = '#c53030'; }
+        console.error('META live price fetch error:', err);
+      }
+    }
+
+    updateMetaPrice();
+    setInterval(updateMetaPrice, 30000);
+  })();
 </script>
 
 </body>
