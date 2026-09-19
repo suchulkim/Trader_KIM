@@ -11,5 +11,5 @@ window.__MSTR_FILING__ = {
     "filingDate": "2026-08-31",
     "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526375463/mstr-20260831.htm"
   },
-  "fetched_at": "2026-09-14 14:00:35 UTC"
+  "fetched_at": "2026-09-19 09:30:21 UTC"
 };
