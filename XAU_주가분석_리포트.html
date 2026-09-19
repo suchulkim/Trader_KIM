@@ -203,6 +203,25 @@
   }
   .callout b{color:var(--text);}
 
+  /* 수급구조도(가치 흐름) 다이어그램 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -217,21 +236,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.03 (목) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 10:00 (KST, 미 동부시간 오전 9:00 기준)</span>
+      <span>기준시각 오전 5:00 (KST) · 뉴욕 금 정규장 마감(9/18 기준, 실시간 변동 반영)</span>
     </div>
     <h1>Gold (XAU) 분석 리포트<span class="ticker">XAU/USD · Perpetual: XAUUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$4,489.80</div>
-        <div class="chg-up">전일 동시각 대비 +3.6% ($4,335.79 → $4,489.80) · 급락 후 강한 반등</div>
+        <div class="price-main"><span id="live-price">$4,383.45</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">전일 대비 +0.97% (+$42.06) · 4주 만의 첫 주간 상승 마감</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX XAUUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        8/28~31 잭슨홀에서 파월 후임 워시(Warsh) 연준 의장의 매파적 발언 이후 9월 금리인상 기대가 급부상하며
-        9/1 $4,374(-1.6%)까지 하락. 9/2 장중 $4,336까지 밀렸으나 미-이란 재확전 우려에 따른 헤지 수요로 반등,
-        9/3 트럼프 대통령이 이란 공습이 "오래가지 않을 것"이라 언급하며 안전자산 매수와 되돌림이 겹쳐 $4,490선까지 급반등.
+        9/16 FOMC에서 연준이 3년 만에 첫 금리 인상(25bp, 3.75~4.00%)을 단행하며 6주 만의 저점까지 밀렸으나,
+        이후 인상분이 선반영됐다는 인식과 유가 하락에 따른 인플레 우려 완화로 9/17~18 이틀 연속 반등하며 $4,400 부근까지 회복.
+        52주 범위 $3,683~$5,608.
       </div>
     </div>
   </header>
@@ -254,107 +274,176 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 말 매파적 연준 발언으로 급락한 뒤, 9/2~9/3 이란발 헤지 수요와 지정학 뉴스에 연동해 변동성이 크게 확대된 구간.
-      최근 저점(9/2, 약 $4,336) 대비 단기 반등 흐름이나 8월 고점 대비로는 아직 하회.<br>
-      <b>15분봉</b>: 트럼프 발언·이란 관련 헤드라인에 즉각 반응하는 뉴스 주도 장세. 방향성보다 헤드라인 리스크에 따른 급등락 반복.
+      <b>일봉</b>: 1월 사상 최고가($5,608) 이후 조정 흐름 속에 9월 FOMC를 앞두고 $4,220~4,260대까지 밀렸다가, 9/16 금리 인상 발표 당일 저점을 찍은 뒤 9/17~18 반등하며 $4,383까지 회복. 200일 이동평균선($4,541 부근)이 여전히 상단 저항.<br>
+      <b>15분봉</b>: FOMC 발표 직후 급락 → 되돌림, 이후 유가·국채금리 헤드라인에 연동한 변동성 장세. 10/23~24 예정 PMI·미시간대 인플레 기대 등 매크로 지표에 반응성 높음.
     </div>
   </section>
 
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 현지 기준)</h2>
+    <p style="font-size:13px; color:var(--text-soft); margin-top:-6px;">뉴욕 정규장 마감가 기준 · KST 환산 시 익일 오전 5시경(써머타임 EDT 기준)</p>
+    <table>
+      <tr><th style="width:15%">날짜</th><th style="width:16%">종가 · 등락</th><th>주요 사유</th></tr>
+      <tr>
+        <td><b>9/14 (월)</b></td>
+        <td>$4,270 부근<br><span style="color:var(--down); font-weight:600;">▼ 약세</span></td>
+        <td>9/11 발표된 8월 CPI(헤드라인 3.4% YoY, 휘발유 +3.9%)가 예상보다 견조하게 나오며 CME FedWatch 9월 인상 확률이 70%→85~90%로 급등, 10년물 국채금리 4.95~4.97%까지 상승 — FOMC를 앞둔 매파적 리포지셔닝 지속</td>
+      </tr>
+      <tr>
+        <td><b>9/15 (화)</b></td>
+        <td>$4,300~4,320 부근<br><span style="color:var(--pos-text); font-weight:600;">▲ 반등</span></td>
+        <td>사우디 송유관 공격 보도로 브렌트유가 $105 상회하며 지정학 헤지 수요 유입 — 인상 확률이 86%까지 추가 상승했음에도 안전자산 매수세가 우위, $4,260대 저점에서 반등</td>
+      </tr>
+      <tr>
+        <td><b>9/16 (수)</b></td>
+        <td class="num">$4,310.10<br><span style="color:var(--pos-text); font-weight:600;">▲ +0.38%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 만장일치 의결(3.75→4.00%)</b> — 2023년 이후 첫 인상. 워시 의장 포함 12명 전원 찬성, 정책위원 18명 중 16명이 2026년 추가 인상 필요성 시사. 발표 직후 6주 만의 저점까지 급락했으나 장 마감까지 낙폭을 대부분 만회</td>
+      </tr>
+      <tr>
+        <td><b>9/17 (목)</b></td>
+        <td>~$4,360 부근<br><span style="color:var(--pos-text); font-weight:600;">▲ 약 +2%</span></td>
+        <td>전날 인상 발표를 소화한 투자자들의 포지션 재조정 — "인상은 이미 가격에 반영됐다"는 인식 속 달러가 7주 만의 고점에서 후퇴하며 금 매수세 유입. 영란은행은 금리 동결, 일본은행은 31년 만의 최고 수준 인상 예고</td>
+      </tr>
+      <tr>
+        <td><b>9/18 (금)</b></td>
+        <td class="num">$4,383.45<br><span style="color:var(--pos-text); font-weight:600;">▲ +0.97%</span></td>
+        <td>사우디의 동-서 파이프라인 복구 작업으로 유가가 3거래일 연속 하락하며 인플레 압력 우려 완화, 10년물 국채금리도 5% 근접 후 4.93%대로 반락 — 4주 만의 첫 주간 상승 마감. 시장은 10월 추가 인상 확률을 약 53~60%로 반영 중</td>
+      </tr>
+    </table>
+    <div class="callout">
+      → 이번 주는 <b>3년 만의 첫 연준 금리 인상(9/16, 25bp)</b>이라는 이례적 이벤트가 핵심이었습니다. 발표 직전까지는 인상 확률 급등(70%→90%대)과
+      국채금리 5% 근접으로 $4,220~4,260대까지 눌렸지만, 정작 발표 당일에는 낙폭을 대부분 만회했고 이후 이틀간
+      <b>"인상 재료 소진" 인식 + 유가 하락에 따른 인플레 압력 완화</b>가 맞물리며 $4,383까지 반등, 4주 만에 처음으로 주간 상승 마감했습니다.
+      다만 정책위원 16명이 2026년 추가 인상 가능성을 시사한 만큼, <b>10월 인상 확률(현재 53~60%)</b>이 다음 변동성의 핵심 변수로 남아 있습니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>미-이란 군사 충돌 재확대 리스크 — 국제유가 배럴당 $97 상회, 안전자산 수요 유입</li>
-        <li>중앙은행 금 매입 등 구조적 수요 지속 (장기 지지선)</li>
-        <li>워시 의장의 매파 스탠스에도 인플레 헤지·달러 신뢰 우려에 따른 대체자산 수요</li>
-        <li>최근 이틀간 급락 후 저가 매수세 유입, 단기 낙폭 과대 인식</li>
-        <li>지정학 불확실성이 완전히 해소되지 않아 헤드라인 리스크마다 안전자산 수요 재부각 가능</li>
+        <li>"금리 인상 재료 소진" 인식 — 9/16 인상이 이미 수개월간 가격에 선반영돼 발표 당일 낙폭을 대부분 만회, 이후 이틀 연속 반등</li>
+        <li>유가 하락(사우디 동-서 파이프라인 복구)으로 인플레 압력 완화, 10년물 국채금리 5% 근접 후 4.93%대로 반락</li>
+        <li>중앙은행 매입 등 구조적 수요 지속 — 2분기 순매입 288.9톤(+62% YoY, WGC), 준비자산 관리자의 45%가 추가 매입 계획</li>
+        <li>4주 만의 첫 주간 상승 마감으로 단기 낙폭과대 인식 및 저가 매수세 유입</li>
+        <li>중동(사우디·이란)·무역정책 등 지정학 불확실성이 완전히 해소되지 않아 헤드라인 리스크마다 안전자산 수요 재부각 가능</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>9월 FOMC 금리 인상 우려</b> — 9/16 결정, 시장은 25bp 인상 확률을 약 70%로 반영 (워시 의장 잭슨홀 발언 이후 급등)</li>
-        <li>10년물 국채금리 4.78%대 고공행진 — 실질금리 상승이 무이자자산인 금의 매력을 지속적으로 저하</li>
-        <li>달러인덱스(DXY)는 99.5선으로 소폭 약세이나, 금리 부담이 이를 상쇄하며 금 가격에 우호적이지 않은 조합</li>
-        <li>이란 관련 뉴스 하나로 수 %대 급등락이 반복되는 등 변동성 극심 — 추세 신뢰도 낮음</li>
-        <li>트럼프 대통령의 "단기 종결" 발언처럼 지정학 리스크가 완화될 경우 안전자산 프리미엄 빠르게 소멸 가능</li>
+        <li><b>연준의 추가 긴축 경로</b> — 9/16 SEP(점도표)에서 정책위원 18명 중 16명이 2026년 추가 인상 필요성 시사, 10월 인상 확률 약 53~60%로 이미 반영 중</li>
+        <li>10년물 국채금리 여전히 5%대 근접 고공행진 — 실질금리 상승이 무이자자산인 금의 매력을 지속적으로 저하</li>
+        <li>일본은행도 31년 만의 최고 수준으로 금리 인상 예고 — 주요국 동반 긴축 기조가 글로벌 유동성 환경에 부담</li>
+        <li>달러인덱스(DXY) 100선 부근에서 하방 경직 — 금리 부담이 상쇄되며 금 가격에 우호적이지 않은 조합 지속</li>
+        <li>200일 이동평균선($4,541 부근)·9/3 고점($4,510) 저항 구간을 아직 하회 — 추세 전환 확인까지는 시간 필요</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>이란 사태 재확전·장기화 또는 FOMC 동결·비둘기 시그널 시 $4,600 이상 고점 재도전</div>
-      <div class="scenario base"><b>기본</b>$4,300~$4,550 박스권 등락. NFP(9/4)·CPI(9/11)·FOMC(9/17 새벽)를 앞두고 헤드라인별 변동성 확대</div>
-      <div class="scenario bear"><b>약세</b>금리 인상 현실화 + 이란 리스크 완화 동시 진행 시 $4,150~$4,250대까지 되밀림</div>
+      <div class="scenario bull"><b>강세</b>10월 FOMC(10/29 KST)에서 동결 시그널 또는 지정학 리스크 재부각 시 $4,450~4,541 저항 돌파 후 $4,600대 재도전</div>
+      <div class="scenario base"><b>기본</b>$4,250~$4,450 박스권 등락, PCE(9/30)·PMI·미시간대 인플레 기대 등을 소화하며 10월 인상 확률 변화에 연동</div>
+      <div class="scenario bear"><b>약세</b>10월 추가 인상 확률이 더 높아지거나 지정학 리스크가 빠르게 완화될 경우 $4,150~$4,250대까지 재차 되밀림</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 시장 구조·특성</h2>
+    <h2>4. 시장 구조·특성</h2>
     <table>
       <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
       <tr><td>🥇 자산</td><td class="num">금 (XAU/USD)</td><td class="num">안전자산·인플레 헤지</td></tr>
-      <tr><td>📊 주요 동인</td><td class="num">실질금리 · 달러 · 이란 지정학</td><td class="num">현재는 금리·지정학이 동시 작용</td></tr>
-      <tr><td>🏦 수요</td><td class="num">중앙은행 매입 + ETF + 안전자산</td><td class="num">구조적 지지</td></tr>
-      <tr><td>⚠️ 단기 압박</td><td class="num">9월 금리인상 확률 ~70% · 국채 4.78%대</td><td class="num">실질금리 부담 지속</td></tr>
-      <tr><td>📅 핵심 이벤트</td><td class="num">FOMC(9/16) · NFP(9/4) · CPI(9/11) · 이란 정세</td><td class="num">매크로·지정학 동시 민감</td></tr>
+      <tr><td>📊 주요 동인</td><td class="num">실질금리 · 달러 · 지정학</td><td class="num">현재는 연준 긴축 경로·중동 정세가 동시 작용</td></tr>
+      <tr><td>🏦 수요</td><td class="num">중앙은행 매입 + ETF + 안전자산</td><td class="num">2분기 중앙은행 순매입 288.9톤(+62% YoY)</td></tr>
+      <tr><td>⚠️ 단기 압박</td><td class="num">10월 추가 인상 확률 ~53~60% · 국채 4.9%대</td><td class="num">SEP상 정책위원 16/18명이 추가 인상 시사</td></tr>
+      <tr><td>📅 핵심 이벤트</td><td class="num">PCE(9/30) · FOMC(10/29) · 중동 정세 · 유가</td><td class="num">매크로·지정학 동시 민감</td></tr>
     </table>
 
     <div class="callout">
-      → 금은 현재 <b>매파적 연준(9월 금리인상 우려)</b>과 <b>이란 재확전 리스크에 따른 안전자산 수요</b>가 팽팽히 맞서는 구간입니다.
-      실질금리·달러 조합은 여전히 부담 요인이지만, 중동 헤드라인이 나올 때마다 안전자산 매수가 즉각 유입되며
-      가격이 하루 사이 수 %씩 급등락하는 뉴스 민감 장세가 이어지고 있습니다.
+      → 9/16 연준의 3년 만의 첫 금리 인상은 금 입장에서 <b>"이미 알려진 악재"</b>로 소화되며 오히려 반등의 출발점이 됐습니다.
+      실질금리·달러 조합은 여전히 부담 요인이지만, 중앙은행의 구조적 매입 수요와 중동 헤드라인이 나올 때마다
+      안전자산 매수가 즉각 유입되는 패턴은 유지되고 있습니다.
     </div>
+
+    <h3>수급구조도 (가치 흐름 — 공급원에서 가격결정까지)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>공급</b>
+          <div class="desc">광산 생산(中·호주·美·러시아 등) + 재활용(스크랩) + 중앙은행 매도(제한적)</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>현물시장 (런던 OTC · COMEX · SGE)</b>
+          <div class="desc">실물 유통 및 선물·파생 가격 형성의 기준시장</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 가격결정 변수: 실질금리 · 달러(DXY) · 안전자산 수요 · 중앙은행 정책 ↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>가격 하방 압력</b>
+          <div class="desc">연준 금리 인상(9/16, 25bp)·추가 긴축 시사, 국채금리 5%대 근접, 달러 강세 — 무이자자산인 금의 보유 기회비용 상승</div>
+        </div>
+        <div class="flow-box reward">
+          <b>가격 상방 압력</b>
+          <div class="desc">중앙은행 순매입 지속(2Q 288.9톤), 중동 지정학 리스크, 인플레 헤지 수요, ETF 자금 유입</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>수요처</b>
+          <div class="desc">중앙은행 외환보유고 다변화 + ETF·투자수요 + 보석 수요(인도·中·美·터키 등) + 산업용(제한적)</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">→ 현재 국면은 <b>연준의 추가 긴축 경로(하방 압력)</b>와 <b>중앙은행의 구조적 매입·지정학 헤지 수요(상방 압력)</b>가 팽팽히 맞서는 구간입니다. 어느 한쪽이 우위를 점하느냐에 따라 $4,250~4,450 박스권 이탈 방향이 결정될 것으로 보입니다.</div>
   </section>
 
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 4일 (금) 오후 9:30</td>
-        <td>8월 비농업 고용(NFP) — 금리 경로·달러 영향</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 10일 (목) 오후 9:30</td>
-        <td>8월 생산자물가(PPI)</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 11일 (금) 오후 9:30</td>
-        <td>8월 소비자물가(CPI) — 9월 FOMC 직전 최대 변수</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td><b>FOMC 금리결정</b> (9/15~16 회의) — 25bp 인상 여부가 금 가격 핵심 변수</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
         <td>9월 30일 (수) 오후 9:30</td>
-        <td>8월 근원 PCE 물가지표</td>
+        <td>8월 근원 PCE 물가지표 — 연준 선호 인플레 지표</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 2일 (금) 오후 9:30</td>
+        <td>미국 9월 소비자물가(CPI) — 10월 FOMC 인상 확률에 직결</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td><b>FOMC 금리결정</b> (10/27~28 회의) — 추가 인상 여부가 금 가격 핵심 변수</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>이란·중동 정세, 국제유가, 국채금리·달러인덱스(DXY) 동향</td>
+        <td>중동(사우디·이란) 정세, 국제유가, 국채금리·달러인덱스(DXY) 동향</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>중장기</td>
-        <td>중앙은행 금 매입, 실질금리 추이</td>
+        <td>중앙은행 금 매입, 실질금리 추이, 일본은행 등 주요국 통화정책 경로</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.03 미 동부시간 오전 9:00 (한국시간 09.03 오후 10:00).
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 뉴욕 정규장 마감(KST 2026.09.19 오전 5:00경 환산). 9/16 FOMC 결과 및 관련 시장 반응 반영.
   </footer>
 
 </div>
@@ -398,6 +487,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · XAU-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "XAU-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX XAUUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
