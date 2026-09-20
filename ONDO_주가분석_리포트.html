@@ -222,6 +222,25 @@
   }
   .callout b{color:var(--text);}
 
+  /* 가치 흐름도 다이어그램 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -236,19 +255,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.08 (화) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 (KST) · 미국 동부시간 9/7 오후 기준</span>
+      <span>실시간 시세 반영 (KST)</span>
     </div>
     <h1>Ondo (ONDO) 분석 리포트<span class="ticker">Crypto · Perpetual: ONDOUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$0.386 내외</div>
-        <div class="chg-up">24시간 +2.1~2.4% · 7일 약 +10~12% 회복</div>
+        <div class="price-main"><span id="live-price">$0.413</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">24시간 약 +2.6~10% · 7일 약 +15~25%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX ONDOUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/3~9/4 SEC·CFTC 서한·Ondo Stocks 모멘텀 급등 후 $0.34~0.36대까지 차익실현 조정됐으나, 주말~9/7에 걸쳐 $0.38~0.39대 회복. 시가총액 약 $1.88B, 24시간 거래대금 $150~170M, 프로토콜 TVL 약 $3.49B. TradingView 위젯의 SMA20/SMA200은 실시간 갱신값을 참고.
+        9/15 CLARITY Act 부결로 약세를 보였으나, 9/16 Ondo가 Oasis Pro를 통해 DTCC Fund/SERV에 토큰화 플랫폼 최초로 가입하며 방어,
+        9/17 SEC의 5년 한시 '혁신 면제' 발표로 토큰화 증권 테마가 부각되며 약 +13% 급등했습니다. 이후 상승 흐름이 이어지며
+        7일 기준 약 +15~25% 상승, $0.41~0.43대에서 거래되고 있습니다.
       </div>
     </div>
   </header>
@@ -271,36 +293,41 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 9/3~9/4 뉴스 스파이크 후 조정됐던 가격이 9/5~$0.37 → 9/6~$0.39 부근까지 회복하며 단기 상승 모멘텀 재개. $0.37~$0.40 구간 돌파·유지 여부가 다음 추세의 핵심.<br>
-      <b>15분봉</b>: 회복 과정에서 변동성 확대. $0.38 부근 지지와 $0.39~$0.40 저항대 반응을 주시.
+      <b>일봉</b>: 9/15 CLARITY 부결로 조정된 뒤 9/17 SEC 혁신 면제 발표로 대형 양봉 출현, 50일·200일 이동평균선을 상회하며 상승 추세로 전환. 다만 $0.45~0.48 구간이 올해 두 차례 돌파에 실패한 주요 저항.<br>
+      <b>15분봉</b>: 9/17 전후 거래량 급증과 함께 변동성 확대. $0.38~0.40 지지, $0.45~0.48 저항대 반응을 주시.
     </div>
   </section>
 
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5일)</h2>
     <table>
       <tr><th style="width:16%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
       <tr>
-        <td>급등·조정 후 회복<br><span style="font-weight:400; color:var(--text-soft);">(9/3~9/7)</span></td>
-        <td>9/3 SEC·CFTC 온체인 주식 선물 승인 서한 제출 등으로 $0.34→$0.37대 급등 후 차익실현으로 $0.34~0.36 조정. 이후 9/5~$0.37, 9/6~$0.39 부근까지 회복하며 현재 $0.386 내외. 7일 기준 약 +10~12% 상승</td>
-        <td>뉴스 스파이크 후 전형적인 되돌림·재상승 패턴. 단기 모멘텀 회복 국면이나 $0.40 돌파 여부·거래량 유지가 관건</td>
+        <td>9/14(월)~15(화)<br><span style="font-weight:400; color:var(--text-soft);">CLARITY Act 부결</span></td>
+        <td>9/15 미 상원 CLARITY Act(디지털자산 시장구조법) 클로처 표결이 60표 문턱을 넘지 못하며 부결(찬성 49:반대 50) — RWA·토큰화 섹터 전반의 규제 명확화 기대가 무산되며 약세</td>
+        <td>ONDO를 포함한 RWA 테마 코인 전반 동반 약세, 이번 주 저점 형성 구간</td>
       </tr>
       <tr>
-        <td>창업자 사망 이후 경영권 분쟁</td>
-        <td>2026년 5월 창업자 Nathan Allman 사망 이후, 유족(모친 Kathleen Allman)이 델라웨어 법원에 현직 CEO Ian De Bode를 상대로 경영권 편취 소송 제기. 이사회는 정상 운영을 강조하며 신규 CFO 선임 등으로 대응 중이나 분쟁은 미해결 상태</td>
-        <td>거버넌스 불확실성이 잠재 리스크로 상존 — 소송 진행 상황에 따라 투자심리 급변 가능</td>
+        <td>9/16(수)<br><span style="font-weight:400; color:var(--text-soft);">FOMC 인상 + 개별 호재</span></td>
+        <td>FOMC가 25bp 금리 인상(3년 만의 첫 인상)을 발표해 크립토 전반이 출렁였으나, Ondo는 같은 날 Oasis Pro를 통해 <b>DTCC Fund/SERV에 토큰화 플랫폼 최초로 가입</b>하며 개별 호재로 낙폭을 방어</td>
+        <td>매크로 악재 속에서도 펀드 유통 인프라 확장이라는 고유 모멘텀 확보</td>
       </tr>
       <tr>
-        <td>대규모 토큰 언락 경계</td>
-        <td>과거 2025.1.18, 2026.1.18 두 차례 언락(각 19.4억 토큰, 유통량 135%↑) 모두 발표 직후 두 자릿수 급락을 유발한 이력. 2027.1.18경 Ecosystem Growth 물량 추가 언락 예정 — 최대 공급량의 절반가량이 아직 2029년까지 순차 방출 대기 중</td>
-        <td>언락 시점이 다가올수록 선반영 매도세 우려, 유통 공급 확대에 따른 구조적 상단 제한 요인</td>
+        <td>9/17(목)<br><span style="font-weight:400; color:var(--text-soft);">SEC 혁신 면제 발표</span></td>
+        <td><b>SEC, 토큰화 증권거래소 대상 5년 한시 '혁신 면제(Innovation Exemption)' 발표</b> — 토큰화 주식·ETF 선두주자인 Ondo Stocks가 직접 수혜 후보로 거론되며 하루 만에 약 +13% 급등</td>
+        <td>규제 리스크가 호재로 전환된 대표적 사례, 거래량 급증 동반</td>
       </tr>
       <tr>
-        <td>매크로·BTC/ETH 동조화</td>
-        <td>미 국채금리 상승, 중동 등 지정학적 리스크, 크립토 전반 리스크오프 국면에서 알트코인 동반 매도 압력에 노출. RWA 섹터 펀더멘털(토큰화 시장 $30B+ 규모, JPM·BlackRock·Fidelity 등 기관 참여 확대)은 견조하나 토큰 가격은 매크로 변수에 취약</td>
-        <td>BTC·ETH 방향성에 따라 단기 변동성 확대·축소 반복, RWA 성장 스토리와 별개로 매크로 이벤트(FOMC 등)에 민감</td>
+        <td>9/18~19<br><span style="font-weight:400; color:var(--text-soft);">상승 흐름 지속</span></td>
+        <td>SEC 발표 여진이 이어지며 저가 매수세 유입 지속, 7일 기준 약 +15~25% 상승하며 $0.41~0.43대 안착. 다만 $0.45~0.48 구간은 올해 두 차례 돌파 실패한 저항대로 남아있음</td>
+        <td>50일·200일 이동평균선 상회 전환, 추세 반전 초기 국면이나 과반 이상 토큰 공급이 아직 미방출 상태라는 구조적 부담 병존</td>
       </tr>
     </table>
+    <div class="callout">
+      → 이번 주는 <b>CLARITY Act 부결(9/15)이라는 악재로 시작했지만, Ondo 고유의 개별 호재(DTCC 가입, 9/16)와 SEC 혁신 면제(9/17)</b>가
+      연달아 나오며 시장 전반의 규제 리스크가 오히려 Ondo에는 기회로 작용했습니다. RWA·토큰화 증권 섹터의 선두주자 지위가
+      이번 규제 이벤트에서 재확인된 셈이며, $0.45~0.48 저항 돌파 여부가 다음 관전 포인트입니다.
+    </div>
   </section>
 
   <section>
@@ -309,33 +336,32 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Ondo가 SEC·CFTC에 블록체인 기반 주식 선물 거래 승인을 요청하는 서한을 제출(2026.9.3) — 온체인 파생상품 제도권 편입 기대감 부각</li>
-        <li>Ondo의 토큰화 주식 플랫폼(Ondo Stocks)이 TVL $3B 돌파, 24/7 상환 프로세스 상세 공개(2026.9.1) — 플랫폼 성장·투명성 재확인</li>
-        <li>OKX가 유럽 현물 마진 서비스에 ONDO/USDC 페어 추가, 최대 10배 레버리지 지원 — 거래소 유동성·접근성 확대</li>
-        <li>Ondo Global Markets(토큰화 주식) BNB Chain 등 멀티체인 확장으로 보유자 수 17만 명 이상 돌파 — 저변 확대</li>
-        <li>기존 자체 L1 블록체인 계획을 접고 기관용 고속·프라이빗 거래 인프라 'Ondo Network'로 전환, 첫 제품 'Ondo Perps'(영구선물) 출시 추진 — 신규 수익원 기대</li>
-        <li>RWA(실물자산 토큰화) 선두주자 지위 유지 — TVL 약 $3.4~3.5B, 토큰화 국채(USDY 등)·토큰화 주식·ETF 중심, JPM·Mastercard·Franklin 등 기관 파트너십</li>
-        <li>미 SEC이 Ondo의 토큰화 주식 플랫폼 관련 조사를 무혐의 종결 — 규제 불확실성 일부 해소</li>
+        <li><b>SEC 5년 한시 '혁신 면제' 발표(9/17)</b> — 토큰화 증권거래소가 직접 수혜 대상으로 거론, Ondo Stocks가 토큰화 주식 시장 점유율 40~70%로 선두 지위 보유</li>
+        <li>Ondo, Oasis Pro를 통해 DTCC Fund/SERV 가입(9/16) — 토큰화 플랫폼 최초로 펀드 유통 인프라 진입, 기관 채널 확장</li>
+        <li>Ondo가 SEC·CFTC에 블록체인 기반 주식 선물 거래 승인을 요청하는 서한 제출(9/3) — 온체인 파생상품 제도권 편입 기대감 지속</li>
+        <li>Ondo의 토큰화 주식 플랫폼(Ondo Stocks) TVL $3B 돌파, 프로토콜 전체 TVL 약 $3.49B 유지</li>
+        <li>기존 자체 L1 블록체인 계획을 접고 기관용 고속·프라이빗 거래 인프라 'Ondo Network'로 전환, 첫 제품 'Ondo Perps'(영구선물) 출시 추진</li>
+        <li>JPM·Mastercard·Franklin 등 기관 파트너십 지속, RWA 선두주자 지위 유지</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>9/3~9/4 급등 후 조정됐으나 9/5~9/7 회복으로 $0.38대 안착 — 단기 변동성은 여전히 높은 편</li>
+        <li>9/15 CLARITY Act 클로처 표결 부결(49:50) — 규제 불확실성 완전 해소는 아직, 재상정 시점 미정</li>
         <li>거버넌스/경영권 관련 불확실성(창업자 Nathan Allman 사망 이후 유족 vs 현 CEO Ian De Bode 델라웨어 법원 소송)이 여전히 잠재 리스크로 상존 — 해결 소식 부재</li>
         <li>토큰(ONDO)은 거버넌스 전용으로 OUSG·USDY·Global Markets 수익을 직접 분배받지 않음 — 플랫폼 성장과 토큰 가치 간 괴리 지적 존재</li>
-        <li>2027년 1월 18일경 Ecosystem Growth 물량 대규모 언락 예정 — 유통량 약 48.7%에서 추가 공급 증가로 인한 매도 압력 우려</li>
+        <li>2027년 1월 18일경 Ecosystem Growth 물량 대규모 언락 예정 — 유통량 약 49%에서 추가 공급 증가로 인한 매도 압력 우려</li>
+        <li>$0.45~0.48 구간이 올해 두 차례 돌파에 실패한 주요 저항 — 돌파 확인 전까지는 추세 전환 단정 이름</li>
         <li>기존 자체 블록체인(L1) 계획을 철회하고 사업 방향을 전환한 만큼, 신규 전략(Ondo Network·Perps)의 실행·수익화 성과는 아직 검증 전 단계</li>
-        <li>크립토 전반 리스크오프(비트코인·이더리움 급락 등) 시 알트코인 동반 약세 가능성</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$0.38~$0.40 지지 확인 후 돌파 시 $0.42~$0.50대 재도전. SEC/CFTC 승인 논의 진전, Ondo Perps 성장, 추가 RWA·기관 파트너십 뉴스 시 모멘텀 확대</div>
-      <div class="scenario base"><b>기본</b>$0.36~$0.40 박스권 등락. 비트코인·이더리움 방향성과 RWA 섹터 전반 흐름에 동조화하며 횡보 후 방향성 탐색</div>
-      <div class="scenario bear"><b>약세</b>$0.36 하방 이탈 시 $0.33~$0.35대 재테스트. 거버넌스 이슈 악화나 2027.1 언락 경계 매물 선반영 시 낙폭 확대</div>
+      <div class="scenario bull"><b>강세</b>$0.45~0.48 저항 돌파 후 종가 유지 시 $0.55~0.70대 재도전. SEC 혁신 면제 후속 조치 구체화, Ondo Perps 성장, 추가 기관 파트너십 뉴스 시 모멘텀 확대</div>
+      <div class="scenario base"><b>기본</b>$0.38~0.45 박스권 등락. 비트코인·이더리움 방향성과 RWA 섹터 전반 흐름에 동조화하며 저항 돌파 시도</div>
+      <div class="scenario bear"><b>약세</b>$0.38 하방 이탈 시 $0.33~$0.35대 재테스트. 거버넌스 이슈 악화나 2027.1 언락 경계 매물 선반영 시 낙폭 확대</div>
     </div>
   </section>
 
@@ -344,10 +370,11 @@
     <table>
       <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
       <tr><td>🏛 프로젝트</td><td class="num">Ondo Finance</td><td class="num">RWA 토큰화 플랫폼</td></tr>
-      <tr><td>💰 시가총액</td><td class="num">약 $1.88B</td><td class="num">유통 기준 (4.86B ONDO), 최근 회복</td></tr>
-      <tr><td>📊 TVL / AUM</td><td class="num">약 $3.49B</td><td class="num">프로토콜·RWA 자산 전체 (CoinMarketCap 기준)</td></tr>
-      <tr><td>📈 주요 상품</td><td class="num">USDY, OUSG, Ondo Stocks(토큰화 주식·ETF)</td><td class="num">국채·주식 온체인화, Stocks TVL $3B 돌파</td></tr>
+      <tr><td>💰 시가총액</td><td class="num">약 $2.0~2.1B</td><td class="num">유통 기준 (약 4.87B ONDO)</td></tr>
+      <tr><td>📊 TVL / AUM</td><td class="num">약 $3.49B+</td><td class="num">프로토콜·RWA 자산 전체</td></tr>
+      <tr><td>📈 주요 상품</td><td class="num">USDY, OUSG, Ondo Stocks(토큰화 주식·ETF)</td><td class="num">토큰화 주식 시장 점유율 40~70%</td></tr>
       <tr><td>🆕 신사업</td><td class="num">Ondo Network / Ondo Perps</td><td class="num">기존 L1 계획 대신 프라이빗 고속 거래 인프라로 전환</td></tr>
+      <tr><td>🏦 신규 인프라</td><td class="num">DTCC Fund/SERV 가입(9/16)</td><td class="num">Oasis Pro 경유, 토큰화 플랫폼 최초</td></tr>
       <tr><td>🔗 파트너</td><td class="num">JPM, Mastercard, Franklin 등</td><td class="num">기관급 인프라</td></tr>
       <tr><td>⚠️ 리스크</td><td class="num">거버넌스 분쟁 / 2027.1.18 언락</td><td class="num">토큰 공급 압력</td></tr>
     </table>
@@ -372,9 +399,53 @@
 
     <div class="callout">
       → ONDO는 <b>실물자산(RWA) 토큰화</b> 대표 프로젝트입니다.
-      SEC·CFTC 온체인 주식 선물 승인 요청, Ondo Stocks·프로토콜 TVL 성장 등 호재로 9/3~9/4 급등 후 조정됐으나 9/5~9/7 회복으로 $0.38대에 안착했습니다.
-      ATH($2.14, 2024.12) 대비로는 여전히 크게 낮은 수준이며, 거버넌스 리스크(경영권 소송 미해결)와 2027년 1월 예정된 대규모 언락은 중장기 오버행으로 남아 있습니다.
+      9/15 CLARITY Act 부결이라는 악재에도 불구하고, DTCC Fund/SERV 가입(9/16)과 SEC 혁신 면제(9/17)라는 개별·섹터 호재가
+      연달아 나오며 오히려 상승 전환에 성공했습니다. ATH($2.14, 2024.12) 대비로는 여전히 크게 낮은 수준이며,
+      거버넌스 리스크(경영권 소송 미해결)와 2027년 1월 예정된 대규모 언락은 중장기 오버행으로 남아 있습니다.
     </div>
+
+    <h3>가치 흐름도 (RWA 유입에서 토큰 가치까지)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>기관·개인 자금 유입</b>
+          <div class="desc">美 국채·머니마켓 상품(USDY·OUSG), 토큰화 주식·ETF(Ondo Stocks) 매수</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>토큰화 인프라</b>
+          <div class="desc">Ondo Chain·Ondo Network + DTCC Fund/SERV 연동 — 전통 금융 자산을 온체인으로 발행·유통</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 관리보수·거래수수료 발생 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>프로토콜 매출</b>
+          <div class="desc">TVL 약 $3.49B 기준 운용보수(USDY·OUSG) + Ondo Stocks 거래수수료 + 향후 Ondo Perps 거래수수료</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>ONDO 토큰의 한계</b>
+          <div class="desc">거버넌스 전용 — 프로토콜 매출이 토큰 홀더에게 직접 분배되지 않음, 가치는 전적으로 "성장 기대"에 의존</div>
+        </div>
+        <div class="flow-box reward">
+          <b>간접 가치 동인</b>
+          <div class="desc">TVL·파트너십·규제 뉴스가 투자심리를 통해 토큰 가격에 반영 — SEC 혁신 면제(9/17) 같은 이벤트가 대표 사례</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>공급 측 압력</b>
+          <div class="desc">2027.1.18 Ecosystem Growth 대규모 언락 예정 — 유통량 증가가 수요 측 모멘텀을 상쇄할 수 있는 구조적 변수</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">→ ONDO 토큰은 프로토콜 매출을 직접 분배받지 못하는 <b>순수 거버넌스 토큰</b>이라, 가격은 TVL 성장이나 규제 뉴스 같은 "간접 신호"에 좌우됩니다. 이번 주 SEC 혁신 면제 발표에 즉각 반응한 것도 이 구조 때문이며, 반대로 2027년 예정된 대규모 언락은 이 성장 스토리를 희석시킬 수 있는 핵심 리스크입니다.</div>
   </section>
 
   <section>
@@ -382,9 +453,14 @@
     <table>
       <tr><th style="width:26%">일정/변수</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>수시</td>
-        <td>SEC·CFTC 온체인 파생상품(주식 선물) 승인 관련 후속 논의</td>
+        <td>지속 (재상정 시점 미정)</td>
+        <td>CLARITY Act 재상정 여부 — 9/15 클로처 부결(49:50) 이후 후속 절차 주목</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>수시</td>
+        <td>SEC 혁신 면제 관련 후속 조치·구체 대상 지목 여부, SEC·CFTC 온체인 파생상품(주식 선물) 승인 논의</td>
+        <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>수시</td>
@@ -393,13 +469,18 @@
       </tr>
       <tr>
         <td>수시</td>
-        <td>Ondo Stocks TVL 추이, Ondo Network·Perps 출시 진행 상황</td>
+        <td>Ondo Stocks TVL 추이, DTCC Fund/SERV 연동 확장, Ondo Network·Perps 출시 진행 상황</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 17일 (목) 새벽 (2:00pm ET, 9/16) — D-9</td>
-        <td>FOMC 결과 발표 — 리스크자산·알트코인 전반 변동성</td>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 리스크자산·알트코인 전반 변동성</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
         <td>2027년 초</td>
@@ -456,7 +537,7 @@
       <tr>
         <td>6</td>
         <td>매크로·BTC/ETH</td>
-        <td>FOMC(9/16~17), 금리·지정학 이벤트, BTC·ETH 방향성에 따른 알트 동조화</td>
+        <td>FOMC(10/29, 12/10), 금리·지정학 이벤트, BTC·ETH 방향성에 따른 알트 동조화</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -479,7 +560,8 @@
 
   <footer>
     ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 암호화폐는 변동성이 매우 큽니다.
-    가격·시가총액·TVL 등은 CoinMarketCap·CoinGecko·Coinbase 등 공개 데이터를 참고했으며, 데이터 기준: 2026.09.08 오전(KST) / 2026.09.07 오후(ET).
+    가격·시가총액·TVL 등은 CoinMarketCap·CoinGecko·Coinbase 등 공개 데이터를 참고했으며, 데이터 기준: 2026.09.19(KST) 스냅샷 및 실시간 갱신.
+    소스별로 가격이 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
 
 </div>
@@ -523,6 +605,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · ONDO-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "ONDO-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 4, maximumFractionDigits: 4});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(4)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX ONDOUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 최근 스냅샷 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
