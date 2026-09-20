@@ -324,6 +324,11 @@
   .tag.watch{background:var(--chip-bg); color:var(--text-soft);}
   .tag.event{background:var(--pos-bg); color:var(--pos-text);}
 
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -338,22 +343,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준 · 장 마감 이후(주말) 데이터</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>NVIDIA (NVDA) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: NVDAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$218.29</div>
-        <div class="chg-down">9/11 종가 기준 -0.03% (전일比 -$0.07) · 시간외 $218.26(-0.01%) · 9/8 $225.73 대비 한 주간 약 -3.3%</div>
+        <div class="price-main"><span id="live-price">$222.27</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +1.34% (+$2.93) · 시간외 +0.12% · 3거래일 연속 상승, 9/14 저점 대비 +5.4%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX NVDAUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/8 $225.73 고점 이후 반도체 섹터 전반의 조정과 함께 3거래일 연속 하락, 9/11 $218.29로 마감. 9/10 Palantir와 공급망 AI
-        파트너십('Sovereign AI Stack')을 공동 발표했음에도 주가는 오히려 -2%대 하락했고, 9/11 발표된 8월 CPI가 예상보다 강해
-        9/15~16 FOMC의 금리 <b>인상</b> 확률이 약 70%까지 치솟으며 성장주 전반에 할인율 부담이 커졌습니다. 52주 최고가 $236.54
-        대비 약 -7.7% 지점, 시가총액 약 $5.37T.
+        9/14 반도체 섹터 전반의 AI 밸류에이션 재조정 우려로 $210.96까지 조정받았으나, 9/16 FOMC 금리 인상 당일에도 견조하게 방어한 뒤
+        9/17 젠슨 황의 "내년 칩 판매량 2배" 발언과 함께 3거래일 연속 상승하며 $222선을 회복했습니다.
+        52주 최고가 $236.54 대비 약 -6.0% 지점, 시가총액 약 $5.36T.
       </div>
     </div>
 
@@ -376,89 +381,94 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
-    <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
-      <tr>
-        <td><b>반도체 섹터 전반 동반 약세</b></td>
-        <td>AMD·Broadcom·Intel 등 반도체 대형주가 장기 국채금리 상승(10년물 4.8%대, 최근 1년래 최고 수준)에 따른 밸류에이션
-        재평가 압력 속에 동반 조정. 필라델피아 반도체지수(SOX)도 함께 약세를 보이며 NVDA 개별 이슈보다 섹터 전반 수급 문제 성격이 강함</td>
-        <td>고밸류에이션 성장주 전반의 할인율 부담 — NVDA 단독 악재가 아니라는 점에서 반등 시 동반 회복 가능성도 존재</td>
-      </tr>
-      <tr>
-        <td><b>Palantir 공급망 AI 파트너십에도 주가 하락</b></td>
-        <td>9/10 Palantir와 Nemotron 오픈모델 + Foundry/AIP를 결합한 'Sovereign AI' 공급망 스택을 공동 발표. 베라루빈 랙당
-        130만 개 부품에 달하는 자사 공급망에 우선 내부 적용 후 외부 상업화 예정이나, 발표 당일 NVDA·PLTR 모두 하락</td>
-        <td>호재성 뉴스가 주가를 견인하지 못한 것은 매크로/밸류에이션 우려가 개별 호재를 압도하고 있다는 신호로 해석</td>
-      </tr>
-      <tr>
-        <td><b>8월 CPI 예상외 강세 → 금리 인상 우려 부각</b></td>
-        <td>9/11 발표된 8월 CPI가 헤드라인 +0.4%(전년비 3.4%), 근원 CPI +0.3%(예상 상회, 전년비 2.4%)로 인플레 재가속. 9/15~16
-        FOMC에서 25bp <b>금리 인상</b> 확률이 약 70%까지 급등(2023년 이후 첫 인상 논의라는 이례적 국면)</td>
-        <td>데이터센터 CapEx 장기 확장 서사에 매크로 리스크 추가 — 9/17(KST) FOMC 결과가 단기 최대 변수로 부상</td>
-      </tr>
-      <tr>
-        <td><b>순환금융(Circular Financing) 비판 지속</b></td>
-        <td>OpenAI·Anthropic 등 주요 고객사에 대한 지분투자·인프라 파이낸싱 구조가 "자사 매출을 자사 투자로 순환시킨다"는 비판이
-        지속. Apollo·Blackstone·KKR 등과 추진 중인 것으로 보도된 $500B 규모 AI 인프라 펀딩 패키지가 우려를 재차 부각</td>
-        <td>매출 성장의 질(質)에 대한 시장의 의구심 — 밸류에이션 프리미엄 정당화 논리를 약화시키는 요인</td>
-      </tr>
-      <tr>
-        <td><b>배당락(9/10) 및 $236 저항 재도전 실패</b></td>
-        <td>주당 $0.25 배당락일(9/10) 통과, $236 전고점 저항 돌파 시도가 재차 무산되며 $217~$222 박스권에서 지지력 테스트 중</td>
-        <td>단기 영향은 제한적이나, $210~$215 구간이 다음 지지선으로 부각</td>
-      </tr>
-    </table>
-
-    <div class="callout">
-      → NVDA는 Palantir 파트너십·Hugging Face 인수 등 개별 호재가 이어지고 있음에도, <b>반도체 섹터 전반의 밸류에이션 재조정</b>과
-      <b>8월 CPI發 9/17 FOMC 금리 인상 우려(약 70%)</b>, 그리고 <b>순환금융 구조에 대한 시장의 의구심</b>이 겹치며 한 주간 -3.3%
-      조정을 겪었습니다. 펀더멘털(Vera Rubin 램프업, 데이터센터 수요)보다 매크로·밸류에이션 변수가 단기 주가를 지배하는 국면입니다.
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/8 고점($225.73) 이후 조정받아 9/14 $210.96까지 하락, 이후 3거래일 연속 반등하며 $222선 회복. $210~215 구간이 단기 지지선으로 재확인됐습니다.<br>
+      <b>15분봉</b>: 9/17 젠슨 황 발언 이후 거래량 감소 속 상승폭 축소 — 상단 저항($225~230) 접근 시 반응 주시.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 2. 원인 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
+    <table>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
+      <tr>
+        <td><b>9/14(월)</b><br>$210.96<br><span style="color:var(--up); font-weight:600;">▼ -3.36%</span></td>
+        <td>Anthropic·OpenAI 등 업계 리더들의 "AI 리셋" 발언과 Huawei의 AI 칩 가속화 소식이 겹치며 반도체 섹터 전반 약세 — 밸류에이션 재조정 우려로 3거래일 연속 하락 흐름 지속</td>
+        <td>이번 주 최대 낙폭, 저점 형성</td>
+      </tr>
+      <tr>
+        <td><b>9/15(화)</b><br>$212.17<br><span style="color:var(--down); font-weight:600;">▲ +0.57%</span></td>
+        <td>CLARITY Act 부결 등 크립토 악재는 NVDA에 직접 영향 제한적, FOMC(9/16)를 앞둔 관망세 속 낙폭과대 인식으로 소폭 반등</td>
+        <td>보합권 등락</td>
+      </tr>
+      <tr>
+        <td><b>9/16(수)</b><br>$213.90<br><span style="color:var(--down); font-weight:600;">▲ +0.82%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 NVDA는 QQQ와 마찬가지로 견조하게 방어, 반도체 대형주 실적 모멘텀이 금리 충격을 상쇄</td>
+        <td>QQQ 대비 상대 강세 흐름 동참</td>
+      </tr>
+      <tr>
+        <td><b>9/17(목)</b><br>$219.34<br><span style="color:var(--down); font-weight:600;">▲ +2.54%</span></td>
+        <td><b>젠슨 황 CEO, "내년 칩 판매량이 2배가 될 것"이라 언급</b> — "인상 재료 소진" 인식에 따른 시장 전반 반등과 맞물리며 콜옵션 매수세 확산(NVDA 강세 옵션 포지셔닝 증가)</td>
+        <td>이번 주 최대 상승폭</td>
+      </tr>
+      <tr>
+        <td><b>9/18(금)</b><br>$222.27<br><span style="color:var(--down); font-weight:600;">▲ +1.34%</span></td>
+        <td>Huawei의 AI 칩 가속화 소식에도 "40% 이상 상승여력" 등 애널리스트 강세 리포트가 이어지며 3거래일 연속 상승 마무리</td>
+        <td>거래량 1.9억주로 평소 대비 높은 수준</td>
+      </tr>
+    </table>
+    <div class="callout">
+      → 이번 주는 <b>AI 밸류에이션 재조정 우려(9/14) → FOMC 금리 인상 방어(9/16) → 젠슨 황의 강세 발언(9/17)</b>으로 이어지는
+      전형적인 조정 후 반등 패턴을 보였습니다. $210.96 저점에서 사흘 만에 +5.4% 반등하며 $222선을 회복했고,
+      FOMC 당일에도 QQQ와 함께 상대적으로 견조했다는 점이 인상적입니다. 다만 <b>Huawei 등 中 AI 칩 경쟁 심화</b>는
+      여전히 잠재 리스크로 남아 있어, $225~230 저항 돌파 여부가 다음 관전 포인트입니다.
+    </div>
+  </section>
+
+  <!-- 3. 향후 전망 -->
+  <section>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Palantir와 'Sovereign AI' 공급망 스택 공동 출시(9/10) — Nemotron+Foundry/AIP 결합, 자사 내부 적용 후 방위·제조·정부
-        부문으로 상업화 확장 잠재력.</li>
-        <li>Hugging Face 인수($12.9B) 공식 완료 — 1,800만 명 이상의 개발자 생태계 확보로 오픈소스 AI 모델 주도권 강화.</li>
+        <li><b>젠슨 황 CEO, "내년 칩 판매량이 2배가 될 것"이라 언급(9/17)</b> — 수요 가시성에 대한 강한 자신감 표명, 강세 옵션 포지셔닝 확산</li>
+        <li>Palantir와 'Sovereign AI' 공급망 스택 공동 출시(9/10) — Nemotron+Foundry/AIP 결합, 방위·제조·정부 부문으로 상업화 확장 잠재력</li>
+        <li>Hugging Face 인수($12.9B) 공식 완료 — 1,800만 명 이상의 개발자 생태계 확보로 오픈소스 AI 모델 주도권 강화</li>
         <li>Vera Rubin 램프업 본격화 — 8월 출하 개시, 모든 주요 하이퍼스케일러·AI클라우드向 발주 확보, Q3 데이터센터 매출의
-        약 20% 비중을 차지할 전망.</li>
-        <li>Thinking Machines Lab 등 신규 AI랩 대규모 투자 지속 — Vera Rubin 1GW 시스템 공급권 확보로 차세대 수요 선점.</li>
-        <li>컨센서스 목표주가 약 $327(현재가 대비 +50% 상승여력), 58명 매수·1명 매도 의견으로 Strong Buy 등급 유지.</li>
+        약 20% 비중을 차지할 전망</li>
+        <li>FOMC 금리 인상(9/16) 당일에도 QQQ와 함께 견조하게 방어 — 반도체 대형주 실적 모멘텀이 금리 충격 상쇄</li>
+        <li>컨센서스 목표주가 약 $327(현재가 대비 +47% 상승여력), 58명 매수·1명 매도 의견으로 Strong Buy 등급 유지</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
+        <li><b>Huawei의 AI 칩 가속화</b> — 中 자국산 AI 반도체 경쟁 심화 우려, 9/18에도 관련 보도로 주가 상승폭 제한</li>
         <li>순환금융 구조에 대한 시장 의구심 지속 — OpenAI·Anthropic 등 고객사이자 투자대상이라는 이중적 관계가 매출의 질에 대한
-        논란을 키움.</li>
-        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률이 약 70%까지 상승 — 2023년 이후 첫 인상 논의라는 이례적 매크로 리스크.</li>
-        <li>장기 국채금리 상승(10년물 4.8%대)에 따른 고밸류에이션 성장주 할인율 압박, 반도체 섹터 전반 동반 조정 국면.</li>
-        <li>OpenAI의 Hugging Face 관련 데이터 유출 의혹에 대한 美 상원 조사 착수 — 생태계 신뢰도 리스크로 번질 가능성.</li>
-        <li>$236선 저항 돌파 실패가 반복되며 $210~$215 지지선 재확인이 필요한 기술적 부담.</li>
+        논란을 키움</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사, 고밸류에이션 성장주 할인율 부담 지속</li>
+        <li>OpenAI의 Hugging Face 관련 데이터 유출 의혹에 대한 美 상원 조사 착수 — 생태계 신뢰도 리스크로 번질 가능성</li>
+        <li>$225~230 구간이 다음 저항선으로 부각, 9/8 고점($225.73) 재돌파 여부가 단기 방향성의 분수령</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$222 회복 후 $230선을 재돌파할 경우 $236 저항대 재도전, FOMC 동결(또는 예상 부합) 확인 시 안도 랠리 가능.</div>
-      <div class="scenario base"><b>기본</b>$210~$222 박스권에서 9/17 FOMC 결과와 순환금융 우려 완화 여부를 주시하며 등락.</div>
-      <div class="scenario bear"><b>약세</b>$210 붕괴 시 $195~$200 심리적 지지선까지 조정, FOMC에서 실제 금리 인상이 확정될 경우 반도체 섹터 전반 밸류에이션 재조정 가속.</div>
+      <div class="scenario bull"><b>강세</b>$225~230 저항 돌파 시 9/8 고점 재도전 후 52주 고점($236.54) 재도전, Vera Rubin 출하 가속·젠슨 황 발언 후속 확인 시 모멘텀 지속</div>
+      <div class="scenario base"><b>기본</b>$210~$225 박스권에서 10월 FOMC(10/29)·Micron 실적(10/1)을 소화하며 등락, 순환금융 우려 완화 여부를 주시</div>
+      <div class="scenario bear"><b>약세</b>$210 붕괴 시 $195~$200 심리적 지지선까지 조정, Huawei 등 中 AI 칩 경쟁 심화 뉴스나 추가 금리 인상 시 반도체 섹터 전반 밸류에이션 재조정 가속</div>
     </div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조 (Q2 FY2027 기준)</h2>
+    <h2>4. 매출구조/수익구조 (Q2 FY2027 기준)</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
       <tr><td>📊 총 매출</td><td class="num">$96.2B</td><td class="num">+106% YoY / +18% QoQ</td></tr>
@@ -526,19 +536,19 @@
       → NVIDIA의 매출은 하드웨어(GPU·시스템)와 소프트웨어(CUDA·Nemotron·인수한 Hugging Face)가 결합된 형태로 발생하며, 벌어들인
       현금의 상당 부분이 <b>차세대 R&D</b>뿐 아니라 <b>고객사에 대한 지분투자·파이낸싱</b>으로도 재순환됩니다. 이 구조가 생태계
       락인과 수요 선점에는 유리하지만, 최근 시장에서는 이를 <b>순환금융(Circular Financing)</b>으로 부르며 매출의 질에 대한
-      의구심을 제기하고 있는 것이 위 1번 항목의 핵심 배경입니다.
+      의구심을 제기하고 있는 것이 위 2번 항목의 핵심 배경입니다.
     </div>
   </section>
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (9/15~16 회의, SEP·점도표 포함) — 8월 CPI 서프라이즈로 25bp 금리 <b>인상</b> 확률 약 70%까지 상승, 03:30 기자회견</td>
-        <td><span class="star">★★★★★</span></td>
+        <td>지속</td>
+        <td>Huawei 등 中 AI 칩 경쟁 동향, 반도체 섹터 전반(SOX) 흐름</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>10월 1일 (목) 오전 5:00</td>
@@ -551,20 +561,25 @@
         <td><span class="star">★</span><span class="star-dim">★★★★</span></td>
       </tr>
       <tr>
-        <td>10월 30일 (금) 새벽 4:15</td>
-        <td>NVIDIA GTC Washington D.C. — Palantir와 공동 워크숍(현지 10/29 15:15~17:00 ET) 진행, 협업 진행상황 점검</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 추가 인상 확률 약 53~60% 반영 중</td>
+        <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>11월 26일 (목) 오전 6:00</td>
         <td>NVIDIA Q3 FY2027 실적 발표 (예정) — Vera Rubin 매출 비중, Hugging Face·Palantir 협업 성과, 순환금융 관련 코멘트 핵심 관전포인트</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성)
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산).
   </footer>
 
 </div>
@@ -608,6 +623,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · NVDA-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "NVDA-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX NVDAUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
