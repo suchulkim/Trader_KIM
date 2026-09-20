@@ -230,6 +230,25 @@
   .reason-table .col-content{width:48%;}
   .reason-table .col-impact{width:30%; color:var(--text-soft);}
 
+  /* 자금흐름도 다이어그램 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -244,20 +263,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.06 (일) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 미국 9/4 정규장 마감 (KST 9/5 새벽)</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>SPY 분석 리포트<span class="ticker">S&amp;P 500 ETF · Perpetual: SPYUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$770.19</div>
-        <div class="chg-down">9/4(미 동부시간) 정규장 종가 · 전일 대비 -0.39% (-$2.98) · 고가 $772.87 / 저가 $769.00</div>
+        <div class="price-main"><span id="live-price">$761.69</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-down" id="live-chg">정규장 -0.12% (-$0.91) · 시간외 +0.16% · FOMC 인상 주간을 혼조 속에 마무리</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SPYUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/3 +1.05% 상승($773.17) 후, 9/4 발표된 8월 고용지표(NFP +16.2만 명)가 시장 예상을 크게 웃돌며 금리 인상 베팅이 되살아나 소폭 조정. 
-        S&amp;P 500도 7,718.60으로 -0.38% 마감. 단기적으로는 매크로 이벤트(CPI·FOMC)를 앞두고 변동성 장세가 이어질 전망.
+        9/15 CLARITY Act 부결과 9/16 FOMC 금리 인상(3년 만의 첫 인상) 겹악재로 3거래일 연속 하락했으나,
+        9/17 "인상 재료 소진" 인식 속 6주 만의 최대 하루 상승폭(+1.13%)을 기록하며 반등. 9/18은 국채금리·유가 재상승 속
+        혼조 마감. S&amp;P 500 지수는 7,650선 부근.
       </div>
     </div>
   </header>
@@ -280,8 +301,8 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 고점($779대) 이후 형성된 조정 구간에서 9/3 반등 후 9/4 NFP 서프라이즈로 소폭 되돌림. $769~$775 단기 박스권 형성 중.<br>
-      <b>15분봉</b>: 고용지표 발표 직후 매도 압력 유입, 저점 $769 부근에서 지지 확인. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
+      <b>일봉</b>: 8월 사상 최고가($779.37, 8/13) 이후 조정 흐름 속에 9/14~16 3거래일 연속 하락하며 $754까지 밀렸다가, 9/17 대형 양봉(+1.13%)으로 반등. $754~$765 단기 박스권.<br>
+      <b>15분봉</b>: FOMC 발표 전후 변동성 집중, 9/17 VIX -12.8% 급락하며 위험선호 회복. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
     </div>
   </section>
 
@@ -290,49 +311,52 @@
   <section>
     <h2>2. 최근 주가 움직임의 주요 원인</h2>
     <p style="font-size:14px; color:var(--text-soft); margin-bottom:14px;">
-      9/3~9/4 사이 SPY와 S&amp;P 500의 움직임은 주로 매크로 데이터와 금리 경로 재평가에 의해 결정되었습니다.
+      최근 5거래일(9/14~9/18)간 SPY와 S&amp;P 500의 움직임은 CLARITY Act·FOMC라는 두 매크로 이벤트와 그 여진이 주도했습니다.
     </p>
 
     <table class="reason-table">
       <thead>
         <tr>
-          <th class="col-cause">원인</th>
+          <th class="col-cause">날짜 · 종가</th>
           <th class="col-content">내용</th>
-          <th class="col-impact">영향</th>
+          <th class="col-impact">비고</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="col-cause">8월 고용지표(NFP) 서프라이즈</td>
-          <td class="col-content">9/4 발표된 8월 비농업고용이 +16.2만 명 증가(시장 예상 +5.5~5.6만 명 대비 약 3배), 실업률 4.1% 유지, 이전월 수치 상향 수정</td>
-          <td class="col-impact">9월 FOMC 금리인상 베팅이 급등(약 58~60%대), 국채금리 상승과 함께 SPY -0.39%, S&amp;P 500 -0.38% 조정</td>
+          <td class="col-cause">9/14(월)<br>$760.88<br><span style="color:var(--down); font-weight:600;">▼ -0.45%</span></td>
+          <td class="col-content">Anthropic·OpenAI 등 AI 업계 리더들이 프론티어 AI 모델 개발 속도 조절을 촉구하며 반도체·AI 인프라주 동반 약세, CLARITY Act 표결(9/15)을 앞둔 관망세</td>
+          <td class="col-impact">AI 리스크 우려가 기술주 전반에 부담</td>
         </tr>
         <tr>
-          <td class="col-cause">Fed 인사 발언 엇갈림</td>
-          <td class="col-content">9/3 월러 이사가 인플레이션 둔화 시 금리 동결 선호 시사 → 위험자산 랠리 촉발, 그러나 개선세가 일시적이면 인상 지지 입장도 병기</td>
-          <td class="col-impact">9/3 반등 재료로 작용했으나, 다음날 고용지표로 매파 베팅이 되살아나며 변동성 확대</td>
+          <td class="col-cause">9/15(화)<br>$757.39<br><span style="color:var(--down); font-weight:600;">▼ -0.46%</span></td>
+          <td class="col-content"><b>CLARITY Act 클로처 표결 부결</b> — 디지털자산 시장구조 법안 통과 무산, 국채금리 상승(10년물 4.97%대)과 함께 위험자산 전반 약세</td>
+          <td class="col-impact">FOMC(9/16) 결과 대기 속 매파적 리포지셔닝 지속</td>
         </tr>
         <tr>
-          <td class="col-cause">국채금리 재상승</td>
-          <td class="col-content">고용지표 발표 후 10년물·2년물 국채금리 동반 상승, 금리 경로 재평가 본격화</td>
-          <td class="col-impact">밸류에이션 부담이 큰 성장주·빅테크에 상대적 압력, 지수 상단을 제한하는 요인으로 작용</td>
+          <td class="col-cause">9/16(수)<br>$754.05<br><span style="color:var(--down); font-weight:600;">▼ -0.44%</span></td>
+          <td class="col-content"><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 2023년 이후 첫 인상, 연준이 추가 인상 가능성까지 시사하며 3거래일 연속 하락, S&amp;P·나스닥 모두 50일 이동평균선 일시 하회</td>
+          <td class="col-impact">이번 주 저점 형성, "매파적 인상"으로 해석</td>
         </tr>
         <tr>
-          <td class="col-cause">실적·개별 종목 혼조</td>
-          <td class="col-content">일부 실적 호조 종목이 지지했으나, 반도체 대형주(브로드컴 등) 가이던스 우려는 여전</td>
-          <td class="col-impact">지수 전체 모멘텀을 제한하며 섹터 간 차별화 지속</td>
+          <td class="col-cause">9/17(목)<br>$762.60<br><span style="color:var(--up); font-weight:600;">▲ +1.13%</span></td>
+          <td class="col-content">"인상은 이미 알려진 재료"라는 인식 속 유가·국채금리 하락이 인플레·차입비용 우려를 완화하며 <b>6주 만의 최대 하루 상승폭</b> 기록 — S&amp;P 500 지수 +85.95pt(+1.1%)로 7,637.76 마감, VIX -12.8% 급락(15.44)</td>
+          <td class="col-impact">9개 섹터 중 9개가 상승, 거래대금도 평균 상회</td>
         </tr>
         <tr>
-          <td class="col-cause">9월 계절성</td>
-          <td class="col-content">역사적으로 S&amp;P 500이 가장 약한 달로, 매크로 이벤트와 겹치며 변동성 확대 경향</td>
-          <td class="col-impact">단기 추세보다는 이벤트 드리븐 장세 가능성 높음</td>
+          <td class="col-cause">9/18(금)<br>$761.69<br><span style="color:var(--down); font-weight:600;">▼ -0.12%</span></td>
+          <td class="col-content">호르무즈 해협 유조선 피격 보도로 국제유가·국채금리(10년물 4.98%대)가 재상승하며 인플레·거시 불확실성 재부각, 실적 컨퍼런스(연준 SVB 감독 관련 외부 리뷰 발표 등) 속 혼조 마감 — SpaceX의 나스닥100 편입비중 확대(1.28%→2.82%) 리밸런싱도 이날 반영</td>
+          <td class="col-impact">주간 기준 S&amp;P 500 -0.1%, 다우 -1.7%, 나스닥 +0.7%로 혼조 마감</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout">
-      → 9/3까지는 Fed 완화 발언과 실적 호조로 반등했으나, 9/4 NFP 서프라이즈가 금리 인상 확률을 다시 끌어올리며 상승분을 일부 반납했습니다. 
-      다음 트리거는 9/11 CPI와 9/17 FOMC로, 고용 강세가 인플레이션 재점화로 이어질지에 시장 관심이 집중되고 있습니다.
+      → 이번 주는 <b>CLARITY Act 부결(9/15) + FOMC 금리 인상(9/16)</b>이라는 겹악재로 3거래일 연속 하락했으나,
+      9/17 "인상 재료 소진" 인식과 유가·금리 안정으로 6주 만의 최대 하루 상승폭을 기록하며 낙폭을 대부분 만회했습니다.
+      다만 9/18 호르무즈 해협 지정학 리스크로 유가·금리가 다시 반등하며 혼조 마감, <b>주간 기준으로는 S&amp;P 500이
+      2주 연속 소폭 약세</b>를 기록했습니다. 연준이 추가 인상 가능성을 시사한 만큼 10월 FOMC(10/29)까지 변동성 장세가
+      이어질 전망입니다.
     </div>
   </section>
 
@@ -343,30 +367,30 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
+        <li>9/17 "인상 재료 소진" 인식에 따른 6주 만의 최대 하루 상승폭(+1.1%), VIX -12.8% 급락으로 투자심리 안정</li>
+        <li>200일 이동평균선(7,178.86) 대비 여전히 큰 폭 상회 — 중장기 상승 추세는 유지</li>
         <li>기업 실적 시즌 호조 지속 — 대형주 어닝 서프라이즈가 지수 하방을 지지</li>
-        <li>중장기 기업 이익 성장 기대 유지, S&amp;P 500의 구조적 상승 추세</li>
+        <li>SpaceX의 나스닥100 편입비중 확대(2.82%) 등 개별 이벤트가 지수 구성 다변화에 기여</li>
         <li>AI·빅테크 모멘텀이 여전히 건재 (개별 종목 차별화는 있으나 전체 테마는 유지)</li>
-        <li>CPI가 예상치를 하회할 경우 금리 인상 베팅 완화 가능 — 반등 재료로 작용 여지</li>
-        <li>유동성·기관 수급이 여전히 견조한 편</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>9월 계절성</b> — S&amp;P 500이 역사적으로 가장 약한 달, 변동성 확대 경계</li>
-        <li>고용지표 강세로 9월 FOMC 금리 인상 확률 상승 — 매파적 서프라이즈 리스크</li>
-        <li>10년물 국채금리 고수준 유지 — 인플레 재점화 우려와 밸류에이션 부담</li>
-        <li>반도체·일부 대형주 가이던스 우려 — 지수 상단을 제한하는 요인</li>
-        <li>유가·지정학 리스크 상존</li>
+        <li><b>연준의 추가 긴축 경로</b> — 9/16 FOMC에서 향후 추가 인상 가능성 시사, 10월 인상 확률이 이미 상당 부분 반영 중</li>
+        <li>10년물 국채금리 4.98%대 고수준 유지 — 호르무즈 해협 리스크 등 유가발 인플레 재점화 우려</li>
+        <li>CLARITY Act 부결로 규제 불확실성 지속, 재상정 시점 미정</li>
+        <li>8/13 사상 최고가($779.37) 이후 2주 연속 약세 — 9월 계절성(역사적으로 가장 약한 달)과 겹치며 변동성 확대 경계</li>
+        <li>반도체·일부 대형주 가이던스 우려, Transports·소형주·산업재 섹터 5주 연속 약세</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>CPI 둔화 + FOMC 동결 확인 시 반등 랠리 재개, $780~$800 구간 재도전</div>
-      <div class="scenario base"><b>기본</b>$760~$780 박스권. CPI(9/11)·FOMC(9/17 새벽) 등 매크로 이벤트 대기 속 변동성 장세</div>
-      <div class="scenario bear"><b>약세</b>CPI 서프라이즈 또는 FOMC 매파 발언으로 금리 재인상 우려 부각 시 $740~$755 지지 테스트</div>
+      <div class="scenario bull"><b>강세</b>10월 CPI 둔화 확인 + FOMC 동결·비둘기 시그널 시 8/13 고점($779) 재도전</div>
+      <div class="scenario base"><b>기본</b>$750~$775 박스권. 국채금리·유가 흐름과 10월 FOMC(10/29)를 소화하며 변동성 지속</div>
+      <div class="scenario bear"><b>약세</b>추가 인상 확률 상승 또는 지정학 리스크(호르무즈) 확대 시 $735~$750 지지 테스트</div>
     </div>
   </section>
 
@@ -378,13 +402,58 @@
       <tr><td>💰 순자산</td><td class="num">세계 최대 규모 ETF 중 하나</td><td class="num">고유동성</td></tr>
       <tr><td>📊 보수</td><td class="num">약 0.09%</td><td class="num">연간</td></tr>
       <tr><td>📈 구성</td><td class="num">미국 대형주 500종목</td><td class="num">시가총액 가중</td></tr>
-      <tr><td>📅 주요 이벤트</td><td class="num">고용지표, CPI, FOMC</td><td class="num">매크로 민감</td></tr>
+      <tr><td>📊 200일 이평선</td><td class="num">7,178.86 (지수 기준)</td><td class="num">9/18 현재가 대비 큰 폭 상회</td></tr>
+      <tr><td>📅 주요 이벤트</td><td class="num">CPI, FOMC, 실적 시즌</td><td class="num">매크로 민감</td></tr>
     </table>
 
     <div class="callout">
       → SPY는 <b>S&amp;P 500</b>을 추적하는 대표 ETF입니다.
-      단기적으로는 고용지표 서프라이즈로 금리 경로 재평가가 진행 중이며, 9월 계절성·다가오는 CPI·FOMC 이벤트가 변동성 요인으로 공존하고 있습니다.
+      단기적으로는 CLARITY Act 부결과 FOMC 금리 인상이라는 겹악재를 소화하는 중이며, 200일 이평선 대비로는
+      여전히 견조한 중장기 상승 추세 위에 있습니다. 국채금리·유가·지정학 리스크가 단기 변동성의 핵심 변수입니다.
     </div>
+
+    <h3>자금 흐름도 (지수 구성 → NAV 추적 메커니즘)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>기초지수</b>
+          <div class="desc">S&amp;P 500 — 미국 대형주 500종목, 시가총액 가중 방식</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>완전 복제(Full Replication)</b>
+          <div class="desc">지수 구성종목을 실제 편입비율대로 그대로 보유 — 기술주·금융주·헬스케어 등 11개 섹터 분산</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 설정·환매(Creation/Redemption) 메커니즘 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>지정 참가회사(AP)</b>
+          <div class="desc">대형 기관투자자가 실물 바스켓과 ETF 좌수를 교환하며 시장가-NAV 괴리를 즉시 재정거래로 좁힘</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>비용</b>
+          <div class="desc">연 보수 약 0.09% — 추적오차·운용비용을 최소화한 저비용 구조</div>
+        </div>
+        <div class="flow-box reward">
+          <b>투자자 수익</b>
+          <div class="desc">지수 상승분 + 배당(분기 배당, 9/18 주당 $1.889 배당락) — 시장가가 NAV에 거의 일치하는 고유동성</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>가격 형성</b>
+          <div class="desc">거래소에서 실시간 매매되며, 거시 이벤트(FOMC·CPI·지정학)에 지수 구성종목 전체가 동시 반응 → SPY 가격에 즉각 반영</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">→ SPY는 개별 종목 리스크보다 <b>거시경제·금리 경로</b>에 훨씬 민감하게 반응하는 구조입니다. 이번 주처럼 FOMC·규제 이벤트가 겹칠 때 지수 전체가 동시에 출렁이는 것도 이 완전 복제·시가총액 가중 구조 때문입니다.</div>
   </section>
 
   <section>
@@ -392,30 +461,40 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 전 구간</td>
-        <td>9월 계절성 — S&amp;P 500 역사적 약세 경향 주의</td>
+        <td>9월 21일 (월)</td>
+        <td>SpaceX 나스닥100 편입비중 확대 리밸런싱 반영 (1.28%→2.82%)</td>
+        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 30일 (수) 오후 9:30</td>
+        <td>8월 근원 PCE 물가지표 — 연준 선호 인플레 지표</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>9월 11일 (금) 오후 9:30</td>
-        <td>미국 8월 CPI(소비자물가지수) 발표 — 금리 경로의 핵심 변수</td>
+        <td>10월 2일 (금) 오후 9:30</td>
+        <td>미국 9월 CPI 발표 — 10월 FOMC 인상 확률에 직결</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td><b>FOMC 금리결정</b>(9/15~16 회의) — 인상/동결 여부가 핵심</td>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td><b>FOMC 금리결정</b> (현지 10/27~28 회의) — 추가 인상 여부가 핵심</td>
         <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>국채 수익률·유가·지정학 긴장, 반도체·빅테크 개별 실적·가이던스 뉴스</td>
+        <td>국채 수익률·유가(호르무즈 해협 정세)·지정학 긴장, 반도체·빅테크 개별 실적·가이던스 뉴스</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.06 업데이트 / 미국 9/4 정규장 마감 기준. 가격은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산). 가격은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
 
 </div>
@@ -459,6 +538,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · SPY-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "SPY-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SPYUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
