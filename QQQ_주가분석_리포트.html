@@ -230,6 +230,25 @@
   .reason-table .col-content{width:48%;}
   .reason-table .col-impact{width:30%; color:var(--text-soft);}
 
+  /* 자금흐름도 다이어그램 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -244,20 +263,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.06 (일) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 미국 9/4 정규장 마감 (KST 9/5 새벽)</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>Invesco QQQ 분석 리포트<span class="ticker">Nasdaq-100 ETF · Perpetual: QQQUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$718.96</div>
-        <div class="chg-up">9/4(미 동부시간) 정규장 종가 · 전일 대비 +0.18% (+$1.29) · 고가 $721.86 / 저가 $716.56</div>
+        <div class="price-main"><span id="live-price">$721.45</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +0.63% (+$4.53) · 시간외 +0.09% · 2거래일 연속 상승, SPY 대비 상대 강세</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX QQQUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/3 +1.19% 반등($717.67) 후, 9/4 NFP 서프라이즈(+16.2만 명)에도 불구하고 소폭 상승 마감. 
-        Nasdaq-100도 29,544.16(+0.21%)으로 상대적으로 견조. SPY가 약세를 보인 것과 달리 기술주 중심의 QQQ는 차별화 흐름.
+        9/14~15 AI 리스크 우려·CLARITY Act 부결로 조정받았으나, 9/16 FOMC 금리 인상 당일에도 QQQ는 거의 보합(+0.03%)으로
+        선방한 뒤 9/17~18 이틀 연속 상승(+1.73%, +0.63%)하며 낙폭을 모두 만회했습니다. SPY가 9/18 소폭 하락 마감한 것과
+        달리 QQQ는 견조한 상대 강세를 보였습니다.
       </div>
     </div>
   </header>
@@ -280,8 +301,8 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 8월 중순 이후 조정 후 $700~$720 박스권에서 등락. 9/3~9/4 연속 상승으로 박스권 상단 재테스트 중. 52주 고점($748.65)까지는 아직 거리 있음.<br>
-      <b>15분봉</b>: NFP 발표 직후 변동성 확대됐으나 매수세가 유입되며 저점 $716대에서 지지. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
+      <b>일봉</b>: 9/15 저점($704.54) 이후 3거래일 연속 상승하며 $721선까지 회복. 52주 고점($748.65)까지는 아직 거리 있으나 반등 탄력은 양호.<br>
+      <b>15분봉</b>: FOMC 발표 이후 반등 탄력이 SPY보다 강함 — 반도체·AI 대형주 중심 매수세 유입. 실시간 이동평균선·RSI는 상단 차트를 참고하세요.
     </div>
   </section>
 
@@ -290,49 +311,51 @@
   <section>
     <h2>2. 최근 주가 움직임의 주요 원인</h2>
     <p style="font-size:14px; color:var(--text-soft); margin-bottom:14px;">
-      9/3~9/4 QQQ는 SPY와 달리 상대적으로 견조한 흐름을 보였습니다. 기술주 중심 구성이 차별화 요인으로 작용했습니다.
+      최근 5거래일(9/14~9/18)간 QQQ는 SPY와 동일한 매크로 이벤트(CLARITY Act·FOMC)를 소화했지만, 기술주 중심 구성 덕에 상대적으로 견조했습니다.
     </p>
 
     <table class="reason-table">
       <thead>
         <tr>
-          <th class="col-cause">원인</th>
+          <th class="col-cause">날짜 · 종가</th>
           <th class="col-content">내용</th>
-          <th class="col-impact">영향</th>
+          <th class="col-impact">비고</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="col-cause">8월 고용지표(NFP) 서프라이즈</td>
-          <td class="col-content">9/4 발표된 8월 비농업고용이 +16.2만 명 증가(시장 예상 +5.5~5.6만 명 대비 약 3배), 실업률 4.1% 유지</td>
-          <td class="col-impact">금리 인상 베팅 상승에도 QQQ는 +0.18%로 선방. SPY(-0.39%) 대비 상대 강세 — 기술주 선별 매수 유입</td>
+          <td class="col-cause">9/14(월)<br>$709.18<br><span style="color:var(--down); font-weight:600;">▼ -0.80%</span></td>
+          <td class="col-content">Anthropic·OpenAI 등 AI 업계 리더들이 프론티어 AI 모델 개발 속도 조절을 촉구하며 반도체·AI 인프라주 동반 약세 — QQQ 구성 비중이 높은 종목 직격</td>
+          <td class="col-impact">"AI 리셋" 우려가 기술주 지수에 SPY보다 더 크게 작용</td>
         </tr>
         <tr>
-          <td class="col-cause">Fed 인사 발언 엇갈림</td>
-          <td class="col-content">9/3 월러 이사가 인플레이션 둔화 시 금리 동결 선호 시사 → 위험자산 심리 개선</td>
-          <td class="col-impact">9/3 +1.19% 반등의 주요 트리거. 다음날 NFP로 일부 상쇄됐으나 기술주 모멘텀은 유지</td>
+          <td class="col-cause">9/15(화)<br>$704.54<br><span style="color:var(--down); font-weight:600;">▼ -0.65%</span></td>
+          <td class="col-content"><b>CLARITY Act 클로처 표결 부결</b> — 규제 불확실성 지속, 국채금리 상승과 함께 성장주 밸류에이션 부담 재부각</td>
+          <td class="col-impact">이번 주 저점($704.54) 형성</td>
         </tr>
         <tr>
-          <td class="col-cause">AI·빅테크 개별 모멘텀</td>
-          <td class="col-content">NVDA, MSFT, AAPL, META 등 대형 기술주가 상대적으로 견조. 반도체·클라우드 성장 스토리 지속</td>
-          <td class="col-impact">QQQ 구성 비중이 높은 종목들의 지지로 지수 전체 하락폭 제한</td>
+          <td class="col-cause">9/16(수)<br>$704.72<br><span style="color:var(--up); font-weight:600;">▲ +0.03%</span></td>
+          <td class="col-content"><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 2023년 이후 첫 인상. SPY(-0.44%)는 하락했지만 QQQ는 거의 보합 마감 — 대형 기술주의 실적 모멘텀이 금리 충격을 상당 부분 상쇄</td>
+          <td class="col-impact">SPY 대비 상대 강세 시작점, 반도체·AI 대형주 선별 매수</td>
         </tr>
         <tr>
-          <td class="col-cause">국채금리 재상승</td>
-          <td class="col-content">고용지표 발표 후 국채금리 상승, 밸류에이션 부담 재부각</td>
-          <td class="col-impact">성장주 전반에 압력으로 작용했으나, QQQ는 개별 실적·모멘텀으로 방어</td>
+          <td class="col-cause">9/17(목)<br>$716.92<br><span style="color:var(--up); font-weight:600;">▲ +1.73%</span></td>
+          <td class="col-content">"인상 재료 소진" 인식 속 유가·국채금리 하락으로 위험선호 회복 — SPY(+1.13%)보다 큰 폭으로 상승하며 기술주 중심 반등 주도</td>
+          <td class="col-impact">6주 만의 최대 하루 상승폭(SPY 기준)을 웃도는 QQQ 자체 반등</td>
         </tr>
         <tr>
-          <td class="col-cause">9월 계절성</td>
-          <td class="col-content">Nasdaq-100이 최근 수년간 9월 평균 약세 경향</td>
-          <td class="col-impact">단기 추세보다는 이벤트 드리븐 장세 가능성 높음</td>
+          <td class="col-cause">9/18(금)<br>$721.45<br><span style="color:var(--up); font-weight:600;">▲ +0.63%</span></td>
+          <td class="col-content">호르무즈 해협 지정학 리스크로 SPY가 혼조(-0.12%) 마감한 것과 달리, QQQ는 반도체·AI 대형주 중심 매수세가 이어지며 2거래일 연속 상승 지속</td>
+          <td class="col-impact">SPY 대비 뚜렷한 상대 강세로 한 주 마무리</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout">
-      → 9/4 NFP 서프라이즈로 금리 인상 베팅이 되살아났음에도 QQQ는 소폭 상승 마감하며 SPY 대비 상대 강세를 보였습니다. 
-      AI·빅테크 중심의 구성이 차별화 요인으로 작용한 것으로 보이며, 다음 트리거는 9/11 CPI와 9/17 FOMC입니다.
+      → 이번 주는 <b>AI 리스크 우려(9/14) + CLARITY Act 부결(9/15) + FOMC 금리 인상(9/16)</b>이라는 3중 악재로 시작했지만,
+      QQQ는 FOMC 당일부터 SPY 대비 눈에 띄게 견조한 흐름을 보였습니다. 9/17~18 이틀 연속 상승하며 $704.54 저점에서
+      약 +2.4% 반등, <b>기술주·AI 대형주의 실적 모멘텀이 금리·규제 리스크를 상당 부분 상쇄</b>했다는 해석이 가능합니다.
+      다만 52주 고점($748.65) 대비로는 여전히 거리가 있어, 10월 FOMC(10/29)까지 변동성은 이어질 전망입니다.
     </div>
   </section>
 
@@ -344,29 +367,29 @@
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
         <li>Nasdaq-100 구성 종목(NVDA, AAPL, MSFT, AMZN, META, AVGO 등)의 AI·클라우드 구조적 성장 스토리 유지</li>
-        <li>52주 고점($748.65) 대비 조정 후 저가 매수세 유입, 최근 1년 총수익률 +25%대로 견조</li>
-        <li>NFP 이후에도 기술주 상대 강세가 확인된 점 — 성장주 선호 심리 일부 유지</li>
-        <li>CPI가 예상치를 하회할 경우 금리 인상 베팅 완화 → QQQ에 긍정적</li>
-        <li>중장기 기업 이익 성장 기대와 구조적 AI 테마</li>
+        <li>FOMC 금리 인상 당일에도 QQQ는 거의 보합(+0.03%)으로 선방 — SPY 대비 상대 강세 확인</li>
+        <li>9/17~18 이틀 연속 상승, 9/15 저점 대비 +2.4% 반등 — 반등 탄력 양호</li>
+        <li>최근 1년 총수익률 +20%대, 5년 수익률 +97%대로 장기 성장 추세 견조</li>
+        <li>10월 CPI가 예상치를 하회할 경우 금리 인상 베팅 완화 → QQQ에 긍정적</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>9월 계절성</b> — Nasdaq-100이 역사적으로 약한 달, 변동성 확대 경계</li>
-        <li>고용지표 강세로 9월 FOMC 금리 인상 확률 상승 — 매파적 서프라이즈 리스크</li>
-        <li>국채금리 고수준 유지 시 밸류에이션 부담 재부각 가능</li>
-        <li>반도체·일부 대형주 가이던스 우려가 확대될 경우 지수 압력</li>
-        <li>유가·지정학 리스크 상존</li>
+        <li>Anthropic·OpenAI 등 업계 리더의 "AI 리셋" 발언(9/14) — 프론티어 AI 개발 속도조절론이 반도체·AI 인프라주 전반에 부담 요인으로 재부각될 가능성</li>
+        <li><b>연준의 추가 긴축 경로</b> — 9/16 FOMC에서 향후 추가 인상 가능성 시사, 밸류에이션 부담이 큰 성장주에 특히 민감</li>
+        <li>CLARITY Act 부결로 규제 불확실성 지속</li>
+        <li>52주 고점($748.65) 대비 여전히 하회 — 9월 계절성(Nasdaq-100 역사적 약세 경향)과 겹치며 변동성 경계</li>
+        <li>10년물 국채금리 4.9%대 고수준 유지 시 밸류에이션 부담 재부각 가능</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>CPI 둔화 + FOMC 동결·완화적 스탠스 확인 시 52주 고점($748.65) 재도전</div>
-      <div class="scenario base"><b>기본</b>$700~$730 박스권. CPI(9/11)·FOMC(9/17 새벽) 등 매크로 이벤트 대기 속 변동성 장세</div>
-      <div class="scenario bear"><b>약세</b>CPI 서프라이즈 또는 FOMC 매파 발언으로 금리 재인상 우려 부각 시 $680~$700 구간까지 재조정</div>
+      <div class="scenario bull"><b>강세</b>10월 CPI 둔화 + FOMC 동결·완화적 스탠스 확인 시 52주 고점($748.65) 재도전</div>
+      <div class="scenario base"><b>기본</b>$700~$730 박스권. 10월 FOMC(10/29)·반도체 실적 시즌을 소화하며 방향성 탐색</div>
+      <div class="scenario bear"><b>약세</b>추가 인상 확률 상승 또는 AI 리스크 우려 재부각 시 $680~$700 구간까지 재조정</div>
     </div>
   </section>
 
@@ -375,17 +398,62 @@
     <table>
       <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
       <tr><td>📦 상품</td><td class="num">Invesco QQQ Trust</td><td class="num">Nasdaq-100 추적 ETF</td></tr>
-      <tr><td>💰 순자산</td><td class="num">약 $450B+</td><td class="num">세계 최대 성장주 ETF 중 하나</td></tr>
-      <tr><td>📊 보수</td><td class="num">0.18%</td><td class="num">연간</td></tr>
+      <tr><td>💰 순자산</td><td class="num">약 $483B</td><td class="num">세계 최대 성장주 ETF 중 하나 (9/18 기준)</td></tr>
+      <tr><td>📊 보수</td><td class="num">0.18~0.20%</td><td class="num">연간</td></tr>
       <tr><td>📈 주요 편입</td><td class="num">NVDA, AAPL, MSFT, AMZN, META, AVGO, TSLA 등</td><td class="num">기술·커뮤니케이션 비중 높음</td></tr>
-      <tr><td>📅 주요 이벤트</td><td class="num">CPI(9/11), FOMC(9/17 새벽 KST)</td><td class="num">매크로 이벤트 집중 구간</td></tr>
+      <tr><td>📊 최근 성과</td><td class="num">1년 +20.4% · YTD +17.4%</td><td class="num">9/18 기준, SPY 대비 견조</td></tr>
+      <tr><td>📅 주요 이벤트</td><td class="num">CPI, FOMC, 반도체·빅테크 실적</td><td class="num">매크로·개별 실적 동시 민감</td></tr>
     </table>
 
     <div class="callout">
       → QQQ는 <b>Nasdaq-100</b>을 추적하는 대표 성장주 ETF입니다.
-      AI·빅테크 모멘텀이 중장기 지지 요인이지만, 단기적으로는 금리 경로와 9월 계절성이 변동성 요인으로 작용하고 있습니다.
-      9/4 NFP 이후에도 상대 강세를 보인 점은 긍정적이나, 다가오는 CPI·FOMC 결과에 따라 방향성이 결정될 가능성이 큽니다.
+      이번 주처럼 매크로 악재(FOMC·규제 불확실성)가 겹칠 때도 AI·빅테크 대형주의 실적 모멘텀이 지수를 방어하는 패턴이
+      재확인됐습니다. 다만 밸류에이션 부담이 큰 만큼 금리 경로에 대한 민감도는 SPY보다 오히려 높을 수 있어, 다가오는
+      CPI·FOMC 결과에 따라 변동성이 확대될 가능성이 있습니다.
     </div>
+
+    <h3>자금 흐름도 (지수 구성 → NAV 추적 메커니즘)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>기초지수</b>
+          <div class="desc">Nasdaq-100 — 나스닥 상장 비금융 대형주 100종목, 시가총액 가중</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>완전 복제(Full Replication)</b>
+          <div class="desc">지수 구성종목을 실제 편입비율대로 보유 — 기술·커뮤니케이션·소비재 섹터 집중, 분기 리밸런싱·연 1회 재구성</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 설정·환매(Creation/Redemption) 메커니즘 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>지정 참가회사(AP)</b>
+          <div class="desc">대형 기관투자자가 실물 바스켓과 ETF 좌수를 교환하며 시장가-NAV 괴리를 즉시 재정거래로 좁힘</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>비용·리스크</b>
+          <div class="desc">연 보수 약 0.18~0.20% — SPY 대비 다소 높은 수준, 상위 10종목 비중이 높아 개별 종목 리스크 집중도 상대적으로 큼</div>
+        </div>
+        <div class="flow-box reward">
+          <b>투자자 수익</b>
+          <div class="desc">AI·클라우드 대형주의 구조적 성장분 + 분기 배당 — 지수 상승분을 고유동성으로 실시간 반영</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>가격 형성</b>
+          <div class="desc">거시 이벤트(FOMC·CPI)와 개별 대형주 실적·가이던스가 동시에 반영 — SPY 대비 변동성·베타가 더 큰 구조</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">→ QQQ는 <b>상위 10종목 비중이 높은 집중형 구조</b>라, 개별 대형주(특히 NVDA 등 AI 관련주)의 실적·가이던스 변화가 지수 전체에 SPY보다 크게 반영됩니다. 이번 주처럼 매크로 이벤트와 AI 테마 뉴스가 겹칠 때 변동성이 증폭되는 것도 이 구조 때문입니다.</div>
   </section>
 
   <section>
@@ -393,23 +461,33 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 전 구간</td>
-        <td>9월 계절성 — 기술주·Nasdaq 역사적 약세 경향 주의</td>
+        <td>9월 21일 (월)</td>
+        <td>SpaceX 나스닥100 편입비중 확대 리밸런싱 반영 (1.28%→2.82%)</td>
+        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 30일 (수) 오후 9:30</td>
+        <td>8월 근원 PCE 물가지표 — 연준 선호 인플레 지표</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>9월 11일 (금) 오후 9:30</td>
-        <td><b>8월 CPI(소비자물가지수)</b> 발표 — FOMC 직전 인플레이션 경로 확인, QQQ 변동성 확대 예상</td>
+        <td>10월 2일 (금) 오후 9:30</td>
+        <td><b>미국 9월 CPI</b> 발표 — 10월 FOMC 인상 확률에 직결, QQQ 변동성 확대 예상</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td><b>FOMC 금리결정</b>(9/15~16 현지 회의) — 동결·인상 여부와 파월 기자회견이 QQQ 방향성 핵심</td>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td><b>FOMC 금리결정</b> (현지 10/27~28 회의) — 추가 인상 여부와 파월 기자회견이 QQQ 방향성 핵심</td>
         <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>국채금리 변동, NVDA/AVGO/MU 등 편입주 개별 뉴스, 유가·지정학 리스크</td>
+        <td>국채금리 변동, NVDA/AVGO/MU 등 편입주 개별 뉴스, AI 개발 속도조절론 관련 헤드라인</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -421,7 +499,7 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.06 업데이트 / 미국 9/4 정규장 마감 기준. 가격은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산). 가격은 소스별로 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
 
 </div>
@@ -465,6 +543,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · QQQ-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "QQQ-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX QQQUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
