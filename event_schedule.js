@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-06 (KST)
+ * 마지막 자동 업데이트: 2026-09-19 (KST)
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
@@ -43,9 +43,9 @@ const SEPTEMBER_2026_SCHEDULE = [
     tickers: ["CL"], importance: 3, note: null },
 
   { dateKST: "2026-09-11", timeKST: "21:30", dateLabel: "9월 11일 (금)",
-    event: "미국 8월 소비자물가지수(CPI)",
+    event: "미국 8월 소비자물가지수(CPI) (결과 확정)",
     tickers: ["SPY","QQQ","EWY","KORU","BTC","ETH","XAU"], importance: 5,
-    note: "FOMC 직전 마지막 핵심 인플레이션 지표. 7월 근원CPI 2.5%YoY. 예상외로 강한 8월 고용지표(비농업 +16.2만)로 9월 인상 가능성이 부각된 상황이라 서프라이즈 시 영향 확대" },
+    note: "결과: 전월비 +0.3%(예상 +0.2% 상회), 전년비 +3.4%. 예상보다 뜨거운 인플레이션으로 9월 FOMC 인상 확률이 발표 직후 90%대까지 급등, 매파적 전환을 굳힌 결정적 지표가 됨" },
 
   { dateKST: "2026-09-12", timeKST: "16:00", dateLabel: "9월 12일 (토)",
     event: "아이폰18 프로 사전예약 시작",
@@ -56,17 +56,32 @@ const SEPTEMBER_2026_SCHEDULE = [
     tickers: ["SOL"], importance: 2, note: null },
 
   { dateKST: "2026-09-15", timeKST: "09:00", dateLabel: "9월 15일 (화)",
-    event: "미국 상원 CLARITY Act(디지털자산 시장구조법) 클로처(토론종결) 표결",
-    tickers: ["CRCL"], importance: 4, note: "스테이블코인·디지털자산 규제 명확화 법안, 9/15 절차투표로 확정" },
+    event: "미국 상원 CLARITY Act(디지털자산 시장구조법) 클로처(토론종결) 표결 — 부결(결과 확정)",
+    tickers: ["CRCL","ONDO","SOL"], importance: 4, note: "결과: 찬성 49 : 반대 50으로 60표 문턱 미달, 부결. 디지털자산 시장구조 규제 명확화가 무산되며 크립토 전반(특히 CRCL·ONDO 등 RWA·스테이블코인 관련주) 동반 약세 트리거. 재상정 시점 미정" },
 
   { dateKST: "2026-09-16", timeKST: "09:00", dateLabel: "9월 16일 (수)",
-    event: "Circle Arc 메인넷 정식 출시",
-    tickers: ["CRCL"], importance: 3, note: "BlackRock·Visa·DTCC 등 창립 밸리데이터 참여, 출시일 공식 확정" },
+    event: "Circle Arc 메인넷 정식 출시 (결과 확정)",
+    tickers: ["CRCL"], importance: 3, note: "BlackRock·Visa·DTCC 등 창립 밸리데이터 참여. CEO 제레미 알레어 '가장 중대한 런칭'이라 자평했으나, 전날 CLARITY 부결 충격과 겹치며 '뉴스에 팔기' 반응으로 CRCL 주가는 장중 -6.77%까지 급락(9/16 종가 $80.45)" },
 
   { dateKST: "2026-09-17", timeKST: "03:00", dateLabel: "9월 17일 (목)",
-    event: "FOMC 금리결정 발표 (9/15~16 회의, SEP·점도표 포함)",
+    event: "FOMC 금리결정 발표 (9/15~16 회의, SEP·점도표 포함) — 25bp 인상 확정(결과 확정)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "강한 8월 고용지표 이후 CME FedWatch 기준 25bp '인상' 확률이 50%대 후반~60%대까지 상승(2023년 이후 첫 인상 여부 주목) — 인하가 아닌 인상 가능성이 논의되는 이례적 국면. 03:30 파월 의장 기자회견 — 전 자산군 공통 최상위 변수" },
+    importance: 5, note: "결과: 케빈 워시 의장 체제 만장일치(12-0)로 25bp 인상 의결(3.75→4.00%) — 2023년 이후 첫 인상. SEP상 정책위원 18명 중 16명이 2026년 추가 인상 필요성 시사. 발표 직후 위험자산 전반 급락 후, 인상 재료가 선반영됐다는 인식 속 익일부터 반등 전환 — 전 자산군 공통 '인상 재료 소진' 스토리의 분기점" },
+
+  { dateKST: "2026-09-17", timeKST: "22:00", dateLabel: "9월 17일 (목)",
+    event: "SEC, 토큰화 증권거래소 대상 5년 한시 '혁신 면제(Innovation Exemption)' 발표 (결과 확정)",
+    tickers: ["SOL","ONDO","CRCL"], importance: 4,
+    note: "특정 체인을 지목하지 않았으나, xStocks·Ondo Stocks 등 토큰화 주식 인프라가 이미 가동 중인 SOL·ONDO가 수혜 후보로 거론되며 SOL +10.8%(9/18), ONDO +13%(9/17) 등 급등 촉발. 후속 구체 대상 지목 여부 주목" },
+
+  { dateKST: "2026-09-19", timeKST: "12:00", dateLabel: "9월 19일 (토)",
+    event: "일본은행(BOJ) 금리 인상 — 31년 만의 최고 수준 (결과 확정)",
+    tickers: ["XAU","EWY","SPY","QQQ"], importance: 3,
+    note: "미 FOMC 인상(9/16)에 이어 BOJ도 긴축 기조 동참. 코스피·닛케이는 이를 소화하며 오히려 반등(9/18 코스피 +2%) — 주요국 동반 긴축에도 AI·반도체 랠리가 우선 반영되는 모습" },
+
+  { dateKST: "2026-09-21", timeKST: "22:00", dateLabel: "9월 21일 (월)",
+    event: "SpaceX(SPCX) 나스닥100 편입비중 확대 리밸런싱 반영",
+    tickers: ["QQQ","SPY"], importance: 2,
+    note: "나스닥100 분기 리밸런싱으로 SpaceX 비중이 약 1.28%→2.82%로 확대, 최대 $150~220억 규모 프로그램 매수 추정. 락업 해제로 유통 가능 주식이 늘어난 데 따른 조정" },
 
   { dateKST: "2026-09-18", timeKST: "09:00", dateLabel: "9월 18일 (금)",
     event: "아이폰18 프로 시리즈 정식 출시",
@@ -96,6 +111,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-09-28", timeKST: "09:00", dateLabel: "9월 28일 (월)",
     event: "Solana Alpenglow 메인넷 활성화",
     tickers: ["SOL"], importance: 3, note: "Agave v4.3 10%(9/8)→25%(9/14)→전체 권장(9/21) 스테이크 전환 이후, 검증인 BLS 키 등록 완료를 전제로 9/28 150ms 파이널리티 목표 활성화(공식 일정, 변경 가능)" },
+
+  { dateKST: "2026-09-28", timeKST: "21:15", dateLabel: "9월 28일 (월)",
+    event: "SpaceX Starship Flight 14 — 최초 궤도 진입 시도",
+    tickers: ["TSLA","QQQ","SPY"], importance: 3,
+    note: "발사창 KST 21:15~22:30(UTC 12:15~13:30). 기존 9/22 예정에서 규제 승인 대기로 9/28로 연기(변경 가능). Block 3 부스터21/십41, 최초로 지구 궤도(고도 약 275km) 진입 시도 및 Starlink V3 위성 최초 배치, 약 10시간 비행 후 태평양 스플래시다운 목표. Booster·Ship 재사용 실증의 핵심 분기점" },
 
   { dateKST: "2026-09-30", timeKST: "09:00", dateLabel: "9월 30일 (수)",
     event: "Alphabet 증권 집단소송 옵트아웃(제외 신청) 마감",
@@ -150,7 +170,7 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-29", timeKST: "03:00", dateLabel: "10월 29일 (목)",
     event: "FOMC 금리결정 발표 (10/27~28 회의)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: null },
+    importance: 5, note: "9/16 FOMC에서 25bp 인상(3.75→4.00%) 이후 두 번째 결정 — 9/16 SEP상 정책위원 다수가 추가 인상 시사, 시장은 10월 인상 확률을 약 53~60%로 반영 중(9/18 기준)" },
 
   { dateKST: "2026-10-29", timeKST: "05:00", dateLabel: "10월 29일 (목)",
     event: "Meta(META) 3분기 실적 발표(확정)",
