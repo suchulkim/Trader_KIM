@@ -93,6 +93,10 @@
 
   .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
   @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
@@ -100,22 +104,22 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준 · 실적 발표(9/2) 후 9거래일 경과</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>Broadcom Inc. (AVGO) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AVGOUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$361.99</div>
-        <div class="chg-up">9/11 종가 +0.32% · 실적 발표 직후 저점($353.70) 대비 완만히 회복 중</div>
+        <div class="price-main"><span id="live-price">$357.61</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +2.97% (+$10.31) · 시간외 -0.18% · 3거래일 연속 상승, 9/15 저점 대비 +5.4%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AVGOUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/2(현지시간) 발표된 2026회계연도 3분기 실적(매출 $296억 +86% YoY, 비GAAP EPS $3.32)은 컨센서스를 상회했으나
-        4분기 매출 가이던스가 기대치에 소폭 못 미치며 실적 발표 직후 $353~360 박스권까지 급락. 이후 Google
-        TPU·Anthropic 공급 확대 등 펀더멘털 재확인 뉴스에 힘입어 9/11 $361.99까지 완만히 회복했으나, 6월 사상
-        최고가($480.77) 대비로는 여전히 약 -24.7% 조정된 상태입니다.
+        9/14~15 유가·금리발 반도체 섹터 전반 약세와 Meta의 자체 AI칩 개발 경쟁 우려로 $339대까지 조정받았으나,
+        FOMC 금리 인상(9/16) 당일 보합 방어 후 9/17~18 애널리스트 강세 리포트와 반도체 랠리에 힘입어 이틀 연속
+        큰 폭 상승, $357.61로 마감했습니다. 6월 사상 최고가($480.77) 대비로는 여전히 약 -25.6% 조정된 상태입니다.
       </div>
     </div>
 
@@ -138,85 +142,91 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/15 저점($339.27) 이후 3거래일 연속 상승하며 $357선 회복. $348~355 구간이 단기 저항에서 지지로 전환되는지 주목.<br>
+      <b>15분봉</b>: 9/17~18 이틀간 거래량 확대와 함께 상승 탄력 강화 — $360~370 저항대 반응 주시.
+    </div>
+  </section>
+
+  <!-- 2. 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>실적 발표 후 가이던스 미스로 급락, 이후 완만히 회복</b></td>
-        <td>9/2 발표한 3분기 실적은 매출·EPS 모두 컨센서스를 상회했으나 4분기 매출 가이던스($348억)가 시장 기대치에
-        소폭 못 미치며 주가가 $353~360 박스권까지 급락. 이후 9/11까지 $361.99로 완만히 회복하며 낙폭을 일부 되돌림</td>
-        <td>"매도 후 재평가" 패턴 — 실적 자체보다 가이던스 눈높이 차이가 단기 낙폭을 키운 요인</td>
+        <td><b>9/14(월)</b><br>$344.72<br><span style="color:var(--up); font-weight:600;">▼ -4.77%</span></td>
+        <td>유가 급등·10년물 국채금리 19년래 최고치로 반도체 섹터 전반 동반 약세, Hock Tan CEO가 CNBC Cramer 방송에 출연했으나 시장 전반의 매크로 압력을 상쇄하지 못함</td>
+        <td>이번 주 최대 낙폭</td>
       </tr>
       <tr>
-        <td><b>Google TPU·Anthropic 공급 확대 재확인</b></td>
-        <td>실적 콜에서 Anthropic向 Google Ironwood TPU 출하 가속화 언급, 2027년 5GW 배치·추가 10GW 가시성 제시.
-        Google에 매년 수백억 달러 규모 프로세서를 수년간 공급할 것이라는 CEO 코멘트가 이어짐</td>
-        <td>커스텀 AI 반도체 사업의 장기 수요 가시성을 재확인시키며 저가 매수세 유입에 기여</td>
+        <td><b>9/15(화)</b><br>$339.27<br><span style="color:var(--up); font-weight:600;">▼ -1.58%</span></td>
+        <td>Meta가 Nvidia 하드웨어 의존도를 낮추기 위해 자체 AI칩 개발을 준비 중이라는 보도 — 커스텀 반도체 경쟁 심화 우려, 일부 투자자는 "AVGO에 대한 이례적 반론(counterpoint)"을 제기하며 신중론 부각</td>
+        <td>이번 주 저점 형성</td>
       </tr>
       <tr>
-        <td><b>OpenAI·Anthropic의 투자등급 확보 추진</b></td>
-        <td>OpenAI와 Anthropic이 상장 후 투자등급(Investment-Grade) 신용등급을 확보해 채권시장에서 저비용 자금
-        조달을 추진 중이라는 보도 — NVDA에 대한 의존도(백스톱 구조)를 낮추고 자금조달 경로를 다변화하려는 움직임</td>
-        <td>브로드컴을 포함한 대체·보완 공급망(커스텀 ASIC) 업체들의 장기 수주 기반이 넓어질 수 있다는 기대로 연결</td>
+        <td><b>9/16(수)</b><br>$339.51<br><span style="color:var(--down); font-weight:600;">▲ +0.07%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 거의 보합 마감하며 낙폭을 방어, 저점을 다지는 흐름</td>
+        <td>매파적 FOMC를 무난히 소화</td>
       </tr>
       <tr>
-        <td><b>VMware 라이선싱 정책 관련 EU 반독점 조사</b></td>
-        <td>VMware 라이선싱 정책 변경(구독형 전환)에 대해 EU 규제당국이 유럽 클라우드 사업자들을 대상으로 조사에
-        착수했다는 보도 — 인프라소프트웨어 부문(매출 비중 약 30%)의 리스크 요인으로 부각</td>
-        <td>단기 매출 영향은 제한적이나, 장기적으로 라이선싱 모델 변경 압력 가능성</td>
+        <td><b>9/17(목)</b><br>$347.30<br><span style="color:var(--down); font-weight:600;">▲ +2.29%</span></td>
+        <td>TSMC 매출 가속화 전망이 반도체 공급망 전반에 훈풍, "AVGO는 AI 성장에도 저평가됐다"는 강세 분석 확산, 반도체 대형주 전반이 프리마켓부터 동반 반등</td>
+        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등과 동조</td>
       </tr>
       <tr>
-        <td><b>애널리스트 목표주가 상향 지속</b></td>
-        <td>실적 발표 이후 Cantor Fitzgerald $600, Bernstein·BMO Capital $575 등 목표주가 상향이 이어졌고, Piper
-        Sandler도 신규 커버리지를 개시하는 등 우호적 리포트가 지속</td>
-        <td>단기 주가 조정에도 불구하고 매수 심리(Strong Buy 컨센서스)는 유지되는 배경</td>
+        <td><b>9/18(금)</b><br>$357.61<br><span style="color:var(--down); font-weight:600;">▲ +2.97%</span></td>
+        <td>"AI 반도체 40% 이상 상승여력" 등 애널리스트 강세 리포트 잇달아, NVDA·AMD·Intel·AVGO 반도체 대형주 동반 상승 지속 — 콜옵션 거래량 급증하며 강세 베팅 확산</td>
+        <td>3거래일 연속 상승, 거래량 4,395만주로 평소 대비 크게 증가</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 실적 자체는 견조했지만 4분기 가이던스가 시장의 과도한 눈높이에 못 미치며 단기 급락을 촉발했습니다. 이후
-      <b>Google·Anthropic向 커스텀 AI 반도체 수요의 장기 가시성</b>이 재확인되고 애널리스트들의 목표주가 상향이
-      이어지며 낙폭을 일부 되돌리는 국면입니다. 다만 <b>VMware EU 반독점 조사</b>라는 새로운 리스크가 인프라소프트웨어
-      부문에 부각되고 있어 지켜볼 필요가 있습니다.
+      → 이번 주는 <b>유가·금리발 조정(9/14) + Meta 자체 AI칩 경쟁 우려(9/15) → FOMC 방어(9/16) → 반도체 섹터
+      전반 랠리(9/17~18)</b>로 이어지는 흐름을 보였습니다. $339.27 저점에서 사흘 만에 +5.4% 반등하며 $357선을
+      회복했습니다. Meta의 자체 AI칩 개발 소식은 고객 집중도 리스크를 재확인시킨 이벤트지만, 이후 반도체 섹터
+      전반의 강세가 이를 압도한 모습입니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
+
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
         <li>3분기 매출 $296억(+86% YoY), 비GAAP EPS $3.32 — 컨센서스(매출 약 $293.6억/EPS $3.24) 상회</li>
         <li>AI 반도체 매출 $167억(+221% YoY), 4분기는 $217억(+236% YoY) 가이던스 — AI 매출 가속 지속</li>
         <li>실적 콜에서 FY27 AI 반도체 매출 전망을 $1,000억→$1,150억으로 상향, Anthropic 2027년 5GW 배치·추가 10GW 가시성, Google향 연간 수백억 달러 규모 프로세서 공급 지속 언급</li>
-        <li>OpenAI 커스텀칩 'Jalapeño', Meta 'MTIA' 양산 출하 지속 — 고객 다변화 진행 중</li>
-        <li>실적 발표 후 목표주가 잇단 상향: Cantor Fitzgerald $600, Bernstein·BMO Capital $575 — Piper Sandler 등 신규 커버리지도 우호적</li>
+        <li>OpenAI 커스텀칩 'Jalapeño', Meta 'MTIA' 양산 출하 지속 — 고객 다변화 진행 중(다만 Meta의 Nvidia 의존도 축소 시도는 양면적 신호)</li>
+        <li>TSMC 매출 가속화 전망 등 반도체 공급망 전반 훈풍, 애널리스트 평균 목표주가 $531.85(50개 기관, Strong Buy 컨센서스)</li>
+        <li>FOMC 금리 인상(9/16) 당일에도 거의 보합 방어 — 반도체 대형주 실적 모멘텀이 금리 충격 상쇄</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>4분기 매출 가이던스가 시장 기대치에 소폭 못 미쳐 실적 발표 직후 단기 급락 — 눈높이 조정 필요</li>
+        <li>Meta가 Nvidia 하드웨어 의존도를 낮추기 위해 자체 AI칩을 준비 중이라는 보도(9/15) — 커스텀 반도체 경쟁 심화, 고객이 곧 잠재 경쟁자가 될 수 있다는 리스크</li>
         <li>VMware 라이선싱 정책 변경에 대한 EU 반독점 조사 착수 — 인프라소프트웨어(매출 비중 약 30%) 부문 리스크</li>
-        <li>밸류에이션 부담 지속 — 엔비디아 대비 프리미엄 밸류에이션, RBC캐피탈은 Sector Perform·목표가 $400으로 신중론 유지</li>
-        <li>실적 발표 후 급락 패턴 반복 — 최근 분기 연속으로 발표 직후 매물 출회 이력</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
+        <li>밸류에이션 부담 지속 — 트레일링 PER 140배 이상, 일부 하우스는 신중론 유지</li>
         <li>고객 집중도 리스크 — Google·OpenAI·Anthropic·Meta 등 소수 대형 AI 고객사에 매출 의존도가 높음</li>
       </ul>
     </div>
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$370~$390 저항대 회복 후 FOMC 결과 우호적일 시 사상 최고가($480.77) 재도전 시도</div>
-      <div class="scenario base"><b>기본</b>$350~$390 박스권 내 등락, 4분기 가이던스 소화 및 FOMC(9/17) 결과 대기</div>
-      <div class="scenario bear"><b>약세</b>심리적 지지선 $350 붕괴 시 VMware 리스크 부각과 맞물려 추가 조정 국면 장기화 가능</div>
+      <div class="scenario bull"><b>강세</b>$360~$370 저항 돌파 후 6월 사상 최고가($480.77) 재도전 시도, 반도체 섹터 전반 강세 지속 시 모멘텀 확대</div>
+      <div class="scenario base"><b>기본</b>$339~$370 박스권 내 등락, 10월 FOMC(10/29)·Meta 자체 AI칩 진행상황을 소화하며 방향성 탐색</div>
+      <div class="scenario bear"><b>약세</b>심리적 지지선 $339 붕괴 시 VMware 리스크·Meta 경쟁 우려와 맞물려 추가 조정 국면 장기화 가능</div>
     </div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조 (2026회계연도 3분기, 8/2 마감분)</h2>
+    <h2>4. 매출구조/수익구조 (2026회계연도 3분기, 8/2 마감분)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
       <tr><td>🖥️ 반도체 솔루션</td><td class="num">$208.4억</td><td class="num" style="color:var(--pos-text)">+127%</td><td class="num">70.4%</td></tr>
@@ -276,19 +286,18 @@
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 및 파월 기자회견 (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>9월 18일 (금)</td><td>9월 분기 옵션·선물 동시만기(트리플위칭) — 변동성 확대 구간</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
       <tr><td>9월 21일 (월)</td><td>분기 배당 기준일(Ex-Dividend, 주당 $0.65)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (2026년 마지막 회의, 12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
       <tr><td>12월 11일 (금) 오전 (예정)</td><td>2026회계연도 4분기(FY26 Q4) 실적 발표(美 현지 12/10 장마감 후) — Q4 가이던스($348억) 달성 여부·VMware 부문 마진 확인</td><td><span class="star">★★★★★</span></td></tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 2026회계연도 3분기 실적(2026.09.02 현지시간 장마감 후 발표) 반영 (KST 2026.09.12 기준 작성)
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산)
   </footer>
 </div>
 
@@ -316,6 +325,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · AVGO-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "AVGO-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AVGOUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
