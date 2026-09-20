@@ -93,6 +93,10 @@
 
   .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
   @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
@@ -134,93 +138,130 @@
             <div id="tv_amd_15m" style="height:100%; width:100%;"></div>
           </div>
         </div>
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.09.19 (토) · 업데이트</span>
+      <span>·</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
+    </div>
+    <h1>AMD (Advanced Micro Devices) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AMDUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main"><span id="live-price">$559.82</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +2.70% (+$14.73) · 시간외 -0.33% · 4거래일 연속 상승, 9/14 저점 대비 +13.4%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AMDUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
+      </div>
+      <div class="price-sub">
+        9/14 유가 급등·10년물 국채금리 19년래 최고치로 $493.41까지 조정받았으나, 9/16 FOMC 금리 인상 당일에도 견조하게 방어한 뒤
+        9/17 "GPU·CPU 가격 인상" 보도로 하루 만에 +6.36% 급등하며 4거래일 연속 상승, $559.82로 마감했습니다.
+        52주 최고가 $584.73 대비 약 -4.2% 지점.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · AMDUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div id="tv_amd_daily" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div id="tv_amd_15m" style="height:100%; width:100%;"></div>
+          </div>
+        </div>
       </div>
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/14 $493.41까지 조정받은 뒤 4거래일 연속 상승하며 $559.82까지 회복. 52주 고점($584.73)까지 약 4.2% 남은 구간.<br>
+      <b>15분봉</b>: 9/17 GPU·CPU 가격 인상 보도 이후 거래량 급증, 이후 이틀간 상승폭 유지 — $560~570 저항대 반응 주시.
+    </div>
+  </section>
+
+  <!-- 2. 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>반도체 섹터 전반 변동성 확대</b></td>
-        <td>9/9 $521.09 → 9/10 $503.60(-3.36%) → 9/11 $515.78(+2.34%)로 3거래일 연속 ±2~3%대 등락. 국채금리 상승과
-        CPI 발표를 앞둔 매크로 불확실성 속에 NVDA·Intel 등 반도체 대형주 전반이 함께 출렁이며 AMD 개별 이슈보다
-        섹터 전반 수급 문제 성격이 강함</td>
-        <td>펀더멘털과 무관한 단기 변동성 — 섹터 전반이 반등하면 동반 회복 가능</td>
+        <td><b>9/14(월)</b><br>$493.41<br><span style="color:var(--up); font-weight:600;">▼ -4.40%</span></td>
+        <td>국제유가 급등, 10년물 국채금리 19년래 최고치 기록 — 반도체·성장주 전반 동반 약세, "AI 리셋" 우려까지 겹치며 이번 주 최대 낙폭 기록</td>
+        <td>이번 주 저점 형성</td>
       </tr>
       <tr>
-        <td><b>Piper Sandler 신규 커버리지에도 주가 하락</b></td>
-        <td>9/9~10 Piper Sandler가 AMD에 대해 Overweight·목표주가 $600으로 신규 커버리지를 개시, GPU 잠재력과 AI
-        관련 계약을 근거로 제시했으나 발표 당일에도 주가는 반도체 섹터 전반 조정에 동반 하락(-3.36%)</td>
-        <td>호재성 뉴스가 주가를 견인하지 못한 것은 매크로 변수가 개별 호재를 압도하고 있다는 신호 — NVDA·Palantir
-        협업 사례와 유사한 패턴</td>
+        <td><b>9/15(화)</b><br>$504.20<br><span style="color:var(--down); font-weight:600;">▲ +2.19%</span></td>
+        <td>Nvidia·Palantir·Amazon 등 주요 종목 애널리스트 콜이 집중된 화요일, 낙폭과대 인식 속 저가 매수세 유입으로 반등</td>
+        <td>FOMC(9/16)를 앞둔 관망 속 회복 시작</td>
       </tr>
       <tr>
-        <td><b>8월 CPI 예상외 강세 → 금리 인상 우려 부각</b></td>
-        <td>9/11 발표된 8월 CPI가 헤드라인 +0.4%(전년비 3.4%), 근원 CPI +0.3%(예상 상회, 전년비 2.4%)로 인플레
-        재가속. 9/15~16 FOMC에서 25bp <b>금리 인상</b> 확률이 약 70%까지 급등했으나, 같은 날 반도체·AI株는 오히려
-        반등하며 기술적 되돌림 성격의 강세를 보임</td>
-        <td>9/17(KST) FOMC 결과가 단기 최대 변수 — 매크로 리스크는 여전히 살아있는 상태</td>
+        <td><b>9/16(수)</b><br>$512.50<br><span style="color:var(--down); font-weight:600;">▲ +1.65%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 반도체 대형주 전반이 견조하게 방어, NVDA·QQQ와 함께 상대 강세</td>
+        <td>매파적 FOMC를 소화하며 상승 지속</td>
       </tr>
       <tr>
-        <td><b>우호적 뉴스플로우 지속</b></td>
-        <td>Citi는 AMD를 $237B 규모 서버 CPU 시장의 '핵심 수혜주'로 지목, Xanadu Quantum과 신규 소프트웨어 스택
-        'Backline' 출시 발표(9/9) 등 개별 호재가 이어지는 중</td>
-        <td>펀더멘털 모멘텀은 견조하나 단기적으로는 매크로 변수에 가려지는 국면</td>
+        <td><b>9/17(목)</b><br>$545.09<br><span style="color:var(--down); font-weight:600;">▲ +6.36%</span></td>
+        <td><b>"AMD, GPU·CPU 가격 인상" 보도로 급등</b> — 공급망 가격결정력 강화 시사, "인상 재료 소진" 인식에 따른 시장 전반 반등과 겹치며 이번 주 최대 상승폭 기록. TSMC 매출 가속 기대감도 반도체 섹터 전반에 긍정적</td>
+        <td>단일 종목 뉴스로는 이번 주 가장 강력한 트리거</td>
       </tr>
       <tr>
-        <td><b>실적 발표 후 고점 대비 조정 지속</b></td>
-        <td>6월 말 사상 최고가($580.91) 및 8/4 실적 발표 직후 단기 고점($518.58) 대비 조정, $500선 부근에서
-        지지력 테스트가 계속되는 중</td>
-        <td>$480~$500 구간이 다음 지지선으로 부각</td>
+        <td><b>9/18(금)</b><br>$559.82<br><span style="color:var(--down); font-weight:600;">▲ +2.70%</span></td>
+        <td>"AI·GPU 파워플레이"로 상승세 지속 — 콜옵션 매수세가 평소 대비 급증하며 강세 베팅 확산, 4거래일 연속 상승 마감</td>
+        <td>거래량 3,180만주로 평소 대비 높은 수준</td>
       </tr>
     </table>
 
     <div class="callout">
-      → AMD는 Piper Sandler 신규 커버리지·Citi의 긍정적 코멘트·Xanadu Quantum 파트너십 등 개별 호재가 이어지고
-      있음에도, <b>반도체 섹터 전반의 변동성 확대</b>와 <b>8월 CPI發 9/17 FOMC 금리 인상 우려(약 70%)</b>가 겹치며
-      최근 3거래일간 큰 폭의 등락을 반복했습니다. NVDA와 마찬가지로 펀더멘털보다 매크로·섹터 수급 변수가 단기
-      주가를 지배하는 국면입니다.
+      → 이번 주는 <b>유가·금리발 조정(9/14) → FOMC 방어(9/16) → GPU·CPU 가격 인상 보도(9/17, +6.36%)</b>로 이어지는
+      전형적인 조정 후 반등 패턴을 보였습니다. $493.41 저점에서 나흘 만에 +13.4% 반등하며 52주 고점($584.73)에
+      바짝 다가섰습니다. NVDA와 마찬가지로 FOMC 당일에도 견조했다는 점과, 가격결정력 강화 뉴스에 시장이
+      즉각 반응했다는 점이 이번 주의 핵심입니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
+        <li><b>GPU·CPU 가격 인상 보도(9/17)</b> — 공급망 가격결정력 강화 시사, 단일 뉴스로 +6.36% 급등을 이끈 이번 주 핵심 촉매</li>
         <li>2분기 매출 $11.54B(+50% YoY), 데이터센터 $6.72B(+107%) — 어닝 서프라이즈, Non-GAAP EPS $1.66(컨센서스 상회, +246% YoY)</li>
         <li>3분기 가이던스 매출 ~$13B(±$0.3B, +41% YoY), 하반기 서버 CPU 매출 +80% 이상·2027년 +70% 이상 전망</li>
         <li>Helios/MI450 램프업 본격화, MI500(2027) 로드맵 확인 — 데이터센터 부문 2027년 매출 2배 이상 전망</li>
-        <li>Piper Sandler($600 목표가·Overweight), Citi 등 우호적 애널리스트 커버리지 확대 — $237B 서버 CPU 시장 핵심 수혜주로 지목</li>
-        <li>Xanadu Quantum과 신규 소프트웨어 스택(Backline) 공개, Cisco·Humain 사우디 AI 인프라 파트너십 지속</li>
-        <li>컨센서스 목표주가 평균 $615(현재가 대비 +19% 상승여력), 44명 매수·0명 매도로 Strong Buy 등급 유지</li>
+        <li>FOMC 금리 인상(9/16) 당일에도 견조하게 방어 — 반도체 대형주 실적 모멘텀이 금리 충격 상쇄</li>
+        <li>컨센서스 목표주가 평균 $615(현재가 대비 +10% 상승여력), 44명 매수·0명 매도로 Strong Buy 등급 유지</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>순이익 대비 밸류에이션 매우 높은 수준(PER 120배 이상) — 멀티플 압축 리스크 상존</li>
-        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률이 약 70%까지 상승 — 반도체 섹터 전반 할인율 부담</li>
+        <li>순이익 대비 밸류에이션 매우 높은 수준(PER 140배 이상) — 멀티플 압축 리스크 상존</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
         <li>비GAAP 총마진 약 56%로 역사적 수준 하회, 영업비용 YoY +40% 급증에 따른 마진 압박 지속</li>
         <li>게이밍 부문 매출 -31% YoY로 부진</li>
-        <li>최근 3거래일 연속 ±2~3%대 등락 — 개별 펀더멘털과 무관한 섹터 수급 변수에 노출된 상태</li>
+        <li>52주 고점($584.73) 근접 후 단기 과열 신호 — 급등분 되돌림 가능성 상존</li>
       </ul>
     </div>
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$520선 회복 후 $550~$580대 재도전, FOMC 동결(또는 예상 부합) 확인 시 안도 랠리 가능</div>
-      <div class="scenario base"><b>기본</b>$480~$520 박스권에서 FOMC(9/17) 결과와 반도체 섹터 전반 수급을 주시하며 등락</div>
-      <div class="scenario bear"><b>약세</b>$480 붕괴 시 밸류에이션 재조정으로 $430~$450 부근까지 추가 조정 가능</div>
+      <div class="scenario bull"><b>강세</b>52주 고점($584.73) 돌파 시 사상 최고가 재도전, 가격 인상 효과가 3분기 마진 개선으로 확인될 경우 $600 이상 추가 상승</div>
+      <div class="scenario base"><b>기본</b>$520~$570 박스권에서 10월 FOMC(10/29)·11월 실적을 소화하며 등락</div>
+      <div class="scenario bear"><b>약세</b>$500 붕괴 시 밸류에이션 재조정으로 $460~$480 부근까지 되돌림 가능</div>
     </div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조 (FY2026 2분기 기준)</h2>
+    <h2>4. 매출구조/수익구조 (FY2026 2분기 기준)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
       <tr><td>🖥️ 데이터센터</td><td class="num">$6.72B</td><td class="num" style="color:var(--pos-text)">+107%</td><td class="num">58.2%</td></tr>
@@ -288,19 +329,18 @@
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>지속</td><td>Helios(MI450) 초기 출하·램프업, Cisco·Humain 사우디 AI 인프라 프로젝트 진행</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 금리 <b>인상</b> 확률 약 70%까지 상승</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>11월 4일 (수) 새벽 (오전 6시경)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후) — 서버 CPU·Helios 매출 가이던스 핵심 관전포인트</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>지속</td><td>Helios(MI450) 초기 출하·램프업, GPU·CPU 가격 인상 후속 효과, Cisco·Humain 사우디 AI 인프라 프로젝트 진행</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 추가 인상 확률 약 53~60% 반영 중</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>11월 4일 (수) 새벽 (오전 6시경)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후) — 서버 CPU·Helios 매출 가이던스, 가격 인상 효과의 마진 반영 여부 핵심 관전포인트</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (2026년 마지막 회의, 12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성)
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산)
   </footer>
 </div>
 
@@ -328,6 +368,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · AMD-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "AMD-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AMDUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
