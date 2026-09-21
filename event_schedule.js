@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-19 (KST)
+ * 마지막 자동 업데이트: 2026-09-21 (KST)
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
@@ -146,6 +146,51 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-05", timeKST: "09:00", dateLabel: "10월 5일 (월)",
     event: "9월 한국 반도체 수출 통계 발표(예정)",
     tickers: ["EWY","KORU","SKHY"], importance: 4, note: "8월 반도체 수출 전년비 +209% 사상 최대치 기록, 9월 연속 여부 확인 — 정확한 발표일은 관세청 통관 발표 일정에 따라 변동 가능" },
+
+  { dateKST: "2026-09-30", timeKST: "02:00", dateLabel: "9월 30일 (수)",
+    event: "OpenAI DevDay 2026 메인 키노트 (샌프란시스코 Fort Mason)",
+    tickers: ["NVDA","AMD","GOOGL","META","MU","SOXL"], importance: 4,
+    note: "美 현지 9/29(화) 10:00 PT 진행, 무료 라이브스트림 확정(devday.openai.com). 신모델·에이전트/API 발표 등으로 AI 인프라·경쟁사 밸류체인 전반에 영향 가능. OpenAI 자체는 비상장이라 직접 티커 없음" },
+
+  { dateKST: "2026-10-16", timeKST: null, dateLabel: "10월 16일 (금)",
+    event: "OpenAI DevDay Exchange — 벵갈루루",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업 1차 도시. 구체적 현지 시각·세부 발표 미정, 시장 영향은 미미할 전망" },
+
+  { dateKST: "2026-10-20", timeKST: null, dateLabel: "10월 20일 (화)",
+    event: "OpenAI DevDay Exchange — 도쿄",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업. 구체적 현지 시각·세부 발표 미정, 시장 영향은 미미할 전망" },
+
+  { dateKST: "2026-10-22", timeKST: null, dateLabel: "10월 22일 (목)",
+    event: "OpenAI DevDay Exchange — 서울",
+    tickers: ["NVDA","AMD","GOOGL","META","EWY","KORU"], importance: 2,
+    note: "글로벌 순회 개발자 밋업, 국내 개최. 구체적 현지 시각·장소 미정 — 근접 시 재확인 필요. 같은 날 한국은행 금통위(10/22)와 일정 겹침 주의" },
+
+  { dateKST: "2026-10-26", timeKST: null, dateLabel: "10월 26일 (월)",
+    event: "OpenAI DevDay Exchange — 베를린",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업. 구체적 현지 시각·세부 발표 미정, 시장 영향은 미미할 전망" },
+
+  { dateKST: "2026-10-28", timeKST: null, dateLabel: "10월 28일 (수)",
+    event: "OpenAI DevDay Exchange — 파리",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업. 같은 날 Alphabet 3분기 실적 발표와 겹침. 구체적 현지 시각·세부 발표 미정" },
+
+  { dateKST: "2026-11-03", timeKST: null, dateLabel: "11월 3일 (화)",
+    event: "OpenAI DevDay Exchange — 런던",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업. 구체적 현지 시각·세부 발표 미정, 시장 영향은 미미할 전망" },
+
+  { dateKST: "2026-11-06", timeKST: null, dateLabel: "11월 6일 (금)",
+    event: "OpenAI DevDay Exchange — 상파울루",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업 마지막 순번 이전 도시. 같은 날 SanDisk 실적 발표와 겹침. 구체적 현지 시각·세부 발표 미정" },
+
+  { dateKST: "2026-11-10", timeKST: null, dateLabel: "11월 10일 (화)",
+    event: "OpenAI DevDay Exchange — 멕시코시티",
+    tickers: ["NVDA","AMD","GOOGL","META"], importance: 1,
+    note: "글로벌 순회 개발자 밋업 마지막 도시. 같은 날 Palantir 실적 발표·애플 배당락일과 겹침. 구체적 현지 시각·세부 발표 미정" },
 
   { dateKST: "2026-10-15", timeKST: "09:00", dateLabel: "10월 15일 (목)",
     event: "TSMC 3분기 실적 발표(잠정확정)",
