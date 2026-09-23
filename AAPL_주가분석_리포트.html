@@ -143,7 +143,7 @@
     font-size:14px;
   }
   th, td{
-    padding:11px 12px;
+    padding:12px 14px;
     text-align:left;
     border-bottom:1px solid var(--border);
     vertical-align:top;
@@ -156,6 +156,9 @@
   }
   tr:last-child td{border-bottom:none;}
   td.num{font-variant-numeric: tabular-nums;}
+
+  .text-up{color:var(--up); font-weight:600;}
+  .text-down{color:var(--down); font-weight:600;}
 
   .factor-block{
     background:var(--card);
@@ -222,7 +225,6 @@
   }
   .callout b{color:var(--text);}
 
-  /* 가치 흐름도 다이어그램 */
   .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
   .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
   .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
@@ -297,35 +299,71 @@
     </div>
   </section>
 
+  <!-- 2번 항목 첨부 이미지 기반 표 반영 시작 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5일)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:18%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
-      <tr>
-        <td>사전예약 기대감<br><span style="font-weight:400; color:var(--text-soft);">Lead Time 호조</span></td>
-        <td>9/12 시작된 아이폰18 및 첫 폴더블 아이폰 사전예약 초기 배송 대기 시간(Lead Time) 호조 소식 유입</td>
-        <td>초기 재료 소멸 우려 완전히 소화하며 주가 $330선 돌파 동력으로 작용</td>
-      </tr>
-      <tr>
-        <td>경영 안정화<br><span style="font-weight:400; color:var(--text-soft);">리더십 평가</span></td>
-        <td>존 터너스 CEO의 제품 발표 이후 엔지니어링 및 린 생산 체계에 대한 월가의 긍정적 평가 확산</td>
-        <td>투자 심리 안정화 및 주요 IB 목표가 유지/상향 레이스</td>
-      </tr>
-      <tr>
-        <td>매크로 환경<br><span style="font-weight:400; color:var(--text-soft);">국채 금리 안정</span></td>
-        <td>FOMC 금리결정을 앞두고 미 국채 10년물 금리가 안정세를 보이며 빅테크 밸류에이션 부담 완화</td>
-        <td>기술주 전반 저가 매수세 지속 및 시가총액 $4.85조 회복</td>
-      </tr>
-      <tr>
-        <td>수급 우려 완화<br><span style="font-weight:400; color:var(--text-soft);">공급망 개선</span></td>
-        <td>초기 파운드리 2나노 A20 프로 및 폴더블 디스플레이 공급망 병목 지점 해소 신호 확인</td>
-        <td>FY27 Q1(연말 특수) 실적 피크에 대한 가시성 확대</td>
-      </tr>
+      <thead>
+        <tr>
+          <th style="width:20%;">날짜 · 종가($)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:24%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <b>9/9 (화)</b><br>
+            <span class="num">$315.34</span><br>
+            <span class="text-down">▼ -1.82%</span>
+          </td>
+          <td>Apple '서프라이즈 앤 샤인' 신제품 발표 이벤트 진행 (아이폰18 및 첫 폴더블 라인업 공개). 이벤트 직후 재료 소멸 우려로 인해 단기 조정 형성</td>
+          <td>이번 주 저점 형성</td>
+        </tr>
+        <tr>
+          <td>
+            <b>9/10 (수)</b><br>
+            <span class="num">$326.56</span><br>
+            <span class="text-up">▲ +3.56%</span>
+          </td>
+          <td>존 터너스 신임 CEO의 엔지니어링 및 린 생산 체계 리더십에 대한 월가의 긍정적 평가 확산. 주요 투자은행(IB)의 목표주가 유지 및 상향 레이스 지속</td>
+          <td>반등 시작</td>
+        </tr>
+        <tr>
+          <td>
+            <b>9/12 (토)</b><br>
+            <span class="num">$328.10</span><br>
+            <span class="text-up">▲ +0.47%</span>
+          </td>
+          <td>아이폰18 및 첫 폴더블 아이폰 사전예약(Pre-order) 개시. 초기 배송 대기 시간(Lead Time) 호조 소식 유입으로 초기 재료 소멸 우려 완전 소화</td>
+          <td>사전예약 호조 모멘텀 확보</td>
+        </tr>
+        <tr>
+          <td>
+            <b>9/15(화)~9/16(수)</b><br>
+            <span class="num">$330.45</span><br>
+            <span class="text-up">▲ +0.72%</span>
+          </td>
+          <td>FOMC 금리 결정을 앞두고 미 국채 10년물 금리가 안정세를 보이며 빅테크 밸류에이션 부담 완화. 대형 기술주 전반에 저가 매수세 지속 유입</td>
+          <td>매크로 환경 안정화 및 시가총액 $4.85조 회복</td>
+        </tr>
+        <tr>
+          <td>
+            <b>9/17(목)~9/23(수)</b><br>
+            <span class="num">$332.27</span><br>
+            <span class="text-up">▲ +0.55%</span>
+          </td>
+          <td>TSMC 2나노 A20 프로 및 폴더블 디스플레이 등 초기 파운드리·공급망 병목 지점 해소 신호 확인. FY27 Q1(연말 특수) 실적 피크 가시성 확대 속에 상승세 지속</td>
+          <td>$332대 안착 및 52주 최고가($344.57) 재시도</td>
+        </tr>
+      </tbody>
     </table>
+
     <div class="callout">
       → 9/9 신제품 발표 직후 형성된 단기 저점($315.34)에서 연속 반등을 이어가며 <b>$332.27</b>대 안착에 성공했습니다. 사전예약의 정량 데이터와 FOMC 금리 반응이 향후 신고가 돌파의 키입니다.
     </div>
   </section>
+  <!-- 2번 항목 첨부 이미지 기반 표 반영 끝 -->
 
   <section>
     <h2>3. 향후 전망</h2>
@@ -593,7 +631,6 @@
   });
 </script>
 <script type="text/javascript">
-  // 실시간 시세 갱신 (OKX 공개 API · AAPL-USDT-SWAP · 30초 주기)
   const LIVE_INST_ID = "AAPL-USDT-SWAP";
   const priceEl = document.getElementById("live-price");
   const chgEl = document.getElementById("live-chg");
