@@ -255,6 +255,56 @@
     gap:24px;
   }
 
+  /* 매출구조도(가치 축적 구조) 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+    margin-top:18px;
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(8,102,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -269,23 +319,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.17 (목) · 업데이트</span>
+      <span>2026.09.23 (수) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 9:00 (KST) · 당일 FOMC 발표분 반영</span>
+      <span>기준시각 오전 (KST) · Meta Connect 2026 개막일 기준</span>
     </div>
     <h1>Meta Platforms (META) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: METAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main" id="metaPriceMain">$680.90 <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
-        <div class="chg-up" id="metaPriceChange">전일比 +1.9% (실시간 불러오는 중…)</div>
-        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">9/4 대비 약 +11% 추가 상승, 52주 신고가($790.80) 대비 약 -14% · <span id="metaLiveTime">가격 갱신 중…</span></div>
+        <div class="price-main" id="metaPriceMain">$735 내외 <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-up" id="metaPriceChange">9/18 -2.43%(저점) → 9/21 +11%대 급등 → 이후 $730~740대 안착 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">최근 1개월 약 +25% 상승, 52주 신고가($785~790대) 대비 약 -6~7% · <span id="metaLiveTime">가격 갱신 중…</span></div>
       </div>
       <div class="price-sub">
-        9/4 리포트($613.35) 이후 AI 모멘텀이 이어지며 META는 $680 부근까지 추가 상승했습니다. 9/15 신규 구독 서비스
-        'Meta One' 출시(AI 역량 수익화 신규 채널), 9/10 이사회가 분기 배당($0.525/주, 배당락일 9/21 현지) 공식 승인,
-        Wedbush의 목표주가 상향($595→$650) 등이 호재로 작용했습니다. 다만 9/17(KST) FOMC 25bp 인상 발표와 함께
-        빅테크 전반이 숨 고르기 구간에 진입했고, TikTok과의 광고 마찰 등 잡음도 병존합니다.
+        9/17 FOMC 25bp 인상 발표 직후인 9/18 META는 -2.43%(종가 $665.75) 조정을 겪었으나, 신규 AI 에이전트
+        'Muse'(9/8 출시)의 초기 흥행(9/19 미국 앱 다운로드 26.4만 건 기록)과 월가의 잇따른 목표주가 상향에 힘입어
+        9/21 하루 만에 +11%대 급등했습니다. 배당락일(9/21, $0.525/주)도 이 흐름 속에 무리 없이 소화됐고,
+        현재는 오늘(9/23~24) 개막하는 <b>Meta Connect 2026</b> 컨퍼런스를 앞두고 $730~740대에서 관망세입니다.
       </div>
     </div>
 
@@ -314,41 +364,44 @@
 
   <!-- 1. 원인 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:16%">날짜 · 종가</th><th>내용</th><th style="width:22%">비고</th></tr>
       <tr>
-        <td><b>'Meta One' 구독 서비스 출시 (9/15)</b></td>
-        <td>Meta가 AI 역량을 수익화하기 위한 신규 구독 프로그램 'Meta One'을 공개. 광고 매출 일변도였던 수익구조에 신규 채널을 추가하려는 시도</td>
-        <td>광고 의존도(매출의 약 98%)를 다변화하려는 신호로 긍정 해석, 다만 초기 단계라 실질 매출 기여는 아직 미미</td>
+        <td><b>9/16(수)</b><br>$673.31<br><span class="chg-up">▲ +1.02%</span></td>
+        <td>FOMC, 25bp 금리 인상 발표(3.75~4.00%) — 3년 만의 첫 인상에도 META는 Muse AI 에이전트 모멘텀을 바탕으로 QQQ 대비 견조한 흐름 유지</td>
+        <td>매크로 충격보다 개별 펀더멘털(Muse) 재료가 우세</td>
       </tr>
       <tr>
-        <td><b>분기 배당 공식 승인 (9/10)</b></td>
-        <td>이사회가 주당 $0.525 분기 배당을 공식 승인, 배당락일 9/21(현지) 확정(직전 리포트의 "추정치"가 실제로 확정됨)</td>
-        <td>주주환원 정책 재확인, 일정 확정에 따른 단기 변동성 요인(배당락 효과) 예상</td>
+        <td><b>9/17(목)</b><br>$682.31<br><span class="chg-up">▲ +1.34%</span></td>
+        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등, JPMorgan의 목표주가 상향($640→$820, 9/10) 여진이 이어지며 Muse 관련 긍정 리포트 확산</td>
+        <td>이번 주 최대 상승폭 중 하나, 52주 신고가 근접</td>
       </tr>
       <tr>
-        <td><b>월가 목표주가 상향 · AI 모멘텀 지속</b></td>
-        <td>Wedbush가 목표주가를 $595→$650로 상향, Goldman Sachs는 Buy 등급 재확인. Muse AI 에이전트가 "business-in-a-box" 서비스로 소상공인 대상 확장되며 지속적으로 강세 논쟁(Bullish Wall Street Debate)을 촉발</td>
-        <td>애널리스트 커뮤니티 내 AI 투자 성과에 대한 긍정론이 확산되며 9/4 이후 추가 상승(+11%대)의 배경으로 작용</td>
+        <td><b>9/18(금)</b><br>$665.75<br><span class="chg-down">▼ -2.43%</span></td>
+        <td>Anthropic·OpenAI 경영진의 "AI 리셋" 발언(9/14)發 AI 밸류에이션 재점검 심리가 AI 밸류체인 전반으로 번지며 차익실현 매물 출회, 한 달간 +23%대 급등에 따른 자연스러운 되돌림</td>
+        <td>이번 주 최대 낙폭, 다만 주간 기준으로는 상승 유지</td>
       </tr>
       <tr>
-        <td><b>FOMC 25bp 금리인상 확정 (9/17)</b></td>
-        <td>9/16(현지) FOMC가 기준금리를 3.75~4.00%로 인상(2023년 이후 첫 인상), 연말 점도표 중간값 4.1%로 매파적</td>
-        <td>빅테크 전반에 밸류에이션 부담 요인 — META도 개별 호재와 매크로 역풍을 동시에 소화하는 국면</td>
+        <td><b>9/21(월)</b><br>$739.15<br><span class="chg-up">▲ +11.02%</span></td>
+        <td>Muse AI 에이전트 초기 트랙션 확인(9/19 미국 다운로드 26.4만 건 사상 최다, 9/18 DAU 44.8만 명) + 배당락일($0.525/주) 무리 없이 소화 + Cboe 옵션시장 콜옵션 쏠림(강세 베팅)</td>
+        <td>이번 주 최대 상승폭, 거래대금 급증</td>
       </tr>
       <tr>
-        <td><b>TikTok과의 광고 마찰 · 경쟁 리스크 잔존</b></td>
-        <td>TikTok이 자사·YouTube를 압박하는 내용의 Meta 광고 게재를 거부(Axios 보도). OpenAI發 광고시장 진출 우려도 여전</td>
-        <td>단기 주가 영향은 제한적이나, 숏폼 콘텐츠·광고 경쟁 구도가 여전히 진행형임을 보여주는 잡음성 이벤트</td>
+        <td><b>9/22(화)</b><br>$741.25<br><span class="chg-up">▲ +0.28%</span></td>
+        <td>BofA가 Muse 흥행을 근거로 Buy 재확인, Wells Fargo 목표주가 $796 상향. 다만 Amazon이 자사 쇼핑몰 내 Muse 접근을 차단(Bloomberg)했다는 보도와 "너무 흥분하지 말라"는 신중론도 병존하며 상승폭은 제한적</td>
+        <td>보합권 등락, 3거래일 연속 상승 마무리</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 9/4 이후 META는 <b>Meta One 구독 출시·배당 확정·목표주가 상향</b>이 겹치며 $613 → $680대까지 약 11% 추가 상승했습니다.
-      다만 9/17 FOMC 인상으로 빅테크 전반의 매크로 부담이 재부각되며 상승 속도는 다소 조절되는 모습입니다.
-      52주 신고가($790.80) 대비로는 여전히 약 14% 낮은 구간으로, AI 투자 성과가 10/28(현지) 3분기 실적에서
-      숫자로 재확인될지가 다음 추세의 분수령입니다.
+      → 이번 주는 <b>FOMC 인상(9/16~17)을 견조하게 소화</b>했지만, 9/14 확산된 "AI 리셋" 우려의 여진으로
+      9/18 -2.4% 되돌림을 겪었습니다. 이후 <b>Muse AI 에이전트의 예상을 뛰어넘는 초기 흥행</b>과
+      <b>JPMorgan($820)·Wells Fargo($796) 등 월가 목표주가 대폭 상향</b>이 맞물리며 9/21 하루 만에
+      +11%대 급등, 5거래일 누적으로는 $673→$741대까지 약 +10% 상승 마감했습니다. 최근 1개월 누적으로는
+      약 +25%로 8월 저점 대비 큰 폭의 회복이며, 52주 신고가($785~790대) 근접권까지 올라선 상태입니다.
+      오늘(9/23) 개막한 <b>Meta Connect 2026</b>에서 신규 스마트글래스·AI 전략이 추가 확인될지가 다음
+      단기 방향성의 관건입니다.
     </div>
   </section>
 
@@ -359,31 +412,30 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Meta One 구독 출시로 광고 일변도 수익구조에 신규 채널 추가 시도 — 장기적 매출 다변화 신호</li>
-        <li>AI 광고랭킹 고도화 효과(클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)가 3분기 실적에서 추가 확인될 가능성</li>
-        <li>Wedbush 목표주가 상향($650), Goldman Buy 유지 등 월가 컨센서스 개선 흐름</li>
-        <li>분기 배당 $0.525 공식 승인 — 주주환원 정책 지속, 안정적 현금흐름 방증</li>
-        <li>Muse AI 에이전트의 소상공인 대상 제품화(business-in-a-box) — AI 투자의 실질 매출 전환 경로 확대</li>
+        <li>Muse AI 에이전트 초기 흥행(앱스토어 3위, 다운로드 26.4만 건) — 광고 일변도 구조에서 구독($20·$100 티어)·에이전트 커머스 수수료로 이어지는 신규 성장축 확인</li>
+        <li>JPMorgan($820)·Wells Fargo($796) 등 월가 목표주가 대폭 상향, 54개 증권사 기준 컨센서스 "Strong Buy" 유지</li>
+        <li>Shopify와 Muse 에이전틱 체크아웃 파트너십 — AI 에이전트의 실제 커머스 매출 전환 경로 구체화</li>
+        <li>오늘(9/23~24) Meta Connect 2026 — 신규 스마트글래스·Horizon OS·AI 전략 공개로 추가 모멘텀 가능성</li>
+        <li>분기 배당 $0.525 정상 지급(배당락 9/21) — 주주환원 정책 지속, 현금흐름 안정성 방증</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>FOMC 25bp 인상(2023년 이후 첫 인상) 확정, 매파적 점도표 — 빅테크 밸류에이션 전반에 부담</li>
-        <li>2026년 CapEx $1,300~1,450억 가이던스, 분기 FCF 급감 이력 — AI 투자 부담은 여전히 진행형</li>
-        <li>OpenAI 등 신규 경쟁자의 광고시장 진출 + TikTok과의 광고 마찰 — 장기 경쟁 구도 리스크 지속</li>
-        <li>Reality Labs 누적 손실 $800억 이상 지속 — 장기 수익성에 대한 의문 여전</li>
-        <li>9/4 이후 단기간 11%대 급등에 따른 밸류에이션 부담 — 과열 신호(RSI 과매수 구간 진입 이력) 주시 필요</li>
-        <li>뉴멕시코주 등 일부 청소년 관련 개별 소송·항소 절차 잔존</li>
+        <li>2026년 AI 인프라 투자 $1,300~1,450억 가이던스, JPMorgan은 2027년 $2,430억·2028년 $2,840억까지 증가 전망 — capex 부담 지속 확대</li>
+        <li>3분기 약 $100억 규모 법적 합의금 반영으로 Wells Fargo가 2026 영업이익 추정치를 12% 하향 — Muse 수익화는 아직 초기 단계로 단기 실적엔 오히려 부담</li>
+        <li>Amazon의 Muse 접근 차단 등 빅테크 간 AI 에이전트 경쟁·마찰 심화, 미성년자 SNS 이용 규제 강화 시 광고 성장 둔화 우려</li>
+        <li>최근 1개월 +25% 급등에 따른 밸류에이션·과열 부담 — "너무 흥분하지 말라"는 신중론도 병존</li>
+        <li>Reality Labs 누적 손실 지속, 뉴멕시코주 등 청소년 관련 개별 소송·항소 절차 잔존</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>Meta One·AI 광고효율 개선이 10/28 3분기 실적에서 숫자로 확인될 경우 52주 신고가($790.80) 재도전</div>
-      <div class="scenario base"><b>기본</b>$650~700 박스권에서 FOMC發 매크로 흐름과 10월 말 3분기 실적을 동시 대기, 단기 과열 해소 과정 병행</div>
-      <div class="scenario bear"><b>약세</b>$650 지지선 붕괴 시 CapEx 부담·경쟁 리스크 재부각되며 $600 부근까지 되돌림 가능</div>
+      <div class="scenario bull"><b>강세</b>Meta Connect(9/23~24)에서 AI·글래스 전략이 시장 기대를 상회할 경우 52주 신고가($785~790대) 돌파, JPMorgan 목표가($820) 방향 랠리 재개</div>
+      <div class="scenario base"><b>기본</b>$700~760 박스권에서 Muse 트랙션 지속 여부와 10/28(현지) 3분기 실적(Muse 초기 매출 기여, capex 가이던스)을 동시 대기</div>
+      <div class="scenario bear"><b>약세</b>$700 지지선 붕괴 시 capex 부담·법적 합의금 등 비용 이슈가 재부각되며 $650 부근까지 되돌림 가능</div>
     </div>
   </section>
 
@@ -417,11 +469,52 @@
     </div>
 
     <div class="callout">
-      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조는 아직 변화가 없으나, 9/15 출시된
-      <b>Meta One 구독 서비스</b>는 "기타" 부문(현재 1.6%)에 향후 반영될 신규 채널입니다. AI 광고랭킹 고도화
-      (광고 클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)는 광고 매출 자체의 질을 끌어올리는 효과이며,
-      3분기 실적(10/28 발표)에서 두 흐름(신규 채널 매출 기여 + 기존 광고 효율 개선)이 숫자로 얼마나 확인되는지가
-      핵심 관전 포인트입니다. Reality Labs는 매출 비중 1% 미만에 영업손실은 분기당 $46억으로 손익 괴리가 여전히 큽니다.
+      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조는 아직 변화가 없으나, 9/8 출시된
+      <b>Muse AI 에이전트</b>(구독 $20·$100 티어 + 에이전트 커머스 수수료)는 "기타" 부문(현재 1.6%)에 향후 반영될
+      신규 채널입니다. AI 광고랭킹 고도화(광고 클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)는 광고 매출 자체의
+      질을 끌어올리는 효과이며, 3분기 실적(10/28 발표)에서 두 흐름(Muse 초기 매출 기여 + 기존 광고 효율 개선)이
+      숫자로 얼마나 확인되는지가 핵심 관전 포인트입니다. Reality Labs는 매출 비중 1% 미만에 영업손실은 분기당
+      $46억으로 손익 괴리가 여전히 큽니다.
+    </div>
+
+    <h3>매출구조도 — 사용자 활동이 매출·재투자로 이어지는 구조</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>사용자·디앱 활동</b>
+          <div class="desc">Facebook·Instagram·WhatsApp 이용, 콘텐츠 소비, Muse AI 에이전트 태스크 실행(예약·구매·메시지 처리)</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>Family of Apps 플랫폼</b>
+          <div class="desc">참여 데이터 기반 AI 랭킹·타겟팅(Advantage+) 고도화 → 광고 경매 시스템에 반영</div>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box accent">
+          <b>Muse 에이전트 레이어(신규)</b>
+          <div class="desc">Shopify 등과 에이전틱 체크아웃 연동, 구독 티어(무료/$20/$100)로 소비자에게 직접 과금</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 광고 낙찰가 × 노출량 + 구독료·에이전트 수수료(신규) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box reward">
+          <b>매출 인식 (97.6% 광고 + 신규 채널)</b>
+          <div class="desc">분기 매출의 대부분은 여전히 광고이나, Muse發 구독·커머스 수수료가 "기타" 부문에 점차 누적</div>
+        </div>
+        <div class="flow-box burn">
+          <b>AI 인프라 재투자 (CapEx)</b>
+          <div class="desc">2026년 $1,300~1,450억, JPMorgan 전망 기준 2027년 $2,430억·2028년 $2,840억까지 확대 — Superintelligence Lab·데이터센터·모델 학습에 투입</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>향상된 랭킹·에이전트 성능 → 참여·전환율 상승</b>
+          <div class="desc">재투자로 개선된 AI 모델이 다시 광고 효율과 Muse 에이전트 품질을 높이며 순환구조 형성, 동시에 Reality Labs(약 0.7%)는 별도의 장기 손실 구간</div>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -431,35 +524,40 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 17일 (목) 오전 3:00 <b>[발표 완료]</b></td>
-        <td>FOMC 금리결정 발표 — 25bp 인상 확정(3.75~4.00%), 2023년 이후 첫 인상</td>
+        <td><b>9월 23일(수)~24일(목) 진행 중</b></td>
+        <td>Meta Connect 2026 (Menlo Park 본사) — 신규 스마트글래스·Horizon OS·AI 전략 공개 예정. 키노트는 9/24(목) 오전 8:00(KST, 현지 9/23 오후 4시 PT)</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>9월 22일 (화) 밤~9월 23일 (수) 새벽</td>
-        <td>배당락일(ex-dividend date, 미 현지 9/21 월) — 주당 $0.525 배당 공식 확정분</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
-      <tr>
         <td>지속</td>
-        <td>뉴멕시코주 등 개별 청소년 안전 소송·항소 절차 진행상황 — $170억 다주(多州) 합의 이후 잔여 리스크 확인 필요</td>
+        <td>Muse AI 에이전트 다운로드·DAU 추이, Amazon 접근 차단 등 빅테크 간 AI 에이전트 경쟁구도 뉴스플로우 — 신규 수익원 안착 여부 지속 주시</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>Meta One 구독 초기 반응, OpenAI 광고사업 확장·TikTok 마찰 등 뉴스플로우 — 신규 수익원 안착 여부와 광고 경쟁구도 지속 주시</td>
+        <td>뉴멕시코주 등 개별 청소년 안전 소송·항소 절차, 3분기 약 $100억 규모 법적 합의금 반영 여부 — $170억 다주(多州) 합의 이후 잔여 리스크 확인 필요</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
-        <td>10월 29일 (목) 오전 5~6시경</td>
-        <td>FY2026 3분기 실적 발표 (미국 현지 10/28(수) 정규장 마감 후, 한국시간 익일 새벽 콘퍼런스콜) — Meta One 초기 기여, AI 광고효율 개선의 실적 반영, CapEx 가이던스 추가 조정이 핵심</td>
+        <td>10월 29일 (목) 오전 5:00 (추정)</td>
+        <td>FY2026 3분기 실적 발표 (미국 현지 10/28(수) 정규장 마감 후, 한국시간 익일 새벽 콘퍼런스콜) — Muse 초기 매출 기여, AI 광고효율 개선의 실적 반영, CapEx 가이던스 추가 조정이 핵심</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (10/27~28 회의) — META 포함 빅테크 전반 공통 매크로 변수</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 발표 (12/8~9 회의, 2026년 마지막 FOMC, EST 전환으로 발표시각 04:00 KST)</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.17 오후 9시 (KST). 실적은 META FY2026 Q2(발표일 2026.07.29) 기준이며, 3분기 실적은 2026.10.28(현지) 발표 예정입니다. 가격은 OKX 퍼블릭 API(METAUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 (KST), Meta Connect 2026 개막일. 실적은 META FY2026 Q2(발표일 2026.07.29) 기준이며, 3분기 실적은 2026.10.28(현지) 발표 예정입니다. 가격은 OKX 퍼블릭 API(METAUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 
 </div>
