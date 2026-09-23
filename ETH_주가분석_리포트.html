@@ -100,6 +100,7 @@
     color:var(--text-soft);
   }
 
+  /* 테이블 스타일 */
   table{
     width:100%;
     border-collapse:collapse;
@@ -107,10 +108,10 @@
     border:1px solid var(--border);
     border-radius:10px;
     overflow:hidden;
-    font-size:14px;
+    font-size:13.5px;
   }
   th, td{
-    padding:11px 12px;
+    padding:14px 16px;
     text-align:left;
     border-bottom:1px solid var(--border);
     vertical-align:top;
@@ -122,47 +123,82 @@
     color:var(--text-soft);
   }
   tr:last-child td{border-bottom:none;}
-  td.num{font-variant-numeric: tabular-nums;}
+  
+  .date-col b{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+  }
+  .price-val{
+    font-size:13px;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .chg-tag{
+    display:inline-block;
+    font-weight:600;
+    font-size:12px;
+    margin-top:4px;
+  }
+  .chg-tag.up{color:var(--up);}
+  .chg-tag.down{color:var(--down);}
 
+  /* 긍정/부정 요소 블록 (이미지 양식 호환) */
   .factor-block{
     background:var(--card);
     border:1px solid var(--border);
     border-radius:12px;
-    padding:16px 18px;
-    margin-bottom:14px;
+    padding:18px 20px;
+    margin-bottom:16px;
     box-shadow:var(--shadow);
   }
   .factor-block.pos{border-left:4px solid var(--pos-text);}
   .factor-block.neg{border-left:4px solid var(--neg-text);}
   .factor-block h4{
-    margin:0 0 8px;
-    font-size:14.5px;
+    margin:0 0 12px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
   }
+  .factor-block.pos h4{color:var(--pos-text);}
+  .factor-block.neg h4{color:var(--neg-text);}
+
   ul.plain{
     margin:0;
     padding-left:18px;
-    font-size:14px;
+    font-size:13.5px;
+    color:var(--text);
   }
-  ul.plain li{margin-bottom:6px;}
+  ul.plain li{
+    margin-bottom:8px;
+    line-height:1.5;
+  }
+  ul.plain li:last-child{margin-bottom:0;}
 
+  /* 시나리오 그리드 스타일 (이미지 양식 호환) */
   .scenario-grid{
     display:grid;
     grid-template-columns:1fr;
     gap:10px;
+    margin-top:12px;
   }
   .scenario{
     border-radius:10px;
-    padding:12px 14px;
-    font-size:14px;
+    padding:14px 16px;
+    font-size:13.5px;
     border:1px solid var(--border);
     background:var(--card);
+    display:flex;
+    align-items:flex-start;
   }
   .scenario b{
     display:inline-block;
-    padding:2px 8px;
+    padding:3px 10px;
     border-radius:6px;
-    font-size:12.5px;
-    margin-right:8px;
+    font-size:12px;
+    margin-right:12px;
+    flex-shrink:0;
   }
   .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
@@ -175,28 +211,12 @@
     background:var(--chip-bg);
     border-radius:10px;
     padding:14px 16px;
-    font-size:14px;
+    font-size:13.5px;
     color:var(--text-soft);
     margin-top:16px;
+    line-height:1.6;
   }
   .callout b{color:var(--text);}
-
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-    gap:10px;
-    margin:14px 0;
-  }
-  .kpi{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 14px;
-    box-shadow:var(--shadow);
-  }
-  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
-  .kpi .value{font-size:18px; font-weight:700;}
-  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
 
   .chart-card{
     margin-top:16px;
@@ -227,7 +247,7 @@
     gap:16px;
   }
 
-  /* 매출구조도(가치 축적 구조) 다이어그램 */
+  /* 매출 구조 다이어그램 */
   .flow-diagram{
     background:var(--card);
     border:1px solid var(--border);
@@ -306,12 +326,12 @@
         9/17 FOMC 25bp 인상(3.75~4.00%)과 CLARITY Act 부결 후속 여파 속에서도, ETH는 $2,350 지지선을 방어하며
         $2,380~$2,450 박스권 소강상태를 이어가고 있습니다. BTC 현물 ETF의 유출세 대비 ETH ETF 유출 규모는 상대적으로
         완만한 형태를 보이고 있으며, 시장의 관심은 9월 25일 예정된 $166억 규모의 Deribit 옵션 만기와
-        10월 초 CPI 발표로 이동 중입니다. 단기적으로는 $2,500 재돌파 여부가 강세 전환의 핵심 조건입니다.
+        10월 초 CPI 발표로 이동 중입니다.
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · ETHUSDT.P (OKX) · 15분봉 / 일봉 — 아래 탭에서 전환 가능</div>
+      <div class="cap">📊 실시간 차트 · ETHUSDT.P (OKX) · 15분봉 / 일봉</div>
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
@@ -322,7 +342,7 @@
           </div>
         </div>
         <div>
-          <div class="cap" style="margin-top:4px;">일봉</div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
           <div class="tv-widget-container">
             <div class="tradingview-widget-container">
               <div id="tv_eth_1d" style="height:100%; width:100%;"></div>
@@ -333,55 +353,132 @@
     </div>
   </header>
 
-  <!-- 1. 원인 (일별 정리) -->
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인 (일별 현황)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:16%">일자</th><th style="width:28%">주요 이슈</th><th>내용 및 시장 영향</th></tr>
-      <tr>
-        <td><b>9/17 (목)</b></td>
-        <td><b>FOMC 25bp 금리인상 확정</b></td>
-        <td>기준금리 3.75~4.00% 인상 발표. 매파적 연말 점도표 여파로 한때 $2,350선 위협받았으나 선반영 인식이 퍼지며 $2,400선 반등 방어 성공.</td>
-      </tr>
-      <tr>
-        <td><b>9/18 (금)</b></td>
-        <td><b>CLARITY Act 부결 후폭풍</b></td>
-        <td>상원 클로처 표결 부결(49-50)에 따른 미 크립토 규제 명확성 지연으로 기관 매수세 이탈. $2,500 저항선 매물 벽 재확인.</td>
-      </tr>
-      <tr>
-        <td><b>9/19 (토)</b></td>
-        <td><b>Circle Arc 메인넷 효과 지속</b></td>
-        <td>Circle 기관용 L1 메인넷 가동 및 기관 결제 인프라 확장 호재 반영. 온체인 수수료 하방 지지력 제공하며 $2,380~2,420 횡보.</td>
-      </tr>
-      <tr>
-        <td><b>9/21 (월)</b></td>
-        <td><b>ETH ETF 자금 유출 둔화</b></td>
-        <td>BTC ETF 대비 ETH ETF 유출 폭이 완화되며 상대적 수급 안정세 보임. 주초 $2,440 공방전 형성.</td>
-      </tr>
-      <tr>
-        <td><b>9/22 (화)</b></td>
-        <td><b>옵션 만기 앞둔 관망세</b></td>
-        <td>9/25 대형 월간 옵션 만기($166억 규모)를 이틀 앞두고 포지션 조율 진행. 거래량 소강상태 속 $2,400 내외 핀닝(Pinning) 흐름.</td>
-      </tr>
-      <tr>
-        <td><b>9/23 (수)</b></td>
-        <td><b>$2,350~$2,450 박스권 공방</b></td>
-        <td>상단 $2,500 저항과 하단 $2,350 지지 사이에서 수급 숨고르기 지속. 9/25 옵션 만기 결과에 따른 방향성 대기 중.</td>
-      </tr>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(원)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>9/17(목)</b>
+            <div class="price-val">3,365,000</div>
+            <div class="chg-tag down">▼ -2.15%</div>
+          </td>
+          <td>
+            <b>FOMC 금리 인상 발표 및 매파적 점도표 후폭풍</b><br>
+            美 FOMC 25bp 인상(3.75~4.00%) 발표 후 연말 매파적 금리 경로 유지에 따라 크립토 시장 전반 약세 동조. 한때 $2,350 위협받았으나 선반영 인식으로 낙폭 일부 회복.
+          </td>
+          <td>이번 주 저점 형성 후 방어</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/18(금)</b>
+            <div class="price-val">3,320,000</div>
+            <div class="chg-tag down">▼ -1.34%</div>
+          </td>
+          <td>
+            <b>CLARITY Act 부결 등 매크로 규제 불확실성 상존</b><br>
+            상원 클로처 표결 부결(49-50)에 따른 미 크립토 규제 명확성 지연으로 기관 매수세 이탈. $2,500 상단 저항 매물 벽 재확인하며 방향성 탐색.
+          </td>
+          <td>저점 다지기 및 상단 저항 확인</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/19(토)</b>
+            <div class="price-val">3,395,000</div>
+            <div class="chg-tag up">▲ +2.26%</div>
+          </td>
+          <td>
+            <b>Circle Arc 메인넷 효과 및 기관 인프라 재료 반등</b><br>
+            Circle 기관용 L1 메인넷 가동 및 기관 결제 인프라 확장 기대감 지속. 온체인 수수료 하방 지지력 제공하며 $2,400 선 재안착 시도.
+          </td>
+          <td>반등 시도 및 $2,400 회복</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/21(월)</b>
+            <div class="price-val">3,420,000</div>
+            <div class="chg-tag up">▲ +0.74%</div>
+          </td>
+          <td>
+            <b>ETH ETF 자금 유출 둔화 속 상대적 수급 안정</b><br>
+            BTC ETF 대비 ETH ETF의 유출 폭이 완화되며 상대적 강세 흐름. 주초 $2,440 공방전 형성하며 견조한 하방 방어력 입증.
+          </td>
+          <td>BTC 대비 상대적 강세 우위</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/22(화)</b>
+            <div class="price-val">3,405,000</div>
+            <div class="chg-tag down">▼ -0.44%</div>
+          </td>
+          <td>
+            <b>옵션 만기 앞둔 관망세 및 박스권 소강상태</b><br>
+            9/25 대형 월간 옵션 만기($166억 규모)를 앞두고 포지션 조율 진행. 거래량 감소 속 $2,400 내외 핀닝(Pinning) 및 횡보 흐름 지속.
+          </td>
+          <td>옵션 만기 대기 포지션 조율</td>
+        </tr>
+      </tbody>
     </table>
 
     <div class="callout">
-      → 9월 17일 FOMC 매파적 금리인상 발표 이후, 이더리움은 <b>$2,350~$2,450 박스권에서 일별 소강상태</b>를 나타내고 있습니다.
-      ETF 자금 유출 둔화와 기관 인프라 재료가 하단을 받치고 있으나, <b>9월 25일 대형 옵션 만기</b>를 앞두고 포지션 관망세가 짙어진 상황입니다.
+      → 이번 주 이더리움은 <b>FOMC 금리 인상 및 규제 불확실성(9/17~18)</b>으로 약세를 보였으나, Circle Arc 인프라 가동과 ETF 유출세 둔화로 저점을 다진 후 <b>$2,350~$2,450 박스권</b>을 형성하고 있습니다.
     </div>
   </section>
 
-  <!-- 2. 이더리움 네트워크 가치·수익구조 (매출구조도) -->
+  <!-- 3. 향후 전망 (이미지 1 양식 독립 섹션 적용) -->
   <section>
-    <h2>2. 이더리움 네트워크 가치 축적 구조 (매출구조도)</h2>
+    <h2>3. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>ETH ETF 자금 유출세 둔화</b> — BTC 현물 ETF 대비 유출 폭이 상대적으로 완화되며 하방 수급 방어력 형성</li>
+        <li><b>Circle Arc 메인넷 가동 및 기관 인프라 연동</b> — L1 결제 및 기관 사용성 확대에 따른 중장기 가치 상승 기반 지속</li>
+        <li><b>스테이킹 비율 32% 수준 유지</b> — 전체 발행 물량의 구조적 잠김(Lock-up)으로 시중 유통 유동성 축소 지속</li>
+        <li><b>$2,350 단기 지지선 작동</b> — FOMC 및 규제 불확실성 악재 소화 과정에서 견조한 저점 매수세 입증</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>9/25 Deribit 옵션 만기 경계감</b> — $166억 규모의 비트코인·이더리움 월간 옵션 만기를 앞둔 단기 변동성 확대 및 거래량 감소</li>
+        <li><b>$2,500 상단 저항선 억제</b> — 강력한 매물 벽으로 인해 반등 모멘텀 제한 및 박스권 소강상태 지속</li>
+        <li><b>미국 규제 명확성 지연 (CLARITY Act 부결)</b> — 상원 표결 부결에 따라 기관 자금의 전면 유입 속도 둔화 우려</li>
+        <li><b>완만한 인플레이션 구조 지속</b> — 소각량 대비 검증자 보상 발행량이 상회하며 연간 약 +0.23% 완만한 공급 증가 상태</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:20px; font-size:15px; color:var(--text);">시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull">
+        <b>강세</b>
+        <span>옵션 만기 통과 후 $2,500 종가 안착 성공 시 $2,650~$2,800 단기 상방 목표 진입, ETF 순유입 전환 동반 필수</span>
+      </div>
+      <div class="scenario base">
+        <b>기본</b>
+        <span>$2,350~$2,480 박스권 내 모멘텀 탐색. 9/25 옵션만기 소화 및 10/2 CPI 발표를 대기하며 관망세 지속</span>
+      </div>
+      <div class="scenario bear">
+        <b>약세</b>
+        <span>$2,350 지지선 이탈 시 50일 EMA($2,220) 지지 테스트 진행, 하향 붕괴 시 $2,050~$2,100 구간까지 하방 열림</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. 이더리움 가치 축적 구조 -->
+  <section>
+    <h2>4. 이더리움 네트워크 가치 축적 구조 (매출구조도)</h2>
     <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
-      이더리움은 전통적 기업의 '매출'은 없지만, 네트워크 사용에 대한 수수료가 소각(공급 감소)과 검증자 보상(스테이킹 수익)으로
-      귀속되는 자체적인 가치 축적 구조를 가집니다. L2 롤업 생태계 확장은 이 구조 전체의 사용량 기반을 넓히는 역할을 합니다.
+      이더리움은 네트워크 사용 수수료가 소각(공급 감소)과 검증자 보상(스테이킹 수익)으로 귀속되는 자체 가치 축적 구조를 지닙니다.
     </p>
     <div class="flow-diagram">
       <div class="flow-row">
@@ -399,127 +496,66 @@
         <div class="flow-arrow">→</div>
         <div class="flow-box accent">
           <b>이더리움 메인넷(L1) 가스 사용</b>
-          <div class="desc">2분기 2.039억 건 처리(사상 최대), 25.9 TPS(ATH) — 모든 실행 요청이 최종적으로 L1 수수료 시장에 반영</div>
+          <div class="desc">2분기 2.039억 건 처리, 25.9 TPS — 실행 요청이 L1 수수료 시장에 반영</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 가스비(Base Fee + Priority Fee + MEV)로 정산 ↓</div>
+      <div class="flow-arrow down">↓ 가스비 정산 ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>Base Fee → 소각 (EIP-1559)</b>
-          <div class="desc">소각량이 늘었으나 검증자 발행량(1일 약 1,700 ETH)을 하회하여 연간 약 0.23% 순인플레이션 상태 지속</div>
+          <div class="desc">소각량 대비 신규 발행량이 웃돌아 연간 약 0.23% 완만한 인플레이션 상태</div>
         </div>
         <div class="flow-box reward">
           <b>Priority Fee + MEV → 검증자 보상</b>
-          <div class="desc">스테이킹 참여자(밸리데이터)에게 우선수수료·MEV·발행 보상 지급 — 스테이킹 비율 32% 수준 유지로 유통 유동성 축소</div>
-        </div>
-      </div>
-      <div class="flow-arrow down">↓</div>
-      <div class="flow-row">
-        <div class="flow-box">
-          <b>순 공급 변화 (발행 − 소각)</b>
-          <div class="desc">현재는 완만한 인플레이션 국면(연 +0.23%). 추가적인 온체인 트랜잭션 급증 시 디플레이션 전환 가능</div>
+          <div class="desc">스테이킹 참여자에게 보상 지급 — 스테이킹 비율 32% 유지로 유통 유동성 잠김</div>
         </div>
       </div>
     </div>
-    <div class="callout">
-      → 온체인 트랜잭션 수수료 증가와 높은 스테이킹 비율(32%)은 ETH 유통 공급량을 매력적으로 억제하고 있으나,
-      소각량이 신규 발행량을 완벽히 상쇄하지 못해 <b>연 0.23% 수준의 완만한 인플레이션</b>을 기록 중입니다.
-      상승 모멘텀 완성을 위해서는 온체인 활동 가속을 통한 <b>소각량 증대(디플레이션 전환)</b>가 수급상 핵심 과제입니다.
-    </div>
   </section>
 
-  <!-- 3. 향후 전망 -->
+  <!-- 5. 주요 일정 (이미지 2 양식 독립 섹션 적용) -->
   <section>
-    <h2>3. 향후 전망</h2>
-
-    <div class="kpi-grid">
-      <div class="kpi">
-        <div class="label">핵심 저항</div>
-        <div class="value">$2,500</div>
-        <div class="sub">돌파 실패 반복 구간, 돌파 안착 시 $2,650~$2,800 상방 열림</div>
-      </div>
-      <div class="kpi">
-        <div class="label">즉시 지지</div>
-        <div class="value">$2,350</div>
-        <div class="sub">박스권 하단 단기 지지선, 이탈 시 조정 심화 가능성</div>
-      </div>
-      <div class="kpi">
-        <div class="label">50일 EMA</div>
-        <div class="value">~$2,220</div>
-        <div class="sub">$2,350 이탈 시 2차 기술적 주요 방어선</div>
-      </div>
-    </div>
-
-    <div class="factor-block pos">
-      <h4>🟢 긍정적 요인</h4>
-      <ul class="plain">
-        <li>ETH ETF 유출세 둔화 및 BTC 대비 상대적 수급 우위 유지</li>
-        <li>스테이킹 비율 32% 수준으로 유통 시중 물량의 구조적 잠김(Lock-up) 지속</li>
-        <li>Circle Arc 메인넷 가동 및 L2 생태계 활성화를 통한 중장기 실사용 기반 확대</li>
-        <li>$2,350 구간에서의 견조한 저점 매수세 형성</li>
-      </ul>
-    </div>
-
-    <div class="factor-block neg">
-      <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain">
-        <li>9/25 Deribit 옵션 만기($166억 규모) 앞둔 단기 변동성 확대 및 시장 경계감</li>
-        <li>$2,500 저항선 상단 억제에 따른 강세 모멘텀 부재</li>
-        <li>미국 크립토 법안(CLARITY Act) 지연에 따른 기관 자금 전면 유입 속도 둔화</li>
-        <li>검증자 보상 발행량이 소각량을 상회하는 연 +0.23% 순인플레이션 상태</li>
-      </ul>
-    </div>
-
-    <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>옵션 만기 통과 후 $2,500 종가 안착 성공 시 $2,650~$2,800 단기 목표 진입, ETF 순유입 전환 필수</div>
-      <div class="scenario base"><b>기본</b>$2,350~$2,480 박스권 내 모멘텀 탐색, 9/25 옵션만기 통과 및 10/2 CPI 발표 대기하며 횡보</div>
-      <div class="scenario bear"><b>약세</b>$2,350 이탈 시 50일 EMA($2,220) 지지 테스트, 하향 붕괴 시 $2,050~$2,100 선까지 하방 열림</div>
-    </div>
-  </section>
-
-  <!-- 4. 주요일정 -->
-  <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>지속</td>
-        <td>스팟 ETH ETF 일별 자금 흐름 — 유출세 둔화 확인 중, 순유입 재전환 여부가 반등의 핵심 조건</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) <b>[발표 완료]</b></td>
-        <td>FOMC 금리결정 — 25bp 인상 확정(3.75~4.00%), 시장 매파적 기조 소화 완료</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 25일 (금) 오후 5:00 (추정)</td>
-        <td>Deribit 비트코인·이더리움 월간 옵션 만기 — 약 $166억 규모, 만기 직전/직후 감마 스퀴즈 및 변동성 주의</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 28일 (월)</td>
-        <td>Glamsterdam 업그레이드 Sepolia 테스트넷 포크 예정 — 메인넷 4분기 목표 개발 진행 점검</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 2일 (금) 밤 9:30</td>
-        <td>미국 9월 소비자물가지수(CPI) — 9월 금리 인상 이후 첫 물가 지표, 10월 금리 향방 결정</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (10/27~28 회의) — 추가 금리 경로 및 매파적 기조 지속성 확인</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
+      <thead>
+        <tr>
+          <th style="width:28%;">일정 (KST)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:16%;">중요도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>지속</b></td>
+          <td>스팟 ETH ETF 일별 자금 흐름 — 유출세 둔화 확인 중이며, 순유입 재전환 여부가 반등의 핵심 조건</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>9월 25일 (금) 오후 5:00</b></td>
+          <td>Deribit 비트코인·이더리움 월간 옵션 만기 — 약 $166억 규모, 만기 직전/직후 감마 스퀴즈 및 변동성 주의</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>9월 28일 (월) (예정)</b></td>
+          <td>Glamsterdam 업그레이드 Sepolia 테스트넷 포크 진행 — 메인넷 4분기 적용을 위한 개발 검증 점검</td>
+          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 2일 (금) 밤 9:30</b></td>
+          <td>미국 9월 소비자물가지수(CPI) 발표 — 9월 금리 인상 이후 첫 물가 지표, 연준 정책 방향 영향</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td>FOMC 금리결정 발표 (10/27~28 회의) — 매파적 금리 기조 유지 여부 및 추세 확인</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+      </tbody>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 오전 11:30 (KST) ·
-    가격 및 시황 수치는 2026.09.23 기준 최신 보도 반영, 온체인 사용량 지표는 2분기(Token Terminal) 기준입니다.
-    상단 차트는 TradingView 실시간 위젯으로 브라우저에서 열면 실시간 갱신됩니다. 가격은 OKX 퍼블릭 API를 통해 30초마다 자동 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 (KST) 기준. 상단 차트는 TradingView 실시간 위젯이며, 가격 수치는 OKX 퍼블릭 API를 통해 30초마다 자동 갱신됩니다.
   </footer>
 
 </div>
@@ -550,7 +586,6 @@
   });
 </script>
 <script type="text/javascript">
-  // 실시간 ETH 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
   (function(){
     const priceEl = document.getElementById('ethPriceMain');
     const changeEl = document.getElementById('ethPriceChange');
@@ -587,11 +622,10 @@
         }
       }catch(err){
         if(timeEl){
-          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요) · 마지막 표시값 유지';
+          timeEl.textContent = '실시간 가격 갱신 실패 · 마지막 표시값 유지';
         }
         const dot = document.getElementById('ethLiveDot');
         if(dot){ dot.style.background = '#c53030'; }
-        console.error('ETH live price fetch error:', err);
       }
     }
 
