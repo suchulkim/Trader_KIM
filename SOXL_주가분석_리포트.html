@@ -222,6 +222,11 @@
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
 
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -236,22 +241,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>SOXL 분석 리포트<span class="ticker">Direxion Daily Semiconductor Bull 3X · Perpetual: SOXLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$121.82</div>
-        <div class="chg-up">9/11 종가 +5.23% (전일 $115.76) · 3거래일 연속 큰 폭 등락 이어지는 중</div>
+        <div class="price-main"><span id="live-price">$123.67</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +7.71% (+$8.85) · 4거래일 연속 상승, 9/14 저점 대비 +22.3%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SOXLUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/2 $106.35 이후 반도체 섹터 전반의 롤러코스터 장세(하락→상승→급락→급반등)를 3배 레버리지로 증폭하며
-        9/11 하루 만에 +5.23% 급등. 6월 사상 최고치($302) 대비로는 여전히 약 -60% 조정된 구간이며, $100~$125
-        구간에서 변동성이 계속 확대되고 있습니다. 9/12(토) 저녁 발표된 AI 업계발 "속도조절(pacing)" 논쟁이
-        월요일(9/15, KST) 반도체 대형주 전반에 영향을 줄 수 있어 주시가 필요합니다.
+        9/14 Anthropic CEO의 "AI 개발 속도조절" 발언과 유가·금리 급등이 겹치며 하루 만에 -16.98% 폭락했으나,
+        FOMC(9/16)를 무난히 소화한 뒤 9/17~18 이틀 연속 두 자릿수 상승폭(+10.44%, +7.71%)을 기록하며 낙폭을
+        모두 만회했습니다. 3배 레버리지 특성상 반도체 대형주(AMD·MU 등)의 반등이 그대로 증폭됐습니다.
+        6월 사상 최고치($302) 대비로는 여전히 약 -59% 조정된 구간입니다.
       </div>
     </div>
 
@@ -274,87 +280,92 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/14 폭락($101.13) 이후 4거래일 연속 상승하며 $123.67까지 급반등, 2주 만에 낙폭을 대부분 만회. $100~$125 구간의 변동성이 그대로 재현됨.<br>
+      <b>15분봉</b>: 9/17~18 거래량 동반 급등(각 5,554만주·4,344만주)하며 강한 반등 탄력 확인, 3배 레버리지 특유의 급등락이 이번 주에도 재현.
+    </div>
+  </section>
+
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>반도체 섹터 전반 롤러코스터 장세의 3배 증폭</b></td>
-        <td>이번 주 NVDA·AMD·MU·SK하이닉스 등 개별 반도체株가 하루 ±2~5%대 급등락을 반복했고(매크로 불확실성·
-        AI 수요 기대가 교차), SOXL은 이를 3배로 증폭하며 9/10 조정 후 9/11 +5.23% 급반등하는 등 극심한 변동성을 보임</td>
-        <td>3배 레버리지 특성상 기초지수보다 훨씬 큰 폭의 하루 등락 발생</td>
+        <td><b>9/14(월)</b><br>$101.13<br><span style="color:var(--up); font-weight:600;">▼ -16.98%</span></td>
+        <td>Anthropic CEO Dario Amodei의 "AI 개발 속도조절" 에세이 발표 + OpenAI·xAI 수장 동조, 여기에 국제유가 급등·10년물 국채금리 19년래 최고치까지 겹치며 반도체 대형주 전반 급락 — 3배 레버리지로 증폭되며 이번 주 최대 낙폭</td>
+        <td>기초지수 대비 약 3배 증폭된 폭락, 저점 형성</td>
       </tr>
       <tr>
-        <td><b>TSMC 8월 매출 사상 최대치에도 반도체株 디커플링</b></td>
-        <td>9/10 TSMC가 8월 매출 사상 최대치(+53.3% YoY)를 발표했음에도 같은 날 NVDA·AMD·Intel 등 AI칩 관련주는
-        오히려 하락하는 이례적 흐름이 나타나, SOXL도 개별 호재와 무관하게 조정받는 구간을 거침</td>
-        <td>펀더멘털 호재가 매크로 우려에 압도되는 국면임을 재확인</td>
+        <td><b>9/15(화)</b><br>$102.32<br><span style="color:var(--down); font-weight:600;">▲ +1.18%</span></td>
+        <td>낙폭과대 인식 속 소폭 반등 시도, Meta 자체 AI칩 개발 보도 등으로 반도체 섹터 전반은 여전히 조심스러운 흐름</td>
+        <td>저점 다지기</td>
       </tr>
       <tr>
-        <td><b>8월 CPI 예상외 강세 → FOMC 금리 인상 우려</b></td>
-        <td>9/11 발표된 8월 CPI가 예상보다 강해 9/17 FOMC의 25bp 금리 <b>인상</b> 확률이 약 70%까지 상승 — 고밸류
-        성장주·반도체 섹터 전반에 할인율 부담으로 작용</td>
-        <td>9/17(KST) FOMC 결과가 단기 최대 변수, 레버리지 상품 특성상 민감도 최고 수준</td>
+        <td><b>9/16(수)</b><br>$103.97<br><span style="color:var(--down); font-weight:600;">▲ +1.61%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 반도체 대형주가 견조하게 방어하며 소폭 상승</td>
+        <td>매파적 FOMC를 무난히 소화, 반등 시작점</td>
       </tr>
       <tr>
-        <td><b>AI 업계발 "속도조절(pacing)" 논쟁 부상</b></td>
-        <td>9/12(현지) Anthropic CEO Dario Amodei가 "AI 개발 속도를 의도적으로 늦춰야 한다"는 에세이를 발표,
-        OpenAI·xAI 수장도 동조. 시장 일각에서는 "월요일 AI 반도체株가 큰 폭 조정받을 수 있다"는 경고가 나오는 상태</td>
-        <td>월요일(9/15, KST 기준) 개장 시 반도체 대형주 전반의 변동성이 확대될 가능성 — SOXL은 가장 민감하게 반응할 상품군</td>
+        <td><b>9/17(목)</b><br>$114.82<br><span style="color:var(--down); font-weight:600;">▲ +10.44%</span></td>
+        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등 + AMD의 GPU·CPU 가격 인상 보도, TSMC 매출 가속화 기대 등이 반도체 섹터 전반 랠리로 확산 — 3배 레버리지로 증폭되며 이번 주 최대 상승폭</td>
+        <td>기초지수 대비 약 3배 증폭된 반등</td>
       </tr>
       <tr>
-        <td><b>6월 고점 대비 장기 조정 국면 지속</b></td>
-        <td>6월 사상 최고치($302) 대비 약 -60% 조정된 상태에서 $100~$125 구간을 오가며 저점 확인 시도가 이어지는 중</td>
-        <td>레버리지 상품 특성상 박스권 등락 시 데일리 리밸런싱 감가 누적 위험</td>
+        <td><b>9/18(금)</b><br>$123.67<br><span style="color:var(--down); font-weight:600;">▲ +7.71%</span></td>
+        <td>반도체 대형주 전반의 강세 지속(NVDA·AMD·AVGO·MU·TSM 동반 상승), 콜옵션 매수세 확산 — 4거래일 연속 상승 마무리, 거래량도 4,344만주로 평소 대비 높은 수준</td>
+        <td>2주 만에 저점 대비 +22.3% 반등</td>
       </tr>
     </table>
 
     <div class="callout">
-      → SOXL은 <b>반도체 섹터 전반의 급격한 등락(TSMC 실적 호재 vs 반도체株 하락 디커플링, 8월 CPI發 FOMC 인상
-      우려)</b>을 3배로 증폭하며 최근 3거래일간 큰 폭의 변동성을 보였습니다. 여기에 <b>9/12 AI 업계발 속도조절
-      논쟁</b>이라는 새로운 변수가 더해지면서, 월요일(9/15, KST) 개장 시 반도체 대형주 전반의 방향성이 SOXL의
-      단기 향방을 결정지을 핵심 변수로 부상했습니다.
+      → 이번 주는 <b>AI 속도조절 우려 + 유가·금리 급등(9/14, -16.98%)</b>이라는 3배 레버리지 특유의 폭락으로 시작했지만,
+      FOMC를 소화한 뒤 <b>9/17~18 이틀 연속 두 자릿수 반등(+10.44%, +7.71%)</b>하며 낙폭을 모두 만회했습니다.
+      기초지수(반도체 대형주)의 -5%대 낙폭과 +3~5%대 반등이 SOXL에서는 각각 -17%, +10%대로 증폭되는 <b>3배
+      레버리지 효과</b>가 이번 주에도 뚜렷하게 나타났습니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>AI·HBM·데이터센터向 반도체 수요는 구조적으로 견조 — TSMC 8월 매출 사상 최대치(+53.3% YoY) 등 펀더멘털 지표는 계속 신기록 경신</li>
-        <li>기초지수 구성종목(NVDA·AVGO·AMD·MU·TSM 등) 실적 자체는 여전히 견조 — 최근 조정은 밸류에이션·매크로 재평가 성격이 강함</li>
-        <li>고점(6월, $302) 대비 약 60% 조정으로 밸류에이션 부담 상당 부분 완화</li>
-        <li>3배 레버리지 특성상 반도체 지수 반등 시 빠른 회복 가능 — 9/11 하루 만에 +5.23% 반등 사례</li>
-        <li>중장기 반도체 슈퍼사이클·AI 인프라 투자(CAPEX) 스토리는 아직 유효하다는 시각 존재</li>
+        <li>AI·HBM·데이터센터向 반도체 수요는 구조적으로 견조 — AMD GPU·CPU 가격 인상, TSMC 매출 가속화 기대 등 펀더멘털 지표 지속 개선</li>
+        <li>기초지수 구성종목(NVDA·AVGO·AMD·MU·TSM 등) 실적 자체는 여전히 견조, 9/17~18 이틀간 반도체 섹터 전반 강한 랠리</li>
+        <li>고점(6월, $302) 대비 약 59% 조정으로 밸류에이션 부담 상당 부분 완화</li>
+        <li>3배 레버리지 특성상 반도체 지수 반등 시 빠른 회복 가능 — 9/17~18 이틀 만에 +22.3% 반등 사례로 재확인</li>
+        <li>FOMC(9/16) 인상을 무난히 소화 — "매파적 이벤트도 이미 알려진 재료"라는 인식이 반등의 핵심 동력</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>3배 레버리지</b> — 하락 시 손실 가속, 데일리 리밸런싱으로 장기 보유 불리. 최근 며칠새 -2%대~+5%대 등 극심한 등락 반복</li>
-        <li>9/12 AI 업계발 "속도조절" 논쟁 — 월요일(9/15 KST) 반도체 대형주 급락 경고가 시장 일각에서 제기된 상태, 아직 실제 반응은 미확인</li>
-        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률 약 70%까지 상승 — 레버리지 성장주 최대 민감 변수</li>
-        <li>TSMC 실적 호재에도 반도체株가 하락하는 디커플링 현상 — 펀더멘털만으로 방향성을 예측하기 어려운 국면</li>
+        <li><b>3배 레버리지</b> — 하락 시 손실 가속, 데일리 리밸런싱으로 장기 보유 불리. 9/14 하루 만에 -16.98% 폭락 사례가 재확인시킨 리스크</li>
+        <li>AI 업계발 "속도조절(pacing)" 논쟁 — Anthropic·OpenAI·xAI 수장들의 우려 표명이 재차 불거질 경우 유사한 급락 반복 가능</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
+        <li>Meta의 자체 AI칩 개발 등 빅테크의 Nvidia 의존도 축소 움직임 — 장기 반도체 수요 구조 변화 가능성</li>
         <li>중국의 자체 반도체 장비·메모리 경쟁 심화 우려, 지정학 리스크 상존</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>월요일 AI 속도조절 우려가 과도한 것으로 확인되고 FOMC 동결 시 $130~$150 구간 재도전</div>
-      <div class="scenario base"><b>기본</b>$95~$125 박스권. AI 속도조절 논쟁·FOMC(9/17) 결과를 소화하며 변동성 장세 지속</div>
-      <div class="scenario bear"><b>약세</b>월요일 AI 관련주 급락 현실화 + FOMC 금리 인상 시 레버리지 효과로 $80대까지 급락 가능</div>
+      <div class="scenario bull"><b>강세</b>반도체 랠리 지속 + 10월 FOMC(10/29) 안정 확인 시 $140~$160 구간 재도전</div>
+      <div class="scenario base"><b>기본</b>$100~$130 박스권. AI 속도조절 논쟁 재부각 여부·10월 FOMC 결과를 소화하며 변동성 장세 지속</div>
+      <div class="scenario bear"><b>약세</b>AI 관련주 급락 재현 또는 추가 금리 인상 시 레버리지 효과로 $80대까지 급락 가능</div>
     </div>
   </section>
 
   <!-- 3. 상품 구조 -->
   <section>
-    <h2>3. 상품 구조</h2>
+    <h2>4. 상품 구조</h2>
     <table>
       <tr><th>항목</th><th class="num">내용</th><th class="num">비고</th></tr>
       <tr><td>📦 상품</td><td class="num">Direxion Daily Semiconductor Bull 3X</td><td class="num">NYSE Semiconductor Index 일일 3배 추종</td></tr>
@@ -412,39 +423,39 @@
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 15일(월) 개장</td>
-        <td>AI 업계발 "속도조절(pacing)" 논쟁이 반도체 대형주 전반에 미칠 영향 확인 — 일부 시장 관찰자는 큰 폭 조정 가능성 경고</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td><b>FOMC 금리결정</b> (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승, 레버리지 성장주 민감도 최고</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
         <td>10월 1일(목) 새벽 (미국 9/30 장 마감 후)</td>
-        <td><b>마이크론(MU) 회계연도 4분기 실적 발표</b> — 메모리·HBM 수요·가격 가이던스 확인, 노조 협상 결과(9/15~16 투표)도 변수</td>
+        <td><b>마이크론(MU) 회계연도 4분기 실적 발표</b> — 메모리·HBM 수요·가격 가이던스 확인</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>10월 15일 전후 (미확정)</td>
-        <td>TSMC Q3 2026 실적 발표 예상 — 파운드리 업황 재확인</td>
+        <td>10월 15일 (목) (확정)</td>
+        <td>TSMC Q3 2026 실적 발표 — 파운드리 업황 재확인</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 레버리지 성장주 민감도 최고</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>지속</td>
-        <td>NVDA·AMD·AVGO·TSM·MU·SK하이닉스 등 구성종목 개별 뉴스·AI CAPEX 헤드라인 주시</td>
+        <td>NVDA·AMD·AVGO·TSM·MU·SK하이닉스 등 구성종목 개별 뉴스·AI CAPEX 헤드라인, AI 속도조절 논쟁 재부각 여부 주시</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. SOXL은 3배 레버리지 상품으로 원금 손실 위험이 매우 큽니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성).
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. SOXL은 3배 레버리지 상품으로 원금 손실 위험이 매우 큽니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산).
   </footer>
 
 </div>
@@ -488,6 +499,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · SOXL-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "SOXL-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SOXLUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
