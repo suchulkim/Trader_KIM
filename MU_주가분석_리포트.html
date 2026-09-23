@@ -260,6 +260,11 @@
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
 
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -274,21 +279,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>Micron (MU) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: MUUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$975.26</div>
-        <div class="chg-down">9/11 종가 -0.22% · $1,000 심리적 저항선 근접, 8월 고점($971.66) 상회한 사상 최고 수준</div>
+        <div class="price-main"><span id="live-price">$1,015.80</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +3.92% (+$38.30) · 시간외 +0.19% · 이틀 연속 대형 양봉(+5.50%, +3.92%)으로 $1,000 재탈환</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX MUUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/8~9/11 반도체 섹터 전반의 큰 폭 등락(하락→+2.51%→하락→소폭 조정) 속에서도 견조한 흐름을 이어가는 중. 가장 큰
-        변수였던 대만 노조 파업 리스크는 9/10 사측이 최대 68개월치 급여(현금 50%+주식 50%) 수정안을 제시하며 완화 조짐을
-        보이고 있고, 9/15~16 조합원 투표 결과가 다음 분수령입니다. 시가총액 약 $1.08T~$1.1T 수준.
+        9/14 유가 급등·국채금리 19년래 최고치로 $924까지 조정받았으나, 9/17~18 이틀간 강하게 반등하며 사상 최고가($1,255,
+        6/25) 재도전 기대감이 커지고 있습니다. 다만 대만 노조는 9/10 사측의 사상 최대 보너스(35~68개월치 급여) 제안을
+        <b>거부</b>하고 영업이익 15% 배분을 요구하며 9/18·21 중재 시한을 제시한 상태로, 파업 리스크는 아직 해소되지
+        않았습니다. 시가총액 약 $1.15T 수준.
       </div>
     </div>
 
@@ -311,54 +318,59 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/14 저점($924.03) 이후 강한 역헤드앤숄더 패턴을 그리며 반등, 9/17~18 이틀간 거래량 동반 급등(각 2,209만주·3,566만주)으로 $1,000 재탈환. 1차 저항은 9/8 고점($1,041), 돌파 시 사상 최고가($1,255) 시야.<br>
+      <b>15분봉</b>: 9/17~18 상승 탄력이 강하게 유지되는 모습, RSI는 58 부근으로 과매수 부담은 아직 크지 않은 수준.
+    </div>
+  </section>
+
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>대만 노조 파업 리스크 완화 조짐</b></td>
-        <td>9/4 1차 노사 협상은 결렬됐으나, 9/10 사측이 2026회계연도 성과급으로 최대 68개월치 급여(현금 50%+주식 50%,
-        최저 현금 보상 NT$170만)를 제시하는 수정안을 발표. 노조원 투표는 9/15~16 예정 — 사상 최대 규모 보너스로
-        타결 가능성이 높아진 것으로 시장은 해석</td>
-        <td>메모리 최대 생산기지(대만)의 생산 차질 리스크가 완화되며 주가에 안도감 제공</td>
+        <td><b>9/14(월)</b><br>$924.03<br><span style="color:var(--up); font-weight:600;">▼ -5.25%</span></td>
+        <td>국제유가 급등·10년물 국채금리 19년래 최고치 기록 — 반도체·AI 인프라주 전반 동반 급락(AMD -4.40%, AVGO -4.77% 등), 이번 주 최대 낙폭 기록</td>
+        <td>이번 주 저점 형성</td>
       </tr>
       <tr>
-        <td><b>메모리 반도체 섹터 전반 롤러코스터 장세</b></td>
-        <td>9/8 하락 → 9/9 +2.51%(AI칩 수요 기대) → 9/10 하락(반도체 섹터 전반 조정) → 9/11 -0.22%로 소폭 조정 이어지는
-        큰 변동성. Micron·SanDisk·SK하이닉스가 거의 동시에 오르내리는 패턴</td>
-        <td>개별 펀더멘털보다 메모리 업종 전체 심리가 단기 주가를 좌우</td>
+        <td><b>9/15(화)</b><br>$927.60<br><span style="color:var(--down); font-weight:600;">▲ +0.39%</span></td>
+        <td><b>대만 노조, 사측의 보너스안(35~68개월치 급여) 거부</b> — 영업이익의 15%를 분기별로 배분하는 항구적 이익공유제를 요구하며 기자회견, "9/18·21 중재에서 구체안 없으면 파업 투표로 간다"고 경고. 다만 주가는 낙폭과대 인식 속 소폭 반등</td>
+        <td>노사 갈등 고조에도 주가 영향은 제한적</td>
       </tr>
       <tr>
-        <td><b>HBM4 매출 첫 $1B 돌파 등 펀더멘털 강세 지속</b></td>
-        <td>1분기(2026년) Nvidia Vera Rubin向 36GB 12-High HBM4 양산 출하 시작, 관련 누적 매출이 이미 $1B를 넘어섰다고
-        발표. 램프업 속도는 기존 HBM3E 대비 약 2배로 평가</td>
-        <td>차세대 AI 플랫폼향 공급 확대가 재확인되며 밸류에이션을 뒷받침</td>
+        <td><b>9/16(수)</b><br>$926.55<br><span style="color:var(--up); font-weight:600;">▼ -0.11%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상, 반도체 대형주 전반 거의 보합 방어</td>
+        <td>매파적 FOMC를 무난히 소화</td>
       </tr>
       <tr>
-        <td><b>8월 CPI 예상외 강세 → 금리 인상 우려 부각</b></td>
-        <td>9/11 발표된 8월 CPI가 예상보다 강해 9/17 FOMC의 25bp 금리 <b>인상</b> 확률이 약 70%까지 상승 — 반도체 대형주
-        전반에 할인율 부담으로 작용</td>
-        <td>9/17(KST) FOMC 결과가 단기 최대 매크로 변수로 남아있는 상태</td>
+        <td><b>9/17(목)</b><br>$977.50<br><span style="color:var(--down); font-weight:600;">▲ +5.50%</span></td>
+        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등 + 노조 중재 1차 시한(9/18)을 앞두고 파국 우려보다 타결 기대가 우세하며 저가 매수세 유입, AI/HBM 메모리 수요 강세 스토리 재부각</td>
+        <td>메모리株 중 가장 강한 반등폭 기록</td>
       </tr>
       <tr>
-        <td><b>$1,000 심리적 저항선 근접</b></td>
-        <td>8월 고점($971.66)을 웃도는 $975선까지 상승하며 사상 최고 수준에 근접, $1,000 돌파 여부가 단기 관심사로 부상</td>
-        <td>돌파 시 추가 상승 모멘텀, 실패 시 차익실현 매물 출회 가능성</td>
+        <td><b>9/18(금)</b><br>$1,015.80<br><span style="color:var(--down); font-weight:600;">▲ +3.92%</span></td>
+        <td>이틀 연속 대형 양봉으로 $1,000 재탈환, 거래량 3,566만주로 평소 대비 급증 — 역헤드앤숄더 패턴 완성 기대감과 AI 메모리 슈퍼사이클 지속 전망이 겹치며 사상 최고가 재도전 기대감 확산. 노조 1차 중재 시한(9/18) 관련 파업 선언 등 부정적 뉴스는 아직 나오지 않음</td>
+        <td>9/8 저항($1,041) 근접, 2거래일 합산 약 +10% 급등</td>
       </tr>
     </table>
 
     <div class="callout">
-      → MU는 <b>대만 노조 파업 리스크가 사측의 파격적 보너스 제시(9/10)로 완화</b>되고 <b>HBM4 매출 $1B 돌파</b> 등
-      펀더멘털이 견조하게 유지되면서, 반도체 섹터 전반의 매크로 변동성(8월 CPI發 FOMC 인상 우려) 속에서도 상대적으로
-      선방하며 $1,000 심리적 저항선에 근접했습니다. 다만 <b>9/15~16 노조원 투표 결과</b>가 최종 확정되기 전까지는
-      리스크가 완전히 해소된 것은 아닙니다.
+      → 이번 주는 <b>유가·금리발 조정(9/14, -5.25%)</b>으로 시작했지만, FOMC 인상을 무난히 소화한 뒤 <b>9/17~18 이틀간
+      강한 반등(+5.50%, +3.92%)</b>하며 낙폭을 모두 만회하고 $1,000을 재탈환했습니다. 다만 <b>대만 노조가 사측의
+      사상 최대 보너스 제안을 거부(9/15~16)</b>하고 영업이익 15% 배분을 요구하며 파업 가능성을 열어둔 상태로,
+      9/18·21 중재 시한의 결과가 아직 확정되지 않았다는 점은 주가가 사상 최고가에 근접할수록 더 예민하게 반응할
+      수 있는 잠재 변수로 남아 있습니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
@@ -366,19 +378,19 @@
         <li>AI/HBM 수요 폭증 — Q3 FY2026 매출 $41.46B(+346% YoY, +74% QoQ), 매출총이익률 84.6%(역대 최고), Non-GAAP EPS $25.11로 컨센서스 대폭 상회</li>
         <li>Q4 FY2026 가이던스: 매출 $50B±$1B(+21% QoQ), 매출총이익률 ~86%, EPS $31±$1 — 시장 기대치 상회, 애널리스트들은 FY2026 매출 전망을 $113.4B→$129.6B로 상향</li>
         <li>HBM4 고volume 양산 본격화, 관련 매출 $1B 돌파, Nvidia Vera Rubin 등 차세대 AI 플랫폼향 공급 확대 중</li>
-        <li>대만 노조에 사상 최대(최대 68개월치) 성과급 제시(9/10) — 파업 리스크 완화 신호, 노조원 투표는 9/15~16</li>
+        <li>9/17~18 이틀 연속 대형 반등(+5.50%, +3.92%)으로 $1,000 재탈환 — 역헤드앤숄더 패턴, RSI 58로 과매수 부담 크지 않음</li>
         <li>애널리스트 Strong Buy 우세, 평균 목표주가 약 $1,510 (상승 여력 존재), FY2027 예상 실적 기준 PER 약 6배로 저평가 주장 지속</li>
-        <li>DRAM·HBM 공급 부족이 2027년까지 지속될 것이라는 컨센서스</li>
+        <li>DRAM·HBM 공급 부족이 2030년까지 지속될 것이라는 컨센서스 확산</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>대만 노조원 투표(9/15~16) 결과 확정 전까지 파업 리스크 완전 해소는 아님 — 부결 시 재협상·파업 국면 재부각 가능</li>
+        <li><b>대만 노조, 사측의 사상 최대 보너스안(35~68개월치 급여)을 거부(9/15~16)</b> — 영업이익 15% 분기별 배분을 요구하며 "9/18·21 중재에서 구체안 없으면 파업 투표"로 경고, 협상은 아직 타결되지 않은 상태</li>
         <li>HBM 시장 점유율 경쟁 심화 — 2026년 2분기 기준 SK하이닉스 50%(1위), 삼성전자 33%(HBM4 조기 양산으로 급등), Micron 18%로 3사 중 유일하게 점유율 하락(Counterpoint)</li>
-        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률 약 70%까지 상승 — 반도체 섹터 전반 할인율 부담</li>
-        <li>메모리 사이클 특성상 급등락 반복 — 최근 4거래일 연속 ±2%대 등락 등 높은 변동성 지속</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
+        <li>메모리 사이클 특성상 급등락 반복 — 최근 5거래일 -5.25%~+5.50% 등 높은 변동성 지속</li>
         <li>중국 반도체 업체들의 경쟁 심화 및 공급 증설 리스크 지속 제기</li>
         <li>밸류에이션이 이미 크게 상승(연초 대비 3배 이상)한 상태라 9/30 실적에서 가이던스 미달 시 변동성 확대 가능</li>
       </ul>
@@ -386,15 +398,15 @@
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>9/15~16 노조 투표 가결(타결) + $1,000 돌파 시 사상 최고가 랠리 지속, 9/30 실적에서 매출 $50B 상회·HBM4 가이던스 상향 확인 시 목표가 $1,300~$1,500 구간 재평가</div>
-      <div class="scenario base"><b>기본</b>$900~$1,000 박스권 등락. 노조 투표 결과와 FOMC(9/17), 9/30 실적 발표를 앞두고 관망 심리 우세</div>
-      <div class="scenario bear"><b>약세</b>노조 투표 부결·파업 현실화 시 생산 차질 우려로 $850 이하 조정, HBM 점유율 하락 추세 지속 시 밸류에이션 재평가 압력으로 추가 조정 가능</div>
+      <div class="scenario bull"><b>강세</b>노조 중재(9/18·21)가 타결로 이어지고 $1,041 저항 돌파 시 사상 최고가($1,255) 재도전, 9/30 실적에서 매출 $50B 상회·HBM4 가이던스 상향 확인 시 목표가 $1,300~$1,500 구간 재평가</div>
+      <div class="scenario base"><b>기본</b>$950~$1,041 박스권 등락. 노조 중재 결과와 9/30 실적 발표를 앞두고 관망 심리와 매수세가 교차</div>
+      <div class="scenario bear"><b>약세</b>노조 중재 결렬·파업 투표 현실화 시 생산 차질 우려로 $900 이하 조정, HBM 점유율 하락 추세 지속 시 밸류에이션 재평가 압력으로 추가 조정 가능</div>
     </div>
   </section>
 
-  <!-- 3. 매출구조/수익구조 -->
+  <!-- 4. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조 (Q3 FY2026, 2026.06.25 발표)</h2>
+    <h2>4. 매출구조/수익구조 (Q3 FY2026, 2026.06.25 발표)</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
       <tr><td>📊 Q3 FY2026 매출</td><td class="num">$41.46B</td><td class="num">+346% YoY, +74% QoQ</td></tr>
@@ -472,7 +484,7 @@
         </div>
         <div class="flow-box reward">
           <b>재투자 — 인력 보상(성과급 풀)</b>
-          <div class="desc">대만 노조向 사상 최대 성과급(최대 68개월치, 현금+주식) 협상 진행 중 — 삼성·SK하이닉스식 이익공유 모델 벤치마크</div>
+          <div class="desc">대만 노조向 사상 최대 성과급안 제시(35~68개월치, 9/10)했으나 노조는 거부, 영업이익 15% 분기배분을 요구하며 협상 진행 중 — 삼성·SK하이닉스식 이익공유 모델 벤치마크</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -488,24 +500,19 @@
       → Micron은 <b>AI 서버용 DRAM·HBM 공급</b>이 실적의 핵심(매출의 약 75%)이며, NAND가 나머지(~24%)를 차지합니다.
       HBM4가 고volume 양산에 들어가며 Nvidia 차세대 AI 플랫폼향 공급이 확대되고 있으나,
       HBM 시장에서는 삼성전자가 HBM4 조기 양산으로 점유율을 끌어올린 반면 Micron은 3사 중 유일하게 점유율이 하락해
-      경쟁 강도가 높아지고 있습니다. 벌어들인 막대한 이익 중 일부를 <b>대만 인력에 대한 이익공유형 보상</b>으로
-      배분하는 협상이 진행 중이며, 이는 안정적 생산 기반 유지와 직결되는 구조입니다.
+      경쟁 강도가 높아지고 있습니다. 벌어들인 막대한 이익을 두고 <b>대만 인력과의 이익 배분 비율을 놓고 노사가
+      이견</b>을 좁히지 못하고 있으며, 이는 안정적 생산 기반 유지와 직결되는 구조입니다.
     </div>
   </section>
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>9월 15일(화)~16일(수)</td>
-        <td>대만 Micron 노조원 수정 합의안(최대 68개월치 성과급, 현금+주식) 찬반 투표 — 부결 시 파업 국면 재부각 가능</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승, 반도체·성장주 전반 민감</td>
+        <td>9월 18일·21일 (현지)</td>
+        <td>대만 Micron 노조-사측 중재 시한 — 구체적 진전 없으면 노조가 협상 결렬 선언 후 파업 투표로 이행 경고. 9/18은 이미 지났으나 결과 미확인, 9/21이 다음 분수령</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -514,8 +521,18 @@
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 반도체·성장주 전반 민감</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
         <td>지속</td>
-        <td>HBM4 출하·수율 및 삼성전자·SK하이닉스 점유율 변동 뉴스, Nvidia/클라우드 CAPEX 관련 뉴스</td>
+        <td>HBM4 출하·수율 및 삼성전자·SK하이닉스 점유율 변동 뉴스, Nvidia/클라우드 CAPEX 관련 뉴스, 대만 노조 협상 진행상황</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -527,7 +544,7 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성). Q3 실적은 FY2026 Q3(2026.06.25 발표) 기준, HBM 점유율은 Counterpoint 2026년 2분기 데이터 기준.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산). Q3 실적은 FY2026 Q3(2026.06.25 발표) 기준, HBM 점유율은 Counterpoint 2026년 2분기 데이터 기준. 대만 노조 협상 관련 내용은 공개 보도(Reuters, TrendForce 등) 기준이며 진행 상황에 따라 달라질 수 있습니다.
   </footer>
 
 </div>
@@ -571,6 +588,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · MU-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "MU-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX MUUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
