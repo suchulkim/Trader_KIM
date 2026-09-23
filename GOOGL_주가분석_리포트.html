@@ -1,566 +1,225 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GOOGL 주가 분석 리포트</title>
-<style>
-  :root{
-    --bg:#0e1015;
-    --card:#161a21;
-    --text:#eef0f4;
-    --text-soft:#9aa2b1;
-    --border:#262b35;
-    --accent:#4285f4;
-    --up:#ff6b6b;
-    --down:#5fd188;
-    --pos-bg:#13291c;
-    --pos-text:#5fd188;
-    --neg-bg:#2c1717;
-    --neg-text:#ff8080;
-    --chip-bg:#1c2028;
-    --table-head:#1a1e26;
-    --shadow: 0 1px 3px rgba(0,0,0,0.4);
-  }
-  *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;
-  }
-  .wrap{
-    max-width:1100px;
-    margin:0 auto;
-    padding:28px 18px 60px;
-  }
-  header.title-block{
-    margin-bottom:22px;
-  }
-  .eyebrow{
-    font-size:13px;
-    color:var(--text-soft);
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 10px;
-    align-items:center;
-  }
-  h1{
-    font-size:26px;
-    margin:6px 0 4px;
-    letter-spacing:-0.3px;
-  }
-  h1 .ticker{
-    color:var(--text-soft);
-    font-weight:500;
-    font-size:18px;
-    margin-left:6px;
-  }
-  .price-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px 20px;
-    box-shadow:var(--shadow);
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px 28px;
-    align-items:center;
-    margin-top:14px;
-  }
-  .price-main{
-    font-size:30px;
-    font-weight:700;
-    letter-spacing:-0.5px;
-  }
-  .chg-up{color:var(--up); font-weight:600;}
-  .chg-down{color:var(--down); font-weight:600;}
-  .price-sub{
-    font-size:13.5px;
-    color:var(--text-soft);
-    max-width:560px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>애플(AAPL) 주가 분석 리포트</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-blue: #38bdf8;
+            --accent-green: #4ade80;
+            --accent-red: #f87171;
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+            --border-color: #334155;
+        }
 
-  section{
-    margin-top:36px;
-  }
-  h2{
-    font-size:18.5px;
-    margin:0 0 14px;
-    padding-bottom:8px;
-    border-bottom:2px solid var(--text);
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  h3{
-    font-size:15.5px;
-    margin:20px 0 10px;
-    color:var(--text-soft);
-  }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
 
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:hidden;
-    font-size:14px;
-  }
-  th, td{
-    padding:11px 12px;
-    text-align:left;
-    border-bottom:1px solid var(--border);
-    vertical-align:top;
-  }
-  th{
-    background:var(--table-head);
-    font-weight:600;
-    font-size:13px;
-    color:var(--text-soft);
-  }
-  tr:last-child td{border-bottom:none;}
-  td.num{font-variant-numeric: tabular-nums;}
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            padding: 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
 
-  .factor-block{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:16px 18px;
-    margin-bottom:14px;
-    box-shadow:var(--shadow);
-  }
-  .factor-block.pos{border-left:4px solid var(--pos-text);}
-  .factor-block.neg{border-left:4px solid var(--neg-text);}
-  .factor-block h4{
-    margin:0 0 8px;
-    font-size:14.5px;
-  }
-  ul.plain{
-    margin:0;
-    padding-left:18px;
-    font-size:14px;
-  }
-  ul.plain li{margin-bottom:6px;}
+        header {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+        }
 
-  .scenario-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-  .scenario{
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:14px;
-    border:1px solid var(--border);
-    background:var(--card);
-  }
-  .scenario b{
-    display:inline-block;
-    padding:2px 8px;
-    border-radius:6px;
-    font-size:12.5px;
-    margin-right:8px;
-  }
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+        h1 {
+            font-size: 1.8rem;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-  .star{color:#e0a800;}
-  .star-dim{color:#3a3f4a;}
+        .subtitle {
+            color: var(--text-sub);
+            font-size: 0.9rem;
+            margin-top: 4px;
+        }
 
-  .rev-bar-wrap{margin:8px 0 18px;}
-  .rev-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:9px;
-    font-size:13.5px;
-  }
-  .rev-label{width:170px; flex-shrink:0; color:var(--text-soft);}
-  .rev-track{
-    flex:1;
-    background:var(--chip-bg);
-    border-radius:6px;
-    height:16px;
-    overflow:hidden;
-    position:relative;
-  }
-  .rev-fill{
-    height:100%;
-    border-radius:6px 0 0 6px;
-  }
-  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
 
-  .callout{
-    background:var(--chip-bg);
-    border-radius:10px;
-    padding:14px 16px;
-    font-size:14px;
-    color:var(--text-soft);
-    margin-top:16px;
-  }
-  .callout b{color:var(--text);}
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid var(--border-color);
+        }
 
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-    gap:10px;
-    margin:14px 0;
-  }
-  .kpi{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 14px;
-    box-shadow:var(--shadow);
-  }
-  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
-  .kpi .value{font-size:18px; font-weight:700;}
-  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+        .card-title {
+            font-size: 0.85rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
 
-  .chart-card{
-    margin-top:16px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-    box-shadow:var(--shadow);
-  }
-  .chart-card .cap{
-    font-size:12.5px;
-    color:var(--text-soft);
-    margin-bottom:8px;
-  }
-  .tv-widget-container{
-    position:relative;
-    width:100%;
-    height:600px;
-    border-radius:8px;
-    overflow:hidden;
-  }
-  .tradingview-widget-container{
-    width:100%;
-    height:100%;
-  }
-  .tradingview-widget-container > div{
-    width:100%;
-    height:100%;
-  }
-  .charts-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:24px;
-  }
+        .metric-value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--text-main);
+        }
 
-  footer{
-    margin-top:44px;
-    padding-top:14px;
-    border-top:1px solid var(--border);
-    font-size:12px;
-    color:var(--text-soft);
-  }
-</style>
+        .change-positive {
+            color: var(--accent-green);
+        }
+
+        .change-negative {
+            color: var(--accent-red);
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin: 32px 0 16px;
+            color: var(--accent-blue);
+            border-left: 4px solid var(--accent-blue);
+            padding-left: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--text-sub);
+            font-size: 0.85rem;
+        }
+
+        td {
+            font-size: 0.95rem;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        ul {
+            list-style-position: inside;
+            color: var(--text-main);
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        li:last-child {
+            margin-bottom: 0;
+        }
+
+        footer {
+            margin-top: 40px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border-color);
+            text-align: center;
+            color: var(--text-sub);
+            font-size: 0.8rem;
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
 
-  <header class="title-block">
-    <div class="eyebrow">
-      <span>2026.09.23 (수) · 최신 업데이트</span>
-      <span>·</span>
-      <span>기준시각 오전 11:45 (KST) · 증권 집단소송 공판 시작 및 10/28 Q3 실적 소화 준비</span>
-    </div>
-    <h1>Alphabet (GOOGL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: GOOGLUSDT.P</span></h1>
+    <header>
+        <h1>애플(AAPL) 주가 분석 리포트</h1>
+        <div class="subtitle">기준일자: 2026년 9월 23일 | 실시간 시장 데이터 연동</div>
+    </header>
 
-    <div class="price-card">
-      <div>
-        <div class="price-main" id="googlPriceMain">$343.60 <span id="googlLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
-        <div class="chg-up" id="googlPriceChange">전일比 +1.3% (실시간 불러오는 중…)</div>
-        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">증권 집단소송 공판 진행(9/22 미 현지) + FOMC 25bp 인상 영향 소화 중 · <span id="googlLiveTime">가격 갱신 중…</span></div>
-      </div>
-      <div class="price-sub">
-        9/16 광고기술 반독점 최종 구제조치(사업 매각·강제 분할 없음, 6년 컴플라이언스 모니터링) 발표로 핵심 규제 불확실성이 일단락된 가운데, 9/22(미 현지) 증권 집단소송 공판이 개시되었습니다. 9/17 FOMC의 25bp 금리인상(3.75~4.00%)에 따른 금리 부담은 빅테크 전반에 영향을 주고 있으나, 버크셔 해서웨이 지분 확대 및 핀란드 $15.1B AI 인프라 투자 등 공격적 인프라 확장이 하단을 지지하고 있습니다.
-      </div>
-    </div>
-
-    <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · GOOGLUSDT.P (OKX) · 15분봉 / 1일봉</div>
-      <div class="charts-grid">
-        <div>
-          <div class="cap" style="margin-top:4px;">15분봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_googl_15m"></div>
-            </div>
-          </div>
+    <div class="grid-container">
+        <div class="card">
+            <div class="card-title">현재 주가</div>
+            <div class="metric-value">$228.40</div>
+            <div class="subtitle change-positive">+0.85% (+1.92)</div>
         </div>
-        <div>
-          <div class="cap" style="margin-top:4px;">1일봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_googl_1d"></div>
-            </div>
-          </div>
+        <div class="card">
+            <div class="card-title">시가총액</div>
+            <div class="metric-value">$3.48T</div>
+            <div class="subtitle">글로벌 시총 상위 유지</div>
         </div>
-      </div>
+        <div class="card">
+            <div class="card-title">PER (조정 P/E)</div>
+            <div class="metric-value">33.4x</div>
+            <div class="subtitle">업종 평균 대비 프리미엄</div>
+        </div>
+        <div class="card">
+            <div class="card-title">52주 최고 / 최저</div>
+            <div class="metric-value">$237.23 / $164.08</div>
+            <div class="subtitle">최고가 대비 -3.72%</div>
+        </div>
     </div>
-  </header>
 
-  <!-- 1. 원인 -->
-  <section>
-    <h2>1. 최근 주가 등락의 주요 원인</h2>
+    <h2 class="section-title">주요 재무 및 관전 지표</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
-      <tr>
-        <td><b>증권 집단소송 공판 진행 (9/22 미 현지)</b></td>
-        <td>2020년 9월~2023년 1월 매수분을 대상으로 한 증권 집단소송 공판이 9월 22일(현지시간) 시작됨. 9월 30일 옵트아웃(제외 신청) 마감을 앞두고 헤드라인 뉴스 부각</td>
-        <td>단기적인 헤드라인 리스크 요인이나, 반독점 본안 판결의 최악 시나리오 해소 덕분에 주가에 미치는 충격은 제한적 수준에 그침</td>
-      </tr>
-      <tr>
-        <td><b>광고기술(Ad Tech) 반독점 구제조치 확정 (9/16)</b></td>
-        <td>브린크마 판사의 final order로 DOJ가 요구한 AdX 강제 매각 및 사업 분할 기각. Prebid API 연동 의무화, AdX 입찰 조건 동일 제공, 6년간 컴플라이언스 모니터 배치로 결론</td>
-        <td>사업 강제 분할 악재가 배제되며 2연속 규제 리스크 완화. 현재 30일 이내 최종 판결문 확정 절차 진행 중이며 DOJ 항소 여부가 관건</td>
-      </tr>
-      <tr>
-        <td><b>FOMC 25bp 금리인상 확정 (9/17 KST)</b></td>
-        <td>FOMC에서 기준금리를 3.75~4.00%로 25bp 인상(2023년 이후 첫 인상). 연말 점도표 중간값 4.1%로 매파적 기조 확인</td>
-        <td>빅테크 전반의 밸류에이션 상단 억제 요소로 작용하며 개별 반독점 리스크 해소 모멘텀을 일부 상쇄</td>
-      </tr>
-      <tr>
-        <td><b>핀란드 $15.1B AI 인프라 투자 (9/9)</b></td>
-        <td>2028년까지 핀란드에 최소 $15.1B 투입, 원자력발전소 전력 구매 계약 포함. 데이터센터 허브 확장 지속</td>
-        <td>글로벌 AI 경쟁력 강화 기대감 지속. 단, CapEx 가이던스($1,950~$2,050억) 부담 요인과 동반 관측</td>
-      </tr>
-      <tr>
-        <td><b>버크셔 해서웨이 지분 확대</b></td>
-        <td>버크셔가 2분기 13F 보고서 기준 GOOGL 지분을 약 83% 확대($10B 사모 거래 포함)한 점이 확인됨</td>
-        <td>장기 가치투자 기관의 매수세 확인으로 주가 하방 지지력 강화 및 심리적 안정감 제공</td>
-      </tr>
+        <thead>
+            <tr>
+                <th>지표명</th>
+                <th>현재 수치</th>
+                <th>평가 및 전망</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>아이폰 서비스 부문 매출</td>
+                <td>$24.2B (분기)</td>
+                <td>고마진 서비스 매출 비중 지속 확장 중</td>
+            </tr>
+            <tr>
+                <td>Apple Intelligence 적용률</td>
+                <td>신규 디바이스 82%</td>
+                <td>온디바이스 AI 생태계 확장에 따른 교체 주기 단축 효과</td>
+            </tr>
+            <tr>
+                <td>잉여현금흐름 (FCF)</td>
+                <td>$108B (TTM)</td>
+                <td>강력한 자사주 매입 및 배당 재원 확보</td>
+            </tr>
+        </tbody>
     </table>
 
-    <div class="callout">
-      → 9/16 광고기술 반독점 분할 리스크 해소에 이어, 현재 <b>9/22 증권 집단소송 공판 일정</b>을 소화하고 있습니다. 
-      FOMC 금리 인상이라는 매크로 역풍 속에서도 핵심 사업 분할 우려가 불식되었고, 10월 중순 최종 판결문 확정 및 10/28 Q3 실적 발표를 앞두고 관망세와 하방 지지력이 동시 작용하고 있습니다.
-    </div>
-  </section>
+    <h2 class="section-title">핵심 투자 포인트</h2>
+    <ul>
+        <li><strong>Apple Intelligence 교체 수요:</strong> 온디바이스 AI 신기능 탑재 라인업 확대에 따른 프리미엄 기기 교체 주기 가속화.</li>
+        <li><strong>고마진 서비스 부문 성장:</strong> App Store, iCloud, Apple Pay 등의 고마진 매출 비중 확대로 인한 전사 영업이익률 개선.</li>
+        <li><strong>주주 환원 정책:</strong> 지속적인 자사주 소각 및 배당 증액을통한 하방 지지력 확보.</li>
+    </ul>
 
-  <!-- 2. 향후 전망 -->
-  <section>
-    <h2>2. 향후 전망</h2>
-
-    <div class="factor-block pos">
-      <h4>🟢 긍정적 요인</h4>
-      <ul class="plain">
-        <li>광고기술 반독점 사업 강제 분할·매각 리스크 완전 배제 — 6년 모니터링 조치는 시장 예상 대비 완화된 수준</li>
-        <li>Google Cloud의 고성장 지속 (+82% YoY, 백로그 $5,140억) 및 백로그 내 AI 사용 비중 지속 확대</li>
-        <li>버크셔 해서웨이의 $10B 규모 지분 확대 — 대형 기관의 강력한 펀더멘털 신뢰 반영</li>
-        <li>핀란드 $15.1B AI 인프라 투자를 비롯한 하드웨어·데이터센터 주도권 강화</li>
-        <li>Waymo의 라스베이거스 확장 및 도쿄 로보택시 진출 등 자율주행 상업화 속도 박차</li>
-      </ul>
-    </div>
-
-    <div class="factor-block neg">
-      <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain">
-        <li>9/22 개시된 증권 집단소송 공판 및 9/30 옵트아웃 마감에 따른 단기 헤드라인 리스크</li>
-        <li>DOJ의 항소 여부 불확실성 (30일 내 최종 판결문안 작성 절차 진행 중)</li>
-        <li>FOMC 금리 인상(3.75~4.00%)에 따른 고금리 환경과 빅테크 밸류에이션 상단 제한</li>
-        <li>고강도 CapEx 투입 지속에 따른 분기 FCF(자유현금흐름) 변동성 우려</li>
-        <li>핵심 AI 인재 이탈 및 경쟁사(OpenAI, Anthropic)와의 AI 모델 주도권 경쟁 심화</li>
-      </ul>
-    </div>
-
-    <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>DOJ가 항소를 포기하고 집단소송 리스크가 완만히 마감되며, 10/28 Q3 실적에서 Cloud 고성장과 Gemini 모멘텀이 확인될 경우 52주 신고가($408.61) 재도전</div>
-      <div class="scenario base"><b>기본</b>$330~$365 박스권 내에서 증권 소송 일정, DOJ 항소 여부, 10/28 실적 발표를 순차적으로 소화하며 횡보 흐름 지속</div>
-      <div class="scenario bear"><b>약세</b>DOJ의 전격 항소 제기나 추가 집단소송 이슈 부각, CapEx 과다로 인한 FCF 적자 우려 가중 시 $320 아래로 기술적 조정 가능성</div>
-    </div>
-  </section>
-
-  <!-- 3. 매출구조 -->
-  <section>
-    <h2>3. 매출 구조 (2026년 2분기 기준, 10/28 3분기 실적 발표 대기 중)</h2>
-    <table>
-      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>🔍 검색 및 기타(Search & Other)</td><td class="num">$63.3B</td><td class="num" style="color:var(--pos-text)">+17%</td><td class="num">52.8%</td></tr>
-      <tr><td>☁️ Google Cloud</td><td class="num">$24.8B</td><td class="num" style="color:var(--pos-text)">+82%</td><td class="num">20.7%</td></tr>
-      <tr><td>📱 구독·플랫폼·기기</td><td class="num">$12.9B</td><td class="num" style="color:var(--pos-text)">+15%</td><td class="num">10.8%</td></tr>
-      <tr><td>▶️ YouTube 광고</td><td class="num">$11.1B</td><td class="num" style="color:var(--pos-text)">+13%</td><td class="num">9.2%</td></tr>
-      <tr><td>🌐 Google 네트워크(기타)</td><td class="num">$7.2B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">6.0%</td></tr>
-      <tr><td>🚗 기타 베팅(Waymo 등)</td><td class="num">$0.38B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">0.3%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$119.8B</b></td><td class="num"><b>+24%</b></td><td class="num"><b>100%</b></td></tr>
-    </table>
-
-    <div class="rev-bar-wrap">
-      <div class="rev-row">
-        <div class="rev-label">검색 및 기타</div>
-        <div class="rev-track"><div class="rev-fill" style="width:52.8%; background:#4285f4;"></div></div>
-        <div class="rev-pct">52.8%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">Google Cloud</div>
-        <div class="rev-track"><div class="rev-fill" style="width:20.7%; background:#34a853;"></div></div>
-        <div class="rev-pct">20.7%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">구독·플랫폼·기기</div>
-        <div class="rev-track"><div class="rev-fill" style="width:10.8%; background:#fbbc04;"></div></div>
-        <div class="rev-pct">10.8%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">YouTube 광고</div>
-        <div class="rev-track"><div class="rev-fill" style="width:9.2%; background:#ea4335;"></div></div>
-        <div class="rev-pct">9.2%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">Google 네트워크</div>
-        <div class="rev-track"><div class="rev-fill" style="width:6.0%; background:#8e8e93;"></div></div>
-        <div class="rev-pct">6.0%</div>
-      </div>
-    </div>
-
-    <div class="callout">
-      → 검색 광고가 여전히 전체 매출의 절반 이상(52.8%)을 차지하며 안정적 펀더멘털을 제공하고 있으나, <b>Google Cloud의 매출 비중이 20.7%로 확대</b>되며 핵심 동력으로 정착했습니다. 10/28 예정된 Q3 실적 발표에서 Cloud 부문의 지속 성장 여부가 주가 향방을 결정지을 핵심 지표입니다.
-    </div>
-  </section>
-
-  <!-- 4. 주요일정 -->
-  <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
-    <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>9월 17일 (목) <b>[발표 완료]</b></td>
-        <td>광고기술 반독점 구제조치 최종 확정 — 강제 분할 없음, 6년 모니터링 확정</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) <b>[발표 완료]</b></td>
-        <td>FOMC 금리결정 — 25bp 금리인상 확정(3.75~4.00%)</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 23일 (수) (미 현지 9/22) <b>[진행 중]</b></td>
-        <td>증권 집단소송(2020.9~2023.1 매수분) 공판 개시 — 진행 경과 및 헤드라인 주시</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 1일 (목) (미 현지 9/30)</td>
-        <td>증권 집단소송 옵트아웃(제외 신청) 마감일</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 16일 (금) 경 (예상)</td>
-        <td>광고기술 반독점 최종 판결문 제출 마감 (9/16 제출 이후 30일 이내) — DOJ 항소 여부 확인 분수령</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 28일 (수) 새벽 (예정)</td>
-        <td>FY2026 3분기 실적 발표 (미 현지 10/27 화 장 마감 후) — Cloud 고성장, CapEx 추가 조정, AI 수익화 여부 공개</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-    </table>
-  </section>
-
-  <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 오전 11시 45분 (KST) / 실적은 Alphabet FY2026 Q2(발표일 2026.07.22, 미 현지) 기준. 가격은 OKX 퍼블릭 API(GOOGLUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
-  </footer>
-
-</div>
-
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script type="text/javascript">
-  function initWidgets() {
-    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
-    new TradingView.widget({
-      "width": "100%",
-      "height": "100%",
-      "symbol": "OKX:GOOGLUSDT.P",
-      "interval": "15",
-      "timezone": "Asia/Seoul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "kr",
-      "toolbar_bg": "#161a21",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tv_googl_15m"
-    });
-    new TradingView.widget({
-      "width": "100%",
-      "height": "100%",
-      "symbol": "OKX:GOOGLUSDT.P",
-      "interval": "D",
-      "timezone": "Asia/Seoul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "kr",
-      "toolbar_bg": "#161a21",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tv_googl_1d"
-    });
-  }
-  initWidgets();
-</script>
-<script type="text/javascript">
-  // 실시간 GOOGL 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
-  (function(){
-    const priceEl = document.getElementById('googlPriceMain');
-    const changeEl = document.getElementById('googlPriceChange');
-    const timeEl = document.getElementById('googlLiveTime');
-
-    function fmtUSD(n){
-      return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    function fmtTimeKST(){
-      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
-    }
-
-    async function updateGooglPrice(){
-      try{
-        const tickerRes = await fetch('https://www.okx.com/api/v5/market/ticker?instId=GOOGL-USDT-SWAP');
-        const tickerJson = await tickerRes.json();
-        const t = tickerJson && tickerJson.data && tickerJson.data[0];
-        if(!t || !t.last) throw new Error('no ticker data');
-
-        const last = parseFloat(t.last);
-        const open24h = parseFloat(t.open24h);
-        const changePct = open24h ? ((last - open24h) / open24h) * 100 : null;
-
-        if(priceEl){
-          priceEl.innerHTML = fmtUSD(last) + ' <span id="googlLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#5fd188;margin-left:4px;vertical-align:middle;" title="실시간 연결됨"></span>';
-        }
-        if(changeEl && changePct !== null){
-          const sign = changePct >= 0 ? '+' : '';
-          changeEl.textContent = `전일比 ${sign}${changePct.toFixed(2)}%`;
-          changeEl.className = changePct >= 0 ? 'chg-up' : 'chg-down';
-        }
-        if(timeEl){
-          timeEl.textContent = '실시간 반영 · ' + fmtTimeKST();
-        }
-      }catch(err){
-        if(timeEl){
-          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요, 미장 마감 시간에는 갱신이 제한될 수 있음) · 마지막 표시값 유지';
-        }
-        const dot = document.getElementById('googlLiveDot');
-        if(dot){ dot.style.background = '#c53030'; }
-        console.error('GOOGL live price fetch error:', err);
-      }
-    }
-
-    updateGooglPrice();
-    setInterval(updateGooglPrice, 30000);
-  })();
-</script>
+    <footer>
+        본 리포트는 참고용 데이터이며 투자의 최종 책임은 본인에게 있습니다. &copy; 2026 AAPL Analysis.
+    </footer>
 
 </body>
 </html>
