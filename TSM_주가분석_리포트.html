@@ -242,6 +242,11 @@
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
 
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -256,21 +261,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 기준</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
     </div>
     <h1>TSMC (TSM) 주가 분석 리포트<span class="ticker">NYSE ADR · Perpetual: TSMUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$433.24</div>
-        <div class="chg-up">9/11 종가 +1.22% · 8월 매출 사상 최대치 발표에도 반도체 섹터 전반은 조정, TSM은 상대적으로 견조</div>
+        <div class="price-main"><span id="live-price">$434.67</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">정규장 +1.02% (+$4.41) · 3거래일 연속 상승, 9/15 저점 대비 +5.1%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX TSMUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/10 발표된 8월 매출이 NT$514.81B(+53.3% YoY, +10.1% MoM)로 사상 최대 월간 매출을 기록했으나, 같은 날 NVDA·AMD·
-        Intel 등 AI칩 관련주는 오히려 하락하는 이례적 디커플링이 나타났습니다. 내부자 매수 급증, ASML과의 차세대
-        EUV 장비 도입 등 개별 호재가 이어지는 가운데, 9/16 배당락일($1.114)을 앞두고 있습니다. 시가총액 약 $2.25조.
+        9/14 유가·금리발 반도체 섹터 전반 조정으로 $413.75까지 밀렸으나, FOMC(9/16)를 무난히 소화한 뒤
+        9/17~18 이틀 연속 상승하며 $434.67로 마감했습니다. "TSMC 매출 가속화가 추가 상승을 이끌 수 있다"는
+        분석과 AMD의 GPU·CPU 가격 인상 보도가 반도체 공급망 전반에 훈풍을 불어넣었습니다. 시가총액 약 $2.26조.
       </div>
     </div>
 
@@ -293,54 +299,58 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/15 저점($413.75) 이후 3거래일 연속 상승, $434.67까지 회복. 52주 고점($479) 대비로는 여전히 하회.<br>
+      <b>15분봉</b>: 반도체 대형주 전반의 랠리에 동참하며 상승 탄력 유지, 다른 반도체株(AMD·MU) 대비로는 상대적으로 변동성이 낮은 편.
+    </div>
+  </section>
+
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>8월 매출 사상 최대치, 그러나 반도체株 전반은 하락</b></td>
-        <td>9/10 발표된 8월 매출 NT$514.81B(약 $16.35B)로 전년비 +53.3%, 전월비 +10.1% 증가하며 사상 최대 월간 매출
-        기록. 1~8월 누적 NT$3,386.87B(+39.3% YoY). 그럼에도 같은 날 NVDA·AMD·Intel 등 AI칩 관련주는 하락 —
-        "TSMC의 53% 서프라이즈에도 왜 AI칩株는 떨어지나"라는 헤드라인이 나올 정도의 디커플링 발생</td>
-        <td>매크로(금리) 우려가 개별 기업의 실적 호재를 압도하는 국면임을 보여주는 사례</td>
+        <td><b>9/14(월)</b><br>$418.01<br><span style="color:var(--up); font-weight:600;">▼ -3.52%</span></td>
+        <td>국제유가 급등·10년물 국채금리 19년래 최고치로 반도체 섹터 전반 동반 약세(AMD -4.40%, AVGO -4.77% 등과 동조). TSMC는 상대적으로 완만한 낙폭</td>
+        <td>이번 주 최대 낙폭, 다른 반도체주 대비 방어적</td>
       </tr>
       <tr>
-        <td><b>ASML과 차세대 EUV 장비 도입 발표</b></td>
-        <td>9/6~9/8 TSMC·삼성전자가 ASML의 신형 대형 포맷 EUV 리소그래피 장비 도입에 합의, 관련 포토마스크 규격
-        전환도 진행. 대당 약 $400M 규모의 신규 장비가 처리량을 약 40% 향상시킬 것으로 평가</td>
-        <td>선단 공정 생산능력·수율 개선으로 이어지는 중장기 긍정 재료</td>
+        <td><b>9/15(화)</b><br>$413.75<br><span style="color:var(--down); font-weight:600;">▼ -1.02%</span></td>
+        <td>Meta가 자체 AI칩 개발을 통해 Nvidia 하드웨어 의존도를 낮추려 한다는 보도 — 반도체 공급망 전반에 대한 신중론 부각, 옵션시장 혼재된 심리</td>
+        <td>이번 주 저점 형성</td>
       </tr>
       <tr>
-        <td><b>내부자 매수 급증 및 신규 매수 추천</b></td>
-        <td>9/10~11 TSMC 내부자 매수 급증이 포착됐고, 신규 매수(Buy) 추천 리포트도 발표됨 — "$2조 반도체 공룡이
-        포효한다"는 평가와 함께 시장의 관심 재부각</td>
-        <td>내부자들의 자신감 신호로 해석되며 저가 매수 심리에 일부 기여</td>
+        <td><b>9/16(수)</b><br>$417.72<br><span style="color:var(--down); font-weight:600;">▲ +1.17%</span></td>
+        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 견조하게 방어, 반등 시작</td>
+        <td>매파적 FOMC를 무난히 소화</td>
       </tr>
       <tr>
-        <td><b>8월 CPI 예상외 강세 → 금리 인상 우려 부각</b></td>
-        <td>9/11 발표된 8월 CPI가 예상보다 강해 9/17 FOMC의 25bp 금리 <b>인상</b> 확률이 약 70%까지 상승 — 반도체
-        대형주 전반에 할인율 부담으로 작용</td>
-        <td>9/17(KST) FOMC 결과가 단기 최대 매크로 변수로 남아있는 상태</td>
+        <td><b>9/17(목)</b><br>$430.26<br><span style="color:var(--down); font-weight:600;">▲ +3.00%</span></td>
+        <td>"TSMC의 매출 가속화가 추가 상승을 이끌 수 있다"는 분석 확산, AMD의 GPU·CPU 가격 인상 보도가 반도체 공급망 전반 가격결정력 기대로 연결 — "인상 재료 소진" 인식에 따른 시장 전반 반등과 동조</td>
+        <td>이번 주 최대 상승폭</td>
       </tr>
       <tr>
-        <td><b>배당락일(9/16) 임박</b></td>
-        <td>주당 $1.114 현금배당의 배당락일이 9/16으로 예정, 10/8 지급 예정</td>
-        <td>배당락 전후 단기 기술적 변동 가능성</td>
+        <td><b>9/18(금)</b><br>$434.67<br><span style="color:var(--down); font-weight:600;">▲ +1.02%</span></td>
+        <td>"TSMC의 AI 붐 — 가격 인상, $2조 밸류에이션, 리스크"를 다룬 분석 기사 확산되며 반도체 대형주 전반 강세 지속. 콜옵션 매수세 확대</td>
+        <td>3거래일 연속 상승 마무리</td>
       </tr>
     </table>
 
     <div class="callout">
-      → TSM은 <b>8월 매출 사상 최대치</b>라는 명백한 펀더멘털 호재와 <b>ASML 신형 장비 도입·내부자 매수 급증</b> 등
-      개별 호재가 이어지고 있음에도, <b>8월 CPI發 9/17 FOMC 금리 인상 우려(약 70%)</b>라는 매크로 변수 속에 반도체
-      섹터 전반이 조정받는 국면에 놓여 있습니다. 다만 같은 날 NVDA·AMD 등이 하락한 것과 달리 TSM은 상대적으로
-      견조한 흐름을 유지하며 +1.22%로 마감, 펀더멘털 우위가 일부 반영되고 있는 것으로 해석됩니다.
+      → 이번 주는 <b>유가·금리발 조정(9/14, -3.52%) → Meta 자체 AI칩 우려(9/15) → FOMC 방어(9/16) → 매출
+      가속화·가격 인상 기대(9/17~18)</b>로 이어지는 흐름을 보였습니다. $413.75 저점에서 사흘 만에 +5.1% 반등하며
+      $434.67로 마감했고, 다른 반도체주(AMD·AVGO 등) 대비 낙폭도 상승폭도 상대적으로 완만해 <b>방어적 성격</b>이
+      재확인된 한 주였습니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
@@ -348,9 +358,9 @@
         <li>AI 파운드리 독점적 지위 — NVDA·AMD·Apple 등 선단 공정 핵심 공급사, 2nm 5개 팹 동시 램프업으로 역대 최대 속도 증설</li>
         <li>8월 매출 NT$514.81B(+53.3% YoY, +10.1% MoM) 사상 최대 월간 매출, 1~8월 누적 NT$3,386.87B(+39.3% YoY)</li>
         <li>Q2 2026 매출 $40.20B(+34~36% YoY), 총이익률 67.7%·영업이익률 60.3% — HPC 매출 QoQ +20%로 스마트폰 비중 추월 확대</li>
-        <li>Q3 가이던스 매출 $44.6B~$45.8B(+37% YoY), 2026년 매출 성장 가이던스 40%대 유지, 차기 3년 CapEx가 과거 3년을 크게 상회할 것이라고 CEO 언급, A14 기술은 2028년 양산 목표</li>
-        <li>ASML과 신형 EUV 장비 도입 합의(9/6~8), 내부자 매수 급증·신규 매수 추천(9/10~11)</li>
-        <li>컨센서스 '스트롱 바이' 평균 목표주가 약 $552 (현재가 대비 +27~33% 내외)</li>
+        <li>Q3 가이던스 매출 $44.6B~$45.8B(+37% YoY), 2026년 매출 성장 가이던스 40%대 유지, 차기 3년 CapEx가 과거 3년을 크게 상회할 것이라고 CEO 언급</li>
+        <li>"매출 가속화가 추가 상승을 이끌 수 있다"는 분석 확산(9/17), AMD·반도체 공급망 전반의 가격 인상 기대와 동조</li>
+        <li>컨센서스 '스트롱 바이' 평균 목표주가 약 $552 (현재가 대비 +27% 내외)</li>
       </ul>
     </div>
 
@@ -358,24 +368,24 @@
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
         <li>2nm 초기 램프업 비용 부담 — Q3 총이익률 1.7%p 하락 압박 가이던스(65~67%)</li>
-        <li>8월 매출 서프라이즈에도 불구, 같은 날 옵션시장에서 약세 플로우(bearish options flow) 포착 — 밸류에이션에 대한 신중론도 병존</li>
-        <li>8월 CPI 서프라이즈로 9/17(KST) FOMC 금리 인상 확률 약 70%까지 상승 — 반도체 섹터 전반 할인율 부담</li>
+        <li>Meta가 자체 AI칩 개발로 Nvidia 하드웨어 의존도를 낮추려 한다는 보도(9/15) — 궁극적으로 파운드리 수요 구조에 대한 장기 불확실성</li>
+        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
         <li>대만 관련 지정학 리스크·중국 수출통제 이슈 상존, PER 28배 수준의 밸류에이션 부담 논쟁 지속</li>
-        <li>Q3 2026 실적 발표일이 아직 공식 미확정(10/15 전후로 추정) — 확정 발표 전까지 불확실성 존재</li>
+        <li>9/16 배당락일($1.114) 통과 — 10/8 지급 예정, 단기 기술적 영향은 이미 소화</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>FOMC 동결(또는 예상 부합) 확인 시 컨센서스 목표가($552 내외)를 향한 상승 흐름 재개, $440~$460권 도전</div>
-      <div class="scenario base"><b>기본</b>$400~$440 박스권 등락. FOMC(9/17)·9월 매출 발표(10/8)·Q3 실적(10월 중순 추정)을 소화하며 방향성 탐색</div>
-      <div class="scenario bear"><b>약세</b>지정학 리스크 재부각·매크로 악화 시 $390선 이하로 조정, 2nm 마진 압박 우려 부각</div>
+      <div class="scenario bull"><b>강세</b>10월 FOMC(10/29) 안정 확인 + Q3 실적(10/15 예정)에서 매출 가이던스 상회 시 컨센서스 목표가($552 내외)를 향한 상승 흐름 지속, 52주 고점($479) 재도전</div>
+      <div class="scenario base"><b>기본</b>$415~$450 박스권 등락. 9월 매출 발표(10/8)·Q3 실적(10/15)을 소화하며 방향성 탐색</div>
+      <div class="scenario bear"><b>약세</b>지정학 리스크 재부각·매크로 악화 또는 Meta 자체 AI칩 진행상황이 부정적으로 확인될 시 $400선 이하로 조정</div>
     </div>
   </section>
 
-  <!-- 3. 매출구조/수익구조 -->
+  <!-- 4. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조</h2>
+    <h2>4. 매출구조/수익구조</h2>
     <table>
       <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
       <tr><td>🏭 사업</td><td class="num">세계 최대 파운드리</td><td class="num">독립계 반도체 위탁생산, 선단 공정 점유율 압도적</td></tr>
@@ -387,7 +397,7 @@
       <tr><td>🔬 선단 공정</td><td class="num">2nm 5개 팹 동시 램프업</td><td class="num">ASML 신형 EUV 장비 도입 예정</td></tr>
       <tr><td>💰 배당</td><td class="num">주당 $1.114</td><td class="num">배당락 9/16, 지급 10/8</td></tr>
       <tr><td>📅 9월 매출 발표</td><td class="num">10월 8일 (목) 오후 2:30 KST</td><td class="num">월간 매출 공시</td></tr>
-      <tr><td>📅 Q3 실적 발표</td><td class="num">10월 15일 (목) 전후 (미확정)</td><td class="num">2nm 마진 영향·Q4 가이던스 핵심</td></tr>
+      <tr><td>📅 Q3 실적 발표</td><td class="num">10월 15일 (목) (확정)</td><td class="num">2nm 마진 영향·Q4 가이던스 핵심</td></tr>
     </table>
 
     <h3>매출구조 — 응용처별 (Q2 2026)</h3>
@@ -498,39 +508,39 @@
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>9월 16일 (수)</td>
-        <td>분기 배당 기준일(Ex-Dividend, 주당 $1.114) — 10/8 지급 예정</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 (현지 9/15~16 개최) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승, 반도체·성장주 민감</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
       <tr>
         <td>10월 8일 (목) 오후 2:30</td>
         <td>9월 월간 매출 발표</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>10월 15일 (목) 전후 (미확정)</td>
-        <td>Q3 2026 실적 발표 예상 — 2nm 마진 영향·Q4 가이던스 핵심</td>
+        <td>10월 15일 (목) (확정)</td>
+        <td>Q3 2026 실적 발표 — 2nm 마진 영향·Q4 가이던스 핵심</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>12월 10일 (목) 오전 4:00</td>
+        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
         <td>지속</td>
-        <td>2nm 5개 팹 램프업, ASML 신형 EUV 장비 도입, 미국(애리조나)·일본(구마모토) 공장 확장, 대만 지정학 리스크·수출통제 뉴스</td>
+        <td>2nm 5개 팹 램프업, ASML 신형 EUV 장비 도입, 미국(애리조나)·일본(구마모토) 공장 확장, Meta 자체 AI칩 진행상황, 대만 지정학 리스크·수출통제 뉴스</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
     </table>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 美 정규장 종가(16:00 ET) 및 9/11 발표 8월 CPI 반영 (KST 2026.09.12 기준 작성). 월간 매출은 2026년 8월 실적(2026.09.10 발표) 기준 / 분기 실적은 Q2 2026(2026.07.16 발표) 기준. Q3 2026 실적 발표일은 공식 미확정 추정치입니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산). 월간 매출은 2026년 8월 실적(2026.09.10 발표) 기준 / 분기 실적은 Q2 2026(2026.07.16 발표) 기준.
   </footer>
 
 </div>
@@ -574,6 +584,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · TSM-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "TSM-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX TSMUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
