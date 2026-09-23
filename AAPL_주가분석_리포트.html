@@ -6,148 +6,330 @@
 <title>AAPL 주가 분석 리포트</title>
 <style>
   :root{
-    --bg:#0a0a0c; --card:#14161d; --text:#f0f2f6; --text-soft:#9ea7b8;
-    --border:#232733; --accent:#4ea1ff; --up:#ff5252; --down:#4cd97b;
-    --pos-bg:#122b1c; --pos-text:#4cd97b; --neg-bg:#331416; --neg-text:#ff6b6b;
-    --chip-bg:#1a1d26; --table-head:#181b24;
-    --shadow: 0 4px 12px rgba(0,0,0,0.6);
+    --bg:#f5f6f8;
+    --card:#ffffff;
+    --text:#1a1d24;
+    --text-soft:#565d6b;
+    --border:#e3e6ec;
+    --accent:#0071e3;
+    --up:#d92626;
+    --down:#1f7a3d;
+    --pos-bg:#eaf7ee;
+    --pos-text:#1f7a3d;
+    --neg-bg:#fdeceb;
+    --neg-text:#c53030;
+    --chip-bg:#eef2f7;
+    --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
   }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318;
+      --card:#181b22;
+      --text:#eef0f4;
+      --text-soft:#9aa2b1;
+      --border:#2a2e38;
+      --accent:#4ea1ff;
+      --up:#ff6b6b;
+      --down:#5fd188;
+      --pos-bg:#13291c;
+      --pos-text:#5fd188;
+      --neg-bg:#2c1717;
+      --neg-text:#ff8080;
+      --chip-bg:#20242d;
+      --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318;
+    --card:#181b22;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#2a2e38;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#20242d;
+    --table-head:#1d212a;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+
   *{box-sizing:border-box;}
-  body{margin:0; background:var(--bg); color:var(--text);
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;}
-  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
   header.title-block{margin-bottom:22px;}
-  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
-  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px; color:#ffffff;}
-  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
-  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
-    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
-  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px; color:#ffffff;}
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
-  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
   section{margin-top:36px;}
-  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--border);
-    display:flex; align-items:center; gap:8px; color:#ffffff;}
-  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
-  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
-    border-radius:10px; overflow:hidden; font-size:14px;}
-  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
-  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:14px;
+  }
+  th, td{
+    padding:11px 12px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
   tr:last-child td{border-bottom:none;}
   td.num{font-variant-numeric: tabular-nums;}
-  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
+
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:16px 18px;
+    margin-bottom:14px;
+    box-shadow:var(--shadow);
+  }
   .factor-block.pos{border-left:4px solid var(--pos-text);}
   .factor-block.neg{border-left:4px solid var(--neg-text);}
-  .factor-block h4{margin:0 0 8px; font-size:14.5px; color:#ffffff;}
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
   ul.plain{margin:0; padding-left:18px; font-size:14px;}
   ul.plain li{margin-bottom:6px;}
+
   .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
-  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
-  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
+  .scenario{
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:14px;
+    border:1px solid var(--border);
+    background:var(--card);
+  }
+  .scenario b{
+    display:inline-block;
+    padding:2px 8px;
+    border-radius:6px;
+    font-size:12.5px;
+    margin-right:8px;
+  }
   .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
-  .star{color:#f5c518;}
+
+  .star{color:#e0a800;}
   .star-dim{color:var(--border);}
+
   .rev-bar-wrap{margin:8px 0 18px;}
-  .rev-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13.5px;}
-  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
-  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden; position:relative;}
+  .rev-row{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-bottom:9px;
+    font-size:13.5px;
+  }
+  .rev-label{width:160px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{
+    flex:1;
+    background:var(--chip-bg);
+    border-radius:6px;
+    height:16px;
+    overflow:hidden;
+  }
   .rev-fill{height:100%; border-radius:6px 0 0 6px;}
   .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
-  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px; border:1px solid var(--border);}
-  .callout b{color:#ffffff;}
-  .chk-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:12px; box-shadow:var(--shadow);}
-  .chk-card h4{margin:0 0 8px; font-size:15px; font-weight:700; color:#ffffff;}
-  .chk-card ul{margin:0; padding-left:18px; font-size:14px; color:var(--text-soft);}
-  .chk-card ul li{margin-bottom:6px;}
-  .chk-card ul li b{color:#ffffff;}
-  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:14px;
+    color:var(--text-soft);
+    margin-top:16px;
+  }
+  .callout b{color:var(--text);}
+
+  /* 가치 흐름도 다이어그램 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.06);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
+  .flow-split > div{flex:1 1 220px;}
+
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.14 (월) · 실시간 업데이트</span>
+      <span>2026.09.23 (수) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오후 03:00 (KST) · 美 정규장 마감(9/11 16:00 ET) 기준</span>
+      <span>실시간 시세 반영 (KST)</span>
     </div>
     <h1>Apple (AAPL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AAPLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$332.27</div>
-        <div class="chg-up">일봉 +1.75% (+$5.70) · 2거래일 연속 강세 반등 지속</div>
+        <div class="price-main"><span id="live-price">$332.27</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">일봉 약 +1.75% · 최근 2거래일 연속 강세 반등</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AAPLUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
-      <div class="price-sub">9/9 신제품 이벤트 이후 초기 관망세를 딛고 9/10(+3.56%)에 이어 9/11 정규장에서 +1.75% 추가 상승하며 $332.27로 마감. 52주 최고가($344.57) 대비 약 -3.56% 지점까지 회복, 시가총액 약 $4.85조 수준.</div>
+      <div class="price-sub">
+        9/9 신제품 이벤트 이후 초기 관망세를 딛고 9/10(+3.56%)에 이어 연속 상승세를 유지하며 $332대에서 거래되고 있습니다.
+        52주 최고가($344.57) 대비 약 -3.56% 지점까지 회복하였으며, 시가총액은 약 $4.85조 수준을 기록 중입니다.
+      </div>
     </div>
   </header>
+
   <section>
     <h2>1. 차트 현황 (TradingView 실시간)</h2>
+
     <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
       <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · AAPLUSDT.P (OKX) · 실시간</div>
       <div class="tradingview-widget-container" style="height:480px;">
         <div id="tv_aapl_daily" style="height:100%; width:100%;"></div>
       </div>
     </div>
+
     <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
       <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · AAPLUSDT.P (OKX) · 실시간</div>
       <div class="tradingview-widget-container" style="height:480px;">
         <div id="tv_aapl_15m" style="height:100%; width:100%;"></div>
       </div>
     </div>
-    <div class="callout"><b>일봉</b>: 9/9 이벤트 단기 조정 저점($315.34)을 찍은 뒤 $330 돌파에 성공하며 52주 최고가 탈환 재시도. <b>15분봉</b>: 9/12 사전예약 반응 기대감이 주가 하단을 단단하게 지지하며 안정적인 우상향 흐름 형성.</div>
-  </section>
 
-  <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
-    <table>
-      <thead>
-        <tr>
-          <th style="width:25%">원인</th>
-          <th style="width:45%">내용</th>
-          <th style="width:30%">영향</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><b>신제품 사전예약 기대감 집중</b></td>
-          <td>9/12 시작된 아이폰18 및 첫 폴더블 아이폰 사전예약 초기 배송 대기 시간(Lead Time) 호조 소식 유입</td>
-          <td>초기 재료 소멸 우려 완전히 소화하며 주가 $330선 돌파 동력으로 작용</td>
-        </tr>
-        <tr>
-          <td><b>신임 CEO 경영 안정화 평가</b></td>
-          <td>존 터너스 CEO의 제품 발표 이후 엔지니어링 및 린 생산 체계에 대한 월가의 긍정적 평가 확산</td>
-          <td>투자 심리 안정화 및 주요 IB 목표가 유지/상향 레이스</td>
-        </tr>
-        <tr>
-          <td><b>미 국채 금리 숨고르기</b></td>
-          <td>9/17 FOMC 금리결정을 앞두고 국채 10년물 금리가 안정세를 보이며 빅테크 밸류에이션 부담 완화</td>
-          <td>기술주 전반 저가 매수세 지속 및 시가총액 $4.85조 회복</td>
-        </tr>
-        <tr>
-          <td><b>폴더블 수율 및 수급 우려 완화</b></td>
-          <td>초기 파운드리 2나노 A20 프로 및 폴더블 디스플레이 공급망 병목 지점 해소 신호 확인</td>
-          <td>FY27 Q1(연말 특수) 실적 피크에 대한 가시성 확대</td>
-        </tr>
-        <tr>
-          <td><b>프리미엄 라인업 ASP 상승 기대</b></td>
-          <td>고가 모델(프로/폴더블) 중심 사전예약 비중 증가에 따른 매출액 및 마진 보전 기대감</td>
-          <td>원가 상승(메모리 반도체) 부담 감쇄 효과</td>
-        </tr>
-      </tbody>
-    </table>
-    <div class="callout">
-      → 9/9 신제품 발표 직후 형성된 단기 저점($315.34)에서 9/10(+3.56%), 9/11(+1.75%) 연속 반등을 이어가며 **$332.27**로 마감했습니다. 9/12부터 시작된 사전예약의 정량 데이터와 9/17 FOMC 반응이 향후 신고가 돌파의 키입니다.
+    <div class="callout" style="margin-top:16px;">
+      <b>일봉</b>: 9/9 이벤트 단기 조정 저점($315.34)을 찍은 뒤 $330 돌파에 성공하며 52주 최고가 탈환 재시도.<br>
+      <b>15분봉</b>: 9/12 사전예약 반응 기대감이 주가 하단을 단단하게 지지하며 안정적인 우상향 흐름 형성.
     </div>
   </section>
 
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5일)</h2>
+    <table>
+      <tr><th style="width:18%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr>
+        <td>사전예약 기대감<br><span style="font-weight:400; color:var(--text-soft);">Lead Time 호조</span></td>
+        <td>9/12 시작된 아이폰18 및 첫 폴더블 아이폰 사전예약 초기 배송 대기 시간(Lead Time) 호조 소식 유입</td>
+        <td>초기 재료 소멸 우려 완전히 소화하며 주가 $330선 돌파 동력으로 작용</td>
+      </tr>
+      <tr>
+        <td>경영 안정화<br><span style="font-weight:400; color:var(--text-soft);">리더십 평가</span></td>
+        <td>존 터너스 CEO의 제품 발표 이후 엔지니어링 및 린 생산 체계에 대한 월가의 긍정적 평가 확산</td>
+        <td>투자 심리 안정화 및 주요 IB 목표가 유지/상향 레이스</td>
+      </tr>
+      <tr>
+        <td>매크로 환경<br><span style="font-weight:400; color:var(--text-soft);">국채 금리 안정</span></td>
+        <td>FOMC 금리결정을 앞두고 미 국채 10년물 금리가 안정세를 보이며 빅테크 밸류에이션 부담 완화</td>
+        <td>기술주 전반 저가 매수세 지속 및 시가총액 $4.85조 회복</td>
+      </tr>
+      <tr>
+        <td>수급 우려 완화<br><span style="font-weight:400; color:var(--text-soft);">공급망 개선</span></td>
+        <td>초기 파운드리 2나노 A20 프로 및 폴더블 디스플레이 공급망 병목 지점 해소 신호 확인</td>
+        <td>FY27 Q1(연말 특수) 실적 피크에 대한 가시성 확대</td>
+      </tr>
+    </table>
+    <div class="callout">
+      → 9/9 신제품 발표 직후 형성된 단기 저점($315.34)에서 연속 반등을 이어가며 <b>$332.27</b>대 안착에 성공했습니다. 사전예약의 정량 데이터와 FOMC 금리 반응이 향후 신고가 돌파의 키입니다.
+    </div>
+  </section>
+
+  <section>
+    <h2>3. 향후 전망</h2>
+
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
@@ -158,40 +340,42 @@
         <li>월가 주요 기관의 '매수' 추천 및 최고 $380~$400 목표주가 유지</li>
       </ul>
     </div>
+
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>9/17 FOMC 금리 결정을 앞둔 매크로 경계감 및 시장 변동성 확대 가능성</li>
+        <li>FOMC 금리 결정을 앞둔 매크로 경계감 및 시장 변동성 확대 가능성</li>
         <li>FY2026 4분기 예상 메모리 반도체 원가 상승에 따른 마진율(47~48%) 압박 여부</li>
         <li>폴더블 라인업 초판 수급 불균형으로 인한 실적 반영 시차 이슈</li>
         <li>PER ~38배 수준으로 밸류에이션 상단에 따른 단기 매물 소화 과정 필요</li>
       </ul>
     </div>
+
     <h3>시나리오</h3>
     <div class="scenario-grid">
       <div class="scenario bull"><b>강세</b>사전예약 대기 시간 급증 및 FOMC 완화적 기조 시 52주 최고가($344.57) 돌파 및 $350 도전</div>
-      <div class="scenario base"><b>기본</b>$325~$338 구간에서 9/17 FOMC 매크로 결과 및 9/18 정식 출시 반응 소화</div>
+      <div class="scenario base"><b>기본</b>$325~$338 구간에서 매크로 결과 및 정식 출시 반응 소화</div>
       <div class="scenario bear"><b>약세</b>FOMC 매파적 해석 및 초기 수율 병목 우려 재부각 시 $315~$320 지지선 재확인</div>
     </div>
   </section>
 
   <section>
-    <h2>3. 핵심 실적 구조 (FY2026 3분기)</h2>
+    <h2>4. 프로젝트·시장 구조 (FY2026 3분기)</h2>
     <table>
-      <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
+      <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
+      <tr><td>🏛 종목명</td><td class="num">Apple Inc. (AAPL)</td><td class="num">NASDAQ 상장 시가총액 1위권</td></tr>
+      <tr><td>💰 시가총액</td><td class="num">약 $4.85T</td><td class="num">글로벌 최상위 빅테크</td></tr>
       <tr><td>📊 총 매출</td><td class="num">$109.4B</td><td class="num">+16% YoY, 분기 사상 최대</td></tr>
-      <tr><td>💰 순이익</td><td class="num">$29.8B</td><td class="num">-</td></tr>
-      <tr><td>📈 EPS(희석)</td><td class="num">$2.02</td><td class="num">+29% YoY (전년 $1.57)</td></tr>
-      <tr><td>🧮 매출총이익률</td><td class="num">50.1%</td><td class="num">전년 46.5% 대비 큰 폭 개선</td></tr>
-      <tr><td>🎯 4분기 가이던스</td><td class="num">매출 +9~11%</td><td class="num">매출총이익률 47~48%(메모리 원가 반영)</td></tr>
-      <tr><td>📅 다음 실적 발표</td><td class="num">2026.10.30(금) 오전 5시경(KST)</td><td class="num">FY2026 4분기 (현지 10/29 장마감 후)</td></tr>
+      <tr><td>📈 순이익 / EPS</td><td class="num">$29.8B / $2.02</td><td class="num">EPS +29% YoY</td></tr>
+      <tr><td>🧮 매출총이익률</td><td class="num">50.1%</td><td class="num">전년 46.5% 대비 호조</td></tr>
+      <tr><td>🎯 4분기 가이던스</td><td class="num">매출 +9~11% YoY</td><td class="num">마진율 47~48% 예상</td></tr>
+      <tr><td>📅 실적 발표 예정</td><td class="num">2026.10.30 (금) KST</td><td class="num">FY2026 4분기 실적</td></tr>
     </table>
 
-    <h3>부문별 매출 비중</h3>
     <div class="rev-bar-wrap">
       <div class="rev-row">
         <div class="rev-label">📱 아이폰</div>
-        <div class="rev-track"><div class="rev-fill" style="width:49.6%; background:var(--accent);"></div></div>
+        <div class="rev-track"><div class="rev-fill" style="width:49.6%; background:#0071e3;"></div></div>
         <div class="rev-pct">49.6%</div>
       </div>
       <div class="rev-row">
@@ -216,100 +400,249 @@
       </div>
     </div>
 
-    <table>
-      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>📱 아이폰</td><td class="num">$54.3B</td><td class="num" style="color:var(--pos-text)">+22%</td><td class="num">49.6%</td></tr>
-      <tr><td>☁️ 서비스</td><td class="num">$30.7B</td><td class="num" style="color:var(--pos-text)">+12%</td><td class="num">28.1%</td></tr>
-      <tr><td>💻 맥</td><td class="num">$10.4B</td><td class="num" style="color:var(--pos-text)">+29%</td><td class="num">9.5%</td></tr>
-      <tr><td>🎧 웨어러블</td><td class="num">$7.9B</td><td class="num" style="color:var(--pos-text)">+6%</td><td class="num">7.2%</td></tr>
-      <tr><td>📱 아이패드</td><td class="num">$6.2B</td><td class="num" style="color:var(--neg-text)">-6%</td><td class="num">5.7%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$109.4B</b></td><td class="num"><b>+16%</b></td><td class="num"><b>100%</b></td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
-    <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 10일 (목) 오전 2:00</td><td><b>Apple '서프라이즈 앤 샤인' 이벤트 완료</b>(현지 9/9) — 신제품 라인업 공개 완료</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>9월 12일 (토) 오후 4:00</td><td><b>아이폰18 및 신제품 사전예약(Pre-order) 개시 완료</b>(현지 9/12 00:00 PT)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>9월 17일 (목) 오전 3:00</td><td>FOMC 금리결정 발표(현지 9/15~16 회의)</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>9월 18일 (금, 현지시간)</td><td>아이폰18 및 신제품 글로벌 공식 정식 출시</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 30일 (금) 오전 5:00</td><td>FY2026 4분기 실적 발표(현지 10/29 장마감 후)</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>11월 10일 (화)</td><td>배당락일(주당 $0.27) · 지급일 11/13(금)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-    </table>
-  </section>
-
-  <section>
-    <h2>5. 단기 가격 핵심 체크리스트</h2>
-    <p style="font-size:14px; color:var(--text-soft); margin-bottom:14px;">단기(수 일~몇 주) 주가 움직임을 볼 때 반드시 확인해야 할 핵심 항목만 정리했습니다.</p>
-
-    <div class="chk-card">
-      <h4>1. 신제품 사전예약 및 초기 리드타임</h4>
-      <ul>
-        <li><b>사전예약 수량 데이터</b>: 아이폰18 프로 및 폴더블 아이폰 초기 대기 기간(Lead time) 추이 분석</li>
-        <li><b>존 터너스 CEO 체제</b>: 첫 신제품 주기 흥행 성공 여부에 따른 체제 안정성 평가</li>
-      </ul>
-    </div>
-
-    <div class="chk-card">
-      <h4>2. 수급 및 기술적 지표</h4>
-      <ul>
-        <li><b>주요 지지선/저항선</b>: $325 지지력 유지 후 52주 최고가($344.57) 재시도 및 $350 안착 여부</li>
-        <li><b>거래량 변화</b>: 신고점 육성 과정에서의 기관 순매수 확대 지속 여부</li>
-      </ul>
-    </div>
-
-    <div class="chk-card">
-      <h4>3. 매크로 및 외부 이벤트</h4>
-      <ul>
-        <li><b>미 국채 10년물 금리</b>: 금리 향방에 따른 기술주 밸류에이션 영향 주시</li>
-        <li><b>9/17 FOMC 금리 결정</b>: 연준의 매크로 스탠스 및 시장 금리 반응</li>
-      </ul>
-    </div>
-
-    <div class="chk-card">
-      <h4>4. 원가 및 실적 변수</h4>
-      <ul>
-        <li><b>메모리 반도체 원가 방어</b>: FY26 Q4 예상 마진율(47~48%) 훼손 없는 방어력</li>
-        <li><b>프리미엄 라인업 비중</b>: 고가 모델 판매 비중 증가에 따른 수익성 보전 효과</li>
-      </ul>
-    </div>
-
     <div class="callout">
-      → **사전예약 데이터(9/12~) + FOMC 금리 결과(9/17)**가 단기 주가의 핵심 모멘텀입니다. $330선을 안정적으로 탈환함에 따라 52주 최고가 돌파 시도가 이어질 전망입니다.
+      → 애플은 <b>하드웨어 생태계와 고마진 서비스</b>의 강력한 선순환 구조를 보유하고 있습니다.
+      아이폰18 및 첫 폴더블 라인업 출시로 프리미엄 ASP 상승이 기대되며, 서비스 부문 매출 $30.7B(+12% YoY)이 견고한 하방 버팀목 역할을 수행합니다.
+    </div>
+
+    <h3>가치 흐름도 (제품 판매에서 주주 가치까지)</h3>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>신제품 및 서비스 매출 유입</b>
+          <div class="desc">아이폰18, 폴더블, 맥, 웨어러블 판매 + App Store, Apple Music, iCloud 등 서비스 구독</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>글로벌 인프라 및 공급망</b>
+          <div class="desc">TSMC 2나노 파운드리 연동, 린 생산 체계, 글로벌 오프라인/온라인 리테일 네트워크</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 매출총이익률 50.1% 달성 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>기업 영업이익 및 현금흐름</b>
+          <div class="desc">분기 매출 $109.4B 기준 잉여현금흐름(FCF) 창출 및 서비스 매출 확대 고마진율유지</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-split">
+        <div class="flow-box burn">
+          <b>원가 및 밸류 리스크</b>
+          <div class="desc">메모리 반도체 원가 상승 압력 + PER ~38배 밸류에이션 부담 및 매크로 금리 변동성</div>
+        </div>
+        <div class="flow-box reward">
+          <b>주주 환원 및 성장 모멘텀</b>
+          <div class="desc">대규모 자사주 매입 및 배당, AI/폴더블 혁신 프리미엄으로 EPS 성장 동력 확보</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓</div>
+      <div class="flow-row">
+        <div class="flow-box">
+          <b>주가 가치 창출</b>
+          <div class="desc">견고한 실적 하방지지와 신제품 모멘텀이 주가를 52주 최고가($344.57) 돌파 구간으로 견인</div>
+        </div>
+      </div>
+    </div>
+    <div class="callout" style="margin-top:14px;">→ 애플은 하드웨어와 플랫폼 서비스의 결합으로 높은 FCF를 창출하며 자사주 매입 및 배당 등 우수한 주주환원 정책을 지속합니다. 이번 아이폰18 사전예약 호조는 고마진 ASP 유지와 더불어 단기 주가 상승 모멘텀의 핵심 동인입니다.</div>
+  </section>
+
+  <section>
+    <h2>5. 주요 일정·변수 (KST 기준)</h2>
+    <table>
+      <tr><th style="width:26%">일정/변수</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr>
+        <td>9월 10일 (목) 오전 2:00</td>
+        <td>Apple '서프라이즈 앤 샤인' 이벤트 완료(현지 9/9) — 신제품 라인업 공개 완료</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 12일 (토) 오후 4:00</td>
+        <td>아이폰18 및 신제품 사전예약(Pre-order) 개시 완료 — 리드 타임 분석 지속</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>9월 17일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 발표 (현지 9/15~16 회의) — 빅테크 변동성 영향</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>9월 18일 (금, 현지시간)</td>
+        <td>아이폰18 및 신제품 글로벌 공식 정식 출시</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 30일 (금) 오전 5:00</td>
+        <td>FY2026 4분기 실적 발표 (현지 10/29 장마감 후)</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>11월 10일 (화)</td>
+        <td>배당락일 (주당 $0.27) · 지급일 11/13(금)</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+    </table>
+  </section>
+
+  <section>
+    <h2>6. AAPL 핵심 체크리스트</h2>
+    <table>
+      <tr><th style="width:8%">#</th><th style="width:32%">항목</th><th>체크 포인트</th><th style="width:18%">우선순위</th></tr>
+      <tr>
+        <td>1</td>
+        <td>사전예약 & 리드타임</td>
+        <td>아이폰18 프로 및 폴더블 아이폰 초기 대기 기간(Lead time) 추이 및 수요 분석</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>가격·지지/저항</td>
+        <td>$325 지지력 유지 후 52주 최고가($344.57) 재시도 및 $350 안착 여부</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>경영진 리더십</td>
+        <td>존 터너스 CEO 체제 첫 신제품 주기 흥행 성공 여부에 따른 체제 안정성 평가</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>매크로 & 금리</td>
+        <td>미 국채 10년물 금리 추이 및 FOMC 금리 결정에 따른 빅테크 밸류에이션 영향</td>
+        <td><span class="star">★★★★★</span></td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>원가 & 마진 방어</td>
+        <td>메모리 반도체 원가 상승에 따른 FY26 Q4 예상 마진율(47~48%) 훼손 여부</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>수급 & 거래량</td>
+        <td>신고점 형성 과정에서의 기관 순매수 확대 지속 여부 및 거래량 변화</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>서비스 부문 성과</td>
+        <td>고마진 서비스 매출($30.7B+) 지속 성장세 및 가입자 수 추이 모니터링</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>8</td>
+        <td>경쟁 & 공급망</td>
+        <td>TSMC 2나노 공정 수율 및 글로벌 스마트폰 시장 내 프리미엄 점유율 유지 여부</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+    </table>
+    <div class="callout" style="margin-top:14px;">
+      <b>체크리스트 활용 팁</b>: 단기 트레이딩은 1·2·4번, 중기 포지션은 3·5·7번을 우선 모니터링하세요. 사전예약 정량 데이터와 매크로 금리 환경은 주가 향방을 결정짓는 핵심 변수입니다.
     </div>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.11 16:00 ET 정규장 마감(2026.09.14 KST 기준 업데이트) / 실적은 FY2026 3분기 기준.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다.
+    가격·시가총액·실적 등은 공개 데이터를 참고했으며, 데이터 기준: 2026.09.23(KST) 스냅샷 및 실시간 갱신.
+    소스별로 가격이 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
   </footer>
+
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
   new TradingView.widget({
     "container_id": "tv_aapl_daily",
-    "width": "100%", "height": 460,
+    "width": "100%",
+    "height": 460,
     "symbol": "OKX:AAPLUSDT.P",
     "interval": "D",
-    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#101216", "enable_publishing": false,
-    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+
   new TradingView.widget({
     "container_id": "tv_aapl_15m",
-    "width": "100%", "height": 460,
+    "width": "100%",
+    "height": 460,
     "symbol": "OKX:AAPLUSDT.P",
     "interval": "15",
-    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#101216", "enable_publishing": false,
-    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "timezone": "Asia/Seoul",
+    "theme": "dark",
+    "style": "1",
+    "locale": "kr",
+    "toolbar_bg": "#1a1d24",
+    "enable_publishing": false,
+    "hide_top_toolbar": false,
+    "hide_legend": false,
+    "save_image": false,
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · AAPL-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "AAPL-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AAPLUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 최근 스냅샷 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
