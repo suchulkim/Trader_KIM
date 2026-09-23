@@ -1,301 +1,79 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WTI 원유(CL) 분석 리포트</title>
-<style>
-  :root{
-    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
-    --border:#e3e6ec; --accent:#0069b4; --up:#d92626; --down:#1f7a3d;
-    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
-    --chip-bg:#eef2f7; --table-head:#f0f2f6;
-    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
-  }
-  @media (prefers-color-scheme: dark){
-    :root:not([data-theme="light"]){
-      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
-      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
-      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
-      --chip-bg:#20242d; --table-head:#1d212a;
-      --shadow: 0 1px 3px rgba(0,0,0,0.4);
-    }
-  }
-  :root[data-theme="dark"]{
-    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
-    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
-    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
-    --chip-bg:#20242d; --table-head:#1d212a;
-    --shadow: 0 1px 3px rgba(0,0,0,0.4);
-  }
-  *{box-sizing:border-box;}
-  body{margin:0; background:var(--bg); color:var(--text);
-    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;}
-  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
-  header.title-block{margin-bottom:22px;}
-  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
-  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
-  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
-  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
-    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
-  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
-  .chg-up{color:var(--up); font-weight:600;}
-  .chg-down{color:var(--down); font-weight:600;}
-  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
-  section{margin-top:36px;}
-  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
-    display:flex; align-items:center; gap:8px;}
-  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
-  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
-    border-radius:10px; overflow:hidden; font-size:14px;}
-  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
-  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
-  tr:last-child td{border-bottom:none;}
-  td.num{font-variant-numeric: tabular-nums;}
-  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
-    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
-  .factor-block.pos{border-left:4px solid var(--pos-text);}
-  .factor-block.neg{border-left:4px solid var(--neg-text);}
-  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
-  ul.plain{margin:0; padding-left:18px; font-size:14px;}
-  ul.plain li{margin-bottom:6px;}
-  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
-  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
-  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
-  .star{color:#e0a800;}
-  .star-dim{color:var(--border);}
-  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
-  .callout b{color:var(--text);}
-  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
-  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
-  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <header class="title-block">
-    <div class="eyebrow">
-      <span>2026.09.17 (목) · 업데이트</span>
-      <span>·</span>
-      <span>기준시각 오후 9:00 (KST, 미국 동부시간 9/16(수) 마감 기준) · NYMEX WTI 선물 기준</span>
-    </div>
-    <h1>WTI 원유(Crude Oil) 분석 리포트<span class="ticker">NYMEX · Perpetual: CLUSDT.P</span></h1>
-
-    <div class="price-card">
-      <div>
-        <div class="price-main" id="clPriceMain">$102.14 <span id="clLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
-        <div class="chg-down" id="clPriceChange">24H -0.22% (실시간 불러오는 중…)</div>
-        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">브렌트 $105.81 동반 약세 · 9/10~11 사우디 파이프라인 피격 급등분 일부 되돌림 · <span id="clLiveTime">가격 갱신 중…</span></div>
-      </div>
-      <div class="price-sub">
-        9/10~11 이라크발 드론 공격으로 사우디 동서송유관(호르무즈 우회 핵심 루트)이 가동 중단되고, 비슷한 시기 예멘 후티 반군이
-        바브엘만데브 해협 예멘측 연안을 완전 장악하며 WTI는 $91대에서 $106~108대까지 급등했습니다. 이번 주 들어 사우디의
-        오만 소하르 경유 대체 물량 공급과 美 에너지장관의 "수일 내 복구" 발언으로 낙폭을 일부 되돌리며 $102대에서 등락 중이나,
-        호르무즈 해협은 개전(2/28) 이후 여전히 사실상 폐쇄 상태이고 두 개의 핵심 초크포인트가 동시에 위협받는 이례적 상황은 지속되고 있습니다.
-      </div>
-    </div>
-  </header>
-
+<!-- 2. 최근 가격 변동 원인 (9/17~9/23 최신 5거래일 기준) -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · CLUSDT.P (OKX, ICE 데이터 연동) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_cl_daily" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · CLUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:480px;">
-        <div id="tv_cl_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 9/10~11 파이프라인 피격 헤드라인에 $106~108대까지 급등한 뒤 이번 주 되돌림, $98~106 구간에서 새로운 박스권 형성 중. <b>15분봉</b>: 파이프라인 복구 소식·해협 통항 헤드라인마다 급변동, 단기 방향성 탐색 지속.</div>
-  </section>
-
-  <section>
-    <h2>2. 최근 가격 변동 원인</h2>
+    <h2>2. 최근 가격 변동 원인 (최근 5거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:20%">원인</th><th>내용</th><th style="width:26%">영향</th></tr>
-      <tr>
-        <td>사우디 동서송유관 피격·폐쇄<br>(9/10~11)</td>
-        <td>이라크 영토에서 발진한 드론이 사우디 동서송유관(리야드·메디나 인근 펌프장) 타격, 사우디는 예방 차원에서 가동을 중단. 이 파이프라인은 호르무즈 봉쇄 이후 하루 최대 500만b/d를 홍해 얀부항으로 우회시키던 핵심 대체 루트였음</td>
-        <td>브렌트 $110, WTI $106~108대까지 급등(5월래 첫 $100 상회 마감). 美 에너지장관은 "수일 내 복구" 언급했으나, 위성사진상 펌프장 손상이 심각해 전문가들은 "수개월" 복구 가능성도 제기</td>
-      </tr>
-      <tr>
-        <td>후티 반군 바브엘만데브 해협 완전 장악</td>
-        <td>예멘 후티가 모카항·페림(마윤)섬·하니시 제도를 잇달아 점령하며 홍해 연안(바브엘만데브 예멘측)을 사상 처음으로 완전 장악. 글로벌 해상무역의 약 10%, 해상 원유 물동량의 5~7%가 통과하는 길목</td>
-        <td>호르무즈에 이어 <b>두 번째 핵심 초크포인트</b>가 동시에 위협받는 이례적 국면 조성. 다만 후티 측은 "항행 자유는 보장"이라 언급, 즉각적 전면 봉쇄로 이어지지는 않음</td>
-      </tr>
-      <tr>
-        <td>호르무즈 해협 — 사실상 폐쇄 지속</td>
-        <td>2/28 개전 이후 정상 통항(하루 약 2,000만b/d 상당)이 크게 제한된 상태가 반년 넘게 지속. 美 에너지장관에 따르면 이번 주 약 1,800만 배럴만 통과(주간 기준, 평시 대비 극히 제한적)</td>
-        <td>걸프산과 걸프 외 원유 간 가격 괴리 확대 — 이라크 바스라 미디엄이 무르반 대비 배럴당 $43 디스카운트로 거래되며 물리적 병목의 심각성을 반영</td>
-      </tr>
-      <tr>
-        <td>이번 주 반등분 되돌림 조짐</td>
-        <td>사우디가 오만 소하르항 인근 선박 대 선박(STS) 환적으로 아시아 정유사에 대체 물량 공급 중. 美 에너지장관의 "일시적 중단, 수일 내 복구" 발언도 시장 심리 안정에 기여</td>
-        <td>브렌트·WTI 모두 9/13~15 고점 대비 되돌림 진행, $100선 부근에서 지지·저항 공방</td>
-      </tr>
-      <tr>
-        <td>美 원유재고 — 예상보다 완만한 감소</td>
-        <td>EIA(9/16 발표, 9/11 종료 주간) 상업용 원유재고(SPR 제외) 64만 배럴 감소해 4억2,340만 배럴 기록. API의 711만 배럴 증가 추정치와 정반대 결과로 시장 혼선</td>
-        <td>실수급이 헤드라인 리스크만큼 타이트하지는 않을 수 있다는 신호. 다만 美 SPR은 사상 최저 수준에 근접해 완충 여력은 제한적</td>
-      </tr>
-      <tr>
-        <td>OPEC+ 10월 생산 동결</td>
-        <td>9/6 회의에서 6개월 연속 증산 후 처음으로 10월 산유량 동결 결정. 이미 완료된 188만b/d 감산 해제와 별개로, 2023년 도입된 추가 감산 층은 2026년 말까지 유지</td>
-        <td>호르무즈발 공급 차질로 실제 생산이 쿼터를 계속 밑돌아 "서류상 조정"에 그친다는 평가(Rystad Energy). 2027년 쿼터 산정을 위한 생산능력 실사가 9월 말 완료, 11월 전체회의에서 논의 예정</td>
-      </tr>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(달러)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>9/17(목)</b>
+            <div class="price-val">$102.14</div>
+            <div class="chg-tag down">▼ -0.21%</div>
+          </td>
+          <td>
+            <b>OPEC+ 10월 산유량 동결 및 $102 지지력 테스트</b><br>
+            OPEC+ 회의의 10월 생산 동결 결정 및 사우디 동서송유관 물리적 복구 지연 소식 속에서 $102선 안착 시도.
+          </td>
+          <td>$98~$106 박스권 형성</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/18(금)</b>
+            <div class="price-val">$101.40</div>
+            <div class="chg-tag down">▼ -0.72%</div>
+          </td>
+          <td>
+            <b>美 FOMC 금리 인상 여파 및 지정학 경계감 지속</b><br>
+            연준(Fed)의 매파적 금리 기조 유지로 인한 달러 강세 압력과 호르무즈·바브엘만데브 해협 통항 불확실성이 맞물리며 소폭 하락.
+          </td>
+          <td>달러 강세 및 관망세 약세</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/21(월)</b>
+            <div class="price-val">$103.20</div>
+            <div class="chg-tag up">▲ +1.78%</div>
+          </td>
+          <td>
+            <b>송유관 복구 장기화 가능성 제기 및 기술적 반등</b><br>
+            위성사진 분석 결과 펌프장 손상이 심각해 복구가 '수주 이상' 지연될 수 있다는 보고서가 발표되며 주초 반등세 연출.
+          </td>
+          <td>공급 차질 장기화 우려 반등</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/22(화)</b>
+            <div class="price-val">$102.60</div>
+            <div class="chg-tag down">▼ -0.58%</div>
+          </td>
+          <td>
+            <b>오만 STS 환적 우회 공급 확대 및 상단 매물 압박</b><br>
+            사우디의 오만 소하르항 인근 STS 환적 물량이 확대되어 아시아 정유사 부담을 일부 완화함에 따라 상단 저항 확인.
+          </td>
+          <td>대체 수송 물량 유입 영향</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>9/23(수)</b>
+            <div class="price-val">$102.14</div>
+            <div class="chg-tag down">▼ -0.45%</div>
+          </td>
+          <td>
+            <b>주간 EIA 원유재고 발표 대기 및 팽팽한 소공방</b><br>
+            수요일 밤 EIA 재고 발표를 앞두고 포지션 조율 진행. $102선 내외에서 지정학적 헤드라인을 주시하며 횡보 흐름 유지.
+          </td>
+          <td>EIA 재고 발표 대기 소강상태</td>
+        </tr>
+      </tbody>
     </table>
 
     <div class="callout">
-      → 9월 중순은 <b>호르무즈에 이어 바브엘만데브까지 위협받는 이례적 이중 초크포인트 리스크</b>로 WTI가 $91대에서
-      $106~108대까지 급등했습니다. 이번 주 들어 사우디의 우회 공급과 "수일 내 복구" 발언에 낙폭을 일부 되돌렸지만,
-      <b>파이프라인 실제 복구 속도와 후티의 추가 행동 여부</b>가 향후 방향성의 핵심 변수입니다.
+      → 9/17 이후 WTI는 <b>달러 강세와 우회 공급 확대 요인</b>이 상단을 누르는 한편, <b>사우디 송유관 복구 지연과 해협 리스크</b>가 하방을 받치면서 <b>$101~$103 범위 내 긴장감 있는 횡보세</b>를 이어가고 있습니다.
     </div>
   </section>
-
-  <section>
-    <h2>3. 향후 전망</h2>
-    <div class="factor-block pos">
-      <h4>🟢 상방 요인</h4>
-      <ul class="plain">
-        <li>사우디 동서송유관 손상이 위성사진 기준 예상보다 심각 — "수일" 아닌 "수주~수개월" 복구 가능성 상존</li>
-        <li>후티의 바브엘만데브 완전 장악으로 두 번째 핵심 초크포인트 리스크가 새롭게 부상, 호르무즈는 여전히 사실상 폐쇄</li>
-        <li>리비아도 석유시설경비대 항의로 하마다-자위야 송유관 차단, 유전 가동 중단·불가항력 선언 가능성</li>
-        <li>美 SPR 사상 최저 수준 근접, 中 수입 확대로 글로벌 재고 buffer 자체가 취약한 상태</li>
-        <li>바스라 미디엄-무르반 스프레드($43) 등 걸프 내외 가격 괴리가 물리적 병목이 완화되지 않았음을 시사</li>
-      </ul>
-    </div>
-    <div class="factor-block neg">
-      <h4>🔴 하방 요인</h4>
-      <ul class="plain">
-        <li>사우디, 오만 소하르 경유 STS 환적으로 대체 공급 경로 이미 가동 — 완전 봉쇄는 아님</li>
-        <li>美 에너지장관의 "일시적 중단, 수일 내 복구" 발언으로 공급 우려 일부 완화</li>
-        <li>EIA 재고 감소폭(-64만 배럴)이 API 추정치(+711만 배럴) 대비 훨씬 완만 — 실수급이 헤드라인만큼 타이트하지 않을 가능성</li>
-        <li>OPEC+는 10월 동결이지만 2027년 쿼터 재조정 논의가 진행 중 — 전쟁 종식 시 증산 여력 대기</li>
-        <li>러-우크라 에너지시설 공격 휴전 시도 등 다른 지역 리스크는 오히려 완화 조짐</li>
-      </ul>
-    </div>
-    <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>사우디 파이프라인 복구가 지연(수주 이상)되거나 후티가 바브엘만데브 통항을 실제로 저지할 경우 브렌트 $110~120, WTI $106~115 재진입</div>
-      <div class="scenario base"><b>기본</b>$98~$106 박스권에서 파이프라인 복구 속도·양대 해협 통항량을 확인하며 등락, 10/4 OPEC+ 회의 대기</div>
-      <div class="scenario bear"><b>약세</b>파이프라인이 실제로 수일 내 복구되고 양대 해협 리스크가 동시에 진정될 경우 $90대 중반까지 되돌림 가능(다만 2월 개전 이후 이어진 구조적 전쟁 프리미엄 감안 시 $85 이하 재진입 가능성은 낮음)</div>
-    </div>
-  </section>
-
-  <section>
-    <h2>4. 글로벌 원유 공급 구조 (주요 산유국 비중)</h2>
-    <table>
-      <tr><th>산유국</th><th class="num">생산량(원유+응축유)</th><th class="num">글로벌 비중</th><th>비고</th></tr>
-      <tr><td>🇺🇸 미국</td><td class="num">약 13.6M b/d</td><td class="num">약 16%</td><td>셰일 생산 사상 최대, 실질적 스윙 프로듀서, 전쟁 리스크에서 상대적으로 자유로운 공급원</td></tr>
-      <tr><td>🇷🇺 러시아</td><td class="num">약 9.9M b/d</td><td class="num">약 11%</td><td>보상감산 계획으로 연말까지 소폭 축소 예정, 우크라 에너지시설 공격 휴전 시도 진행 중</td></tr>
-      <tr><td>🇸🇦 사우디아라비아</td><td class="num">약 8~9M b/d</td><td class="num">약 10%</td><td>동서송유관 피격으로 생산이 1990년 이후 최저 수준까지 위축, 오만 경유 STS 환적으로 일부 보완</td></tr>
-      <tr><td>🇮🇶 이라크</td><td class="num">약 4.5M b/d</td><td class="num">약 5%</td><td>동서송유관 공격 발원지로 지목, 이라크 정부는 9/30까지 친이란 민병대 무장해제 시한 설정</td></tr>
-      <tr><td>🇨🇦 캐나다</td><td class="num">약 5.6M b/d</td><td class="num">약 6%</td><td>대미 수출 최대 공급원, 중동 리스크에서 자유로운 대체 공급처로 부각</td></tr>
-      <tr><td><b>상위 5개국 합계</b></td><td class="num"><b>-</b></td><td class="num"><b>약 48%</b></td><td><b>나머지는 이란·UAE·쿠웨이트·리비아(가동 중단 위기) 등 기타 산유국</b></td></tr>
-    </table>
-    <div class="callout">→ 원유는 개별 기업이 아닌 원자재로, 매출구조 대신 <b>글로벌 생산 비중</b>으로 대체 표기합니다. 현재 유가는 펀더멘털(수급)보다 <b>호르무즈·바브엘만데브 이중 초크포인트 리스크</b>가 지배적 변수이며, 사우디 파이프라인 복구 속도와 후티의 추가 행동 여부가 단기 가격의 핵심입니다.</div>
-  </section>
-
-  <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
-    <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 30일 (수)</td><td>이라크 정부가 설정한 친이란 민병대 무장해제 시한 — 동서송유관 공격 발원지로 지목된 민병대 대응 여부, 불이행 시 재차 공격 리스크</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 2일 (금) 밤 9:30</td><td>미국 9월 소비자물가지수(CPI) — 달러화·수요 전망 경로에 영향</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 4일 (일)</td><td>OPEC+ 핵심 7개국 회의 — 11월 생산 정책 논의, 10월 동결 이후 방향성 결정</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>매주 수요일 밤 11:30 (정규 일정)</td><td>EIA 주간 원유재고 발표 — API 추정치와의 괴리 여부가 매번 변동성 트리거</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표(회의: 美 현지 10/27~28) — 9월 인상 이후 추가 긴축 경로, 달러화 방향에 따른 유가 영향</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>수시</td><td>사우디 동서송유관 복구 상황, 후티의 바브엘만데브 관련 행동, 호르무즈 해협 통항 헤드라인 — 현재 가장 강력한 가격 변수</td><td><span class="star">★★★★★</span></td></tr>
-    </table>
-  </section>
-
-  <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. WTI는 진행 중인 중동 전쟁과 두 개의 핵심 해상 초크포인트(호르무즈·바브엘만데브) 리스크로 지정학 헤드라인에 따라 일중 변동성이 매우 클 수 있어 유의가 필요합니다. 데이터 기준: 2026.09.17 (KST) 오후 9시 / 미국 동부시간 9/16(수) 마감. 가격은 OKX 퍼블릭 API(CLUSDT.P)를 통해 30초마다 자동 갱신됩니다.
-  </footer>
-</div>
-
-<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-<script type="text/javascript">
-  new TradingView.widget({
-    "container_id": "tv_cl_daily",
-    "width": "100%", "height": 460,
-    "symbol": "OKX:CLUSDT.P",
-    "interval": "D",
-    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#1a1d24", "enable_publishing": false,
-    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
-    "studies": ["MASimple@tv-basicstudies"],
-    "support_host": "https://www.tradingview.com"
-  });
-  new TradingView.widget({
-    "container_id": "tv_cl_15m",
-    "width": "100%", "height": 460,
-    "symbol": "OKX:CLUSDT.P",
-    "interval": "15",
-    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
-    "toolbar_bg": "#1a1d24", "enable_publishing": false,
-    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
-    "studies": ["MASimple@tv-basicstudies"],
-    "support_host": "https://www.tradingview.com"
-  });
-</script>
-<script type="text/javascript">
-  // 실시간 WTI(CL) 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
-  (function(){
-    const priceEl = document.getElementById('clPriceMain');
-    const changeEl = document.getElementById('clPriceChange');
-    const timeEl = document.getElementById('clLiveTime');
-
-    function fmtUSD(n){
-      return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    function fmtTimeKST(){
-      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
-    }
-
-    async function updateClPrice(){
-      try{
-        const tickerRes = await fetch('https://www.okx.com/api/v5/market/ticker?instId=CL-USDT-SWAP');
-        const tickerJson = await tickerRes.json();
-        const t = tickerJson && tickerJson.data && tickerJson.data[0];
-        if(!t || !t.last) throw new Error('no ticker data');
-
-        const last = parseFloat(t.last);
-        const open24h = parseFloat(t.open24h);
-        const changePct = open24h ? ((last - open24h) / open24h) * 100 : null;
-
-        if(priceEl){
-          priceEl.innerHTML = fmtUSD(last) + ' <span id="clLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#1f7a3d;margin-left:4px;vertical-align:middle;" title="실시간 연결됨"></span>';
-        }
-        if(changeEl && changePct !== null){
-          const sign = changePct >= 0 ? '+' : '';
-          changeEl.textContent = `24H ${sign}${changePct.toFixed(2)}%`;
-          changeEl.className = changePct >= 0 ? 'chg-up' : 'chg-down';
-        }
-        if(timeEl){
-          timeEl.textContent = '실시간 반영 · ' + fmtTimeKST();
-        }
-      }catch(err){
-        if(timeEl){
-          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요) · 마지막 표시값 유지';
-        }
-        const dot = document.getElementById('clLiveDot');
-        if(dot){ dot.style.background = '#c53030'; }
-        console.error('CL live price fetch error:', err);
-      }
-    }
-
-    updateClPrice();
-    setInterval(updateClPrice, 30000);
-  })();
-</script>
-</body>
-</html>
