@@ -245,6 +245,11 @@
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
 
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -259,22 +264,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.12 (토) · 업데이트</span>
+      <span>2026.09.19 (토) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 美 정규장 마감(9/11 16:00 ET) 및 코스피 9/11 종가 기준</span>
+      <span>기준시각 오전 5:00 (KST) · 본주(000660) 9/18 코스피 종가 · ADR 실시간 변동 반영</span>
     </div>
     <h1>SK hynix (SKHY) 주가 분석 리포트<span class="ticker">ADR: SKHY (Nasdaq) · 본주 000660.KS (KOSPI)</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main">$190.07</div>
-        <div class="chg-up">ADR 9/11 종가 +0.94% · 본주(코스피 9/11) 1,812,000원 -2.21%로 엇갈린 흐름</div>
+        <div class="price-main"><span id="live-price">$194.75</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">ADR 추정 +약 3% · 본주(코스피 9/18) 1,857,000원 +6.42%</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SKHYUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/4 OpenAI 'GPT-6 Astra' 공개로 AI칩 수요 기대감이 커지며 ADR이 하루 만에 +7% 급등했고, Solidigm(NAND 자회사)의
-        나스닥 상장 추진이 가시화되며 밸류에이션 재평가 기대도 커진 상태. 다만 9/8~9/11 반도체 섹터 전반의 변동성
-        속에 ADR과 본주(코스피)가 서로 다른 날짜에 다른 방향으로 움직이는 괴리도 관찰되고 있습니다. 52주 범위:
-        ADR $124.80~$199.87, 본주 319,000원~2,987,000원.
+        9/14 유가·금리발 반도체 섹터 전반 조정(본주 -6.35%)으로 급락했으나, 9/16 FOMC 전후 반등하고 9/18에는
+        코스피 전체가 2.66% 급등(6,894.23)하는 가운데 본주가 +6.42%로 지수 상승을 견인했습니다. Solidigm(NAND 자회사)
+        나스닥 상장 추진과 삼성전자·SK하이닉스의 한전 25조원 선지급 제안 거부 등 개별 이슈도 겹쳤습니다.
+        52주 범위: ADR $124.80~$199.87, 본주 333,000원~2,987,000원.
       </div>
     </div>
 
@@ -297,89 +303,92 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/14 저점(본주 1,690,000원 부근) 이후 9/18 대형 반등(+6.42%)으로 1,857,000원까지 회복. 6월 사상 최고가(2,987,000원) 대비로는 여전히 큰 폭 하회.<br>
+      <b>15분봉</b>: 코스피 전체 강세(9/18 +2.66%)에 본주가 더 크게 반응, ADR도 동조화된 흐름 — 본주-ADR 간 시차·환율 괴리는 지속 모니터링 필요.
+    </div>
+  </section>
+
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:22%">원인</th><th>내용</th><th style="width:24%">영향</th></tr>
+      <tr><th style="width:22%">날짜 · 종가(원)</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>OpenAI 'GPT-6 Astra' 공개 → AI칩 수요 기대 급등</b></td>
-        <td>9/4 OpenAI가 신형 모델 'GPT-6 Astra'를 공개하며 AI 컴퓨팅 수요 확대 기대감이 커졌고, ADR이 하루 만에 +7%
-        급등. Micron·SanDisk 등 메모리株 전반도 동반 강세("메모리 트레이드 리바운드")</td>
-        <td>HBM 최대 수혜주로서 AI 수요 서사가 재부각될 때마다 가장 민감하게 반응하는 종목군에 속함</td>
+        <td><b>9/14(월)</b><br>1,697,000<br><span style="color:var(--up); font-weight:600;">▼ -6.35%</span></td>
+        <td>국제유가 급등·美 10년물 국채금리 19년래 최고치로 글로벌 반도체 섹터 전반 급락(AMD -4.40%, AVGO -4.77% 등과 동조), "AI 리셋" 우려까지 겹치며 이번 주 최대 낙폭</td>
+        <td>이번 주 저점 형성</td>
       </tr>
       <tr>
-        <td><b>Solidigm(NAND 자회사) 나스닥 상장 추진 가시화</b></td>
-        <td>8/5 Solidigm의 5~10조원 규모 프리IPO 자금조달 추진 보도 이후, 9/3 미국 자산운용사가 Solidigm 연계 ETF를
-        SEC에 사전등록하며 상장 가능성이 "루머에서 실행 단계"로 넘어갔다는 평가. 밸류에이션은 약 $35B 수준으로
-        논의 중 — 2020년 인텔 낸드사업 인수가($9B) 대비 큰 폭 재평가</td>
-        <td>NAND 자회사의 숨은 가치가 시장에서 재평가받을 수 있다는 기대감으로 연결</td>
+        <td><b>9/15(화)</b><br>1,690,000<br><span style="color:var(--down); font-weight:600;">▲ -0.41%</span></td>
+        <td>낙폭과대 인식 속 보합권 마감, CLARITY Act 부결 등 매크로 불확실성이 겹치며 방향성 탐색</td>
+        <td>저점 다지기</td>
       </tr>
       <tr>
-        <td><b>메모리 반도체 섹터 전반 롤러코스터 장세</b></td>
-        <td>9/8 상승 → 9/9~10 반도체 섹터 전반 조정(장기금리 상승) → 9/11 ADR +0.94% 소폭 반등. Micron·SanDisk와
-        거의 동시에 오르내리는 패턴이 지속</td>
-        <td>개별 펀더멘털보다 메모리 업종 전체 심리·미 국채금리 흐름이 단기 주가를 좌우</td>
+        <td><b>9/16(수)</b><br>1,759,000<br><span style="color:var(--up); font-weight:600;">▲ +4.08%</span></td>
+        <td>FOMC(현지 9/16) 25bp 인상 발표를 앞두고 국내 저가 매수세 유입, 메모리 슈퍼사이클 스토리 재부각과 Solidigm 나스닥 상장 기대감 지속</td>
+        <td>미국보다 하루 앞서 반등 시작</td>
       </tr>
       <tr>
-        <td><b>ADR-본주 가격 괴리 확대</b></td>
-        <td>9/11 ADR은 +0.94% 상승한 반면 같은 날 코스피 본주는 -2.21% 하락하는 등, 거래시간 차이와 환율·수급에 따라
-        ADR과 본주가 다른 방향으로 움직이는 사례가 반복</td>
-        <td>ADR 프리미엄/디스카운트 변동성이 커지고 있어 두 시장 가격을 함께 확인할 필요</td>
+        <td><b>9/17(목)</b><br>1,745,000<br><span style="color:var(--down); font-weight:600;">▼ -0.80%</span></td>
+        <td>美 FOMC 결과를 소화하는 과정에서 소폭 조정, 삼성전자·SK하이닉스가 한국전력의 25조원 규모 반도체 클러스터 전력공급 선지급 제안을 거부했다는 보도 등 개별 이슈 부각</td>
+        <td>미국 반도체 랠리(+2.54%) 대비 상대적으로 약한 흐름</td>
       </tr>
       <tr>
-        <td><b>월가 목표주가 상향 지속</b></td>
-        <td>Bernstein이 9/4·9/7 연이어 Buy 등급 재확인, Bank of America는 목표주가 $250 제시 등 우호적 코멘트가
-        이어지는 중</td>
-        <td>단기 변동성에도 장기 강세 시각이 유지되는 배경</td>
+        <td><b>9/18(금)</b><br>1,857,000<br><span style="color:var(--up); font-weight:600;">▲ +6.42%</span></td>
+        <td>코스피 전체가 2.66% 급등(6,894.23)하는 가운데 대형 반도체주가 지수 상승을 견인 — 외국인·기관 순매수 유입 속 "인상 재료 소진" 인식에 따른 글로벌 반도체 랠리 동참, 中 CXMT의 DRAM 양산 경쟁 심화 소식에도 낙폭과대 반등이 우세</td>
+        <td>지수(+2.66%) 대비 2배 이상의 강한 상대 강세</td>
       </tr>
     </table>
 
     <div class="callout">
-      → SKHY는 <b>GPT-6 Astra 공개發 AI 수요 기대감</b>과 <b>Solidigm 나스닥 상장을 통한 숨은 가치 재평가 기대</b>라는
-      두 개의 개별 호재를 등에 업고 있으나, 반도체 섹터 전반의 매크로 변동성(미 국채금리·8월 CPI發 FOMC 인상 우려)
-      속에서 ADR과 본주가 서로 엇갈린 흐름을 보이는 등 단기 변동성이 큰 국면입니다.
+      → 이번 주는 <b>유가·금리발 조정(9/14, -6.35%)</b>으로 시작했지만, 미국보다 하루 앞서 9/16부터 반등을 시작해
+      9/18 코스피 전체 급등(+2.66%)을 이끌며 <b>+6.42%</b>로 마무리했습니다. 한전 전력공급 선지급 거부, Solidigm
+      상장 추진 등 개별 이슈가 이어지는 가운데, ADR과 본주 간 시차·환율에 따른 가격 괴리는 여전히 유의할 부분입니다.
     </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
+    <h2>3. 향후 전망</h2>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
         <li>HBM 글로벌 1위(점유율 약 56~58%) — Nvidia HBM4 물량의 약 3분의 2를 공급하는 것으로 알려짐</li>
         <li>Q2 2026 기록적 실적 — 매출 약 79.3조원(+257% YoY), 영업이익 약 60.5조원, 영업이익률 76%</li>
-        <li>HBM4 양산 본격화, HBM4E는 2027년 양산 목표, 2026~2027년 공급 부족 지속 전망</li>
-        <li>Solidigm(NAND 자회사) 나스닥 상장 추진 — 프리IPO 밸류에이션 약 $35B, ETF 사전등록 등 진전 신호, 성사 시 자회사 가치 재평가 및 자체 자금조달 통한 미국 투자 확대</li>
-        <li>9/4 OpenAI GPT-6 Astra 공개 등 AI 수요 서사 지속, 인디애나 AI 메모리 패키징 공장($4B) 착공 등 미국 공급망 투자 지속</li>
-        <li>Bernstein·BofA($250 목표) 등 월가 목표주가 상향, 국내 증권가 목표주가 최고 322만원 제시</li>
+        <li>HBM4 양산 본격화, HBM4E는 2027년 양산 목표, 2030년까지 공급 부족 지속 전망</li>
+        <li>Solidigm(NAND 자회사) 나스닥 상장 추진 — 프리IPO 밸류에이션 약 $35B, ETF 사전등록 등 진전 신호</li>
+        <li>9/18 코스피 전체 급등(+2.66%)을 견인하며 +6.42% 기록 — 외국인·기관 순매수 유입, 낙폭과대 인식에 따른 반등</li>
+        <li>BofA 목표주가 $268(기존 $250에서 상향), Barclays·Cantor 등 $300 이상 제시 — 월가 목표주가 상향 지속</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>미 장기금리 상승에 따른 밸류에이션 부담 지속 — 반도체 대형주 전반 동반 변동성</li>
-        <li>ADR-본주 가격 괴리 확대 — 거래시간·환율 차이로 두 시장이 반대 방향으로 움직이는 사례 반복</li>
-        <li>Solidigm IPO는 아직 SK하이닉스가 "구체적으로 결정된 바 없다"는 공식 입장(8/6 공시) — 실제 상장까지는 불확실성 상존</li>
-        <li>삼성전자의 HBM4 조기 공급·품질 인증 추진 등 경쟁 심화, HBM 가격 인상 속도가 예상보다 완만하다는 일부 눈높이 하향 이슈</li>
-        <li>메모리 사이클·밸류에이션 고점 논쟁 지속, 매크로(금리) 민감도 확대</li>
+        <li><b>中 CXMT, DRAM 양산 경쟁 심화</b> — 中 자국산 메모리 업체의 첨단 DRAM 양산 진입 보도로 중장기 경쟁 구도 변화 우려</li>
+        <li>삼성전자·SK하이닉스, 한국전력의 반도체 클러스터 전력공급 25조원 선지급 제안 거부(9/17) — 인프라 투자 부담을 둘러싼 정부·기업 간 이견</li>
+        <li>ADR-본주 가격 괴리 지속 — 거래시간·환율 차이로 두 시장이 다른 폭으로 움직이는 사례 반복(9/18 본주 +6.42% vs ADR 상대적으로 완만)</li>
+        <li>Solidigm IPO는 아직 공식 확정 전 — 실제 상장까지는 불확실성 상존</li>
+        <li>연준의 추가 긴축 경로(9/16 FOMC 인상 이후 추가 인상 시사) — 반도체 대형주 전반 할인율 부담</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>Solidigm 상장 계획 공식 확정 + 미 장기금리 안정 시 ADR $200 재도전, 본주 코스피 대형주 동반 강세</div>
-      <div class="scenario base"><b>기본</b>ADR $170~$195, 본주 170만~185만원대 박스권. 금리 재료와 Solidigm 상장 관련 후속 공시를 소화하며 10월 실적 시즌 대기</div>
-      <div class="scenario bear"><b>약세</b>미 국채금리 추가 상승·반도체 섹터 조정 심화 또는 Solidigm 상장 계획 무산 시 ADR $150 이하, 본주 150만원 하회 테스트 가능</div>
+      <div class="scenario bull"><b>강세</b>Solidigm 상장 계획 공식 확정 + 반도체 랠리 지속 시 ADR $220 재도전, 본주 200만원대 재진입</div>
+      <div class="scenario base"><b>기본</b>ADR $180~$210, 본주 170만~190만원대 박스권. 10월 FOMC와 Solidigm 후속 공시를 소화하며 10월 말 실적 시즌 대기</div>
+      <div class="scenario bear"><b>약세</b>中 CXMT 경쟁 심화·반도체 섹터 조정 또는 Solidigm 상장 계획 무산 시 ADR $160대, 본주 150만원 하회 테스트 가능</div>
     </div>
   </section>
 
-  <!-- 3. 매출구조/수익구조 -->
+  <!-- 4. 매출구조/수익구조 -->
   <section>
-    <h2>3. 매출구조/수익구조</h2>
+    <h2>4. 매출구조/수익구조</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
       <tr><td>📊 Q2 2026 매출</td><td class="num">약 79.3조원</td><td class="num">+257% YoY (기록)</td></tr>
@@ -387,7 +396,7 @@
       <tr><td>🏆 HBM 점유율</td><td class="num">약 56~58%</td><td class="num">글로벌 1위</td></tr>
       <tr><td>🏭 주력 제품</td><td class="num">HBM3E / HBM4 · 서버 DRAM · NAND(eSSD)</td><td class="num">AI 메모리 핵심</td></tr>
       <tr><td>🇺🇸 Solidigm(NAND 자회사)</td><td class="num">프리IPO 밸류에이션 ~$35B</td><td class="num">나스닥 상장 추진 중, 공식 확정 전</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.10월 말~11월 초 (잠정)</td><td class="num">Q3 2026, 공식일정 미확정</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.10.27 (예정)</td><td class="num">Q3 2026, 확정 일정</td></tr>
       <tr><td>🇺🇸 ADR 상장</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7 상장, 약 265억 달러 조달</td></tr>
     </table>
 
@@ -459,18 +468,13 @@
 
   <!-- 4. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
         <td>지속</td>
-        <td>Solidigm 나스닥 상장 관련 후속 공시 — 8/6 공시상 "1개월 내 또는 구체화 시 추가 공시" 약속, 진행상황 주목</td>
+        <td>Solidigm 나스닥 상장 관련 후속 공시, 中 CXMT DRAM 경쟁 진행상황, 한전 전력공급 협상 진행</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>9월 17일 (목) 오전 3:00</td>
-        <td>FOMC 금리 결정(미국시각 9/15~16 회의) — 8월 CPI 서프라이즈로 25bp 인상 확률 약 70%까지 상승, 반도체·성장주 전반 민감</td>
-        <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>10월 1일 (목) 오전 5:00~5:30</td>
@@ -478,8 +482,13 @@
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>10월 말~11월 초 (잠정)</td>
-        <td>SK하이닉스 Q3 2026 실적 발표 — HBM 출하·가격·Q4 가이던스 핵심 (공식일정 미확정)</td>
+        <td>10월 29일 (목) 오전 3:00</td>
+        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 27일 (화) (예정)</td>
+        <td>SK하이닉스 Q3 2026 실적 발표 — HBM 출하·가격·Q4 가이던스 핵심</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -491,7 +500,7 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.09.11 코스피 종가, ADR(SKHY) 2026.09.11 나스닥 정규장 종가 / Q2 실적은 2026.07 발표 기준. 업데이트: 2026.09.12 (KST). 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.09.18 코스피 종가 / Q2 실적은 2026.07 발표 기준. 업데이트: 2026.09.19 (KST). 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있으며, ADR 가격은 본주 대비 비율(10 ADR = 1주)을 적용한 추정치가 포함될 수 있습니다.
   </footer>
 
 </div>
@@ -535,6 +544,58 @@
     "studies": ["MASimple@tv-basicstudies"],
     "support_host": "https://www.tradingview.com"
   });
+</script>
+<script type="text/javascript">
+  // 실시간 시세 갱신 (OKX 공개 API · SKHY-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "SKHY-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
+
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
+
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
+
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
+
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        const cls = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.className = cls;
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
+      }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SKHYUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 최근 스냅샷 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
+    }
+  }
+
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
 </body>
 </html>
