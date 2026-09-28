@@ -465,7 +465,7 @@
   details.events-past .events-list { margin-top: 8px; }
 
   /* ══════════════════════════════════════════════════════════
-     위험자산 선호 ON / OFF 신호 (XAU · CL · US10Y)
+     Risk ON / OFF 스코어카드 (XAU · CL · US10Y)
      ══════════════════════════════════════════════════════════ */
   .risk { margin: 0 0 28px; }
   .risk-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
@@ -501,6 +501,11 @@
   .risk-verdict.g-C { border-color:rgba(224,184,77,.4); background:linear-gradient(90deg, rgba(224,184,77,.08), var(--card)); } .g-C .rv-grade { color:#e0b84d; }
   .risk-verdict.g-D { border-color:rgba(255,107,107,.5); background:linear-gradient(90deg, rgba(255,107,107,.10), var(--card)); } .g-D .rv-grade { color:var(--up); }
   @media (max-width:560px) { .risk-grid { grid-template-columns:1fr; } .risk-title { font-size:19px; } }
+  .top-nav { display:flex; flex-wrap:wrap; gap:8px; margin:12px 0 10px; }
+  .top-nav a { display:inline-flex; align-items:center; gap:6px; font-size:13.5px; font-weight:700; text-decoration:none; color:var(--text); background:var(--card); border:1px solid var(--border); border-radius:8px; padding:7px 14px; transition:border-color .15s, background .15s; }
+  .top-nav a:hover { border-color:var(--accent); background:var(--card-hover); }
+  .top-nav a[aria-current="page"] { color:var(--accent); border-color:var(--accent); cursor:default; }
+  .top-nav a .arr { color:var(--text-soft); font-weight:600; }
 </style>
 </head>
 <body>
@@ -511,6 +516,10 @@
   <header>
     <div class="eyebrow">Watchlist Reports</div>
     <h1>MARKET DASHBOARD</h1>
+    <nav class="top-nav" aria-label="페이지 이동">
+      <a href="index.html" aria-current="page">📊 마켓 대시보드</a>
+      <a href="watchlist_tv_15m.html">📈 15분봉 차트 워치리스트 <span class="arr">→</span></a>
+    </nav>
     <p class="sub">각 카드를 클릭하면 해당 종목 분석 리포트(실시간 차트 포함)로 이동합니다.</p>
     <div class="pattern-updated" id="patternUpdated">🔎 패턴 감지 데이터 불러오는 중...</div>
     <div class="quote-updated" id="quoteUpdated">💹 실시간 등락률 불러오는 중...</div>
@@ -519,7 +528,8 @@
 
   <section class="risk" id="riskSection" aria-labelledby="riskTitle">
     <div class="risk-head">
-      <span class="risk-title" id="riskTitle">위험자산 선호 ON / OFF 신호</span>
+      <span class="risk-num">1</span>
+      <span class="risk-title" id="riskTitle">Risk ON / OFF 스코어카드</span>
       <span class="risk-live off" id="riskLive">불러오는 중</span>
     </div>
     <div class="risk-sub">OKX 선물 최근 15분봉 3개(45분) 변동률 + US10Y 국채금리 통합 (20초 자동 갱신)</div>
