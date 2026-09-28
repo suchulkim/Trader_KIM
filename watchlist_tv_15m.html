@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>워치리스트 15분봉</title>
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#0A1120; --surface:#111A2C; --surface2:#16213A; --line:#223050;
+  --text:#E4EAF4; --muted:#8B97AD; --gold:#E1B24C; --grp:#4DA3FF;
+  --focus:#E1B24C; --event:#F0A43A; --wait:#8B97AD; --avoid:#E5534B;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,"SFMono-Regular",monospace;
+  --sans:"Malgun Gothic","Apple SD Gothic Neo",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none !important}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);font-size:14px}
+.top{position:sticky;top:0;z-index:10;background:rgba(10,17,32,.96);border-bottom:1px solid var(--line);backdrop-filter:blur(6px)}
+.bar{max-width:1800px;margin:0 auto;padding:10px 16px;display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center}
+h1{font-size:17px;margin:0;white-space:nowrap}
+h1 small{font-family:var(--mono);font-size:12px;color:var(--gold);margin-left:6px;font-weight:500}
+.ctl{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:12.5px}
+select,button{font:inherit;font-size:12.5px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:4px 8px;cursor:pointer}
+button[aria-pressed="true"]{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.seg{display:flex;gap:4px}
+.nav{max-width:1800px;margin:0 auto;padding:0 16px 10px;display:flex;flex-wrap:wrap;gap:6px}
+.nav a{font-family:var(--mono);font-size:12px;text-decoration:none;color:var(--text);background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:4px;padding:3px 8px}
+.nav a:hover{background:var(--surface2)}
+main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-columns:repeat(var(--cols,2),minmax(0,1fr));gap:14px}
+.grp{grid-column:1/-1;margin:10px 0 -4px;font-size:15px;font-weight:700;color:var(--grp);scroll-margin-top:110px}
+.grp:first-child{margin-top:0}
+.grp span{color:var(--muted);font-size:12px;font-weight:500;margin-left:6px}
+.panel{background:var(--surface);border:1px solid var(--line);border-top:3px solid var(--c);border-radius:6px;overflow:hidden;scroll-margin-top:110px}
+.ph{display:flex;align-items:baseline;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.ph .sym{font-family:var(--mono);font-weight:700;font-size:14px}
+.ph .tag{font-size:11.5px;font-weight:600;color:var(--c)}
+.ph .note{color:var(--muted);font-size:12.5px;flex:1;min-width:0}
+.ph a{font-size:12px;color:var(--muted)}
+.chart{height:var(--h,520px);position:relative}
+.chart .ph-load{position:absolute;inset:0;display:grid;place-items:center;color:var(--muted);font-size:12.5px}
+.tradingview-widget-container{height:100%;width:100%}
+.tradingview-widget-container__widget{height:100%;width:100%}
+.warn{max-width:1800px;margin:0 auto;padding:0 16px;display:none}
+.warn div{background:rgba(229,83,75,.12);border:1px solid rgba(229,83,75,.5);color:#F2B8B4;border-radius:6px;padding:10px 12px;margin-top:12px;font-size:13px;line-height:1.6}
+.warn code{font-family:var(--mono);color:var(--text)}
+@media (max-width:900px){ main{--cols:1 !important} }
+</style>
+</head>
+<body>
+
+<div class="top">
+  <div class="bar">
+    <h1>워치리스트 15분봉 <small>28 SYMBOLS · 15m · SMA20/200</small></h1>
+    <label class="ctl" for="ex">거래소
+      <select id="ex">
+        <option value="OKX" selected>OKX</option>
+        <option value="">자동 (접두어 없음)</option>
+        <option value="BINANCE">BINANCE</option>
+        <option value="BYBIT">BYBIT</option>
+        <option value="BITGET">BITGET</option>
+      </select>
+    </label>
+    <label class="ctl" for="tf">주기
+      <select id="tf">
+        <option value="5">5분</option>
+        <option value="15" selected>15분</option>
+        <option value="30">30분</option>
+        <option value="60">1시간</option>
+        <option value="240">4시간</option>
+        <option value="D">일봉</option>
+      </select>
+    </label>
+    <div class="ctl">열
+      <div class="seg" role="group" aria-label="열 개수">
+        <button type="button" id="c1" data-cols="1">1</button>
+        <button type="button" id="c2" data-cols="2">2</button>
+        <button type="button" id="c3" data-cols="3">3</button>
+      </div>
+    </div>
+    <label class="ctl" for="hh">높이
+      <select id="hh">
+        <option value="400">400</option>
+        <option value="520" selected>520</option>
+        <option value="680">680</option>
+      </select>
+    </label>
+    <label class="ctl" for="flt">필터
+      <select id="flt"></select>
+    </label>
+  </div>
+  <nav class="nav" id="nav" aria-label="종목 바로가기"></nav>
+</div>
+
+<div class="warn" id="warn"><div>
+  차트가 안 보이면 파일을 더블클릭(<code>file://</code>)으로 연 경우입니다. TradingView 위젯은 로컬 파일 주소에서 막힐 수 있습니다.
+  같은 폴더의 <code>open_charts.bat</code>를 실행하거나, 폴더에서 <code>python -m http.server 8000</code> 실행 후
+  <code>http://localhost:8000/watchlist_tv_15m.html</code>로 여세요.
+</div></div>
+
+<main id="grid"></main>
+
+<script>
+/* ── 그룹 (필터 기준) ── */
+const GROUPS = [
+  ["crypto",  "크립토"],
+  ["usidx",   "미국지수"],
+  ["kridx",   "한국지수"],
+  ["cmdty",   "원자재"],
+  ["semi",    "AI, 반도체"],
+  ["bigtech", "빅테크"]
+];
+const GNAME = Object.fromEntries(GROUPS);
+
+/* ── 워치리스트 [심볼, 그룹, 판단, 메모] (9/23 브리핑 판단) ── */
+const WATCH = [
+  ["ETHUSDT.P","crypto","focus","ETF +$270M · 글램스터담 클라이언트 9/29"],
+  ["BTCUSDT.P","crypto","focus","ETF +$999M · 박스 85.7–87.3k, 88k 마감 확인"],
+  ["ONDOUSDT.P","crypto","wait","주식→토큰 전환 출시 · BTC 연동"],
+  ["SOLUSDT.P","crypto","wait","알트 동반 · BTC 연동"],
+  ["CRCLUSDT.P","crypto","wait","$78–103 박스 · 끝단에서만"],
+  ["MSTRUSDT.P","crypto","wait","950 BTC 매수 · BTC 박스 이탈 대기"],
+
+  ["SPYUSDT.P","usidx","wait","회담 결과 대기"],
+  ["QQQUSDT.P","usidx","wait","나스닥 신고가"],
+
+  ["EWYUSDT.P","kridx","wait","추석 휴장 갭 위험"],
+  ["KORUUSDT.P","kridx","avoid","한국 3배 · 휴장 갭 위험 최대"],
+
+  ["XAUUSDT.P","cmdty","wait","$4,350–4,400 박스"],
+  ["CLUSDT.P","cmdty","avoid","이란 헤드라인에 급변"],
+
+  ["NVDAUSDT.P","semi","event","미중 회담 9/24 · PER 17배 최저"],
+  ["AMDUSDT.P","semi","event","$613 최고가, 시총 1조 달러 · 추격 금지"],
+  ["AVGOUSDT.P","semi","event","회담 결과 연동"],
+  ["SOXLUSDT.P","semi","event","반도체 3배 · 메모리·회담 모두 노출"],
+  ["SNDKUSDT.P","semi","focus","Rosenblatt $2,400 · 과열, 0.786 되돌림만"],
+  ["SKHYUSDT.P","semi","focus","추석 휴장 중 선물만 거래 · 비중 절반"],
+  ["MUUSDT.P","semi","focus","9/30 실적 전 선반영 · 발표 전 축소"],
+  ["TSMUSDT.P","semi","event","회담 결과 연동"],
+
+  ["TSLAUSDT.P","bigtech","event","Semi 9/24 · 로드스터 10/1 · 윗꼬리 숏 관찰"],
+  ["AAPLUSDT.P","bigtech","wait","PER 33배 · 이벤트 없음"],
+  ["GOOGLUSDT.P","bigtech","wait","개별 뉴스 없음"],
+  ["PLTRUSDT.P","bigtech","wait","실적 11/2 · 이벤트 없음"],
+  ["METAUSDT.P","bigtech","wait","Muse AI 급등 후 · 갭 0.5 되돌림 확인"],
+  ["AMZNUSDT.P","bigtech","wait","신규 추가 · 판단 미정"],
+  ["MSFTUSDT.P","bigtech","wait","신규 추가 · 판단 미정"],
+  ["SPCXUSDT.P","bigtech","wait","SpaceX 프리마켓 · 신규 추가 · 판단 미정"]
+];
+const LABEL = {focus:"집중", event:"이벤트 대기", wait:"관망", avoid:"회피"};
+const COLOR = {focus:"var(--focus)", event:"var(--event)", wait:"var(--wait)", avoid:"var(--avoid)"};
+
+const store = {
+  get(k,d){ try{ return localStorage.getItem("tv15."+k) ?? d; }catch(e){ return d; } },
+  set(k,v){ try{ localStorage.setItem("tv15."+k, v); }catch(e){} }
+};
+const state = {
+  ex: store.get("ex2","OKX"), tf: store.get("tf","15"),
+  cols: store.get("cols","2"), h: store.get("h","520"), flt: store.get("flt2","all")
+};
+if (state.flt !== "all" && !GNAME[state.flt]) state.flt = "all";
+
+const grid = document.getElementById("grid");
+const nav = document.getElementById("nav");
+const idOf = s => "c-" + s.replace(/[^A-Z0-9]/gi,"");
+const fullSym = s => state.ex ? state.ex + ":" + s : s;
+const tvUrl = s => "https://www.tradingview.com/chart/?symbol=" + encodeURIComponent(fullSym(s)) + "&interval=" + state.tf;
+
+/* 필터 옵션 */
+document.getElementById("flt").innerHTML =
+  `<option value="all">전체</option>` + GROUPS.map(([g,n]) => `<option value="${g}">${n}</option>`).join("");
+
+/* 그룹 헤더 + 패널 */
+grid.innerHTML = GROUPS.map(([g,gn]) => {
+  const items = WATCH.filter(w => w[1] === g);
+  return `<h2 class="grp" data-g="${g}" id="g-${g}">${gn}<span>${items.length}</span></h2>` +
+    items.map(([s,,k,n]) => `
+  <section class="panel" id="${idOf(s)}" data-g="${g}" data-s="${s}" style="--c:${COLOR[k]}">
+    <div class="ph">
+      <span class="sym">${s}</span><span class="tag">${LABEL[k]}</span>
+      <span class="note">${n}</span>
+      <a href="${tvUrl(s)}" class="tvlink" target="_blank" rel="noopener">TradingView ↗</a>
+    </div>
+    <div class="chart"><div class="ph-load">스크롤하면 불러옵니다</div></div>
+  </section>`).join("");
+}).join("");
+
+nav.innerHTML = GROUPS.map(([g]) => WATCH.filter(w => w[1] === g).map(([s,,k]) =>
+  `<a href="#${idOf(s)}" data-g="${g}" style="--c:${COLOR[k]}">${s.replace("USDT.P","")}</a>`).join("")).join("");
+
+function mount(panel){
+  const box = panel.querySelector(".chart");
+  const sym = fullSym(panel.dataset.s);
+  panel.querySelector(".tvlink").href = tvUrl(panel.dataset.s);
+  box.innerHTML = "";
+  const wrap = document.createElement("div");
+  wrap.className = "tradingview-widget-container";
+  const inner = document.createElement("div");
+  inner.className = "tradingview-widget-container__widget";
+  wrap.appendChild(inner);
+  const sc = document.createElement("script");
+  sc.type = "text/javascript";
+  sc.async = true;
+  sc.src = "https://s3.tradingview.com/external-embedding/embed-widget-advanced-chart.js";
+  sc.innerHTML = JSON.stringify({
+    autosize: true,
+    symbol: sym,
+    interval: state.tf,
+    timezone: "Asia/Seoul",
+    theme: "dark",
+    style: "1",
+    locale: "kr",
+    backgroundColor: "#0A1120",
+    gridColor: "rgba(34,48,80,0.45)",
+    allow_symbol_change: true,
+    hide_side_toolbar: false,
+    withdateranges: true,
+    save_image: true,
+    calendar: false,
+    studies: [
+      { id: "MASimple@tv-basicstudies", inputs: { length: 20 } },
+      { id: "MASimple@tv-basicstudies", inputs: { length: 200 } }
+    ],
+    support_host: "https://www.tradingview.com"
+  });
+  wrap.appendChild(sc);
+  box.appendChild(wrap);
+  panel.dataset.loaded = "1";
+}
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting && !e.target.dataset.loaded && !e.target.hidden) mount(e.target);
+  });
+}, { rootMargin: "600px 0px" });
+const panels = [...grid.querySelectorAll(".panel")];
+panels.forEach(p => io.observe(p));
+
+function reloadAll(){
+  panels.forEach(p => {
+    delete p.dataset.loaded;
+    p.querySelector(".tvlink").href = tvUrl(p.dataset.s);
+    p.querySelector(".chart").innerHTML = '<div class="ph-load">스크롤하면 불러옵니다</div>';
+    io.unobserve(p); io.observe(p);
+  });
+}
+function applyLayout(){
+  grid.style.setProperty("--cols", state.cols);
+  grid.style.setProperty("--h", state.h + "px");
+  document.querySelectorAll(".seg button").forEach(b =>
+    b.setAttribute("aria-pressed", String(b.dataset.cols === state.cols)));
+}
+function applyFilter(){
+  const f = state.flt;
+  grid.querySelectorAll("[data-g]").forEach(el => { el.hidden = !(f === "all" || el.dataset.g === f); });
+  nav.querySelectorAll("a").forEach(a => { a.hidden = !(f === "all" || a.dataset.g === f); });
+}
+
+const $ = id => document.getElementById(id);
+$("ex").value = state.ex; $("tf").value = state.tf; $("hh").value = state.h; $("flt").value = state.flt;
+$("ex").addEventListener("change", e => { state.ex = e.target.value; store.set("ex2", state.ex); reloadAll(); });
+$("tf").addEventListener("change", e => { state.tf = e.target.value; store.set("tf", state.tf); reloadAll(); });
+$("hh").addEventListener("change", e => { state.h = e.target.value; store.set("h", state.h); applyLayout(); });
+/* 필터 변경 시 차트 재로딩 없음 — 다시 보이는 패널은 IntersectionObserver가 로드 */
+$("flt").addEventListener("change", e => { state.flt = e.target.value; store.set("flt2", state.flt); applyFilter(); window.scrollTo({top:0}); });
+document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click", () => {
+  state.cols = b.dataset.cols; store.set("cols", state.cols); applyLayout();
+}));
+
+if (location.protocol === "file:") $("warn").style.display = "block";
+applyLayout(); applyFilter();
+</script>
+</body>
+</html>
