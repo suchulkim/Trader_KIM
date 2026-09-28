@@ -463,6 +463,44 @@
   details.events-past summary::before { content: "▸ "; }
   details.events-past[open] summary::before { content: "▾ "; }
   details.events-past .events-list { margin-top: 8px; }
+
+  /* ══════════════════════════════════════════════════════════
+     위험자산 선호 ON / OFF 신호 (XAU · CL · US10Y)
+     ══════════════════════════════════════════════════════════ */
+  .risk { margin: 0 0 28px; }
+  .risk-head { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .risk-num { display:inline-grid; place-items:center; width:28px; height:28px; border:1.5px solid #e0b84d; color:#e0b84d; border-radius:7px; font-weight:800; font-size:14px; }
+  .risk-title { font-size:22px; font-weight:800; letter-spacing:-0.3px; }
+  .risk-live { font-size:12.5px; font-weight:700; color:var(--down); display:inline-flex; align-items:center; gap:6px; }
+  .risk-live::before { content:""; width:8px; height:8px; border-radius:50%; background:currentColor; animation: rkPulse 1.6s infinite; }
+  .risk-live.off { color: var(--text-soft); }
+  .risk-live.off::before { animation:none; }
+  @keyframes rkPulse { 50% { opacity:.3; } }
+  .risk-sub { font-size:13.5px; color:var(--text-soft); margin-top:6px; }
+  .risk-bar { display:flex; justify-content:space-between; align-items:center; margin:14px 0 10px; gap:10px; }
+  .risk-upd { font-size:12.5px; color:var(--text-soft); }
+  .risk-btn { background:var(--card); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:7px 14px; font:inherit; font-size:13px; font-weight:700; cursor:pointer; }
+  .risk-btn:hover { border-color:var(--accent); }
+  .risk-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:12px; }
+  .rk-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 12px; text-align:center; }
+  .rk-name { font-size:13.5px; color:var(--text-soft); }
+  .rk-val { font-size:24px; font-weight:800; letter-spacing:-0.3px; margin:8px 0 4px; white-space:nowrap; }
+  .rk-val.up { color:var(--down); } .rk-val.down { color:var(--up); } .rk-val.flat, .rk-val.na { color:var(--text-soft); }
+  .rk-val.na { font-size:14px; font-weight:600; }
+  .rk-meta { font-size:11.5px; color:var(--text-soft); opacity:.8; min-height:17px; }
+  .rk-badge { display:inline-block; margin-top:8px; font-size:12px; font-weight:800; padding:3px 12px; border-radius:999px; background:#20242d; color:var(--text-soft); border:1px solid var(--border); }
+  .rk-badge.on { color:var(--down); background:rgba(95,209,136,.12); border-color:rgba(95,209,136,.45); }
+  .rk-badge.off { color:var(--up); background:rgba(255,107,107,.12); border-color:rgba(255,107,107,.45); }
+  .risk-note { font-size:12px; color:var(--text-soft); margin:10px 0 12px; line-height:1.5; }
+  .risk-verdict { display:flex; align-items:center; gap:16px; padding:16px 20px; border-radius:12px; border:1px solid var(--border); background:var(--card); }
+  .rv-grade { font-size:34px; font-weight:800; line-height:1; width:30px; text-align:center; }
+  .rv-text { font-size:14.5px; }
+  .rv-text b { font-weight:800; }
+  .risk-verdict.g-A { border-color:rgba(95,209,136,.5); background:linear-gradient(90deg, rgba(95,209,136,.10), var(--card)); } .g-A .rv-grade { color:var(--down); }
+  .risk-verdict.g-B { border-color:rgba(95,209,136,.3); } .g-B .rv-grade { color:#9fdcb4; }
+  .risk-verdict.g-C { border-color:rgba(224,184,77,.4); background:linear-gradient(90deg, rgba(224,184,77,.08), var(--card)); } .g-C .rv-grade { color:#e0b84d; }
+  .risk-verdict.g-D { border-color:rgba(255,107,107,.5); background:linear-gradient(90deg, rgba(255,107,107,.10), var(--card)); } .g-D .rv-grade { color:var(--up); }
+  @media (max-width:560px) { .risk-grid { grid-template-columns:1fr; } .risk-title { font-size:19px; } }
 </style>
 </head>
 <body>
@@ -478,6 +516,25 @@
     <div class="quote-updated" id="quoteUpdated">💹 실시간 등락률 불러오는 중...</div>
     <div class="quote-updated" id="intelUpdated">🏦 ETF 자금흐름 · 📄 MSTR 공시 불러오는 중...</div>
   </header>
+
+  <section class="risk" id="riskSection" aria-labelledby="riskTitle">
+    <div class="risk-head">
+      <span class="risk-title" id="riskTitle">위험자산 선호 ON / OFF 신호</span>
+      <span class="risk-live off" id="riskLive">불러오는 중</span>
+    </div>
+    <div class="risk-sub">OKX 선물 최근 15분봉 3개(45분) 변동률 + US10Y 국채금리 통합 (20초 자동 갱신)</div>
+    <div class="risk-bar">
+      <span class="risk-upd" id="riskUpd">마지막 갱신: -</span>
+      <button type="button" class="risk-btn" id="riskRefresh">지금 새로고침</button>
+    </div>
+    <div class="risk-grid">
+      <div class="rk-card"><div class="rk-name">XAU (45분)</div><div class="rk-val na" id="rk-val-XAU">···</div><div class="rk-meta" id="rk-meta-XAU"></div><span class="rk-badge" id="rk-badge-XAU">-</span></div>
+      <div class="rk-card"><div class="rk-name">CL (45분)</div><div class="rk-val na" id="rk-val-CL">···</div><div class="rk-meta" id="rk-meta-CL"></div><span class="rk-badge" id="rk-badge-CL">-</span></div>
+      <div class="rk-card"><div class="rk-name">US10Y (국채금리)</div><div class="rk-val na" id="rk-val-US10Y">···</div><div class="rk-meta" id="rk-meta-US10Y"></div><span class="rk-badge" id="rk-badge-US10Y">-</span></div>
+    </div>
+    <div class="risk-note">※ XAU·CL은 OKX 45분간 시가 대비 종가 등락률, US10Y는 전일 대비 금리 변화율 기준입니다. 세 자산 모두 <b>내릴수록 위험선호(Risk ON)</b>, 오를수록 Risk OFF로 판정합니다. (중립 구간: XAU ±0.30%, CL ±0.50%, US10Y ±0.30%)</div>
+    <div class="risk-verdict" id="riskVerdict"><span class="rv-grade" id="rvGrade">·</span><span class="rv-text" id="rvText">산정 중...</span></div>
+  </section>
 
   <div class="search-wrap">
     <input type="search" id="q" placeholder="종목 검색 (예: NVDA, 비트코인…)" autocomplete="off">
@@ -1035,6 +1092,145 @@
 
   loadMarketIntel();
   setInterval(loadMarketIntel, INTEL_REFRESH_MS);
+
+  // ══════════════════════════════════════════════════════════
+  // Risk ON / OFF 스코어카드 (XAU · CL · US10Y)
+  // - XAU, CL: OKX 15분봉 최근 3개(진행 중 봉 포함) → 가장 오래된 봉 시가 대비 최신 종가 변동률
+  // - US10Y: CNBC 시세 API(브라우저 직접 조회) → 실패 시 같은 폴더의 us10y_summary.js
+  //          (window.US10Y = { yield: 4.12, changePct: 0.43, generatedAt: "..." })
+  // - 세 자산 모두 "하락 = Risk ON / 상승 = Risk OFF"
+  // ══════════════════════════════════════════════════════════
+  const RISK_REFRESH_MS = 20 * 1000;
+  const RISK_TH = { XAU: 0.30, CL: 0.50, US10Y: 0.30 };  // 중립 구간(±%) — 필요하면 여기만 조정
+  const US10Y_CNBC_URL = 'https://quote.cnbc.com/quote-html-webservice/restQuote/symbolType/symbol?symbols=US10Y&requestMethod=itv&noform=1&partnerId=2&fund=1&exthrs=1&output=json';
+  const US10Y_LOCAL_URL = 'us10y_summary.js';
+  const riskEls = id => document.getElementById(id);
+
+  async function fetchOkx45m(sym) {
+    const url = OKX_CANDLES_ENDPOINT + '?instId=' + okxInstId(sym) + '&bar=15m&limit=3';
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('okx http ' + res.status);
+    const data = await res.json();
+    if (!data || data.code !== '0' || !Array.isArray(data.data) || !data.data.length) throw new Error('okx bad payload');
+    const cs = data.data.map(c => ({ ts: +c[0], o: parseFloat(c[1]), c: parseFloat(c[4]) })).sort((a, b) => a.ts - b.ts);
+    const open = cs[0].o, close = cs[cs.length - 1].c;
+    if (!(open > 0) || !(close > 0)) throw new Error('okx bad price');
+    return { pct: (close - open) / open * 100, price: close };
+  }
+
+  const numOf = v => (v === null || v === undefined) ? NaN : parseFloat(String(v).replace(/[%+,]/g, ''));
+
+  async function fetchUs10yCnbc() {
+    const res = await fetch(US10Y_CNBC_URL, { cache: 'no-store' });
+    if (!res.ok) throw new Error('cnbc http ' + res.status);
+    const j = await res.json();
+    const q = j && j.FormattedQuoteResult && j.FormattedQuoteResult.FormattedQuote && j.FormattedQuoteResult.FormattedQuote[0];
+    const y = numOf(q && q.last), pct = numOf(q && q.change_pct), chg = numOf(q && q.change);
+    if (!Number.isFinite(y) || !Number.isFinite(pct)) throw new Error('cnbc bad payload');
+    return { yld: y, pct, bp: Number.isFinite(chg) ? chg * 100 : null, src: 'CNBC' };
+  }
+
+  function fetchUs10yLocal() {
+    return new Promise((resolve, reject) => {
+      const old = document.getElementById('us10yScript');
+      if (old) old.remove();
+      const s = document.createElement('script');
+      s.id = 'us10yScript';
+      s.src = US10Y_LOCAL_URL + '?t=' + Date.now();
+      s.onload = () => {
+        const d = window.US10Y;
+        const y = numOf(d && d.yield), pct = numOf(d && d.changePct);
+        if (!Number.isFinite(y) || !Number.isFinite(pct)) return reject(new Error('local bad'));
+        resolve({ yld: y, pct, bp: null, src: '로컬 ' + (d.generatedAt || '') });
+      };
+      s.onerror = () => reject(new Error('local missing'));
+      document.body.appendChild(s);
+    });
+  }
+
+  async function fetchUs10y() {
+    try { return await fetchUs10yCnbc(); } catch (e) { return await fetchUs10yLocal(); }
+  }
+
+  function judge(pct, th) {
+    if (!Number.isFinite(pct)) return null;
+    if (pct <= -th) return 'on';
+    if (pct >= th) return 'off';
+    return 'neutral';
+  }
+
+  function paintRisk(key, r, isStale) {
+    const v = riskEls('rk-val-' + key), m = riskEls('rk-meta-' + key), b = riskEls('rk-badge-' + key);
+    if (!r) {
+      v.className = 'rk-val na'; v.textContent = '조회불가'; m.textContent = '';
+      b.className = 'rk-badge'; b.textContent = '-';
+      return null;
+    }
+    const sign = r.pct > 0 ? '+' : '';
+    const j = judge(r.pct, RISK_TH[key]);
+    // 값 색상은 리스크 판정 기준: ON(하락)=초록, OFF(상승)=빨강, 중립=회색
+    v.className = 'rk-val ' + (j === 'on' ? 'up' : j === 'off' ? 'down' : 'flat');
+    v.style.opacity = isStale ? .55 : 1;
+    if (key === 'US10Y') {
+      v.textContent = r.yld.toFixed(3) + '% (' + sign + r.pct.toFixed(2) + '%)';
+      m.textContent = (r.bp !== null ? (r.bp > 0 ? '+' : '') + r.bp.toFixed(1) + 'bp · ' : '') + r.src;
+    } else {
+      v.textContent = sign + r.pct.toFixed(2) + '%';
+      m.textContent = '현재가 ' + formatPrice(r.price);
+    }
+    b.className = 'rk-badge' + (j === 'on' ? ' on' : j === 'off' ? ' off' : '');
+    b.textContent = j === 'on' ? 'ON' : j === 'off' ? 'OFF' : '중립';
+    return j;
+  }
+
+  const riskLast = {};
+  const RISK_GRADES = [
+    { min: 2,  g: 'A', t: '위험선호 우위 — 적극 진입 가능.' },
+    { min: 1,  g: 'B', t: '약한 위험선호 — 선별 진입.' },
+    { min: 0,  g: 'C', t: '중립 — 관망.' },
+    { min: -2, g: 'C', t: '관망 우위 — 진입 축소.' },
+    { min: -9, g: 'D', t: '위험회피 — 신규 진입 자제.' },
+  ];
+
+  let riskBusy = false;
+  async function refreshRisk() {
+    if (riskBusy) return;
+    riskBusy = true;
+    const keys = ['XAU', 'CL', 'US10Y'];
+    const res = await Promise.allSettled([fetchOkx45m('XAU'), fetchOkx45m('CL'), fetchUs10y()]);
+    let on = 0, off = 0, n = 0, fresh = 0;
+    keys.forEach((k, i) => {
+      let r = null, stale = false;
+      if (res[i].status === 'fulfilled') { r = res[i].value; riskLast[k] = r; fresh++; }
+      else if (riskLast[k]) { r = riskLast[k]; stale = true; }
+      const j = paintRisk(k, r, stale);
+      if (j) { n++; if (j === 'on') on++; if (j === 'off') off++; }
+    });
+
+    const box = riskEls('riskVerdict');
+    if (n) {
+      const score = on - off;
+      const g = RISK_GRADES.find(x => score >= x.min);
+      box.className = 'risk-verdict g-' + g.g;
+      riskEls('rvGrade').textContent = g.g;
+      riskEls('rvText').innerHTML = '<b>' + g.t + '</b> — ON ' + on + '개 / OFF ' + off + '개 (총 ' + n + '개 자산 산정 결과)';
+    } else {
+      box.className = 'risk-verdict';
+      riskEls('rvGrade').textContent = '·';
+      riskEls('rvText').textContent = '데이터를 불러오지 못했습니다 — 20초 후 재시도합니다.';
+    }
+
+    const live = riskEls('riskLive');
+    live.className = 'risk-live' + (fresh ? '' : ' off');
+    live.textContent = fresh === 3 ? 'LIVE · 실시간 파싱 중' : fresh ? 'LIVE · 일부 조회 실패' : '조회 실패';
+    const t = toKstShifted(Date.now()), p2 = x => String(x).padStart(2, '0');
+    riskEls('riskUpd').textContent = '마지막 갱신: ' + p2(t.getUTCHours()) + ':' + p2(t.getUTCMinutes()) + ':' + p2(t.getUTCSeconds()) + ' KST';
+    riskBusy = false;
+  }
+
+  riskEls('riskRefresh').addEventListener('click', refreshRisk);
+  refreshRisk();
+  setInterval(refreshRisk, RISK_REFRESH_MS);
 </script>
 </body>
 </html>
