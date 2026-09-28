@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-22 (KST)
+ * 마지막 자동 업데이트: 2026-09-28 (KST)
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
@@ -91,9 +91,9 @@ const SEPTEMBER_2026_SCHEDULE = [
     tickers: ["SOL"], importance: 2, note: null },
 
   { dateKST: "2026-09-21", timeKST: "22:00", dateLabel: "9월 21일 (월)",
-    event: "SpaceX(SPCX) 나스닥100 편입비중 확대 리밸런싱 반영",
-    tickers: ["QQQ","SPY"], importance: 2,
-    note: "나스닥100 분기 리밸런싱으로 SpaceX 비중이 약 1.28%→2.82%로 확대, 최대 $150~220억 규모 프로그램 매수 추정. 락업 해제로 유통 가능 주식이 늘어난 데 따른 조정" },
+    event: "SpaceX(SPCX) 나스닥100 편입비중 확대 리밸런싱 반영 (결과 확정)",
+    tickers: ["SPCX","QQQ","SPY"], importance: 2,
+    note: "나스닥100 분기 리밸런싱으로 SpaceX 비중이 약 1.28%→2.82%로 확대, 최대 $150~220억 규모 프로그램 매수 추정. 락업 해제로 유통 가능 주식이 늘어난 데 따른 조정. 결과: 9/21 종가 $151.85(-0.28%) 보합 — 패시브 매수가 락업 물량을 상쇄, 익일(9/22) 상장 100일차 $154.72(+1.89%)로 주간 고점" },
 
   { dateKST: "2026-09-22", timeKST: "09:00", dateLabel: "9월 22일 (화)",
     event: "Alphabet 증권 집단소송 공판",
@@ -120,6 +120,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "마이클 바 연준 이사 발언",
     tickers: ["SPY","QQQ","XAU"], importance: 2, note: null },
 
+  { dateKST: "2026-09-23", timeKST: "22:30", dateLabel: "9월 23일 (수)",
+    event: "SpaceX(SPCX) 쇼트웰 사장 약 $5,200만 지분 매도(Form 144) 신고 + 락업 해제 전일 선제 매도 (결과 확정)",
+    tickers: ["SPCX"], importance: 3,
+    note: "결과: 9/23 -4.11% 급락(≈$148.36), 9/9 락업 해제일(-3.9%)과 동일 패턴. 머스크 AI 규제 발언도 겹침. 최근 3주 개인 순매도 약 $5.7억 — 해제일 전후 반복되는 수급 부담" },
+
   { dateKST: "2026-09-24", timeKST: "08:00", dateLabel: "9월 24일 (목)",
     event: "Meta Connect 2026 메인 키노트 (Zuckerberg)",
     tickers: ["META"], importance: 5,
@@ -129,6 +134,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "테슬라 세미(Semi) 신공장 준공 이벤트 'Semi Rollout' (네바다 Sparks)",
     tickers: ["TSLA"], importance: 3,
     note: "초청 전용 행사(결과 확정: 개최 확정) — 연산 5만대 규모 전용 공장 준공 기념, 물류·플릿 고객 및 임직원 대상, 공장 투어·시승 프로그램 진행. 일반 공개 여부·정확한 현지 시각은 근접 시 재확인 필요" },
+
+  { dateKST: "2026-09-24", timeKST: "22:30", dateLabel: "9월 24일 (목)",
+    event: "SpaceX(SPCX) 락업 해제 — 약 3.284억주 (상장 후 4번째, 9월 마지막) (결과 확정)",
+    tickers: ["SPCX","QQQ"], importance: 3,
+    note: "결과: 9/24 종가 $148.03(-0.22%) — 전일 선반영으로 추가 급락 없이 소화. 같은 날 Starship Flight 14 웻드레스 리허설 완료, 구글 Project Suncatcher 첫 위성 SpaceX 발사 발표. 9/25는 미즈호 긍정 리포트로 $148.68(+0.44%) 강보합" },
 
   { dateKST: "2026-09-24", timeKST: "21:30", dateLabel: "9월 24일 (목)",
     event: "미국 주간 신규 실업수당 청구건수",
@@ -156,9 +166,14 @@ const SEPTEMBER_2026_SCHEDULE = [
     tickers: ["SOL"], importance: 3, note: "Agave v4.3 10%(9/8)→25%(9/14)→전체 권장(9/21) 스테이크 전환 이후, 검증인 BLS 키 등록 완료를 전제로 9/28 150ms 파이널리티 목표 활성화(Anza 공식 일정 재확인, 변경 가능)" },
 
   { dateKST: "2026-09-28", timeKST: "21:15", dateLabel: "9월 28일 (월)",
-    event: "SpaceX Starship Flight 14 — 최초 궤도 진입 시도",
-    tickers: ["TSLA","QQQ","SPY"], importance: 3,
-    note: "발사창 KST 21:15~22:30(UTC 12:15~13:30). 9/22 예정에서 규제 승인 대기로 9/28로 6일 연기(결과 확정: NET 9/28로 재공지됨). Block 3 부스터21/십41, 최초로 지구 궤도(고도 약 275km) 진입 시도 및 Starlink V3 위성 최초 배치, 약 10시간 비행 후 태평양 스플래시다운 목표. Booster·Ship 재사용 실증의 핵심 분기점" },
+    event: "SpaceX Starship Flight 14 — 최초 궤도 진입 시도 (FAA 발사 면허 발급 완료)",
+    tickers: ["SPCX","TSLA","QQQ","SPY"], importance: 5,
+    note: "발사창 KST 21:15~22:30(UTC 12:15~13:30, 75분). FAA가 9/26 궤도 비행용 발사·재진입 면허 발급(9/27 공식 발표)으로 규제 불확실성 해소, 9/24 웻드레스 리허설 완료. 부스터21/십41, 최초 지구 궤도(고도 약 275km, 6바퀴) 진입 + Starlink V3 26기 첫 실전 배치 — Starship 첫 매출 발생 미션. 약 10시간 비행 후 칠레 서쪽 태평양 스플래시다운 목표(9/29 오전 7시경 KST). 백업일 9/29·9/30. 美 정규장 개장(22:30 KST) 전후 결과 반영 — SPCX 레버리지 선물 갭·청산 리스크 주의" },
+
+  { dateKST: "2026-09-29", timeKST: "07:00", dateLabel: "9월 29일 (화)",
+    event: "SpaceX Starship Flight 14 — 태평양 스플래시다운(예정)",
+    tickers: ["SPCX"], importance: 3,
+    note: "발사 약 8시간 52분 후 Raptor 1기 11초 디오빗 연소 → 재진입 → 칠레 서쪽 태평양 착수 목표(시각은 발사 시점에 따라 변동). 히트실드 재진입 성능 확인이 Flight 15 '발사탑 귀환·캐치' 시도 여부를 좌우" },
 
   { dateKST: "2026-09-29", timeKST: null, dateLabel: "9월 29일 (화, 예상)",
     event: "美 '디지털자산 과세법안(Digital Asset Tax Bill)' 발표 예상",
@@ -182,6 +197,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "Micron(MU) FY2026 4분기 실적발표",
     tickers: ["MU","SKHY","SOXL"], importance: 5, note: "美 현지 9/30 장마감 후 — 회사 공식 발표로 날짜 확정. HBM 가격/수요 가이던스 핵심" },
 
+  { dateKST: "2026-10-01", timeKST: null, dateLabel: "10월 1일 (목, 현지 기준)",
+    event: "SpaceX Falcon 9 Transporter-18 발사 — 구글 Project Suncatcher 첫 TPU 위성 탑재",
+    tickers: ["SPCX","GOOGL"], importance: 3,
+    note: "美 현지 10/1 반덴버그 발사(시각 미정 — KST로는 10/1~10/2). 구글 TPU 4기 탑재 'MVP' 위성(Planet 제작)으로 궤도 AI 컴퓨트 첫 실증. 같은 날 NASA Crew-13 유인 발사도 목표. SpaceX 자체 궤도 데이터센터(Gigasat, 2027년 말 1GW 목표) 테마와 연결" },
+
   { dateKST: "2026-10-01", timeKST: "09:00", dateLabel: "10월 1일 (목)",
     event: "NVIDIA 분기 배당 지급",
     tickers: ["NVDA"], importance: 1, note: null },
@@ -199,6 +219,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-05", timeKST: "09:00", dateLabel: "10월 5일 (월)",
     event: "9월 한국 반도체 수출 통계 발표(예정)",
     tickers: ["EWY","KORU","SKHY"], importance: 4, note: "8월 반도체 수출 전년비 +209% 사상 최대치 기록, 9월 연속 여부 확인 — 정확한 발표일은 관세청 통관 발표 일정에 따라 변동 가능" },
+
+  { dateKST: "2026-10-09", timeKST: "22:30", dateLabel: "10월 9일 (금)",
+    event: "SpaceX(SPCX) 락업 해제 — 약 3.28억주",
+    tickers: ["SPCX","QQQ"], importance: 3,
+    note: "스태거드 락업 스케줄상 10월 1차 해제(美 개장 시점 반영). 직전 9/9·9/24 해제 모두 해제일 또는 전일 약 -4% 하락 패턴 — 전일(10/8) 선제 매도 여부 주목" },
 
   { dateKST: "2026-10-15", timeKST: "09:00", dateLabel: "10월 15일 (목)",
     event: "TSMC 3분기 실적 발표(잠정확정)",
@@ -226,6 +251,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-23", timeKST: "05:00", dateLabel: "10월 23일 (금)",
     event: "Amazon(AMZN) 3분기 실적 발표(확정)",
     tickers: ["AMZN"], importance: 5, note: "美 현지 10/22 장마감 후 — 실적 캘린더 기준 날짜 확정" },
+
+  { dateKST: "2026-10-24", timeKST: null, dateLabel: "10월 24일 (토)",
+    event: "SpaceX(SPCX) 락업 해제 — 약 3.28억주",
+    tickers: ["SPCX","QQQ"], importance: 2,
+    note: "10월 2차 해제(10/9와 합계 약 6.56억주). 美 주말이라 실질 반영은 10/26(월) 美 개장(10/26 22:30 KST)" },
 
   { dateKST: "2026-10-26", timeKST: null, dateLabel: "10월 26일 (월)",
     event: "OpenAI DevDay Exchange — 베를린",
@@ -261,6 +291,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-30", timeKST: "05:00", dateLabel: "10월 30일 (금)",
     event: "Apple(AAPL) 4분기 실적 발표(확정)",
     tickers: ["AAPL"], importance: 5, note: "美 현지 10/29 장마감 후" },
+
+  { dateKST: "2026-11-01", timeKST: null, dateLabel: "11월 초 (미정)",
+    event: "SpaceX(SPCX) 3분기 실적 발표(미확정) + 최대 약 13억주 락업 해제",
+    tickers: ["SPCX","QQQ","TSLA"], importance: 5,
+    note: "정확한 날짜 미발표(근접 시 재확인 필요 — 정렬용 임시 날짜). 신규 클라우드 계약 $141억 매출 반영 첫 분기, 2026년 말 ARR $1,000억 목표 진척 확인. 실적 발표 2거래일 후 스태거드 락업 최대 물량(약 13억주) 해제가 함께 트리거되는 핵심 이벤트" },
 
   { dateKST: "2026-11-03", timeKST: null, dateLabel: "11월 3일 (화)",
     event: "OpenAI DevDay Exchange — 런던",
@@ -313,6 +348,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "NVIDIA GTC Washington, D.C. 2026 개막 (~12/3)",
     tickers: ["NVDA","AMD","AVGO"], importance: 3,
     note: "젠슨 황 기조연설 통상 첫날 진행(정확한 KST 시각은 근접 시 재확인 필요). 정치적 수도에서 열리는 만큼 AI 규제·국방/정부 AI 인프라 메시지 비중이 클 전망 — 경쟁사 AMD·AVGO 밸류체인에도 간접 영향" },
+
+  { dateKST: "2026-12-09", timeKST: null, dateLabel: "12월 9일 (수)",
+    event: "SpaceX(SPCX) 180일 락업 전체 만료",
+    tickers: ["SPCX","QQQ"], importance: 4,
+    note: "상장(6/12) 후 180일 — 성과연동 물량 포함 비내부자 잔여분 전량 해제(12/9~10 전후, 공식 공시로 재확인 필요). 머스크·내부자 366일 락업은 2027년 6월 13일 만료" },
 
   { dateKST: "2026-12-10", timeKST: "04:00", dateLabel: "12월 10일 (목)",
     event: "FOMC 금리결정 발표 (12/8~9 회의)",
