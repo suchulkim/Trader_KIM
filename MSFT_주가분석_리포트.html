@@ -360,26 +360,26 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.23 (수) · 실시간 자동 갱신</span>
+      <span>2026.09.30 (수) · 업데이트 · 실시간 자동 갱신</span>
       <span>·</span>
-      <span>기준시각: <span id="last-updated-time">로딩 중...</span> · 최근 5거래일 흐름 반영</span>
+      <span>기준시각: <span id="last-updated-time">로딩 중...</span> · 美 정규장 9/28 마감 기준 최근 6거래일 흐름 반영</span>
     </div>
-    <h1>마이크로소프트 (MSFT)<span class="ticker">NYSE · Perpetual: MSFTUSDT.P</span></h1>
+    <h1>마이크로소프트 (MSFT)<span class="ticker">NASDAQ · Perpetual: MSFTUSDT.P</span></h1>
 
     <!-- 실시간 변동 가격 카드 -->
     <div class="price-card">
       <div>
         <div class="price-main-wrap">
-          <div class="price-main" id="live-price">$512.40</div>
-          <div class="price-badge" id="live-chg-badge">+1.85%</div>
+          <div class="price-main" id="live-price">$509.68</div>
+          <div class="price-badge" id="live-chg-badge" style="background:var(--neg-bg); color:var(--neg-text);">-1.26%</div>
         </div>
-        <div id="live-chg-detail" class="chg-up" style="margin-top:4px;">
-          실시간 시세 로딩 중...
+        <div id="live-chg-detail" class="chg-down" style="margin-top:4px;">
+          9/28 종가 -1.26% · 9/25 Copilot 개편으로 +3.66% 급등 후 일부 반납 (실시간 시세 로딩 중...)
         </div>
       </div>
       <div class="price-sub">
-        MSFT는 9/16 FOMC 금리 인상 악재 소화와 GOOGL 반독점 분할 우려 완화로 빅테크 투심이 살아나며 $510선을 회복했습니다. 
-        7/29 발표된 FY2026 4분기 실적 서프라이즈(Azure +43% 성장) 모멘텀과 FY2027 capex 가이던스($255~260B) 부담 간의 줄다리기 속에서 10/27 3분기 실적 발표를 앞두고 돌파를 시도하는 국면입니다.
+        MSFT는 9월 중순 $490~$505 박스권에 갇혀 있다가, 9/23 Stifel 투자의견 상향(Buy, 목표가 $575)과 9/25 Copilot 에이전트·코딩 기능 개편 발표로 +3.66% 급등하며 $516.17까지 올랐습니다.
+        9/28에는 국채금리·유가 상승에 따른 기술주 약세로 -1.26% 조정받아 $509.68로 마감. 52주 최고가 $553.72 대비 약 -8.0%, 10/27(예정) FY2027 1분기 실적을 앞두고 박스 상단 돌파를 시도하는 국면입니다.
       </div>
     </div>
 
@@ -406,9 +406,18 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 (날짜별 표 형태 업데이트) -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/14~9/24 $490~$505 박스권 횡보 → 9/25 거래량 3,800만주(3개월 평균 대비 +15%)를 동반한 장대양봉으로 박스 상단 돌파, 장중 $519.40. 9/28 되돌림에도 $505 위를 유지.<br>
+      <b>15분봉</b>: <b>$505</b>(옛 박스 상단)이 1차 지지, <b>$516~$520</b>(9/25 종가·고점)이 저항. 이 구간 돌파 여부가 단기 방향을 결정.
+    </div>
+  </section>
+
+  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 본주 기준)</h2>
     <table class="daily-table">
       <thead>
         <tr>
@@ -420,61 +429,76 @@
       <tbody>
         <tr>
           <td class="date-cell">
-            9/16(수)<br>
-            <span class="price-val">$496.20</span><br>
-            <span class="rate-down">▼ -1.15%</span>
-          </td>
-          <td>
-            FOMC(현지 9/16) 25bp 금리 인상 발표 직후 고금리 장기화 우려로 기술주 전반 단기 관망세 형성 및 capex 가이던스 부담 재부각
-          </td>
-          <td>단기 저점 형성</td>
-        </tr>
-        <tr>
-          <td class="date-cell">
-            9/17(목)<br>
-            <span class="price-val">$498.80</span><br>
-            <span class="rate-up">▲ +0.52%</span>
-          </td>
-          <td>
-            FOMC 결과 소화 과정에서 저가 매수세 유입. GOOGL 반독점 분할 우려 완화 소식에 빅테크 매수 심리 회복세 전환
-          </td>
-          <td>저점 다지기</td>
-        </tr>
-        <tr>
-          <td class="date-cell">
-            9/18(금)<br>
-            <span class="price-val">$504.10</span><br>
-            <span class="rate-up">▲ +1.06%</span>
-          </td>
-          <td>
-            Azure 100B 돌파 모멘텀 재조명 및 M365 Copilot B2B 유료 시트 증가 지속 확인으로 기술주 반등 동참, $500선 재탈환
-          </td>
-          <td>$500선 안착 성공</td>
-        </tr>
-        <tr>
-          <td class="date-cell">
             9/21(월)<br>
-            <span class="price-val">$503.10</span><br>
-            <span class="rate-down">▼ -0.20%</span>
+            <span class="price-val">$501.61</span><br>
+            <span class="rate-up">▲ +1.59%</span>
           </td>
           <td>
-            주초 매크로 지표(PCE, CPI) 대기 심리 및 대규모 투자(capex) 집행에 따른 단기 상단 저항 인식으로 소폭 숨고르기 양상
+            유가 약 3% 하락·국채금리 하락에 기술주 전반 반등, $500선 회복. 9/18 쿼드러플 위칭(거래량 3,960만주) 이후 저가 매수 유입
           </td>
-          <td>상방 저항 확인</td>
+          <td>$500선 회복</td>
         </tr>
         <tr>
           <td class="date-cell">
             9/22(화)<br>
-            <span class="price-val">$512.40</span><br>
-            <span class="rate-up">▲ +1.85%</span>
+            <span class="price-val">$498.00</span><br>
+            <span class="rate-down">▼ -0.72%</span>
           </td>
           <td>
-            구글 사업 분할 명령 회피 가능성에 따른 플랫폼 독점 리스크 해소, 미 증시 반도체 및 AI 클라우드 3사(MSFT, GOOGL, AMZN) 동반 강세
+            Meta AI 비서 <b>Muse</b> 흥행(美 앱스토어 1위)에 따른 소비자·생산성 소프트웨어 경쟁 우려로 약세. 나스닥(+0.45%) 대비 부진
           </td>
-          <td>전고점 돌파 시도</td>
+          <td>$500선 재이탈</td>
+        </tr>
+        <tr>
+          <td class="date-cell">
+            9/23(수)<br>
+            <span class="price-val">$500.84</span><br>
+            <span class="rate-up">▲ +0.57%</span>
+          </td>
+          <td>
+            <b>Stifel, Hold→Buy 상향·목표가 $530→$575</b> — "Copilot 주간 활성 사용이 Outlook·Teams 수준에 도달", Azure 성장 가속·OpenAI 수익 공유 효과 언급
+          </td>
+          <td>애널리스트 상향</td>
+        </tr>
+        <tr>
+          <td class="date-cell">
+            9/24(목)<br>
+            <span class="price-val">$497.93</span><br>
+            <span class="rate-down">▼ -0.58%</span>
+          </td>
+          <td>
+            나델라 CEO, 백악관 시진핑 국빈만찬 참석(AI·무역 정책 논의) — 이벤트 대기 속 美-이란 갈등·금리 부담으로 소폭 하락
+          </td>
+          <td>박스 하단 부근 지지</td>
+        </tr>
+        <tr>
+          <td class="date-cell">
+            9/25(금)<br>
+            <span class="price-val">$516.17</span><br>
+            <span class="rate-up">▲ +3.66%</span>
+          </td>
+          <td>
+            <b>Copilot 대규모 개편</b> — 코드 생성·상주형 AI 에이전트·자율 워크플로 도구 공개, 걸프 지역 클라우드·AI 인프라 투자 발표. 거래량 3,800만주로 박스 상단 돌파
+          </td>
+          <td>9월 최대 상승</td>
+        </tr>
+        <tr>
+          <td class="date-cell">
+            9/28(월)<br>
+            <span class="price-val">$509.68</span><br>
+            <span class="rate-down">▼ -1.26%</span>
+          </td>
+          <td>
+            국채금리·유가 상승으로 기술주 전반 약세(S&amp;P500 -0.77%) — 시장 대비 낙폭 확대, 급등분 일부 반납
+          </td>
+          <td>$505 지지 유지</td>
         </tr>
       </tbody>
     </table>
+    <div class="callout">
+      → 9월 중순까지는 <b>Meta Muse 경쟁 우려·금리 부담</b>으로 $500선 공방이 이어졌으나, <b>Stifel 상향(9/23) → Copilot 개편(9/25)</b>으로 AI 수익화 기대가 다시 살아나며 박스권을 위로 벗어났습니다.
+      다만 최근 한 달간 기술 섹터(+6.26%) 대비로는 여전히 부진해, 실적 전까지는 금리·유가 등 매크로에 따라 $505~$520 구간에서 등락할 가능성이 큽니다.
+    </div>
   </section>
 
   <!-- 2. 향후 전망 -->
@@ -485,43 +509,50 @@
       <div class="kpi">
         <div class="label">52주 최고가</div>
         <div class="value">$553.72</div>
-        <div class="sub">2025년 10월 고점, 상방 전고점</div>
+        <div class="sub">현재가 대비 약 +8.6% 위</div>
       </div>
       <div class="kpi">
         <div class="label">단기 저항선</div>
         <div class="value">$520.00</div>
-        <div class="sub">8월 하순 랠리 고점권</div>
+        <div class="sub">9/25 장중 고점 $519.40</div>
       </div>
       <div class="kpi">
         <div class="label">1차 지지선</div>
-        <div class="value">$495.00</div>
-        <div class="sub">최근 매수 수급 유입 마디가</div>
+        <div class="value">$505.00</div>
+        <div class="sub">9월 박스 상단(돌파 구간)</div>
+      </div>
+      <div class="kpi">
+        <div class="label">2차 지지선</div>
+        <div class="value">$491.00</div>
+        <div class="sub">9/18~9/24 저점대</div>
       </div>
     </div>
 
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Azure 매출 성장률 가속(43%→1분기 가이던스 45%) 지속 및 커머셜 이연매출(RPO) $678B(+84%) 보유로 견고한 실적 모멘텀</li>
-        <li>Microsoft 365 Copilot 유료 시트 3,000만 돌파 및 GitHub Copilot 5,000만 사용자 확보로 독보적 AI B2B 수익화 모델 구축</li>
-        <li>월가 주요 기관 매수 의견("Strong Buy") 유지 및 평균 목표주가 $570~$590선 Form(현 주가 대비 +13~16% 상향 여력)</li>
+        <li>Azure 연 매출 약 $100B·성장률 43%(1분기 가이던스 약 45%), 커머셜 수주잔고(RPO) $678B 중 약 30%가 12개월 내 매출 인식</li>
+        <li>Microsoft 365 Copilot 유료 시트 3,000만(순증 전분기 대비 2배 이상), 9/25 코딩·에이전트 기능 개편으로 수익화 확대 기대</li>
+        <li>Stifel Buy 상향(목표가 $575), 평균 목표가 약 $577(현 주가 대비 +13%) · Strong Buy 14·Buy 38·Hold 3</li>
+        <li>영업이익률 약 45%로 빅테크 최고 수준, 영업현금흐름 대비 밸류에이션(21배)은 5년 평균(25배) 하회</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>FY2027 대규모 데이터센터·GPU capex 투자 계획($255~260B)으로 인한 매출총이익률 마진 압박 잔존</li>
-        <li>FOMC 금리 인상 이후 고금리 환경 장기화에 따른 빅테크 밸류에이션 부담 및 매크로 변동성</li>
-        <li>More Personal Computing(PC/Xbox) 부문의 상대적 둔화 및 분기별 비GAAP 지표 변동성 주의</li>
+        <li>FY2026 capex $115.9B(+80%)로 급증, 잉여현금흐름 -6.5% 감소 — FY2027 추가 확대 계획에 따른 마진·FCF 부담</li>
+        <li>Meta Muse 등 소비자 AI 에이전트와의 경쟁 — 생산성 소프트웨어(Office·Copilot) 가격 결정력 우려</li>
+        <li>9/16 FOMC 금리 인상 이후 국채금리·유가 상승 시 기술주 동반 약세(9/28 사례), Forward PER 약 26배</li>
+        <li>More Personal Computing 부진(-4%), Xbox -10% 및 게임 부문 구조조정</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
     <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$520 돌파 안착 시 10/27 1분기 실적발표 전까지 전고점인 $540~$553 재도전 가능. Azure 45% 성장 가이던스 충족 시 랠리 가속</div>
-      <div class="scenario base"><b>기본</b>$495~$520 박스권 내에서 9/30 PCE 및 매크로 지표 소화하며 등락. 실적 발표 전 숨고르기 진행</div>
-      <div class="scenario bear"><b>약세</b>매크로 긴축 심화 또는 capex 우려 재부각 시 $495 이탈 후 $480 하단 매물대 재테스트</div>
+      <div class="scenario bull"><b>강세</b>$520 돌파 안착 시 $540~$553(52주 고점) 재도전, 10/27 실적에서 Azure 45% 성장·Copilot 시트 증가 확인 시 Stifel 목표가 $575 방향</div>
+      <div class="scenario base"><b>기본</b>$505~$520 구간에서 9/30 PCE·10/2 고용보고서 등 매크로 지표를 소화하며 실적 전 숨고르기</div>
+      <div class="scenario bear"><b>약세</b>$505 이탈 시 옛 박스권($491~$505)으로 복귀, 금리 급등·capex 우려 재부각 시 $480대 재테스트</div>
     </div>
   </section>
 
@@ -609,32 +640,27 @@
       <tbody>
         <tr>
           <td><b>9월 30일 (수) 밤 9:30</b></td>
-          <td><b>미국 8월 근원 PCE 물가지수</b> — 연준이 선호하는 인플레이션 지표, FOMC 이후 금리 경로 점검 핵심 변수</td>
+          <td><b>미국 8월 PCE·근원 PCE 물가지수</b> — 연준이 선호하는 인플레이션 지표, 9/16 금리 인상 이후 추가 긴축 여부 가늠</td>
           <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
         </tr>
         <tr>
-          <td><b>10월 01일 (목)</b></td>
-          <td><b>한국/글로벌 9월 IT 수출입동향 발표</b> — 서버/메모리 공급망 수요 동향 확인</td>
-          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-        </tr>
-        <tr>
-          <td><b>10월 02일 (금) 밤 9:30</b></td>
-          <td><b>미국 9월 CPI (소비자물가지수)</b> — 매크로 유동성 및 기술주 투심 직결 지표</td>
+          <td><b>10월 2일 (금) 밤 9:30</b></td>
+          <td><b>미국 9월 고용보고서</b> — 비농업 고용 예상 약 9.5만명·실업률 4.1%. 9/29 JOLTS 구인 감소(708만) 이후 고용 둔화 확인 여부</td>
           <td><span class="star">★★★★★</span></td>
         </tr>
         <tr>
-          <td><b>10월 27일 (화, 美 현지)</b><br>KST 10/28(수) 개장 전</td>
-          <td><b>Microsoft FY2027 1Q 실적 발표 (예정)</b> — Azure 45% 성장 가이던스 달성 여부 및 FY2027 capex 집행 현황 확인 핵심 이벤트</td>
+          <td><b>10월 27일 (화, 美 현지)</b><br>KST 10/28(수) 새벽</td>
+          <td><b>Microsoft FY2027 1분기 실적 발표 (예정)</b> — 컨센서스 EPS $4.69(+13.6%)·매출 $90.6B(+16.7%). Azure 45% 성장 가이던스 달성 여부와 capex 집행 현황이 핵심</td>
           <td><span class="star">★★★★★</span></td>
         </tr>
         <tr>
-          <td><b>10월 28일 (수) ~ 29일 (목)</b></td>
-          <td><b>미국 10월 FOMC 통화정책 회의</b> — 통화정책 방향성 재확인</td>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td><b>미국 10월 FOMC 금리 결정</b> — 9/16 인상 이후 추가 인상 여부</td>
           <td><span class="star">★★★★★</span></td>
         </tr>
         <tr>
           <td><b>11월 19일 (목, 예상)</b></td>
-          <td><b>MSFT 분기 배당 배당락일 (예상)</b> — 주당 $0.91, 연속 증액 기조 유지 전망</td>
+          <td><b>MSFT 분기 배당 배당락일 (예상)</b> — 주당 $0.91</td>
           <td><span class="star">★</span><span class="star-dim">★★★★</span></td>
         </tr>
       </tbody>
@@ -642,8 +668,8 @@
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 · FY2026 4분기 및 SEC 공시 반영. 
-    상단 가격 및 차트는 OKX 퍼블릭 API(MSFTUSDT.P) 및 TradingView 위젯을 통해 30초마다 실시간으로 자동 갱신됩니다[cite: 1, 3].
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.28 美 정규장 마감(KST 9/29 오전 5:00) · FY2026 4분기 실적 반영. 
+    상단 가격 및 차트는 OKX 퍼블릭 API(MSFTUSDT.P) 및 TradingView 위젯을 통해 30초마다 실시간으로 자동 갱신됩니다.
   </footer>
 
 </div>
