@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매크로 체크 대시보드</title>
+<style>
+  :root{
+    --bg:#0e1015; --card:#161a21; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#262b35; --accent:#4285f4; --up:#ff6b6b; --down:#5fd188;
+    --chip-bg:#1c2028; --table-head:#1a1e26; --warn:#e0a800;
+    --gap:8px;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;}
+  body{background:var(--bg); color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif; line-height:1.5;}
+  a{color:var(--accent); text-decoration:none;}
+
+  /* ===== 한 화면 영역 ===== */
+  .screen{height:100vh; display:flex; flex-direction:column; padding:8px 10px 10px; gap:6px;}
+
+  .topbar{display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; flex-shrink:0;}
+  .topbar h1{font-size:16px; margin:0; letter-spacing:-0.2px; white-space:nowrap;}
+  .topbar .back{font-size:12px;}
+  .spacer{flex:1;}
+  .pill{background:var(--chip-bg); border:1px solid var(--border); border-radius:999px; padding:2px 9px; font-size:12px; font-variant-numeric:tabular-nums; white-space:nowrap;}
+  .dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:5px; vertical-align:middle;}
+  .btn{background:var(--card); color:var(--text-soft); border:1px solid var(--border); border-radius:6px; padding:2px 9px; font-size:12px; cursor:pointer;}
+  .btn.on{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .btn:hover{color:var(--text);}
+
+  .tape{background:var(--card); border:1px solid var(--border); border-radius:8px; overflow:hidden; height:46px; flex-shrink:0;}
+
+  .grid{flex:1; min-height:0; display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); grid-template-rows:repeat(3, minmax(0,1fr)); gap:var(--gap);}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:8px; padding:5px 6px 6px; min-width:0; min-height:0; display:flex; flex-direction:column;}
+  .card-head{display:flex; align-items:center; gap:6px; font-size:12.5px; line-height:1.3; margin-bottom:4px; flex-shrink:0; white-space:nowrap; overflow:hidden;}
+  .card-head .tag{font-size:10.5px; color:var(--text-soft); background:var(--chip-bg); border-radius:4px; padding:0 5px;}
+  .card-head b{overflow:hidden; text-overflow:ellipsis;}
+  .card-head .note{font-size:11px; color:var(--warn); overflow:hidden; text-overflow:ellipsis;}
+  .card-head .ext{margin-left:auto; font-size:11px; background:var(--accent); color:#fff; padding:1px 7px; border-radius:4px; flex-shrink:0;}
+  .tv{flex:1; min-height:0; border-radius:6px; overflow:hidden; background:#12151b; position:relative;}
+  .tv > div{position:absolute; inset:0;}
+  .tv .ph{display:flex; align-items:center; justify-content:center; height:100%; font-size:12px; color:var(--text-soft);}
+
+  /* 좁은 화면: 한 화면 고정 해제, 1열 스크롤 */
+  @media (max-width:900px){
+    .screen{height:auto;}
+    .grid{grid-template-columns:1fr; grid-template-rows:none; grid-auto-rows:340px;}
+  }
+
+  /* ===== 아래: 해석 가이드 (스크롤) ===== */
+  .below{max-width:1400px; margin:0 auto; padding:24px 16px 50px;}
+  h2{font-size:16px; margin:0 0 12px; padding-bottom:7px; border-bottom:2px solid var(--text);}
+  h2 .hint{font-size:12.5px; font-weight:400; color:var(--text-soft); margin-left:8px;}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; font-size:13.5px;}
+  th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); color:var(--text-soft); font-size:12.5px; font-weight:600;}
+  tr:last-child td{border-bottom:none;}
+  .on-risk{color:var(--down);} .off-risk{color:var(--up);}
+  .tbl-wrap{overflow-x:auto;}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:12px 15px; font-size:13.5px; color:var(--text-soft); margin-top:12px;}
+  .callout b{color:var(--text);}
+  footer{margin-top:30px; padding-top:12px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+</style>
+</head>
+<body>
+
+<div class="screen">
+  <div class="topbar">
+    <a class="back" href="index.html">← DASHBOARD</a>
+    <h1>🌐 매크로 체크</h1>
+    <button class="btn on" data-iv="15">15분</button>
+    <button class="btn" data-iv="60">1시간</button>
+    <button class="btn" data-iv="240">4시간</button>
+    <button class="btn" data-iv="D">일봉</button>
+    <span class="spacer"></span>
+    <span class="pill" id="kstClock">KST --:--:--</span>
+    <span class="pill" id="etClock">ET --:--</span>
+    <span class="pill" id="session"><span class="dot" style="background:var(--text-soft)"></span>세션 확인 중</span>
+  </div>
+
+  <div class="tape"><div class="tradingview-widget-container" id="tapeBox"><div class="tradingview-widget-container__widget"></div></div></div>
+
+  <div class="grid" id="grid"></div>
+</div>
+
+<div class="below">
+  <section>
+    <h2>📋 빠른 해석 가이드 <span class="hint">성장주(GOOGL 등) 관점</span></h2>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th style="width:17%">지표</th><th>🟢 위험선호 (성장주 우호)</th><th>🔴 위험회피 (성장주 부담)</th><th style="width:26%">참고 수준 (9/30 기준)</th></tr>
+      <tr><td><b>美 10년물</b><br><span style="font-size:11.5px;color:var(--text-soft)">차트는 채권 가격</span></td><td class="on-risk">금리 하락 = <b>차트 상승</b> — 밸류에이션 여유</td><td class="off-risk">금리 상승 = <b>차트 하락</b> — 5% 이상에서 빅테크 압박</td><td>금리 5.26% · 2007년 고점 5.32% 근접</td></tr>
+      <tr><td><b>달러 인덱스</b></td><td class="on-risk">약세 — 해외 매출 환산 유리</td><td class="off-risk">강세 — 글로벌 유동성 위축</td><td>원/달러와 같은 방향인지 확인</td></tr>
+      <tr><td><b>VIX</b></td><td class="on-risk">15~20 이하, 하락</td><td class="off-risk">20 돌파, 25+ 급등 시 패닉</td><td>16 안팎(9/29)</td></tr>
+      <tr><td><b>WTI 유가</b></td><td class="on-risk">안정·하락 — 인플레 부담 ↓</td><td class="off-risk">급등 — 물가·금리 상승 압력</td><td>$90 중반대 · 중동 변수</td></tr>
+      <tr><td><b>금</b></td><td>완만한 흐름</td><td class="off-risk">급등 — 안전자산 선호·실질금리 불안</td><td>달러·실질금리와 함께 판단</td></tr>
+      <tr><td><b>나스닥·S&amp;P</b></td><td class="on-risk">지수·위험지표 동반 개선</td><td class="off-risk">금리↑·VIX↑와 동반 하락</td><td>개별 종목과 상대강도 비교</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      <b>체크 순서 제안:</b> ① 10년물로 금리 방향 → ② 달러 인덱스 → ③ VIX로 위험심리 → ④ 유가로 인플레 압력 → ⑤ 지수 반응 확인.<br>
+      세 가지 이상이 같은 방향(예: 금리↑·달러↑·VIX↑)이면 매크로 역풍이 강하다고 보고, 개별 종목 기술적 지지선의 신뢰도를 낮춰 보는 것이 좋습니다.
+    </div>
+  </section>
+
+  <footer>
+    ※ 모든 차트·시세는 TradingView 위젯으로 표시되며 투자 조언이 아닙니다. 심볼 변경은 파일 하단 스크립트의 <code>CHARTS</code> 설정에서 할 수 있습니다(TVC: 심볼은 위젯에서 표시 불가).
+    '참고 수준'은 2026.09.30 작성 시점 값으로 자동 갱신되지 않습니다.
+  </footer>
+</div>
+
+<script src="https://s3.tradingview.com/tv.js"></script>
+<script>
+/* ===== 설정: 여기서 심볼 추가·변경 (3x3 = 9개) ===== */
+const CHARTS = [
+  { tag:'금리', sym:'OANDA:USB10YUSD', name:'美 10년물 채권가격', note:'↓=금리↑',
+    link:'https://www.tradingview.com/chart/?symbol=TVC%3AUS10Y&interval=15', linkText:'US10Y %' },
+  { tag:'달러', sym:'CAPITALCOM:DXY',   name:'달러 인덱스' },
+  { tag:'환율', sym:'FX_IDC:USDKRW',    name:'원/달러' },
+  { tag:'심리', sym:'CAPITALCOM:VIX',   name:'VIX 변동성' },
+  { tag:'원자재', sym:'OANDA:WTICOUSD', name:'WTI 원유' },
+  { tag:'원자재', sym:'OANDA:XAUUSD',   name:'금' },
+  { tag:'지수', sym:'OANDA:NAS100USD',  name:'나스닥 100' },
+  { tag:'지수', sym:'OANDA:SPX500USD',  name:'S&P 500' },
+  { tag:'크립토', sym:'BINANCE:BTCUSDT', name:'비트코인' },
+];
+const TAPE = [
+  ['OANDA:USB10YUSD','美10년물 가격'],['CAPITALCOM:DXY','달러인덱스'],['FX_IDC:USDKRW','원/달러'],
+  ['CAPITALCOM:VIX','VIX'],['OANDA:WTICOUSD','WTI'],['OANDA:XAUUSD','금'],['OANDA:NAS100USD','나스닥100'],
+  ['OANDA:SPX500USD','S&P500'],['BINANCE:BTCUSDT','BTC'],
+];
+/* ================================================= */
+
+let INTERVAL = '15';
+
+function buildGrid(){
+  const grid = document.getElementById('grid');
+  grid.innerHTML = '';
+  CHARTS.forEach((it, i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.innerHTML = `<div class="card-head" title="${it.sym}">
+        <span class="tag">${it.tag}</span><b>${it.name}</b>
+        ${it.note ? `<span class="note">${it.note}</span>` : ''}
+        ${it.link ? `<a class="ext" href="${it.link}" target="_blank" rel="noopener">${it.linkText}</a>` : ''}
+      </div>
+      <div class="tv"><div id="tv_${i}"><div class="ph">차트 불러오는 중…</div></div></div>`;
+    grid.appendChild(card);
+  });
+}
+
+function renderAll(){
+  CHARTS.forEach((it, i) => {
+    const el = document.getElementById('tv_' + i);
+    el.innerHTML = '';
+    const h = el.clientHeight || 300;
+    new TradingView.widget({
+      width:'100%', height:h, symbol:it.sym, interval:INTERVAL,
+      timezone:'Asia/Seoul', theme:'dark', style:'1', locale:'kr',
+      toolbar_bg:'#161a21', enable_publishing:false,
+      hide_top_toolbar:true, hide_side_toolbar:true, hide_legend:true, hide_volume:true,
+      allow_symbol_change:false, save_image:false, container_id:'tv_' + i,
+    });
+  });
+}
+
+function waitTV(fn){
+  if(typeof TradingView === 'undefined'){ setTimeout(() => waitTV(fn), 300); return; }
+  fn();
+}
+
+// 주기 변경
+document.querySelectorAll('.btn[data-iv]').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.btn[data-iv]').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    INTERVAL = b.dataset.iv;
+    waitTV(renderAll);
+  });
+});
+
+// 창 크기 변경 시 차트 높이 재계산
+let rsT, lastW = innerWidth, lastH = innerHeight;
+addEventListener('resize', () => {
+  clearTimeout(rsT);
+  rsT = setTimeout(() => {
+    if(Math.abs(innerWidth-lastW) < 40 && Math.abs(innerHeight-lastH) < 40) return;
+    lastW = innerWidth; lastH = innerHeight;
+    waitTV(renderAll);
+  }, 400);
+});
+
+// 시계 & 美 증시 세션
+function tick(){
+  const now = new Date();
+  document.getElementById('kstClock').textContent = 'KST ' + now.toLocaleTimeString('en-GB',{timeZone:'Asia/Seoul',hour12:false});
+  const et = new Date(now.toLocaleString('en-US',{timeZone:'America/New_York'}));
+  const hm = et.getHours()*60 + et.getMinutes(), day = et.getDay();
+  document.getElementById('etClock').textContent = 'ET ' + et.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit',hour12:false});
+  let label, color='var(--text-soft)';
+  if(day>0 && day<6){
+    if(hm>=240 && hm<570){ label='프리마켓'; color='var(--warn)'; }
+    else if(hm>=570 && hm<960){ label='정규장'; color='var(--down)'; }
+    else if(hm>=960 && hm<1200){ label='애프터'; color='var(--warn)'; }
+    else { label='장 마감'; }
+  } else { label='주말 휴장'; }
+  document.getElementById('session').innerHTML = `<span class="dot" style="background:${color}"></span>美 ${label}`;
+}
+
+buildGrid();
+waitTV(renderAll);
+tick(); setInterval(tick, 1000);
+
+(function(){
+  const s = document.createElement('script');
+  s.src = 'https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js'; s.async = true;
+  s.text = JSON.stringify({
+    symbols: TAPE.map(([proName,title]) => ({proName, title})),
+    showSymbolLogo:false, colorTheme:'dark', isTransparent:true, displayMode:'compact', locale:'kr'
+  });
+  document.getElementById('tapeBox').appendChild(s);
+})();
+</script>
+</body>
+</html>
