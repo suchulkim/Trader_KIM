@@ -47,13 +47,41 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .warn div{background:rgba(229,83,75,.12);border:1px solid rgba(229,83,75,.5);color:#F2B8B4;border-radius:6px;padding:10px 12px;margin-top:12px;font-size:13px;line-height:1.6}
 .warn code{font-family:var(--mono);color:var(--text)}
 @media (max-width:900px){ main{--cols:1 !important} }
+
+/* ── 가격 알림 ── */
+.ph .px{font-family:var(--mono);font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ph .px.live{color:var(--text)}
+.ph .px small{font-size:10.5px;color:var(--muted);margin-left:3px}
+.ph .bell{padding:1px 7px;font-size:12px}
+.ph .bell.has{border-color:var(--gold);color:var(--gold)}
+#alarmBtn.on{background:#2a2410;color:var(--gold);border-color:var(--gold)}
+.panel.ring{animation:ring .6s ease-in-out 10}
+@keyframes ring{50%{box-shadow:0 0 0 3px var(--gold)}}
+.modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
+.modal-bg.open{display:flex}
+.modal{background:var(--surface);border:1px solid var(--line);border-radius:8px;width:min(500px,100%);max-height:85vh;overflow:auto;padding:14px 16px}
+.modal h3{margin:0 0 4px;font-size:15px}
+.modal .sub{font-size:12.5px;color:var(--muted);margin-bottom:10px;line-height:1.6}
+.modal .row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.modal input{font:inherit;font-size:13px;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:5px;padding:5px 8px}
+.modal input[type=number]{width:140px;font-family:var(--mono)} .modal input.memo{flex:1;min-width:140px}
+.modal .add{background:var(--gold);color:var(--bg);border-color:var(--gold);font-weight:600}
+.modal .close{float:right;border:0;background:none;color:var(--muted);font-size:18px;padding:0 4px}
+.alist{list-style:none;margin:10px 0 0;padding:0;font-size:13px}
+.alist li{display:flex;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--line)}
+.alist li .p{font-family:var(--mono)} .alist li .m{color:var(--muted);font-size:12px;flex:1;min-width:0}
+.alist li.done .p{text-decoration:line-through;color:var(--muted)}
+.alist li button{padding:1px 7px;font-size:11.5px}
+.toasts{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:8px;z-index:60;max-width:calc(100vw - 28px)}
+.toast{background:#2a2410;border:1px solid var(--gold);border-radius:8px;padding:10px 12px;font-size:13px;min-width:260px;box-shadow:0 6px 20px rgba(0,0,0,.45);line-height:1.5}
+.toast b{color:var(--gold)} .toast button{float:right;margin-left:10px;background:var(--gold);color:var(--bg);border-color:var(--gold);padding:2px 9px}
 </style>
 </head>
 <body>
 
 <div class="top">
   <div class="bar">
-    <h1>워치리스트 15분봉 <small>28 SYMBOLS · 15m · SMA20/200</small></h1>
+    <h1>워치리스트 15분봉 <small>28 SYMBOLS · 15m · SMA20/200 · 🔔 가격 알림</small></h1>
     <label class="ctl" for="ex">거래소
       <select id="ex">
         <option value="OKX" selected>OKX</option>
@@ -90,6 +118,10 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
     <label class="ctl" for="flt">필터
       <select id="flt"></select>
     </label>
+    <div class="ctl">
+      <button type="button" id="alarmBtn" title="소리·데스크톱 알림 허용 (브라우저 정책상 최초 1회 클릭 필요)">🔇 소리 꺼짐 (클릭)</button>
+      <button type="button" id="alertAll" title="설정된 전체 알림 보기">알림 0</button>
+    </div>
   </div>
   <nav class="nav" id="nav" aria-label="종목 바로가기"></nav>
 </div>
@@ -101,6 +133,24 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 </div></div>
 
 <main id="grid"></main>
+
+<div class="modal-bg" id="modalBg" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="modal">
+    <button type="button" class="close" id="mClose" aria-label="닫기">×</button>
+    <h3 id="mTitle">가격 알림</h3>
+    <div class="sub" id="mSub"></div>
+    <div id="mForm">
+      <div class="row">
+        <select id="mCond"><option value="above">이상 (≥ 상향 돌파)</option><option value="below">이하 (≤ 하향 이탈)</option></select>
+        <input type="number" id="mPrice" step="any" placeholder="목표 가격">
+        <button type="button" class="add" id="mAdd">추가</button>
+      </div>
+      <div class="row"><input class="memo" id="mMemo" placeholder="메모 (선택) — 예: 박스 상단 돌파, 0.786 되돌림"></div>
+    </div>
+    <ul class="alist" id="mList"></ul>
+  </div>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
 /* ── 그룹 (필터 기준) ── */
@@ -182,6 +232,8 @@ grid.innerHTML = GROUPS.map(([g,gn]) => {
     <div class="ph">
       <span class="sym">${s}</span><span class="tag">${LABEL[k]}</span>
       <span class="note">${n}</span>
+      <span class="px" data-px="${s}" title="알림 기준 실시간 가격">…</span>
+      <button type="button" class="bell" data-bell="${s}" title="가격 알림 설정">🔔</button>
       <a href="${tvUrl(s)}" class="tvlink" target="_blank" rel="noopener">TradingView ↗</a>
     </div>
     <div class="chart"><div class="ph-load">스크롤하면 불러옵니다</div></div>
@@ -272,6 +324,248 @@ document.querySelectorAll(".seg button").forEach(b => b.addEventListener("click"
 
 if (location.protocol === "file:") $("warn").style.display = "block";
 applyLayout(); applyFilter();
+
+/* ════════════ 가격 알림 ════════════
+   TradingView 위젯은 가격을 페이지에 넘겨주지 않으므로, 선택한 거래소의 공개 시세 API로
+   무기한(USDT-M) 가격을 5초마다 직접 조회해 알림을 판단합니다. (거래소 1곳당 1회 요청으로 전 종목 조회)
+   선택 거래소에 없는 종목은 다른 거래소 가격으로 대체하며, 가격 옆에 출처를 표시합니다. */
+const FEEDS = {
+  OKX:     { url:"https://www.okx.com/api/v5/market/tickers?instType=SWAP",
+             parse:j => (j.data||[]).filter(t=>/-USDT-SWAP$/.test(t.instId)).map(t => [t.instId.replace("-USDT-SWAP","USDT"), +t.last]) },
+  BINANCE: { url:"https://fapi.binance.com/fapi/v1/ticker/price",
+             parse:j => (Array.isArray(j)?j:[]).map(t => [t.symbol, +t.price]) },
+  BYBIT:   { url:"https://api.bybit.com/v5/market/tickers?category=linear",
+             parse:j => ((j.result||{}).list||[]).map(t => [t.symbol, +t.lastPrice]) },
+  BITGET:  { url:"https://api.bitget.com/api/v2/mix/market/tickers?productType=USDT-FUTURES",
+             parse:j => (j.data||[]).map(t => [t.symbol, +t.lastPr]) },
+};
+const FEED_ORDER = ["OKX","BINANCE","BYBIT","BITGET"];
+const base = s => s.replace(/\.P$/,"");            // ETHUSDT.P → ETHUSDT
+const PRICE = {};                                    // 심볼 → {p, src}
+const FEEDOK = {};                                   // 거래소 → 마지막 조회 성공 여부
+let ALERTS = []; let audioCtx = null, alarmReady = false, curSym = null;
+
+try{ ALERTS = JSON.parse(store.get("alerts","[]")) || []; }catch(e){ ALERTS = []; }
+const saveAlerts = () => { store.set("alerts", JSON.stringify(ALERTS)); refreshAlertUI(); };
+
+function fmt(v){
+  if(v == null || isNaN(v)) return "-";
+  const d = v >= 1000 ? 2 : v >= 1 ? (v >= 100 ? 2 : 3) : 5;
+  return Number(v).toLocaleString("en-US",{minimumFractionDigits:d, maximumFractionDigits:d});
+}
+
+async function pullFeed(ex){
+  try{
+    const r = await fetch(FEEDS[ex].url, {cache:"no-store"});
+    if(!r.ok) throw 0;
+    const m = new Map(FEEDS[ex].parse(await r.json()).filter(([,p]) => p > 0));
+    FEEDOK[ex] = true; return m;
+  }catch(e){ FEEDOK[ex] = false; return null; }
+}
+async function pollPrices(){
+  const pref = state.ex || "OKX";
+  const order = [pref, ...FEED_ORDER.filter(x => x !== pref)];
+  const maps = {};
+  // 선택 거래소 먼저, 빠진 종목이 있을 때만 다음 거래소 조회
+  for(const ex of order){
+    const missing = WATCH.some(([s]) => !Object.values(maps).some(m => m.has(base(s))));
+    if(!missing) break;
+    const m = await pullFeed(ex); if(m) maps[ex] = m;
+  }
+  WATCH.forEach(([s]) => {
+    const src = order.find(ex => maps[ex] && maps[ex].has(base(s)));
+    const el = document.querySelector(`[data-px="${s}"]`);
+    if(src){
+      PRICE[s] = {p: maps[src].get(base(s)), src};
+      if(el){ el.innerHTML = fmt(PRICE[s].p) + (src !== pref ? `<small>${src}</small>` : ""); el.classList.add("live");
+              el.title = `알림 기준: ${src} ${base(s)} 무기한` + (src !== pref ? " (선택 거래소에 없어 대체)" : ""); }
+    }else if(el){ el.textContent = "시세 없음"; el.classList.remove("live"); el.title = "조회 가능한 거래소 시세 없음 — 알림 불가"; }
+  });
+  checkAlerts();
+  if(curSym) renderSub();
+}
+
+function checkAlerts(){
+  let hit = false;
+  ALERTS.forEach(a => {
+    if(a.done || !PRICE[a.sym]) return;
+    const p = PRICE[a.sym].p;
+    if(a.cond === "above" ? p >= a.price : p <= a.price){
+      a.done = true; a.hitPrice = p; a.hitAt = Date.now(); hit = true; fire(a, p);
+    }
+  });
+  if(hit) saveAlerts();
+}
+
+/* 알람: 경고음 + 데스크톱 알림 + 토스트 + 패널 깜빡임 + 탭 제목 */
+/* ── 소리 ──
+   브라우저는 '사용자 클릭 이후'에만 소리를 허용합니다. 페이지 아무 곳이나 한 번 클릭/키 입력하면
+   자동으로 소리가 활성화되도록 하고(새로고침 후에도), WebAudio가 막히면 <audio>(WAV) 방식으로 재생합니다. */
+let wavEl = null;
+function makeWav(){                     // 880/660Hz 번갈아 6회 '삐-삐' 경고음 WAV 생성 (약 2초)
+  const sr = 22050, beepLen = 0.28, gap = 0.07, n = 6, len = Math.floor(sr * n * (beepLen + gap));
+  const buf = new ArrayBuffer(44 + len * 2), v = new DataView(buf);
+  const w = (o, str) => [...str].forEach((c, i) => v.setUint8(o + i, c.charCodeAt(0)));
+  w(0,"RIFF"); v.setUint32(4, 36 + len*2, true); w(8,"WAVEfmt "); v.setUint32(16,16,true); v.setUint16(20,1,true); v.setUint16(22,1,true);
+  v.setUint32(24,sr,true); v.setUint32(28,sr*2,true); v.setUint16(32,2,true); v.setUint16(34,16,true); w(36,"data"); v.setUint32(40,len*2,true);
+  for(let i = 0; i < len; i++){
+    const t = i / sr, k = Math.floor(t / (beepLen + gap)), tt = t - k * (beepLen + gap);
+    const f = k % 2 ? 660 : 880;
+    const env = tt < beepLen ? Math.min(1, tt / 0.01, (beepLen - tt) / 0.02) : 0;
+    const sq = Math.sin(2 * Math.PI * f * t) >= 0 ? 1 : -1;
+    v.setInt16(44 + i*2, sq * env * 0.6 * 32767, true);
+  }
+  let bin = ""; new Uint8Array(buf).forEach(x => bin += String.fromCharCode(x));
+  return "data:audio/wav;base64," + btoa(bin);
+}
+function ensureAudio(){
+  try{
+    audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+    if(audioCtx.state !== "running") audioCtx.resume();
+  }catch(e){}
+  if(!wavEl){ try{ wavEl = new Audio(makeWav()); wavEl.volume = 1; }catch(e){} }
+}
+function unlockAudio(){                 // 사용자 동작 안에서 호출 → 이후 자동 재생 허용
+  ensureAudio();
+  if(wavEl){ wavEl.muted = true; wavEl.play().then(() => { wavEl.pause(); wavEl.currentTime = 0; wavEl.muted = false; }).catch(() => { wavEl.muted = false; }); }
+  setAlarmBtn();
+}
+function audioReady(){ return audioCtx && audioCtx.state === "running"; }
+function beep(n = 6){
+  ensureAudio();
+  if(audioReady()){
+    const t0 = audioCtx.currentTime + 0.02;
+    for(let k = 0; k < n; k++){
+      const o = audioCtx.createOscillator(), g = audioCtx.createGain(), t = t0 + k*0.35;
+      o.type = "square"; o.frequency.value = k % 2 ? 660 : 880;
+      g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(0.5, t+0.02); g.gain.exponentialRampToValueAtTime(0.0001, t+0.28);
+      o.connect(g).connect(audioCtx.destination); o.start(t); o.stop(t+0.3);
+    }
+    return true;
+  }
+  if(wavEl){ try{ wavEl.currentTime = 0; wavEl.play().catch(() => {}); return true; }catch(e){} }
+  return false;
+}
+/* 확인 누를 때까지 4초마다 반복 (최대 60초) */
+let ringT = null, ringEnd = 0;
+function startRinging(){
+  ringEnd = Date.now() + 60000;
+  beep();
+  clearInterval(ringT);
+  ringT = setInterval(() => { if(Date.now() > ringEnd || !document.querySelector(".toast")) return stopRinging(); beep(); }, 4000);
+}
+function stopRinging(){ clearInterval(ringT); ringT = null; }
+function setAlarmBtn(){
+  const b = $("alarmBtn"); if(!b) return;
+  const ok = audioReady();
+  b.textContent = ok ? "🔔 소리 켜짐 · 테스트" : "🔇 소리 꺼짐 (클릭)";
+  b.classList.toggle("on", ok);
+  b.title = ok ? "클릭하면 테스트 경고음이 울립니다" : "브라우저 정책상 페이지를 한 번 클릭해야 소리가 납니다";
+}
+// 페이지 어디든 첫 클릭/키 입력 시 자동 활성화 (새로고침 후에도)
+["pointerdown","keydown","touchstart"].forEach(ev => document.addEventListener(ev, () => { if(!audioReady()) unlockAudio(); }, {capture:true, passive:true}));
+document.addEventListener("visibilitychange", () => { if(audioCtx && audioCtx.state === "suspended") audioCtx.resume().catch(()=>{}); });
+const baseTitle = document.title; let titleT = null;
+const flashTitle = m => { clearInterval(titleT); let on = false; titleT = setInterval(() => document.title = (on = !on) ? "🔔 " + m : baseTitle, 800); };
+const stopFlash = () => { clearInterval(titleT); document.title = baseTitle; };
+
+function fire(a, p){
+  const sym = base(a.sym), src = PRICE[a.sym].src;
+  const msg = `${sym} ${a.cond === "above" ? "≥" : "≤"} ${fmt(a.price)} 도달 (현재 ${fmt(p)})`;
+  startRinging(); flashTitle(sym + " 알림");
+  const panel = document.getElementById(idOf(a.sym));
+  if(panel && !panel.hidden){ panel.classList.remove("ring"); void panel.offsetWidth; panel.classList.add("ring"); }
+  try{ if("Notification" in window && Notification.permission === "granted")
+    new Notification("가격 알림 — " + sym, {body: msg + (a.memo ? "\n" + a.memo : ""), tag: a.id, requireInteraction: true});
+  }catch(e){}
+  const t = document.createElement("div"); t.className = "toast";
+  t.innerHTML = `<button type="button">확인</button><b>🔔 ${sym}</b><br>${msg}` +
+    (a.memo ? `<br><span style="color:var(--muted)">${a.memo}</span>` : "") +
+    `<br><span style="font-size:11px;color:var(--muted)">${src} 무기한 · ${new Date().toLocaleTimeString("ko-KR",{timeZone:"Asia/Seoul"})}</span>`;
+  t.querySelector("button").onclick = () => { t.remove(); if(!document.querySelector(".toast")){ stopFlash(); stopRinging(); } };
+  t.style.cursor = "pointer";
+  t.addEventListener("click", e => { if(e.target.tagName !== "BUTTON" && panel){ panel.scrollIntoView({behavior:"smooth"}); } });
+  $("toasts").appendChild(t);
+}
+
+$("alarmBtn").addEventListener("click", async () => {
+  unlockAudio();
+  try{ if("Notification" in window && Notification.permission === "default") await Notification.requestPermission(); }catch(e){}
+  alarmReady = true; store.set("alarmOn","1");
+  setTimeout(() => { if(!beep(2)) alert("소리를 재생할 수 없습니다. 브라우저 탭/사이트 소리가 음소거되어 있지 않은지 확인하세요."); setAlarmBtn(); }, 50);
+});
+if(store.get("alarmOn","0") === "1") alarmReady = true;
+setAlarmBtn();
+
+/* 설정 창 — 종목별(sym) 또는 전체 목록(null) */
+function openModal(sym){
+  curSym = sym || "*";
+  $("mForm").hidden = !sym;
+  $("mTitle").textContent = sym ? `🔔 ${base(sym)} 가격 알림` : "🔔 전체 가격 알림";
+  if(sym){ const p = PRICE[sym] && PRICE[sym].p; $("mPrice").value = p ? +p.toPrecision(6) : ""; $("mMemo").value = ""; }
+  renderSub(); renderList();
+  $("modalBg").classList.add("open");
+  if(sym) $("mPrice").focus();
+}
+function closeModal(){ curSym = null; $("modalBg").classList.remove("open"); }
+function renderSub(){
+  const warn = audioReady() ? "" : `<br><span style="color:var(--gold)">소리가 꺼져 있습니다 — 상단 '🔇 소리 꺼짐' 버튼(또는 페이지 아무 곳) 클릭 시 켜집니다.</span>`;
+  if(curSym === "*"){ $("mSub").innerHTML = `활성 ${ALERTS.filter(a=>!a.done).length}개 · 울린 알림 ${ALERTS.filter(a=>a.done).length}개` + warn; return; }
+  const q = PRICE[curSym];
+  $("mSub").innerHTML = q ? `알림 기준: <b>${q.src} ${base(curSym)} 무기한</b> · 현재가 <b style="font-family:var(--mono)">${fmt(q.p)}</b>` + warn
+                          : `<span style="color:var(--avoid)">이 종목의 실시간 시세를 가져오지 못했습니다 — 알림이 울리지 않습니다.</span>` + warn;
+}
+function renderList(){
+  const list = ALERTS.filter(a => curSym === "*" || a.sym === curSym)
+    .sort((x, y) => x.sym.localeCompare(y.sym) || x.price - y.price);
+  $("mList").innerHTML = list.length ? list.map(a => `
+    <li class="${a.done ? "done" : ""}">
+      ${curSym === "*" ? `<a href="#${idOf(a.sym)}" data-go="1" style="font-family:var(--mono);color:var(--text)">${base(a.sym).replace("USDT","")}</a>` : ""}
+      <span class="p">${a.cond === "above" ? "▲ ≥" : "▼ ≤"} ${fmt(a.price)}</span>
+      <span class="m">${a.memo || ""}${a.done && a.hitPrice ? ` · ${fmt(a.hitPrice)}에 울림` : ""}</span>
+      ${a.done ? `<button type="button" data-re="${a.id}">재설정</button>` : ""}
+      <button type="button" data-del="${a.id}">삭제</button>
+    </li>`).join("") : `<li style="color:var(--muted)">설정된 알림이 없습니다.</li>`;
+}
+function refreshAlertUI(){
+  $("alertAll").textContent = `알림 ${ALERTS.filter(a => !a.done).length}`;
+  document.querySelectorAll("[data-bell]").forEach(b => {
+    const n = ALERTS.filter(a => a.sym === b.dataset.bell && !a.done).length;
+    b.textContent = n ? "🔔" + n : "🔔"; b.classList.toggle("has", n > 0);
+  });
+  if(curSym){ renderSub(); renderList(); }
+}
+
+grid.addEventListener("click", e => { const b = e.target.closest("[data-bell]"); if(b) openModal(b.dataset.bell); });
+$("alertAll").addEventListener("click", () => openModal(null));
+$("mClose").addEventListener("click", closeModal);
+$("modalBg").addEventListener("click", e => { if(e.target.id === "modalBg") closeModal(); });
+document.addEventListener("keydown", e => {
+  if(e.key === "Escape" && curSym) closeModal();
+  if(e.key === "Enter" && curSym && curSym !== "*" && document.activeElement && document.activeElement.closest("#mForm")) $("mAdd").click();
+});
+$("mAdd").addEventListener("click", () => {
+  const price = parseFloat($("mPrice").value);
+  if(!(price > 0)){ $("mPrice").focus(); return; }
+  const cond = $("mCond").value, q = PRICE[curSym];
+  if(q && (cond === "above" ? q.p >= price : q.p <= price) &&
+     !confirm(`현재가(${fmt(q.p)})가 이미 조건을 만족해 바로 알림이 울립니다. 그대로 추가할까요?`)) return;
+  ALERTS.push({id: "a" + Date.now().toString(36), sym: curSym, cond, price, memo: $("mMemo").value.trim(), done: false, createdAt: Date.now()});
+  $("mMemo").value = ""; saveAlerts(); checkAlerts();
+});
+$("mList").addEventListener("click", e => {
+  const t = e.target;
+  if(t.dataset.go){ closeModal(); return; }
+  if(t.dataset.del) ALERTS = ALERTS.filter(a => a.id !== t.dataset.del);
+  else if(t.dataset.re){ const a = ALERTS.find(a => a.id === t.dataset.re); if(a){ a.done = false; delete a.hitPrice; delete a.hitAt; } }
+  else return;
+  saveAlerts();
+});
+/* 거래소 변경 시 알림 기준 가격도 즉시 갱신 */
+$("ex").addEventListener("change", () => pollPrices());
+
+refreshAlertUI();
+pollPrices(); setInterval(pollPrices, 5000);
 </script>
 </body>
 </html>
