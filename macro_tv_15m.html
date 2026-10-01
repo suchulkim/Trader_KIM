@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="ko">
-<head>
-<meta charset="UTF-8">
+<!-- saved from url=(0092)file:///E:/%EC%A2%85%EB%AA%A9%EB%B6%84%EC%84%9D%EB%A6%AC%ED%8F%AC%ED%8A%B8/macro_tv_15m.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>매크로 체크 대시보드</title>
 <style>
@@ -38,6 +38,8 @@
   .card-head .tag{font-size:10.5px; color:var(--text-soft); background:var(--chip-bg); border-radius:4px; padding:0 5px;}
   .card-head b{overflow:hidden; text-overflow:ellipsis;}
   .card-head .note{font-size:11px; color:var(--warn); overflow:hidden; text-overflow:ellipsis;}
+  .card-head .mode{font-size:10.5px; background:var(--chip-bg); color:var(--text-soft); border:1px solid var(--border); border-radius:4px; padding:0 6px; cursor:pointer; flex-shrink:0;}
+  .card-head .mode:hover{color:var(--text);}
   .card-head .ext{margin-left:auto; font-size:11px; background:var(--accent); color:#fff; padding:1px 7px; border-radius:4px; flex-shrink:0;}
   .tv{flex:1; min-height:0; border-radius:6px; overflow:hidden; background:#12151b; position:relative;}
   .tv > div{position:absolute; inset:0;}
@@ -68,21 +70,92 @@
 
 <div class="screen">
   <div class="topbar">
-    <a class="back" href="index.html">← DASHBOARD</a>
+    <a class="back" href="file:///E:/%EC%A2%85%EB%AA%A9%EB%B6%84%EC%84%9D%EB%A6%AC%ED%8F%AC%ED%8A%B8/index.html">← DASHBOARD</a>
     <h1>🌐 매크로 체크</h1>
     <button class="btn on" data-iv="15">15분</button>
     <button class="btn" data-iv="60">1시간</button>
     <button class="btn" data-iv="240">4시간</button>
     <button class="btn" data-iv="D">일봉</button>
     <span class="spacer"></span>
-    <span class="pill" id="kstClock">KST --:--:--</span>
-    <span class="pill" id="etClock">ET --:--</span>
-    <span class="pill" id="session"><span class="dot" style="background:var(--text-soft)"></span>세션 확인 중</span>
+    <span class="pill" id="kstClock">KST 22:35:34</span>
+    <span class="pill" id="etClock">ET 09:35</span>
+    <span class="pill" id="session"><span class="dot" style="background:var(--down)"></span>美 정규장</span>
   </div>
 
-  <div class="tape"><div class="tradingview-widget-container" id="tapeBox"><div class="tradingview-widget-container__widget"></div></div></div>
+  <div class="tape"><div class="tradingview-widget-container" id="tapeBox" style="width: 100%; height: 84px;"><iframe scrolling="no" allowtransparency="true" frameborder="0" src="./macro_tv_15m_files/saved_resource.html" title="ticker tape TradingView widget" lang="en" style="user-select: none; box-sizing: border-box; display: block; height: 84px; width: 100%;"></iframe><style>
+	.tradingview-widget-copyright {
+		font-size: 13px !important;
+		line-height: 32px !important;
+		text-align: center !important;
+		vertical-align: middle !important;
+		/* @mixin sf-pro-display-font; */
+		font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important;
+		color: #B2B5BE !important;
+	}
 
-  <div class="grid" id="grid"></div>
+	.tradingview-widget-copyright .blue-text {
+		color: #2962FF !important;
+	}
+
+	.tradingview-widget-copyright a {
+		text-decoration: none !important;
+		color: #B2B5BE !important;
+	}
+
+	.tradingview-widget-copyright a:visited {
+		color: #B2B5BE !important;
+	}
+
+	.tradingview-widget-copyright a:hover .blue-text {
+		color: #1E53E5 !important;
+	}
+
+	.tradingview-widget-copyright a:active .blue-text {
+		color: #1848CC !important;
+	}
+
+	.tradingview-widget-copyright a:visited .blue-text {
+		color: #2962FF !important;
+	}
+	</style></div></div>
+
+  <div class="grid" id="grid"><div class="card"><div class="card-head" id="head_0" title="FRED:DGS10"><span class="tag">금리</span><b>美 10년물 금리</b>
+    <span class="note">% · 일봉(FRED)</span>
+    <button class="mode" data-i="0" title="표시 방식 전환">실시간 ⇄</button>
+    <a class="ext" href="https://www.tradingview.com/chart/?symbol=TVC%3AUS10Y&amp;interval=15" target="_blank" rel="noopener">US10Y %</a></div>
+      <div class="tv"><div id="tv_0"><div id="tradingview_d8551-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_d8551" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(1).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_1" title="CAPITALCOM:DXY"><span class="tag">달러</span><b>달러 인덱스</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_1"><div id="tradingview_71008-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_71008" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(2).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_2" title="FX_IDC:USDKRW"><span class="tag">환율</span><b>원/달러</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_2"><div id="tradingview_4c560-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_4c560" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(3).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_3" title="CAPITALCOM:VIX"><span class="tag">심리</span><b>VIX 변동성</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_3"><div id="tradingview_ee91d-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_ee91d" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(4).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_4" title="OANDA:WTICOUSD"><span class="tag">원자재</span><b>WTI 원유</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_4"><div id="tradingview_482d1-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_482d1" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(5).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_5" title="OANDA:XAUUSD"><span class="tag">원자재</span><b>금</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_5"><div id="tradingview_2a221-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_2a221" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(6).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_6" title="OANDA:NAS100USD"><span class="tag">지수</span><b>나스닥 100</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_6"><div id="tradingview_806f4-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_806f4" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(7).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_7" title="OANDA:SPX500USD"><span class="tag">지수</span><b>S&amp;P 500</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_7"><div id="tradingview_44746-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_44746" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(8).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div><div class="card"><div class="card-head" id="head_8" title="BINANCE:BTCUSDT"><span class="tag">크립토</span><b>비트코인</b>
+    
+    
+    </div>
+      <div class="tv"><div id="tv_8"><div id="tradingview_e0653-wrapper" style="position: relative; box-sizing: content-box; font-family: -apple-system, BlinkMacSystemFont, &quot;Trebuchet MS&quot;, Roboto, Ubuntu, sans-serif; margin: 0px auto !important; padding: 0px !important; width: 100%; height: 126px;"><iframe title="advanced chart TradingView widget" lang="en" id="tradingview_e0653" frameborder="0" allowtransparency="true" scrolling="no" allowfullscreen="true" src="./macro_tv_15m_files/saved_resource(9).html" style="width: 100%; height: 100%; margin: 0px !important; padding: 0px !important;"></iframe></div></div></div></div></div>
 </div>
 
 <div class="below">
@@ -90,14 +163,14 @@
     <h2>📋 빠른 해석 가이드 <span class="hint">성장주(GOOGL 등) 관점</span></h2>
     <div class="tbl-wrap">
     <table>
-      <tr><th style="width:17%">지표</th><th>🟢 위험선호 (성장주 우호)</th><th>🔴 위험회피 (성장주 부담)</th><th style="width:26%">참고 수준 (9/30 기준)</th></tr>
-      <tr><td><b>美 10년물</b><br><span style="font-size:11.5px;color:var(--text-soft)">차트는 채권 가격</span></td><td class="on-risk">금리 하락 = <b>차트 상승</b> — 밸류에이션 여유</td><td class="off-risk">금리 상승 = <b>차트 하락</b> — 5% 이상에서 빅테크 압박</td><td>금리 5.26% · 2007년 고점 5.32% 근접</td></tr>
+      <tbody><tr><th style="width:17%">지표</th><th>🟢 위험선호 (성장주 우호)</th><th>🔴 위험회피 (성장주 부담)</th><th style="width:26%">참고 수준 (9/30 기준)</th></tr>
+      <tr><td><b>美 10년물 금리</b><br><span style="font-size:11.5px;color:var(--text-soft)">차트 = 금리(%)</span></td><td class="on-risk">금리 하락 = <b>차트 하락</b> — 밸류에이션 여유</td><td class="off-risk">금리 상승 = <b>차트 상승</b> — 5% 이상에서 빅테크 압박</td><td>5.29%(9/30 종가) · 2007년 이후 최고 · 30년물 5.63%</td></tr>
       <tr><td><b>달러 인덱스</b></td><td class="on-risk">약세 — 해외 매출 환산 유리</td><td class="off-risk">강세 — 글로벌 유동성 위축</td><td>원/달러와 같은 방향인지 확인</td></tr>
       <tr><td><b>VIX</b></td><td class="on-risk">15~20 이하, 하락</td><td class="off-risk">20 돌파, 25+ 급등 시 패닉</td><td>16 안팎(9/29)</td></tr>
       <tr><td><b>WTI 유가</b></td><td class="on-risk">안정·하락 — 인플레 부담 ↓</td><td class="off-risk">급등 — 물가·금리 상승 압력</td><td>$90 중반대 · 중동 변수</td></tr>
       <tr><td><b>금</b></td><td>완만한 흐름</td><td class="off-risk">급등 — 안전자산 선호·실질금리 불안</td><td>달러·실질금리와 함께 판단</td></tr>
       <tr><td><b>나스닥·S&amp;P</b></td><td class="on-risk">지수·위험지표 동반 개선</td><td class="off-risk">금리↑·VIX↑와 동반 하락</td><td>개별 종목과 상대강도 비교</td></tr>
-    </table>
+    </tbody></table>
     </div>
     <div class="callout">
       <b>체크 순서 제안:</b> ① 10년물로 금리 방향 → ② 달러 인덱스 → ③ VIX로 위험심리 → ④ 유가로 인플레 압력 → ⑤ 지수 반응 확인.<br>
@@ -106,17 +179,22 @@
   </section>
 
   <footer>
-    ※ 모든 차트·시세는 TradingView 위젯으로 표시되며 투자 조언이 아닙니다. 심볼 변경은 파일 하단 스크립트의 <code>CHARTS</code> 설정에서 할 수 있습니다(TVC: 심볼은 위젯에서 표시 불가).
+    ※ 모든 차트·시세는 TradingView 위젯으로 표시되며 투자 조언이 아닙니다. 심볼 변경은 파일 하단 스크립트의 <code>CHARTS</code> 설정에서 할 수 있습니다(TVC: 심볼은 위젯에서 표시 불가).<br>
+    美 10년물 금리 카드: 기본은 <b>FRED:DGS10</b>(실제 금리 %, 일봉·1영업일 지연)이며, 카드의 <b>⇄</b> 버튼으로 <b>실시간 방향 모드</b>(채권가격 OANDA:USB10YUSD를 가격축 반전 → 차트 상승 = 금리 상승, 단 축 숫자는 채권가격)로 전환할 수 있습니다. 실시간 % 수치는 'US10Y %' 버튼(TradingView)에서 확인하세요.
     '참고 수준'은 2026.09.30 작성 시점 값으로 자동 갱신되지 않습니다.
   </footer>
 </div>
 
-<script src="https://s3.tradingview.com/tv.js"></script>
+<script src="./macro_tv_15m_files/tv.js.다운로드"></script>
 <script>
 /* ===== 설정: 여기서 심볼 추가·변경 (3x3 = 9개) ===== */
 const CHARTS = [
-  { tag:'금리', sym:'OANDA:USB10YUSD', name:'美 10년물 채권가격', note:'↓=금리↑',
-    link:'https://www.tradingview.com/chart/?symbol=TVC%3AUS10Y&interval=15', linkText:'US10Y %' },
+  { tag:'금리', name:'美 10년물 금리', link:'https://www.tradingview.com/chart/?symbol=TVC%3AUS10Y&interval=15', linkText:'US10Y %',
+    // 모드 0: 실제 금리(%) — FRED 일봉 / 모드 1: 실시간 방향 — 채권가격을 가격축 반전
+    modes:[
+      { sym:'FRED:DGS10',      interval:'D', note:'% · 일봉(FRED)', btn:'실시간 ⇄' },
+      { sym:'OANDA:USB10YUSD', invert:true,  note:'↑=금리↑ (가격축 반전)', btn:'금리% ⇄' },
+    ], mode:0 },
   { tag:'달러', sym:'CAPITALCOM:DXY',   name:'달러 인덱스' },
   { tag:'환율', sym:'FX_IDC:USDKRW',    name:'원/달러' },
   { tag:'심리', sym:'CAPITALCOM:VIX',   name:'VIX 변동성' },
@@ -127,7 +205,7 @@ const CHARTS = [
   { tag:'크립토', sym:'BINANCE:BTCUSDT', name:'비트코인' },
 ];
 const TAPE = [
-  ['OANDA:USB10YUSD','美10년물 가격'],['CAPITALCOM:DXY','달러인덱스'],['FX_IDC:USDKRW','원/달러'],
+  ['FRED:DGS10','美10년물 금리%'],['CAPITALCOM:DXY','달러인덱스'],['FX_IDC:USDKRW','원/달러'],
   ['CAPITALCOM:VIX','VIX'],['OANDA:WTICOUSD','WTI'],['OANDA:XAUUSD','금'],['OANDA:NAS100USD','나스닥100'],
   ['OANDA:SPX500USD','S&P500'],['BINANCE:BTCUSDT','BTC'],
 ];
@@ -135,36 +213,58 @@ const TAPE = [
 
 let INTERVAL = '15';
 
+// 모드가 있는 카드는 현재 모드의 설정을 병합해서 사용
+function cfg(it){ return it.modes ? { ...it, ...it.modes[it.mode] } : it; }
+
+function headHTML(it, i){
+  const c = cfg(it);
+  return `<span class="tag">${c.tag}</span><b>${c.name}</b>
+    ${c.note ? `<span class="note">${c.note}</span>` : ''}
+    ${it.modes ? `<button class="mode" data-i="${i}" title="표시 방식 전환">${c.btn}</button>` : ''}
+    ${c.link ? `<a class="ext" href="${c.link}" target="_blank" rel="noopener">${c.linkText}</a>` : ''}`;
+}
+
 function buildGrid(){
   const grid = document.getElementById('grid');
   grid.innerHTML = '';
   CHARTS.forEach((it, i) => {
     const card = document.createElement('div');
     card.className = 'card';
-    card.innerHTML = `<div class="card-head" title="${it.sym}">
-        <span class="tag">${it.tag}</span><b>${it.name}</b>
-        ${it.note ? `<span class="note">${it.note}</span>` : ''}
-        ${it.link ? `<a class="ext" href="${it.link}" target="_blank" rel="noopener">${it.linkText}</a>` : ''}
-      </div>
+    card.innerHTML = `<div class="card-head" id="head_${i}" title="${cfg(it).sym}">${headHTML(it, i)}</div>
       <div class="tv"><div id="tv_${i}"><div class="ph">차트 불러오는 중…</div></div></div>`;
     grid.appendChild(card);
   });
 }
 
-function renderAll(){
-  CHARTS.forEach((it, i) => {
-    const el = document.getElementById('tv_' + i);
-    el.innerHTML = '';
-    const h = el.clientHeight || 300;
-    new TradingView.widget({
-      width:'100%', height:h, symbol:it.sym, interval:INTERVAL,
-      timezone:'Asia/Seoul', theme:'dark', style:'1', locale:'kr',
-      toolbar_bg:'#161a21', enable_publishing:false,
-      hide_top_toolbar:true, hide_side_toolbar:true, hide_legend:true, hide_volume:true,
-      allow_symbol_change:false, save_image:false, container_id:'tv_' + i,
-    });
-  });
+function renderOne(it, i){
+  const c = cfg(it);
+  const el = document.getElementById('tv_' + i);
+  el.innerHTML = '';
+  const h = el.clientHeight || 300;
+  const opts = {
+    width:'100%', height:h, symbol:c.sym, interval:c.interval || INTERVAL,
+    timezone:'Asia/Seoul', theme:'dark', style:c.style || '1', locale:'kr',
+    toolbar_bg:'#161a21', enable_publishing:false,
+    hide_top_toolbar:true, hide_side_toolbar:true, hide_legend:true, hide_volume:true,
+    allow_symbol_change:false, save_image:false, container_id:'tv_' + i,
+  };
+  if(c.invert) opts.overrides = { 'mainSeriesProperties.priceAxisProperties.isInverted': true };
+  new TradingView.widget(opts);
 }
+
+function renderAll(){ CHARTS.forEach(renderOne); }
+
+// 금리 카드 모드 전환 (금리% ⇄ 실시간 방향)
+document.getElementById('grid').addEventListener('click', e => {
+  const b = e.target.closest('.mode');
+  if(!b) return;
+  const i = +b.dataset.i, it = CHARTS[i];
+  it.mode = (it.mode + 1) % it.modes.length;
+  const head = document.getElementById('head_' + i);
+  head.innerHTML = headHTML(it, i);
+  head.title = cfg(it).sym;
+  waitTV(() => renderOne(it, i));
+});
 
 function waitTV(fn){
   if(typeof TradingView === 'undefined'){ setTimeout(() => waitTV(fn), 300); return; }
@@ -222,6 +322,7 @@ tick(); setInterval(tick, 1000);
   });
   document.getElementById('tapeBox').appendChild(s);
 })();
-</script>
-</body>
-</html>
+</script><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style><style>.tradingview-widget-copyright {font-size: 13px !important; line-height: 32px !important; text-align: center !important; vertical-align: middle !important; font-family: -apple-system, BlinkMacSystemFont, 'Trebuchet MS', Roboto, Ubuntu, sans-serif !important; color: #B2B5BE !important;} .tradingview-widget-copyright .blue-text {color: #2962FF !important;} .tradingview-widget-copyright a {text-decoration: none !important; color: #B2B5BE !important;} .tradingview-widget-copyright a:visited {color: #B2B5BE !important;} .tradingview-widget-copyright a:hover .blue-text {color: #1E53E5 !important;} .tradingview-widget-copyright a:active .blue-text {color: #1848CC !important;} .tradingview-widget-copyright a:visited .blue-text {color: #2962FF !important;}</style>
+
+
+</body></html>
