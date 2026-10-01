@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-09-28 (KST)
+ * 마지막 자동 업데이트: 2026-10-01 (KST)
  */
 
 const SEPTEMBER_2026_SCHEDULE = [
@@ -162,72 +162,90 @@ const SEPTEMBER_2026_SCHEDULE = [
     note: "예비치 기준 인플레이션 기대치가 4.6%(6월 이후 최고)로 급등하며 소비심리 위축 — 확정치에서 재확인되면 스태그플레이션 우려 재부각 가능" },
 
   { dateKST: "2026-09-28", timeKST: "09:00", dateLabel: "9월 28일 (월)",
-    event: "Solana Alpenglow 메인넷 활성화",
-    tickers: ["SOL"], importance: 3, note: "Agave v4.3 10%(9/8)→25%(9/14)→전체 권장(9/21) 스테이크 전환 이후, 검증인 BLS 키 등록 완료를 전제로 9/28 150ms 파이널리티 목표 활성화(Anza 공식 일정 재확인, 변경 가능)" },
+    event: "Solana 메인넷 기능 활성화 재개 — Alpenglow는 미활성화 (결과 확정)",
+    tickers: ["SOL"], importance: 2, note: "결과: 9/28은 Anza 일정상 '메인넷 기능 활성화 재개' 창일 뿐, Alpenglow(SIMD-0326) 활성화일이 아니었음 — 시장의 오해. 야코벤코 'decel', Anza 와텐호퍼 'No Alpenrush'로 조기 활성화 부인. Alpenglow는 9/22부터 테스트넷에서만 가동 중. 다음 메인넷 활성화 창은 11/9(가능성 창, 확정 아님)" },
 
-  { dateKST: "2026-09-28", timeKST: "21:15", dateLabel: "9월 28일 (월)",
-    event: "SpaceX Starship Flight 14 — 최초 궤도 진입 시도 (FAA 발사 면허 발급 완료)",
+  { dateKST: "2026-09-28", timeKST: "21:48", dateLabel: "9월 28일 (월)",
+    event: "SpaceX Starship Flight 14 — 사상 첫 궤도 진입 성공 (결과 확정)",
     tickers: ["SPCX","TSLA","QQQ","SPY"], importance: 5,
-    note: "발사창 KST 21:15~22:30(UTC 12:15~13:30, 75분). FAA가 9/26 궤도 비행용 발사·재진입 면허 발급(9/27 공식 발표)으로 규제 불확실성 해소, 9/24 웻드레스 리허설 완료. 부스터21/십41, 최초 지구 궤도(고도 약 275km, 6바퀴) 진입 + Starlink V3 26기 첫 실전 배치 — Starship 첫 매출 발생 미션. 약 10시간 비행 후 칠레 서쪽 태평양 스플래시다운 목표(9/29 오전 7시경 KST). 백업일 9/29·9/30. 美 정규장 개장(22:30 KST) 전후 결과 반영 — SPCX 레버리지 선물 갭·청산 리스크 주의" },
+    note: "결과: KST 21:48(08:48 EDT) 발사. 이륙 중 십 랩터 6기 중 1기 정지로 한때 미션 중단 발표 후 강행해 궤도 진입 성공. T+34분부터 약 30분간 Starlink V3 26기 배치 완료(첫 매출 미션). 부스터는 캐치 미시도, 멕시코만 제어 착수. 그러나 SPCX는 9/28 종가 $145.47(-2.16%), 주간 -4.2% — 성장·모멘텀주 전반 매도 흐름에 묻혀 '뉴스에 팔기'" },
 
-  { dateKST: "2026-09-29", timeKST: "07:00", dateLabel: "9월 29일 (화)",
-    event: "SpaceX Starship Flight 14 — 태평양 스플래시다운(예정)",
+  { dateKST: "2026-09-29", timeKST: "00:56", dateLabel: "9월 29일 (화)",
+    event: "SpaceX Starship Flight 14 — 북태평양 스플래시다운 (결과 확정)",
     tickers: ["SPCX"], importance: 3,
-    note: "발사 약 8시간 52분 후 Raptor 1기 11초 디오빗 연소 → 재진입 → 칠레 서쪽 태평양 착수 목표(시각은 발사 시점에 따라 변동). 히트실드 재진입 성능 확인이 Flight 15 '발사탑 귀환·캐치' 시도 여부를 좌우" },
+    note: "결과: 발사 3시간 8분 후 십이 북태평양에 온전한 상태로 착수(당초 예상 약 10시간 비행보다 단축) — 착수 직후 전도·폭발은 예정된 범위. 히트실드 촬영용 카메라 위성 3기 운용. 다음 관심사는 Flight 15 '발사탑 캐치' 시도 일정" },
 
-  { dateKST: "2026-09-29", timeKST: null, dateLabel: "9월 29일 (화, 예상)",
-    event: "美 '디지털자산 과세법안(Digital Asset Tax Bill)' 발표 예상",
+  { dateKST: "2026-10-01", timeKST: null, dateLabel: "10월 1일 (목, 美 현지 9/30 발의)",
+    event: "美 상원 디지털자산 과세법안 'ADAPT Act' 발의 (결과 확정)",
     tickers: ["CRCL","ONDO","SOL","BTC"], importance: 3,
-    note: "9월 말 발표 예상(정확한 날짜 미정, 근접 시 재확인 필요). CLARITY Act 부결과 별개로 스테이블코인·RWA 성장세는 지속 중(USDC 유통량 6개월 감소 후 반등해 +$17억) — 번스타인 CRCL 목표가 $140(비중확대) vs 서스쿼해나 $92(중립, 경쟁 심화·리저브 수익 의존도 95% 우려) 등 밸류에이션 논쟁도 진행형" },
+    note: "결과: 스티브 데인즈 상원의원 대표 발의(팀 스콧 은행위원장·루미스·모레노 공동). 56쪽 분량 — 규정 준수 달러 스테이블코인 결제 시 양도손익 인식 면제(CRCL 우호), $10 이하 가스비 면제, 크립토 워시세일 규정 적용, 트레이더 시가평가 선택 허용. 하원 세입위는 9/16 별도 법안을 38-5로 통과. 아직 법안 단계라 의회 통과 필요" },
 
   { dateKST: "2026-09-30", timeKST: "02:00", dateLabel: "9월 30일 (수)",
-    event: "OpenAI DevDay 2026 메인 키노트 (샌프란시스코 Fort Mason)",
+    event: "OpenAI DevDay 2026 메인 키노트 (결과 확정)",
     tickers: ["NVDA","AMD","GOOGL","META","MU","SOXL"], importance: 4,
-    note: "美 현지 9/29(화) 10:00 PT 진행, 무료 라이브스트림 확정(devday.openai.com). 신모델·에이전트/API 발표 등으로 AI 인프라·경쟁사 밸류체인 전반에 영향 가능. OpenAI 자체는 비상장이라 직접 티커 없음" },
+    note: "결과: ①상시 백그라운드 AI 비서 'Dots' ②저비용 신모델 GPT-6.1 Sol(최상위 Astra 근접 성능, Astra는 안전성 이유로 공개 보류) ③협업 워크스페이스 'ChatGPT Space' ④Decisions API ⑤Cloud Codex. 특정 하드웨어 파트너 언급은 없어 반도체주 직접 영향 제한적. Space는 슬랙·노션·구글 드라이브 영역 겨냥 — 소프트웨어주 AI 대체 우려 재부각 요인" },
 
   { dateKST: "2026-09-30", timeKST: "09:00", dateLabel: "9월 30일 (수)",
     event: "Alphabet 증권 집단소송 옵트아웃(제외 신청) 마감",
     tickers: ["GOOGL"], importance: 2, note: "공식 소송 안내 사이트 기준 날짜 확정(우편 소인 기준)" },
 
   { dateKST: "2026-09-30", timeKST: "21:30", dateLabel: "9월 30일 (수)",
-    event: "미국 8월 근원 PCE 물가지수",
-    tickers: ["XAU","SPY","QQQ"], importance: 4, note: "연준 선호 물가지표. 발표 시각 21:30 KST(08:30 ET) 확정" },
+    event: "미국 8월 근원 PCE 물가지수 (결과 확정)",
+    tickers: ["XAU","SPY","QQQ"], importance: 4,
+    note: "결과: 근원 PCE 전월비 +0.2%(예상 +0.3%), 전년비 3.0%(예상 3.3%) / 헤드라인 3.4%(예상 3.7%) — 예상 하회. 10월 FOMC 인상 확률 약 71%→35%로 급락, 시장은 12월 인상으로 기대 이동. 같은 날 ADP 민간고용 9만명(예상 4.9만) 상회, 2분기 GDP 2.2%로 상향. 그럼에도 美 10년물 5.29%(2007년 이후 최고)·30년물 5.63%로 상승해 S&P -0.04%, 나스닥 -0.37%, 다우 -0.70% 마감" },
 
   { dateKST: "2026-10-01", timeKST: "05:00", dateLabel: "10월 1일 (목)",
-    event: "Micron(MU) FY2026 4분기 실적발표",
-    tickers: ["MU","SKHY","SOXL"], importance: 5, note: "美 현지 9/30 장마감 후 — 회사 공식 발표로 날짜 확정. HBM 가격/수요 가이던스 핵심" },
+    event: "Micron(MU) FY2026 4분기 실적발표 (결과 확정)",
+    tickers: ["MU","SKHY","SNDK","SOXL"], importance: 5,
+    note: "결과: 매출 $542.3억(전년비 +379%), 조정 EPS $33.42(예상 $31.83), GM 87.0% 모두 상회. FQ1 가이던스 매출 $615억±15억(예상 $568억)·EPS $38.15(예상 $36.02)로 대폭 상회. 다만 'FY27 capex를 기존 계획보다 확대'(1Q 약 $115억, 상반기 약 $250억) 발언에 시간외 주가 등락 엇갈림. SNDK는 10/1 프리마켓 +1.4% — 메모리 공급 타이트·AI 수요 지속 확인, 리스크 구간은 신규 캐파가 풀리는 2027년 말~2028년(웨드부시)" },
 
-  { dateKST: "2026-10-01", timeKST: null, dateLabel: "10월 1일 (목, 현지 기준)",
-    event: "SpaceX Falcon 9 Transporter-18 발사 — 구글 Project Suncatcher 첫 TPU 위성 탑재",
-    tickers: ["SPCX","GOOGL"], importance: 3,
-    note: "美 현지 10/1 반덴버그 발사(시각 미정 — KST로는 10/1~10/2). 구글 TPU 4기 탑재 'MVP' 위성(Planet 제작)으로 궤도 AI 컴퓨트 첫 실증. 같은 날 NASA Crew-13 유인 발사도 목표. SpaceX 자체 궤도 데이터센터(Gigasat, 2027년 말 1GW 목표) 테마와 연결" },
+  { dateKST: "2026-10-01", timeKST: "09:00", dateLabel: "10월 1일 (목)",
+    event: "9월 한국 수출입 동향 발표 — 사상 최대 (결과 확정)",
+    tickers: ["EWY","KORU","SKHY"], importance: 4,
+    note: "결과: 9월 수출 $1,209억(전년비 +83.5%) 월간 역대 최대, 반도체 $603억(+262.8%)으로 사상 첫 $600억 돌파 — 총수출의 절반. 8월(+209%)에 이어 반도체 초호황 재확인, 연간 누적 수출 $8,000억 첫 돌파. 당초 10/5 예정으로 표기했으나 산업부 발표일(매월 1일)로 정정" },
 
   { dateKST: "2026-10-01", timeKST: "09:00", dateLabel: "10월 1일 (목)",
     event: "NVIDIA 분기 배당 지급",
     tickers: ["NVDA"], importance: 1, note: null },
 
-  { dateKST: "2026-10-02", timeKST: "09:30", dateLabel: "10월 2일 (금)",
-    event: "테슬라 신형 로드스터 공개 이벤트 (텍사스 웨이코)",
+  { dateKST: "2026-10-01", timeKST: "23:00", dateLabel: "10월 1일 (목)",
+    event: "미국 9월 ISM 제조업 PMI (가격지수 포함)",
+    tickers: ["SPY","QQQ","XAU","CL"], importance: 3,
+    note: "WTI $90대 유가가 지불가격지수에 반영되는지 핵심. 같은 날 21:30 신규 실업수당 청구건수. 10년물 5.3% 부근이라 가격지수 서프라이즈 시 금리 추가 상승 압력" },
+
+  { dateKST: "2026-10-02", timeKST: "03:18", dateLabel: "10월 2일 (금)",
+    event: "SpaceX Falcon 9 Transporter-18 발사 — 구글 Project Suncatcher 첫 TPU 위성 탑재",
+    tickers: ["SPCX","GOOGL"], importance: 3,
+    note: "美 현지 10/1 11:18 PT(18:18 UTC) 반덴버그 발사, 발사창 58분 — 총 130개 탑재체. 구글 TPU 4기 탑재 'MVP' 위성(Planet 제작)으로 궤도 AI 컴퓨트 첫 실증. SpaceX 자체 궤도 데이터센터(Gigasat, 2027년 말 1GW 목표) 테마와 연결" },
+
+  { dateKST: "2026-10-02", timeKST: null, dateLabel: "10월 2일 (금, 美 현지 기준)",
+    event: "테슬라 3분기 인도량 발표",
     tickers: ["TSLA"], importance: 4,
-    note: "美 현지 10/1 20:30 ET 진행. SpaceX 협업 냉가스 추진기 탑재 버전 공개 가능성 — 양산·가격·출시 일정은 미확정" },
+    note: "회사 IR 컨센서스(24명) 46.2만대 — 전년 동기(사상 최대 49.7만대, 세액공제 종료 전 선수요) 대비 -7.1%. 추정 범위 42.2만~48.2만대로 편차 큼. 에너지저장 컨센서스 15.9GWh(사상 최대, +27%). 2분기엔 컨센서스를 18% 상회한 전례. 발표 시각은 통상 美 장 개장 전(KST 밤)" },
 
   { dateKST: "2026-10-02", timeKST: "21:30", dateLabel: "10월 2일 (금)",
-    event: "미국 9월 소비자물가지수(CPI)",
+    event: "미국 9월 고용보고서 (비농업 고용·실업률)",
     tickers: ["SPY","QQQ","EWY","KORU","BTC","ETH","XAU"], importance: 5,
-    note: "BLS 발표 일정 기준. 9월 FOMC 인상 여부 이후 첫 인플레 지표로 10월 FOMC 전망에 직결" },
-
-  { dateKST: "2026-10-05", timeKST: "09:00", dateLabel: "10월 5일 (월)",
-    event: "9월 한국 반도체 수출 통계 발표(예정)",
-    tickers: ["EWY","KORU","SKHY"], importance: 4, note: "8월 반도체 수출 전년비 +209% 사상 최대치 기록, 9월 연속 여부 확인 — 정확한 발표일은 관세청 통관 발표 일정에 따라 변동 가능" },
+    note: "컨센서스: 비농업 고용 약 9만명, 실업률 4.1%. PCE 하회로 10월 인상 확률이 35%대로 낮아진 상태 — 고용·임금 강세 시 인상 기대 재점화 및 10년물 5.3% 돌파 위험, 약세 시 금리 하락·금리민감주 반등. (기존 '9월 CPI' 표기는 오류 — CPI는 10/14 발표)" },
 
   { dateKST: "2026-10-09", timeKST: "22:30", dateLabel: "10월 9일 (금)",
     event: "SpaceX(SPCX) 락업 해제 — 약 3.28억주",
     tickers: ["SPCX","QQQ"], importance: 3,
     note: "스태거드 락업 스케줄상 10월 1차 해제(美 개장 시점 반영). 직전 9/9·9/24 해제 모두 해제일 또는 전일 약 -4% 하락 패턴 — 전일(10/8) 선제 매도 여부 주목" },
 
+  { dateKST: "2026-10-14", timeKST: "21:30", dateLabel: "10월 14일 (수)",
+    event: "미국 9월 소비자물가지수(CPI)",
+    tickers: ["SPY","QQQ","EWY","KORU","BTC","ETH","XAU"], importance: 5,
+    note: "BLS 일정 기준 10/14 08:30 ET. 10월 FOMC(10/29 KST) 직전 마지막 핵심 물가지표 — 8월 CPI는 전월비 +0.3%로 예상 상회했으나 8월 PCE는 하회, 방향성 확인 필요" },
+
   { dateKST: "2026-10-15", timeKST: "09:00", dateLabel: "10월 15일 (목)",
     event: "TSMC 3분기 실적 발표(잠정확정)",
     tickers: ["TSM"], importance: 5, note: "실적 캘린더 기준 잠정 확정, TSMC 자체 IR 캘린더엔 아직 미게시 — 근접 시 재확인 필요" },
+
+  { dateKST: "2026-10-16", timeKST: null, dateLabel: "10월 16일 (금, KST 오전 예상)",
+    event: "테슬라 신형 로드스터 공개 이벤트 (텍사스 맥그레거, 10/1에서 연기)",
+    tickers: ["TSLA"], importance: 4,
+    note: "당초 10/1 예정이었으나 9/28 테슬라가 웨이코 지역 악천후를 이유로 美 현지 10/15(목)로 연기 — 올해만 다섯 번째 날짜 변경. 장소는 SpaceX 맥그레거 로켓 시험장, 예약자 초청 전용·야외 행사. 현지 시각 미발표(기존 17:30 PT 기준이면 KST 10/16 09:30). SpaceX 협업 냉가스 추진기 버전 공개 가능성, 양산은 공개 후 12~18개월 전망" },
 
   { dateKST: "2026-10-16", timeKST: null, dateLabel: "10월 16일 (금)",
     event: "OpenAI DevDay Exchange — 벵갈루루",
@@ -278,7 +296,7 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-29", timeKST: "03:00", dateLabel: "10월 29일 (목)",
     event: "FOMC 금리결정 발표 (10/27~28 회의)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "9/16 FOMC에서 25bp 인상(3.75→4.00%) 이후 두 번째 결정 — 9/16 SEP상 정책위원 다수가 추가 인상 시사, 시장은 10월 인상 확률을 약 53~60%로 반영 중(9/18 기준)" },
+    importance: 5, note: "9/16 FOMC에서 25bp 인상(3.75→4.00%) 이후 두 번째 결정 — 9/16 SEP상 정책위원 다수가 추가 인상 시사, 10월 인상 확률은 9월 말 약 71%까지 올랐다가 9/30 PCE 하회 + 윌리엄스 총재 '서두를 필요 없다' 발언 후 약 35%로 급락, 시장은 12월 인상으로 기대 이동(10/1 기준). 10/2 고용·10/14 CPI가 변수" },
 
   { dateKST: "2026-10-29", timeKST: "05:00", dateLabel: "10월 29일 (목)",
     event: "Meta(META) 3분기 실적 발표(확정)",
