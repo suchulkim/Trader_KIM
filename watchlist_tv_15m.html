@@ -56,6 +56,11 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .ph .bell.has{border-color:var(--gold);color:var(--gold)}
 #alarmBtn.on{background:#2a2410;color:var(--gold);border-color:var(--gold)}
 .panel.ring{animation:ring .6s ease-in-out 10}
+/* 알림 조건 도달 → '해제' 누를 때까지 굵은 빨간 테두리 유지 */
+.panel.hit{border:3px solid #FF3B30;box-shadow:0 0 14px rgba(255,59,48,.45)}
+.ph .hitbtn{display:none;padding:1px 8px;font-size:11.5px;font-weight:700;background:#FF3B30;color:#fff;border-color:#FF3B30}
+.panel.hit .hitbtn{display:inline-block}
+.nav a.hit{border-color:#FF3B30;border-left-color:#FF3B30;color:#FFB3AE;box-shadow:0 0 0 1px #FF3B30}
 @keyframes ring{50%{box-shadow:0 0 0 3px var(--gold)}}
 .modal-bg{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:50;padding:16px}
 .modal-bg.open{display:flex}
@@ -248,6 +253,7 @@ grid.innerHTML = GROUPS.map(([g,gn]) => {
       <span class="sym">${s}</span><span class="tag">${LABEL[k]}</span>
       <span class="note">${n}</span>
       <span class="px" data-px="${s}" title="알림 기준 실시간 가격">…</span>
+      <button type="button" class="hitbtn" data-ack="${s}" title="빨간 테두리 해제 (알림 기록은 목록에 남음)">🚨 도달 · 해제</button>
       <button type="button" class="bell" data-bell="${s}" title="가격 알림 설정">🔔</button>
       <a href="${tvUrl(s)}" class="tvlink" target="_blank" rel="noopener">TradingView ↗</a>
     </div>
@@ -256,7 +262,7 @@ grid.innerHTML = GROUPS.map(([g,gn]) => {
 }).join("");
 
 nav.innerHTML = GROUPS.map(([g]) => WATCH.filter(w => w[1] === g).map(([s,,k]) =>
-  `<a href="#${idOf(s)}" data-g="${g}" style="--c:${COLOR[k]}">${s.replace("USDT.P","")}</a>`).join("")).join("");
+  `<a href="#${idOf(s)}" data-g="${g}" data-s="${s}" style="--c:${COLOR[k]}">${s.replace("USDT.P","")}</a>`).join("")).join("");
 
 function mount(panel){
   const box = panel.querySelector(".chart");
@@ -548,10 +554,18 @@ function refreshAlertUI(){
     const n = ALERTS.filter(a => a.sym === b.dataset.bell && !a.done).length;
     b.textContent = n ? "🔔" + n : "🔔"; b.classList.toggle("has", n > 0);
   });
+  /* 도달했지만 아직 '해제'하지 않은 알림이 있는 종목 → 패널·바로가기 빨간 테두리 */
+  const hitSyms = new Set(ALERTS.filter(a => a.done && !a.ack).map(a => a.sym));
+  document.querySelectorAll(".panel[data-s]").forEach(p => p.classList.toggle("hit", hitSyms.has(p.dataset.s)));
+  nav.querySelectorAll("a[data-s]").forEach(a => a.classList.toggle("hit", hitSyms.has(a.dataset.s)));
   if(curSym){ renderSub(); renderList(); }
 }
 
-grid.addEventListener("click", e => { const b = e.target.closest("[data-bell]"); if(b) openModal(b.dataset.bell); });
+grid.addEventListener("click", e => {
+  const ack = e.target.closest("[data-ack]");
+  if(ack){ ALERTS.forEach(a => { if(a.sym === ack.dataset.ack && a.done) a.ack = true; }); saveAlerts(); return; }
+  const b = e.target.closest("[data-bell]"); if(b) openModal(b.dataset.bell);
+});
 $("alertAll").addEventListener("click", () => openModal(null));
 $("mClose").addEventListener("click", closeModal);
 $("modalBg").addEventListener("click", e => { if(e.target.id === "modalBg") closeModal(); });
@@ -572,7 +586,7 @@ $("mList").addEventListener("click", e => {
   const t = e.target;
   if(t.dataset.go){ closeModal(); return; }
   if(t.dataset.del) ALERTS = ALERTS.filter(a => a.id !== t.dataset.del);
-  else if(t.dataset.re){ const a = ALERTS.find(a => a.id === t.dataset.re); if(a){ a.done = false; delete a.hitPrice; delete a.hitAt; } }
+  else if(t.dataset.re){ const a = ALERTS.find(a => a.id === t.dataset.re); if(a){ a.done = false; delete a.hitPrice; delete a.hitAt; delete a.ack; } }
   else return;
   saveAlerts();
 });
