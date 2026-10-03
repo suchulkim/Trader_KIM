@@ -81,7 +81,7 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 
 <div class="top">
   <div class="bar">
-    <h1>워치리스트 15분봉 <small>28 SYMBOLS · 15m · SMA20/200 · 🔔 가격 알림</small></h1>
+    <h1>워치리스트 15분봉 <small>33 SYMBOLS · 15m · SMA20/200 · 🔔 가격 알림</small></h1>
     <label class="ctl" for="ex">거래소
       <select id="ex">
         <option value="OKX" selected>OKX</option>
@@ -156,13 +156,19 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 /* ── 그룹 (필터 기준) ── */
 const GROUPS = [
   ["crypto",  "크립토"],
-  ["usidx",   "미국지수"],
-  ["kridx",   "한국지수"],
   ["cmdty",   "원자재"],
+  ["usidx",   "미국지수"],
   ["semi",    "AI, 반도체"],
-  ["bigtech", "빅테크"]
+  ["bigtech", "빅테크"],
+  ["kridx",   "한국지수"],
+  ["kospi",   "코스피"]
 ];
+/* '전체'에서는 숨기고, 필터에서 직접 선택했을 때만 표시하는 그룹 */
+const HIDE_IN_ALL = ["kridx","kospi"];
 const GNAME = Object.fromEntries(GROUPS);
+/* 복합 필터 — 여러 그룹을 한 번에 보기 (필터 목록에서 지정 그룹 바로 뒤에 표시) */
+const COMBOS = { kr: { name:"한국지수 & 코스피", groups:["kridx","kospi"], after:"kospi" } };
+const inFilter = (f, g) => (f === "all" && !HIDE_IN_ALL.includes(g)) || f === g || (COMBOS[f] && COMBOS[f].groups.includes(g));
 
 /* ── 워치리스트 [심볼, 그룹, 판단, 메모] (9/23 브리핑 판단) ── */
 const WATCH = [
@@ -178,6 +184,12 @@ const WATCH = [
 
   ["EWYUSDT.P","kridx","wait","추석 휴장 갭 위험"],
   ["KORUUSDT.P","kridx","avoid","한국 3배 · 휴장 갭 위험 최대"],
+
+  ["SAMSUNGUSDT.P","kospi","wait","삼성전자 · 신규 추가 · KRX 장외엔 선물 자체가격"],
+  ["HYUNDAIUSDT.P","kospi","wait","현대차 · 신규 추가 · 판단 미정"],
+  ["LGELECTRONICSUSDT.P","kospi","wait","LG전자 · 신규 추가 · 판단 미정"],
+  ["NAVERUSDT.P","kospi","wait","네이버 · 신규 추가 · 판단 미정"],
+  ["HANMIUSDT.P","kospi","wait","한미 · 신규 추가 · 판단 미정"],
 
   ["XAUUSDT.P","cmdty","wait","$4,350–4,400 박스"],
   ["CLUSDT.P","cmdty","avoid","이란 헤드라인에 급변"],
@@ -211,7 +223,7 @@ const state = {
   ex: store.get("ex2","OKX"), tf: store.get("tf","15"),
   cols: store.get("cols","2"), h: store.get("h","520"), flt: store.get("flt2","all")
 };
-if (state.flt !== "all" && !GNAME[state.flt]) state.flt = "all";
+if (state.flt !== "all" && !GNAME[state.flt] && !COMBOS[state.flt]) state.flt = "all";
 
 const grid = document.getElementById("grid");
 const nav = document.getElementById("nav");
@@ -221,7 +233,10 @@ const tvUrl = s => "https://www.tradingview.com/chart/?symbol=" + encodeURICompo
 
 /* 필터 옵션 */
 document.getElementById("flt").innerHTML =
-  `<option value="all">전체</option>` + GROUPS.map(([g,n]) => `<option value="${g}">${n}</option>`).join("");
+  `<option value="all">전체</option>` + GROUPS.map(([g,n]) =>
+    `<option value="${g}">${n}</option>` +
+    Object.entries(COMBOS).filter(([,c]) => c.after === g).map(([k,c]) => `<option value="${k}">${c.name}</option>`).join("")
+  ).join("");
 
 /* 그룹 헤더 + 패널 */
 grid.innerHTML = GROUPS.map(([g,gn]) => {
@@ -307,8 +322,8 @@ function applyLayout(){
 }
 function applyFilter(){
   const f = state.flt;
-  grid.querySelectorAll("[data-g]").forEach(el => { el.hidden = !(f === "all" || el.dataset.g === f); });
-  nav.querySelectorAll("a").forEach(a => { a.hidden = !(f === "all" || a.dataset.g === f); });
+  grid.querySelectorAll("[data-g]").forEach(el => { el.hidden = !inFilter(f, el.dataset.g); });
+  nav.querySelectorAll("a").forEach(a => { a.hidden = !inFilter(f, a.dataset.g); });
 }
 
 const $ = id => document.getElementById(id);
