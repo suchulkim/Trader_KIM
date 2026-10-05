@@ -193,6 +193,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
 
@@ -256,6 +263,45 @@
   table.fs td.num, table.fs th.num{text-align:right;}
   table.fs .usd{font-size:11.5px; color:var(--text-soft); font-weight:400;}
   table.fs tr.fs-total td{background:var(--table-head);}
+  .key-hero{background:linear-gradient(135deg,rgba(0,113,227,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(0,113,227,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
@@ -263,22 +309,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.28 (월) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>실시간 시세 반영 (KST)</span>
+      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
     </div>
     <h1>Apple (AAPL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AAPLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$341.07</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">9/25(금) 종가 +1.53% · 주간 +1.47% (9/18 $336.13 → $341.07)</div>
+        <div class="price-main"><span id="live-price">$333.69</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/2(금) 종가 ▲ +1.02% (+$3.37) · 주간 -2.16% (9/25 $341.07 → $333.69)</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AAPLUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/22(화) 장중 사상 최고가 <b>$345.34</b>를 기록한 뒤 이틀간 차익실현 조정을 거쳐, 9/25(금) +1.53% 반등하며 $341.07에 마감했습니다.
-        최고가 대비 약 -1.2% 지점이며 시가총액은 약 <b>$4.98조</b>(PER 약 39배)입니다.
-        주말 사이 <b>$57억 특허 패소 평결</b>이 나와 9/28(월) 22:30 KST 본장 개장 반응이 첫 확인 지점입니다.
+        특허 평결(9/28)은 -0.78%로 가볍게 넘겼지만, 9/29 <b>새 CEO 존 터너스의 조직 슬림화(중간관리자 감축)</b> 보도와 BofA의 'Meta AI 비서 위협' 지적에 -2.66% 급락했습니다.
+        이후 <b>10/13 스마트홈 신제품 발표</b> 보도(9/30)와 고용 쇼크에 따른 금리 하락(10/2)으로 $333.69까지 회복했습니다.
+        사상 최고가 $345.34 대비 약 -3.4%, 시가총액 약 $4.82조<span class="krw">(약 6,510조원)</span>, PER 약 37배.
       </div>
     </div>
   </header>
@@ -301,81 +347,55 @@
     </div>
 
     <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 9/9 저점 이후 우상향 추세 유지. 50일선 약 $321, 200일선 약 $297 위 정배열. 9/22 신고가 $345.34 이후 $334.3~345.3 박스에서 숨 고르기 중이며, 9/25 종가로 과거 저항 $338.20을 다시 넘어섰습니다.<br>
-      <b>15분봉</b>: 9/24 저점 $334.30이 단기 지지선입니다. 월요일 본장 개장 시 특허 뉴스로 갭이 생기면 $338 부근(저항에서 지지로 바뀐 구간)을 지키는지가 관건입니다.
+      <b>일봉</b>: 9/22 사상 최고가 $345.34 → 9/30 장중 $339.50에서 다시 막히며 <b>쌍봉(더블탑)</b> 모양. 9/29 $333 지지선을 깨고 내려왔다가, 10/1 장중 $325.81(상승 추세선·피보나치 0.236 $328 부근)에서 반등했습니다. 50일선(약 $321)·200일선 위 정배열은 유지, RSI 약 55로 과열은 해소됐습니다.<br>
+      <b>15분봉</b>: $326~328이 1차 지지, $339.5(9/30 고점)와 $345.3(사상 최고가)가 저항입니다. $333 부근은 깨졌던 지지선이라 이번엔 저항 역할을 하는지가 관건입니다.
     </div>
   </section>
 
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 본주 기준)</h2>
     <table>
       <thead>
-        <tr>
-          <th style="width:20%;">날짜 · 종가($)</th>
-          <th style="width:56%;">내용</th>
-          <th style="width:24%;">비고</th>
-        </tr>
+        <tr><th style="width:20%;">날짜 · 종가($)</th><th style="width:56%;">내용</th><th style="width:24%;">비고</th></tr>
       </thead>
       <tbody>
         <tr>
-          <td>
-            <b>9/21 (월)</b><br>
-            <span class="num">$338.98</span><br>
-            <span class="text-up">▲ +0.85%</span>
-          </td>
-          <td>JP모건, 출시 2주차 아이폰18 Pro·Pro Max 배송 대기(미국 21일·28일)가 1주차보다 크게 늘었다고 발표. 미국·독일은 작년 아이폰17과 비슷한 수준이나 중국은 작년보다 짧음</td>
-          <td>수요 지표 개선</td>
-        </tr>
-        <tr>
-          <td>
-            <b>9/22 (화)</b><br>
-            <span class="num">$339.75</span><br>
-            <span class="text-up">▲ +0.23%</span>
-          </td>
-          <td>장중 <b>사상 최고가 $345.34</b>를 찍고 시가총액이 한때 $5조 근처까지 상승. 에버코어 설문(업그레이드 의향자의 53%가 Pro·Pro Max 선호)과 목표가 $380 상향(9/18) 효과가 이어짐. 장 후반 윗꼬리</td>
-          <td>신고가 · 윗꼬리 $5.6</td>
-        </tr>
-        <tr>
-          <td>
-            <b>9/23 (수)</b><br>
-            <span class="num">$337.02</span><br>
-            <span class="text-down">▼ -0.80%</span>
-          </td>
-          <td>개별 악재 없이 신고가 이후 차익실현. PER 39배 부담과 중국 수요 둔화 우려가 거론됨</td>
-          <td>차익실현</td>
-        </tr>
-        <tr>
-          <td>
-            <b>9/24 (목)</b><br>
-            <span class="num">$335.92</span><br>
-            <span class="text-down">▼ -0.33%</span>
-          </td>
-          <td>조정 이어짐. 장중 $334.30까지 밀린 뒤 낙폭을 줄임. 번스타인은 부품 가격 상승으로 12월 분기 마진 압박 가능성을 지적</td>
-          <td>단기 저점 $334.30</td>
-        </tr>
-        <tr>
-          <td>
-            <b>9/25 (금)</b><br>
-            <span class="num">$341.07</span><br>
-            <span class="text-up">▲ +1.53%</span>
-          </td>
-          <td>인도 매장 대기 행렬 등 아이폰18 흥행 보도와 BofA 매수 의견 유지로 반등. 같은 날 애플페이 반독점 집단소송(카드 발급사)이 법원에서 집단소송으로 인정됨. 거래량은 평균보다 약 40% 적음</td>
+          <td><b>9/25 (금)</b><br><span class="num">$341.07</span><br><span class="text-up">▲ +1.53%</span></td>
+          <td>인도 매장 대기 행렬 등 아이폰18 흥행 보도와 BofA 매수 유지로 반등. 같은 날 애플페이 반독점 집단소송 인정. 장 마감 후 Taction 특허 평결</td>
           <td>$338.20 저항 돌파 마감</td>
         </tr>
         <tr>
-          <td>
-            <b>주말 (현지 금요일 평결)</b><br>
-            <span class="num">본장 미반영</span>
-          </td>
-          <td>미국 배심원단, 탭틱 엔진 특허 침해로 애플이 Taction Technology에 <b>$57억</b>을 배상해야 한다고 평결(특허 소송 사상 최대). 애플은 "해당 기술을 사용하지 않는다, 항소할 것"이라고 밝힘</td>
-          <td>9/28 개장 갭 위험</td>
+          <td><b>9/28 (월)</b><br><span class="num">$338.40</span><br><span class="text-down">▼ -0.78%</span></td>
+          <td><b>탭틱 엔진 특허 $57억<span class="krw">(약 7조 6,980억원)</span> 배상 평결</b>(특허 소송 사상 최대) 첫 반응 — 하락은 제한적. 시총 대비 약 0.1%이고 애플이 항소 예정이라 시장은 크게 신경 쓰지 않음</td>
+          <td>$338 지지 유지</td>
+        </tr>
+        <tr>
+          <td><b>9/29 (화)</b><br><span class="num">$329.40</span><br><span class="text-down">▼ -2.66%</span></td>
+          <td>블룸버그: <b>터너스 CEO가 중간관리자·엔지니어링 PM 감축, 봄/가을 신제품 출시 주기 재검토</b>를 추진. BofA는 Meta의 AI 비서 'Muse'가 쇼핑·추천 활동을 가져갈 수 있다고 지적(매수 의견은 유지). 반도체는 오르는데 애플만 하락</td>
+          <td>$333 지지 이탈 · 쌍봉 신호</td>
+        </tr>
+        <tr>
+          <td><b>9/30 (수)</b><br><span class="num">$333.02</span><br><span class="text-up">▲ +1.10%</span></td>
+          <td>블룸버그 거먼: <b>10/13 스마트홈 허브(신규 카테고리)·HomePod mini 2·Apple TV 공개</b> 보도로 장중 +3%($339.50). 중국 아이폰18 Pro 판매 +12% YoY(점유율 33%), 8월 PCE 물가 예상 하회도 도움. 다만 상승폭 절반 반납</td>
+          <td>장중 $339.50에서 막힘</td>
+        </tr>
+        <tr>
+          <td><b>10/1 (목)</b><br><span class="num">$330.32</span><br><span class="text-down">▼ -0.81%</span></td>
+          <td>개별 악재 없이 전날 상승분 일부 반납. 장중 $325.81까지 밀렸다가 상승 추세선에서 반등하며 낙폭 축소</td>
+          <td>저점 $325.81</td>
+        </tr>
+        <tr>
+          <td><b>10/2 (금)</b><br><span class="num">$333.69</span><br><span class="text-up">▲ +1.02%</span></td>
+          <td>美 9월 고용 +2.9만명 쇼크 → 10월 금리 인상 확률 64%→16% 급락, 금리 하락에 기술주 동반 상승. 다만 나스닥(+1.19%)·반도체(+3%)보다는 약한 반등</td>
+          <td>$333 회복 마감</td>
         </tr>
       </tbody>
     </table>
 
     <div class="callout">
-      → 신고가($345.34)를 찍은 뒤 이틀 조정으로 과열을 식히고, 금요일 반등으로 <b>$341.07</b>에 마감했습니다.
-      특허 배상금은 시가총액의 약 0.1%이고 항소 기간이 길어 실적 영향은 작습니다. 다만 신고가 근처라 헤드라인에 민감하게 반응할 수 있는 구간입니다.
+      → 이번 주 애플을 흔든 건 특허 평결이 아니라 <b>'새 CEO의 구조조정'과 'AI 경쟁(Meta Muse)'</b>이었습니다.
+      그 사이 <b>10/13 스마트홈 신제품</b>이라는 새 재료가 생겼지만, 쌍봉 모양 때문에 $339~345 위로는 매물이 많은 상태입니다.
+      금리가 내려가도 반도체만큼 오르지 못한 건, 시장이 애플을 'AI 수혜주'보다 'AI 경쟁에 대응해야 하는 회사'로 보고 있기 때문입니다.
     </div>
   </section>
 
@@ -385,32 +405,50 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>아이폰18 Pro 배송 대기 증가(2주차 Pro 23일, Pro Max 30일)로 교체 수요 확인. 평균 판매단가(ASP) 상승 효과</li>
-        <li>에버코어 설문: 교체 사유로 "기기 노후"를 꼽은 비율이 67%(기존 48%), 평균 보유 기간은 23.5개월로 짧아짐. 목표가 $380</li>
-        <li>폴더블 <b>iPhone 18 Duo</b>($1,999) 10/16 사전주문으로 두 번째 촉매. 기다리던 수요가 흡수될 가능성</li>
-        <li>FY2026 3분기 매출 $109.4B(+16% YoY), EPS $2.02로 실적 기반 탄탄. 서비스 매출 $30.7B가 하방을 받쳐 줌</li>
-        <li>50일선·200일선 정배열 유지, 한 달 약 +10%로 추세가 살아 있음</li>
+        <li><b>10/13 스마트홈 신제품</b> — 벽걸이형 홈 허브(얼굴·음성 인식, 새 Siri AI)는 터너스 CEO 체제의 첫 신규 카테고리. HomePod mini·Apple TV 신형 동반</li>
+        <li><b>폴더블 iPhone 18 Duo</b>($1,999) 10/16 사전주문 — 2026년 약 600만대 예상, 평균 판매단가(ASP) 상승 효과</li>
+        <li>중국 아이폰18 Pro 판매 +12% YoY(점유율 33%) — 중국 수요 둔화 우려 완화</li>
+        <li>FY2026 3분기 매출 $109.4B<span class="krw">(약 147조 7,560억원)</span>(+16% YoY), EPS $2.02로 실적 기반 탄탄. 서비스 $30.7B<span class="krw">(약 41조 4,630억원)</span>가 하방을 받쳐 줌</li>
+        <li>고용 쇼크로 10월 금리 인상 확률 16%로 하락 → 빅테크 밸류에이션 부담 완화</li>
+        <li>터너스의 '더 빠르고 날씬한 애플' — 비용 절감이 성공하면 마진 개선 여지</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>$57억 특허 패소 평결</b>. 항소 예정이지만 헤드라인 충격과 로열티 협상 불확실성이 남음</li>
-        <li>애플페이 수수료 반독점 집단소송 인정. 연 최대 약 $10억 규모 수수료 모델이 법적 다툼에 노출됨</li>
-        <li>PER 약 39배로 부담이 큼. 애널리스트 평균 목표가($328~340)가 이미 현재가 아래</li>
-        <li>번스타인: 부품(메모리) 가격 상승으로 12월 분기 매출총이익률 압박 가능성</li>
-        <li>중국 배송 대기는 작년보다 짧음 → 중국 수요 둔화 신호일 수 있음</li>
-        <li>미 국채 10년물 금리가 오르면 빅테크 밸류에이션 부담이 커짐</li>
+        <li><b>구조조정 불확실성</b> — 중간관리자 감축·출시 주기 변경이 실행 과정에서 혼선을 낳을 수 있음</li>
+        <li><b>AI 경쟁</b> — BofA: Meta 'Muse'가 쇼핑·추천을 가져가면 앱스토어·서비스 매출 일부 잠식 가능, Siri는 백그라운드 작업 기능이 부족</li>
+        <li>$57억<span class="krw">(약 7조 6,980억원)</span> 특허 패소 평결(항소 예정) · 애플페이 수수료 반독점 집단소송</li>
+        <li>PER 약 37배 — 5년 중앙값(31배)보다 비쌈. 애널리스트 평균 목표가($337~340)가 현재가와 거의 같음</li>
+        <li>번스타인: 메모리 원가 상승으로 12월 분기 마진 압박 가능성</li>
+        <li>차트상 쌍봉(더블탑) — $339.5·$345.3 위 매물 부담</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>특허 뉴스를 가볍게 소화하고 3주차 배송 대기 호조가 확인되면 신고가 $345.34 돌파, $350~360 도전</div>
-      <div class="scenario base"><b>기본</b>$334~345 박스에서 특허 이슈와 Duo 사전주문(10/16)을 기다리며 등락, 실적(10/29) 전까지 방향 탐색</div>
-      <div class="scenario bear"><b>약세</b>특허 헤드라인과 금리 상승이 겹쳐 $334.30이 깨지면 $326~321(50일선) 지지 확인</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">326~340</td>
+        <td>10/13 신제품 반응이 무난하고 금리가 안정된 경우. 실적(10/30 KST) 전까지 <b>$326 지지·$340 저항</b> 사이를 오갑니다</td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">340 → 345, 넘으면 350~360</td>
+        <td>스마트홈 허브 호평 + Duo 사전주문 매진·배송 지연 같은 수요 신호가 나오는 경우. <b>$340 위 종가 마감</b>이 1차 신호, 사상 최고가 $345.34를 넘으면 쌍봉이 무효화되며 $350~360 도전</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">326 이탈 → 321, 이후 310</td>
+        <td>구조조정 잡음이 커지거나 FOMC 의사록(10/8)이 매파적이어서 금리가 다시 오르는 경우. <b>$326 이탈</b> 시 50일선 $321, 깨지면 9월 초 저점대 $310까지 열립니다</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
   <section>
@@ -418,15 +456,15 @@
     <table>
       <tr><th>항목</th><th class="num">수치/내용</th><th class="num">비고</th></tr>
       <tr><td>🏛 종목명</td><td class="num">Apple Inc. (AAPL)</td><td class="num">NASDAQ 상장 시가총액 1위권</td></tr>
-      <tr><td>💰 시가총액</td><td class="num">약 $4.98T</td><td class="num">9/25 종가 기준, 장중 $5조 근접</td></tr>
-      <tr><td>📐 밸류에이션</td><td class="num">PER 약 39배</td><td class="num">TTM EPS $8.72 (+32.6%)</td></tr>
+      <tr><td>💰 시가총액</td><td class="num">약 $4.82T<span class="krw">(약 6,510조원)</span></td><td class="num">10/2 종가 기준, 9/22 장중 $5조 근접</td></tr>
+      <tr><td>📐 밸류에이션</td><td class="num">PER 약 37배</td><td class="num">TTM EPS $8.72 (+32.6%) · 5년 중앙값 31배</td></tr>
       <tr><td>📏 52주 범위</td><td class="num">$243.42 ~ $345.34</td><td class="num">최고가 9/22 장중</td></tr>
-      <tr><td>📊 총 매출</td><td class="num">$109.4B</td><td class="num">+16% YoY, 분기 사상 최대</td></tr>
-      <tr><td>📈 순이익 / EPS</td><td class="num">$29.8B / $2.02</td><td class="num">EPS +29% YoY</td></tr>
+      <tr><td>📊 총 매출</td><td class="num">$109.4B<span class="krw">(약 147조 7,560억원)</span></td><td class="num">+16% YoY, 6월 분기 사상 최대</td></tr>
+      <tr><td>📈 순이익 / EPS</td><td class="num">$29.8B<span class="krw">(약 40조 2,480억원)</span> / $2.02</td><td class="num">EPS +29% YoY</td></tr>
       <tr><td>🧮 매출총이익률</td><td class="num">50.1%</td><td class="num">전년 46.5% 대비 호조</td></tr>
       <tr><td>🎯 4분기 가이던스</td><td class="num">매출 +9~11% YoY</td><td class="num">마진율 47~48% 예상</td></tr>
-      <tr><td>🎯 애널리스트</td><td class="num">매수 우위 (Buy 26 · Hold 13 · Sell 2)</td><td class="num">평균 목표가 약 $328~340 · 최고 $380</td></tr>
-      <tr><td>📅 실적 발표 예정</td><td class="num">2026.10.30 (금) 05:00 KST</td><td class="num">FY2026 4분기 (현지 10/29 장 마감 후)</td></tr>
+      <tr><td>🎯 애널리스트</td><td class="num">매수 우위 (Moderate Buy)</td><td class="num">평균 목표가 약 $337~340 · 최고 $400</td></tr>
+      <tr><td>📅 실적 발표 예정</td><td class="num">2026.10.30 (금) 05:30 KST (예상)</td><td class="num">FY2026 4분기 (현지 10/29 장 마감 후, 회사 공지 전)</td></tr>
     </table>
 
     <div class="rev-bar-wrap">
@@ -459,8 +497,8 @@
 
     <div class="callout">
       → 애플은 <b>하드웨어 생태계와 고마진 서비스</b>가 서로를 키우는 구조입니다.
-      아이폰18 Pro 비중 확대와 폴더블 Duo($1,999) 출시로 평균 판매단가 상승이 기대되고, 서비스 매출 $30.7B(+12% YoY)가 하방을 받쳐 줍니다.
-      다만 탭틱 엔진 특허와 애플페이 수수료 소송처럼 <b>법적 리스크</b>가 새 변수로 더해졌습니다.
+      아이폰18 Pro 비중 확대와 폴더블 Duo($1,999) 출시로 평균 판매단가 상승이 기대되고, 서비스 매출 $30.7B<span class="krw">(약 41조 4,630억원)</span>(+12% YoY)가 하방을 받쳐 줍니다.
+      여기에 <b>10/13 스마트홈 허브</b>가 새 하드웨어 카테고리로 추가되지만, 탭틱 엔진 특허·애플페이 소송 같은 <b>법적 리스크</b>와 <b>AI 비서 경쟁</b>이 변수입니다.
     </div>
 
     <h3>가치 흐름도 (제품 판매에서 주주 가치까지)</h3>
@@ -468,7 +506,7 @@
       <div class="flow-row">
         <div class="flow-box accent">
           <b>신제품 및 서비스 매출 유입</b>
-          <div class="desc">아이폰18 Pro·Pro Max, 폴더블 Duo(10/16 사전주문), 맥, 웨어러블 + App Store, Apple Pay, iCloud 등 서비스</div>
+          <div class="desc">아이폰18 Pro·Pro Max, 폴더블 Duo(10/16 사전주문), <b>스마트홈 허브(10/13 공개 예정)</b>, 맥, 웨어러블 + App Store, Apple Pay, iCloud 등 서비스</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -482,14 +520,14 @@
       <div class="flow-row">
         <div class="flow-box">
           <b>기업 영업이익 및 현금흐름</b>
-          <div class="desc">분기 매출 $109.4B 기준 잉여현금흐름(FCF) 창출, 서비스 매출 확대로 고마진 유지</div>
+          <div class="desc">분기 매출 $109.4B<span class="krw">(약 147조 7,560억원)</span> 기준 잉여현금흐름(FCF) 창출, 서비스 매출 확대로 고마진 유지</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>원가·밸류·법적 리스크</b>
-          <div class="desc">메모리 원가 상승, PER 약 39배 부담, $57억 특허 평결, 애플페이 반독점 소송, 금리 변동성</div>
+          <div class="desc">메모리 원가 상승, PER 약 37배 부담, $57억 특허 평결, 애플페이 반독점 소송, Meta 등 AI 비서 경쟁, 금리 변동성</div>
         </div>
         <div class="flow-box reward">
           <b>주주 환원 및 성장 모멘텀</b>
@@ -500,60 +538,60 @@
       <div class="flow-row">
         <div class="flow-box">
           <b>주가 가치 창출</b>
-          <div class="desc">실적과 신제품 모멘텀으로 사상 최고가($345.34)를 경신했고, 이제 돌파 이후 안착 여부를 시험하는 구간</div>
+          <div class="desc">9/22 사상 최고가($345.34) 이후 쌍봉 조정 중 — 신제품·실적으로 $345 재돌파 여부를 시험하는 구간</div>
         </div>
       </div>
     </div>
-    <div class="callout" style="margin-top:14px;">→ 애플은 하드웨어와 플랫폼 서비스를 결합해 높은 FCF를 만들고, 자사주 매입과 배당으로 꾸준히 주주에게 환원합니다. 단기 주가는 아이폰18 교체 수요 데이터(3주차 배송 대기, 11월 공급망 점검)와 Duo 초기 반응이 이끌 전망입니다.</div>
+    <div class="callout" style="margin-top:14px;">→ 애플은 하드웨어와 플랫폼 서비스를 결합해 높은 FCF를 만들고, 자사주 매입과 배당으로 꾸준히 주주에게 환원합니다. 단기 주가는 10/13 스마트홈 신제품·10/16 Duo 사전주문 반응과 10/30 실적의 12월 분기 마진 가이던스가 이끌 전망입니다.</div>
   </section>
 
   <section>
     <h2>4-1. 2026 회계연도 재무제표 (원화 환산)</h2>
     <div class="callout" style="margin-top:0; margin-bottom:14px;">
-      애플 FY2026 = <b>2025.10 ~ 2026.09</b>. 1~3분기는 발표 완료, 4분기(7~9월)는 <b>10/30(금) 05:00 KST</b> 발표 예정입니다.
-      환산 환율: <b>1 USD = 1,356원</b> (2026.09.28 KST 기준) · 원화 금액 아래 작은 글씨는 달러 원본 값
+      애플 FY2026 = <b>2025.10 ~ 2026.09</b>. 1~3분기는 발표 완료, 4분기(7~9월)는 <b>10/30(금) 05:30 KST</b> 발표 예상입니다(회사 공지 전).
+      환산 환율: <b>1 USD = 1,350.6원</b> (10/2 원·달러 주간 종가) · 원화 금액 아래 작은 글씨는 달러 원본 값
     </div>
 
     <h3>① 손익계산서 (분기별)</h3>
     <div class="fs-scroll"><table class="fs">
       <tr><th>항목</th><th class="num">1분기<br><span class="usd">25.10~12</span></th><th class="num">2분기<br><span class="usd">26.01~03</span></th><th class="num">3분기<br><span class="usd">26.04~06</span></th><th class="num">1~3분기 누적</th></tr>
-      <tr class="fs-total"><td>매출액</td><td class="num"><b>19.5조</b><br><span class="usd">$143.8B</span></td><td class="num"><b>15.1조</b><br><span class="usd">$111.2B</span></td><td class="num"><b>14.8조</b><br><span class="usd">$109.4B</span></td><td class="num"><b>49.4조</b><br><span class="usd">$364.4B</span></td></tr>
-      <tr><td>　├ 아이폰</td><td class="num"><b>11.6조</b><br><span class="usd">$85.3B</span></td><td class="num"><b>7.7조</b><br><span class="usd">$57.0B</span></td><td class="num"><b>7.4조</b><br><span class="usd">$54.3B</span></td><td class="num"><b>26.7조</b><br><span class="usd">$196.6B</span></td></tr>
-      <tr><td>　├ 서비스</td><td class="num"><b>4.1조</b><br><span class="usd">$30.0B</span></td><td class="num"><b>4.2조</b><br><span class="usd">$31.0B</span></td><td class="num"><b>4.2조</b><br><span class="usd">$30.7B</span></td><td class="num"><b>12.4조</b><br><span class="usd">$91.7B</span></td></tr>
-      <tr><td>　├ 맥</td><td class="num"><b>1.1조</b><br><span class="usd">$8.4B</span></td><td class="num"><b>1.1조</b><br><span class="usd">$8.4B</span></td><td class="num"><b>1.4조</b><br><span class="usd">$10.4B</span></td><td class="num"><b>3.7조</b><br><span class="usd">$27.2B</span></td></tr>
-      <tr><td>　├ 아이패드</td><td class="num"><b>1.2조</b><br><span class="usd">$8.6B</span></td><td class="num"><b>0.9조</b><br><span class="usd">$6.9B</span></td><td class="num"><b>0.8조</b><br><span class="usd">$6.2B</span></td><td class="num"><b>2.9조</b><br><span class="usd">$21.7B</span></td></tr>
-      <tr><td>　└ 웨어러블·홈·액세서리</td><td class="num"><b>1.6조</b><br><span class="usd">$11.5B</span></td><td class="num"><b>1.1조</b><br><span class="usd">$7.9B</span></td><td class="num"><b>1.1조</b><br><span class="usd">$7.9B</span></td><td class="num"><b>3.7조</b><br><span class="usd">$27.3B</span></td></tr>
+      <tr class="fs-total"><td>매출액</td><td class="num"><b>194.2조</b><br><span class="usd">$143.8B</span></td><td class="num"><b>150.2조</b><br><span class="usd">$111.2B</span></td><td class="num"><b>147.8조</b><br><span class="usd">$109.4B</span></td><td class="num"><b>492.2조</b><br><span class="usd">$364.4B</span></td></tr>
+      <tr><td>　├ 아이폰</td><td class="num"><b>115.2조</b><br><span class="usd">$85.3B</span></td><td class="num"><b>77.0조</b><br><span class="usd">$57.0B</span></td><td class="num"><b>73.3조</b><br><span class="usd">$54.3B</span></td><td class="num"><b>265.5조</b><br><span class="usd">$196.6B</span></td></tr>
+      <tr><td>　├ 서비스</td><td class="num"><b>40.5조</b><br><span class="usd">$30.0B</span></td><td class="num"><b>41.9조</b><br><span class="usd">$31.0B</span></td><td class="num"><b>41.5조</b><br><span class="usd">$30.7B</span></td><td class="num"><b>123.9조</b><br><span class="usd">$91.7B</span></td></tr>
+      <tr><td>　├ 맥</td><td class="num"><b>11.3조</b><br><span class="usd">$8.4B</span></td><td class="num"><b>11.3조</b><br><span class="usd">$8.4B</span></td><td class="num"><b>14.0조</b><br><span class="usd">$10.4B</span></td><td class="num"><b>36.7조</b><br><span class="usd">$27.2B</span></td></tr>
+      <tr><td>　├ 아이패드</td><td class="num"><b>11.6조</b><br><span class="usd">$8.6B</span></td><td class="num"><b>9.3조</b><br><span class="usd">$6.9B</span></td><td class="num"><b>8.4조</b><br><span class="usd">$6.2B</span></td><td class="num"><b>29.3조</b><br><span class="usd">$21.7B</span></td></tr>
+      <tr><td>　└ 웨어러블·홈·액세서리</td><td class="num"><b>15.5조</b><br><span class="usd">$11.5B</span></td><td class="num"><b>10.7조</b><br><span class="usd">$7.9B</span></td><td class="num"><b>10.7조</b><br><span class="usd">$7.9B</span></td><td class="num"><b>36.9조</b><br><span class="usd">$27.3B</span></td></tr>
       <tr><td>매출총이익률</td><td class="num">48.2%</td><td class="num">49.3%</td><td class="num">50.1%</td><td class="num">약 49%</td></tr>
-      <tr class="fs-total"><td>순이익</td><td class="num"><b>5.7조</b><br><span class="usd">$42.1B</span></td><td class="num"><b>4.0조</b><br><span class="usd">$29.6B</span></td><td class="num"><b>4.0조</b><br><span class="usd">$29.8B</span></td><td class="num"><b>13.8조</b><br><span class="usd">$101.5B</span></td></tr>
+      <tr class="fs-total"><td>순이익</td><td class="num"><b>56.9조</b><br><span class="usd">$42.1B</span></td><td class="num"><b>40.0조</b><br><span class="usd">$29.6B</span></td><td class="num"><b>40.2조</b><br><span class="usd">$29.8B</span></td><td class="num"><b>137.1조</b><br><span class="usd">$101.5B</span></td></tr>
       <tr><td>순이익률</td><td class="num">29.3%</td><td class="num">26.6%</td><td class="num">27.2%</td><td class="num">27.9%</td></tr>
-      <tr><td>주당순이익(EPS, 희석)</td><td class="num"><b>3,851원</b><br><span class="usd">$2.84</span></td><td class="num"><b>2,726원</b><br><span class="usd">$2.01</span></td><td class="num"><b>2,739원</b><br><span class="usd">$2.02</span></td><td class="num"><b>9,316원</b><br><span class="usd">$6.87</span></td></tr>
+      <tr><td>주당순이익(EPS, 희석)</td><td class="num"><b>3,836원</b><br><span class="usd">$2.84</span></td><td class="num"><b>2,715원</b><br><span class="usd">$2.01</span></td><td class="num"><b>2,728원</b><br><span class="usd">$2.02</span></td><td class="num"><b>9,279원</b><br><span class="usd">$6.87</span></td></tr>
       <tr><td>매출 성장률 (YoY)</td><td class="num text-up">+16%</td><td class="num text-up">+17%</td><td class="num text-up">+16%</td><td class="num">—</td></tr>
     </table></div>
 
     <h3>② 재무상태표</h3>
     <div class="fs-scroll"><table class="fs">
       <tr><th>항목</th><th class="num">FY2025 말<br><span class="usd">2025.09.27</span></th><th class="num">FY2026 3분기 말<br><span class="usd">2026.06.27</span></th><th class="num">증감</th></tr>
-      <tr><td>현금·단기투자</td><td class="num"><b>7.4조</b><br><span class="usd">$54.7B</span></td><td class="num"><b>8.5조</b><br><span class="usd">$62.4B</span></td><td class="num text-up">+14.1%</td></tr>
-      <tr><td>총자산</td><td class="num"><b>48.7조</b><br><span class="usd">$359.2B</span></td><td class="num"><b>52.0조</b><br><span class="usd">$383.3B</span></td><td class="num text-up">+6.7%</td></tr>
-      <tr><td>총부채</td><td class="num"><b>38.7조</b><br><span class="usd">$285.5B</span></td><td class="num"><b>37.4조</b><br><span class="usd">$275.7B</span></td><td class="num text-down">-3.4%</td></tr>
-      <tr><td>총차입금</td><td class="num"><b>15.2조</b><br><span class="usd">$112.4B</span></td><td class="num"><b>11.4조</b><br><span class="usd">$84.3B</span></td><td class="num text-down">-24.9%</td></tr>
-      <tr><td>자본총계</td><td class="num"><b>10.0조</b><br><span class="usd">$73.7B</span></td><td class="num"><b>14.6조</b><br><span class="usd">$107.5B</span></td><td class="num text-up">+45.8%</td></tr>
+      <tr><td>현금·단기투자</td><td class="num"><b>73.9조</b><br><span class="usd">$54.7B</span></td><td class="num"><b>84.3조</b><br><span class="usd">$62.4B</span></td><td class="num text-up">+14.1%</td></tr>
+      <tr><td>총자산</td><td class="num"><b>485.1조</b><br><span class="usd">$359.2B</span></td><td class="num"><b>517.7조</b><br><span class="usd">$383.3B</span></td><td class="num text-up">+6.7%</td></tr>
+      <tr><td>총부채</td><td class="num"><b>385.6조</b><br><span class="usd">$285.5B</span></td><td class="num"><b>372.4조</b><br><span class="usd">$275.7B</span></td><td class="num text-down">-3.4%</td></tr>
+      <tr><td>총차입금</td><td class="num"><b>151.8조</b><br><span class="usd">$112.4B</span></td><td class="num"><b>113.9조</b><br><span class="usd">$84.3B</span></td><td class="num text-down">-24.9%</td></tr>
+      <tr><td>자본총계</td><td class="num"><b>99.5조</b><br><span class="usd">$73.7B</span></td><td class="num"><b>145.2조</b><br><span class="usd">$107.5B</span></td><td class="num text-up">+45.8%</td></tr>
     </table></div>
 
     <h3>③ 현금흐름 · 주주환원</h3>
     <div class="fs-scroll"><table class="fs">
       <tr><th>항목</th><th class="num">FY2026 1~3분기 누적</th><th class="num">최근 12개월(TTM)</th></tr>
-      <tr><td>영업활동 현금흐름</td><td class="num"><b>15.9조</b><br><span class="usd">$117.0B</span></td><td class="num"><b>19.9조</b><br><span class="usd">$146.7B</span></td></tr>
-      <tr><td>설비투자(CapEx)</td><td class="num">—</td><td class="num"><b>1.4조</b><br><span class="usd">$10.0B</span></td></tr>
-      <tr><td>잉여현금흐름(FCF)</td><td class="num">—</td><td class="num"><b>18.5조</b><br><span class="usd">$136.7B</span></td></tr>
-      <tr><td>자사주 매입</td><td class="num"><b>8.4조</b><br><span class="usd">$61.8B</span></td><td class="num"><b>12.1조</b><br><span class="usd">$88.9B</span></td></tr>
-      <tr><td>배당금 지급</td><td class="num"><b>1.6조</b><br><span class="usd">$11.7B</span></td><td class="num"><b>2.1조</b><br><span class="usd">$15.6B</span></td></tr>
+      <tr><td>영업활동 현금흐름</td><td class="num"><b>158.0조</b><br><span class="usd">$117.0B</span></td><td class="num"><b>198.1조</b><br><span class="usd">$146.7B</span></td></tr>
+      <tr><td>설비투자(CapEx)</td><td class="num">—</td><td class="num"><b>13.5조</b><br><span class="usd">$10.0B</span></td></tr>
+      <tr><td>잉여현금흐름(FCF)</td><td class="num">—</td><td class="num"><b>184.6조</b><br><span class="usd">$136.7B</span></td></tr>
+      <tr><td>자사주 매입</td><td class="num"><b>83.5조</b><br><span class="usd">$61.8B</span></td><td class="num"><b>120.1조</b><br><span class="usd">$88.9B</span></td></tr>
+      <tr><td>배당금 지급</td><td class="num"><b>15.8조</b><br><span class="usd">$11.7B</span></td><td class="num"><b>21.1조</b><br><span class="usd">$15.6B</span></td></tr>
     </table></div>
 
     <div class="callout">
-      → 1~3분기 누적 매출 <b>49.4조원</b>($364.4B), 순이익 <b>13.8조원</b>($101.5B)입니다. 세 분기 모두 두 자릿수 성장을 했고, 매출총이익률은 48.2% → 49.3% → 50.1%로 올랐습니다(3분기에는 관세 환급 효과 약 2%p 포함).
-      9개월 동안 자사주 매입과 배당으로 약 <b>10.0조원</b>을 주주에게 돌려줬고, 총차입금은 FY25 말보다 약 25% 줄었습니다.
-      4분기 가이던스는 매출 +9~11% YoY, 마진 47~48%입니다. <b>메모리 원가 상승으로 마진이 떨어질지</b>가 10/30 실적의 핵심입니다.
+      → 1~3분기 누적 매출 <b>약 492.2조원</b>($364.4B), 순이익 <b>약 137.1조원</b>($101.5B)입니다. 세 분기 모두 두 자릿수 성장을 했고, 매출총이익률은 48.2% → 49.3% → 50.1%로 올랐습니다(3분기에는 관세 환급 효과 약 2%p 포함).
+      9개월 동안 자사주 매입과 배당으로 약 <b>99.3조원</b>($73.5B)을 주주에게 돌려줬고, 총차입금은 FY25 말보다 약 25% 줄었습니다.
+      4분기 가이던스는 매출 +9~11% YoY, 마진 47~48%입니다. <b>메모리 원가 상승으로 마진이 떨어질지</b>와 <b>구조조정 비용·효과</b>가 10/30 실적의 핵심입니다.
     </div>
   </section>
 
@@ -562,28 +600,33 @@
     <table>
       <tr><th style="width:26%">일정/변수</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr style="opacity:.55;">
-        <td>9월 10일 ~ 9월 19일</td>
-        <td>신제품 이벤트(현지 9/9), 사전예약, FOMC, 아이폰18 정식 출시(현지 9/18) — <b>완료</b></td>
+        <td>9월 28일 ~ 10월 2일</td>
+        <td>특허 평결 반응(-0.78%), 터너스 구조조정 보도(-2.66%), 10/13 이벤트 보도, 고용 쇼크 — <b>완료</b></td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>9월 28일 (월) 22:30</td>
-        <td>미국 본장 개장 — $57억 특허 패소 평결에 대한 첫 반응 확인 ($338 지지 여부)</td>
-        <td><span class="star">★★★★★</span></td>
+        <td>10월 8일 (목) 03:00</td>
+        <td>9월 FOMC 의사록 — 매파적이면 금리 반등, 빅테크 밸류 부담</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
-        <td>10월 초 (예상)</td>
-        <td>출시 3주차 배송 대기 데이터(JP모건 등) — JP모건이 가장 중요한 수요 지표로 꼽음</td>
+        <td>10월 13일 (화, 美 현지)</td>
+        <td><b>스마트홈 신제품 공개</b>(홈 허브·HomePod mini 2·Apple TV) — 블룸버그 보도, 회사 공식 초대장 전. 온라인 이벤트 형식 예상, KST 시각 미정</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
         <td>10월 16일 (금)</td>
-        <td>폴더블 <b>iPhone 18 Duo</b> 사전주문 개시 ($1,999), 출시는 10월 말</td>
+        <td>폴더블 <b>iPhone 18 Duo</b> 사전주문 개시 ($1,999), 출시는 10월 말 — 매진·배송 지연 여부가 수요 신호</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
-        <td>10월 30일 (금) 05:00</td>
-        <td>FY2026 4분기 실적 발표 (현지 10/29 장 마감 후) — 12월 분기 마진 가이던스 주목</td>
+        <td>10월 29일 (목) 03:00</td>
+        <td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td>
+        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+      </tr>
+      <tr>
+        <td>10월 30일 (금) 05:30 (예상)</td>
+        <td>FY2026 4분기 실적 발표 (현지 10/29 장 마감 후, 회사 공지 전) — 12월 분기 마진 가이던스·구조조정 언급 주목</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
@@ -593,74 +636,95 @@
       </tr>
       <tr>
         <td>진행 중</td>
-        <td>Taction 특허 항소, 애플페이 반독점 집단소송 진행 상황</td>
+        <td>Taction 특허 항소, 애플페이 반독점 집단소송, 터너스 조직 개편 세부안</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
     </table>
   </section>
 
   <section>
-    <h2>6. AAPL 핵심 체크리스트</h2>
+    <h2>5-1. AAPL 핵심 체크리스트</h2>
     <table>
       <tr><th style="width:8%">#</th><th style="width:32%">항목</th><th>체크 포인트</th><th style="width:18%">우선순위</th></tr>
-      <tr>
-        <td>1</td>
-        <td>가격·지지/저항</td>
-        <td>$338 지지(돌파한 저항이 지지로 바뀌는지) → 신고가 $345.34 재돌파 여부. 이탈 시 $334.30 → $321(50일선)</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>2</td>
-        <td>특허 평결 반응</td>
-        <td>9/28 개장 갭 크기와 당일 회복 여부. 항소 일정, 로열티 협상 보도</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>3</td>
-        <td>배송 대기 & 수요</td>
-        <td>3주차 배송 대기 추이, 중국 대기 기간이 작년보다 짧은 흐름이 바뀌는지</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>4</td>
-        <td>폴더블 Duo</td>
-        <td>10/16 사전주문 초기 매진 여부와 배송 대기, $1,999 가격에 대한 반응</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>5</td>
-        <td>매크로 & 금리</td>
-        <td>미 국채 10년물 금리 흐름과 빅테크 밸류에이션(PER 39배) 부담</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>6</td>
-        <td>원가 & 마진 방어</td>
-        <td>메모리 원가 상승으로 12월 분기 마진 가이던스가 낮아지는지 (10/29 실적)</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>7</td>
-        <td>수급 & 거래량</td>
-        <td>신고가 부근 거래량 (9/25 반등은 평균보다 약 40% 적은 거래량) — 돌파할 때 거래량이 붙는지</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>8</td>
-        <td>규제·법적 리스크</td>
-        <td>애플페이 반독점 소송, 추가 특허 소송, 앱스토어 규제</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
+      <tr><td>1</td><td>가격·지지/저항</td><td>$326~328 지지(10/1 저점·추세선) → $340·$345.34 돌파 여부. 이탈 시 $321(50일선) → $310</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>2</td><td>10/13 스마트홈 반응</td><td>홈 허브 가격·출시일, 새 Siri AI 시연 수준 — 'AI 경쟁 뒤처짐' 우려를 덜어 주는지</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>3</td><td>폴더블 Duo</td><td>10/16 사전주문 초기 매진 여부와 배송 대기, $1,999 가격에 대한 반응</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>4</td><td>구조조정 뉴스</td><td>감원 규모·출시 주기 변경 확정 여부 — 비용 절감(호재) vs 실행 혼선(악재)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>5</td><td>매크로 & 금리</td><td>10/8 FOMC 의사록, 美 10년물 금리 — PER 37배 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>6</td><td>원가 & 마진 방어</td><td>메모리 원가 상승으로 12월 분기 마진 가이던스가 낮아지는지 (10/30 실적)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>7</td><td>AI 경쟁</td><td>Meta Muse·OpenAI 기기 등 AI 비서가 앱스토어·검색 수익을 잠식하는 신호</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>8</td><td>규제·법적 리스크</td><td>Taction 항소, 애플페이 반독점 소송, 앱스토어 규제</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
     </table>
     <div class="callout" style="margin-top:14px;">
-      <b>체크리스트 활용 팁</b>: 단기 트레이딩은 1·2·3번, 중기 포지션은 4·5·6번을 먼저 보세요. 이번 주는 특허 평결 반응과 $338 지지 여부가 방향을 가를 가능성이 큽니다.
+      <b>체크리스트 활용 팁</b>: 단기 트레이딩은 1·2·3번, 중기 포지션은 4·5·6번을 먼저 보세요. 이번 달은 <b>10/13 → 10/16 → 10/30</b> 세 번의 이벤트가 연달아 방향을 정합니다.
+    </div>
+  </section>
+
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>10월에 신제품이 줄줄이 나오는데,</em><br><strong>새 사장님 구조조정과 AI 경쟁이 발목을 잡는다.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>새 제품 2연타</b><span>10/13 스마트홈 허브(처음 나오는 제품) → 10/16 접는 아이폰 사전주문</span></li>
+          <li><b>중국에서도 잘 팔림</b><span>아이폰18 Pro 판매 +12%, 점유율 33%</span></li>
+          <li><b>돈은 여전히 잘 벎</b><span>분기 매출 148조원, 1년 새 +16%</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>새 사장님의 구조조정</b><span>중간관리자 감축·출시 일정 변경 → 하루에 -2.7%</span></li>
+          <li><b>AI 비서 경쟁</b><span>Meta 'Muse'가 쇼핑·추천을 가져갈 수 있음 (Siri는 아직 약함)</span></li>
+          <li><b>비싸고 소송도 많음</b><span>번 돈의 37배 가격 · 특허 배상 7.7조원 평결(항소 예정)</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/13</div>
+        <div class="e">스마트홈 신제품</div>
+        <div class="w">AI Siri가 괜찮으면 반등 재료</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10/16</div>
+        <div class="e">접는 아이폰 사전주문</div>
+        <div class="w">매진되면 호재</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">10/30 새벽</div>
+        <div class="e">4분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$340 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $345 사상 최고가)</span></div>
+      <div class="rung now"><span class="px">$334</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$326</span><span>이 아래면 → 조심 ⚠️ (10/1 저점)</span></div>
+      <div class="rung bad"><span class="px">$321</span><span>최후 방어선 🛑 (50일선, 깨지면 $310)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 실적은 튼튼하지만, 지금 애플은 <b>'새 사장님이 회사를 어떻게 바꿀지'</b>를 시장이 지켜보는 중입니다.
+      <b>10/13 신제품에서 AI Siri가 좋은 평가</b>를 받으면 $340 돌파 가능성이 커지고, 그 전까지는 <b>$326~340 사이 박스</b>로 보는 게 안전합니다.
     </div>
   </section>
 
   <footer>
     ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다.
-    가격·시가총액·실적 등은 공개 데이터를 참고했으며, 데이터 기준: 2026.09.25(현지) 종가 및 2026.09.28(KST) 뉴스 스냅샷, 실시간 가격은 OKX 무기한선물로 갱신됩니다.
-    소스별로 가격이 소폭 차이가 있을 수 있어 참고용으로만 활용하시기 바랍니다.
+    데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시가·고가·저가·종가는 StockAnalysis 기준.
+    4분기 실적일(10/29 현지)과 10/13 신제품 공개는 보도·추정 기준이며 회사 공식 공지 전입니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(4-1 재무제표 원화 값도 이 환율로 다시 계산).
+    시나리오 확률은 주관적 판단입니다. 실시간 가격은 OKX 무기한선물(AAPLUSDT.P)로 30초마다 갱신됩니다.
   </footer>
 
 </div>
@@ -747,7 +811,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AAPLUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 최근 스냅샷 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

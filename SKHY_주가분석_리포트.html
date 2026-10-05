@@ -195,6 +195,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
 
@@ -257,6 +264,45 @@
     font-size:12px;
     color:var(--text-soft);
   }
+  .key-hero{background:linear-gradient(135deg,rgba(234,0,44,.14),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 118px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(234,0,44,.10); border:1px dashed var(--accent);} .rung.now .px{color:#ea002c;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
@@ -264,22 +310,21 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.19 (토) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 본주(000660) 9/18 코스피 종가 · ADR 실시간 변동 반영</span>
+      <span>본주(000660) 10/2 코스피 종가 · ADR 10/2 나스닥 종가(KST 10/3 05:00) 기준</span>
     </div>
     <h1>SK hynix (SKHY) 주가 분석 리포트<span class="ticker">ADR: SKHY (Nasdaq) · 본주 000660.KS (KOSPI)</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$194.75</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">ADR 추정 +약 3% · 본주(코스피 9/18) 1,857,000원 +6.42%</div>
+        <div class="price-main"><span id="live-price">$195.13</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">ADR 10/2 ▲ +0.84% · 본주(코스피 10/2) 1,841,000원 ▲ +0.44%</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SKHYUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/14 유가·금리발 반도체 섹터 전반 조정(본주 -6.35%)으로 급락했으나, 9/16 FOMC 전후 반등하고 9/18에는
-        코스피 전체가 2.66% 급등(6,894.23)하는 가운데 본주가 +6.42%로 지수 상승을 견인했습니다. Solidigm(NAND 자회사)
-        나스닥 상장 추진과 삼성전자·SK하이닉스의 한전 25조원 선지급 제안 거부 등 개별 이슈도 겹쳤습니다.
+        추석 연휴(9/24~25) 동안 美 국채금리·유가가 급등하고 <b>자회사 Solidigm의 美 상장 검토</b>(기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span>) 보도까지 겹쳐, 연휴 후 첫날(9/28) 본주가 <b>-5.05%</b> 급락했습니다(외국인 1.73조원 순매도).
+        이후 10/1 <b>마이크론 깜짝 실적 + 9월 반도체 수출 사상 최대</b>로 +3.21% 반등해 184만원대를 회복했습니다. ADR은 $195.13으로 52주 고점($199.87)에 근접.
         52주 범위: ADR $124.80~$199.87, 본주 333,000원~2,987,000원.
       </div>
     </div>
@@ -307,47 +352,51 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/14 저점(본주 1,690,000원 부근) 이후 9/18 대형 반등(+6.42%)으로 1,857,000원까지 회복. 6월 사상 최고가(2,987,000원) 대비로는 여전히 큰 폭 하회.<br>
-      <b>15분봉</b>: 코스피 전체 강세(9/18 +2.66%)에 본주가 더 크게 반응, ADR도 동조화된 흐름 — 본주-ADR 간 시차·환율 괴리는 지속 모니터링 필요.
+      <b>일봉</b>: 9/15 저점 169만원 → 9/18 +6.42% 급반등 → 9/22 장중 193.5만원 고점 → 9/28 연휴 후 급락(176.8만원) → 9/29 장중 173.6만원 저점 → 10/1~2 184만원대 회복. 175만~190만원 박스 안에서 등락 중이며, 6월 사상 최고가(298.7만원) 대비로는 아직 약 -38%.<br>
+      <b>ADR</b>: 9/28 $181.92 저점 후 10/1 +5.08%, 10/2 $195.13으로 <b>52주 고점 $199.87</b> 바로 아래 — 본주보다 강한 흐름(미국 반도체 랠리 동조). 본주 1차 저항 <b>190만원</b>(9/22 고점대), 지지 <b>176만원</b>(9/28~30 종가대).
     </div>
   </section>
 
   <!-- 2. 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:22%">날짜 · 종가(원)</th><th>내용</th><th style="width:24%">비고</th></tr>
+      <tr><th style="width:22%">날짜 · 종가(원)</th><th>내용</th><th style="width:24%">비고 (ADR 종가)</th></tr>
       <tr>
-        <td><b>9/14(월)</b><br>1,697,000<br><span style="color:var(--up); font-weight:600;">▼ -6.35%</span></td>
-        <td>국제유가 급등·美 10년물 국채금리 19년래 최고치로 글로벌 반도체 섹터 전반 급락(AMD -4.40%, AVGO -4.77% 등과 동조), "AI 리셋" 우려까지 겹치며 이번 주 최대 낙폭</td>
-        <td>이번 주 저점 형성</td>
+        <td><b>9/23(수)</b><br>1,862,000<br><span style="color:var(--up); font-weight:600;">▲ +1.20%</span></td>
+        <td>전날 장중 193.5만원 고점 후 밀렸다가 반등. 추석 연휴(9/24~25 휴장) 앞두고 관망</td>
+        <td>ADR $189.28 · 연휴 중 ADR은 9/24 $186.37 → 9/25 $191.56</td>
       </tr>
       <tr>
-        <td><b>9/15(화)</b><br>1,690,000<br><span style="color:var(--down); font-weight:600;">▲ -0.41%</span></td>
-        <td>낙폭과대 인식 속 보합권 마감, CLARITY Act 부결 등 매크로 불확실성이 겹치며 방향성 탐색</td>
-        <td>저점 다지기</td>
+        <td><b>9/28(월)</b><br>1,768,000<br><span style="color:var(--down); font-weight:600;">▼ -5.05%</span></td>
+        <td><b>연휴 후 첫날 급락</b> — 연휴 중 美 30년물 금리 5.52%(2004년 이후 최고)·유가 $100 근접(美-이란 긴장). 여기에 <b>Solidigm 美 IPO 검토</b>(2027년, 가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span>, $15B<span class="krw">(약 20조 2,590억원)</span> 조달) 보도로 "자회사 상장 → 모회사 가치 할인" 우려. 외국인 <b>1.73조원 순매도</b>, 코스피 -2.70%(6,889.74)</td>
+        <td>ADR $181.92 (-5.03%)</td>
       </tr>
       <tr>
-        <td><b>9/16(수)</b><br>1,759,000<br><span style="color:var(--up); font-weight:600;">▲ +4.08%</span></td>
-        <td>FOMC(현지 9/16) 25bp 인상 발표를 앞두고 국내 저가 매수세 유입, 메모리 슈퍼사이클 스토리 재부각과 Solidigm 나스닥 상장 기대감 지속</td>
-        <td>미국보다 하루 앞서 반등 시작</td>
+        <td><b>9/29(화)</b><br>1,765,000<br><span style="color:var(--down); font-weight:600;">▼ -0.17%</span></td>
+        <td>장중 173.6만원까지 밀린 뒤 낙폭 만회, 보합 마감</td>
+        <td>ADR $186.68 · 저점 확인</td>
       </tr>
       <tr>
-        <td><b>9/17(목)</b><br>1,745,000<br><span style="color:var(--down); font-weight:600;">▼ -0.80%</span></td>
-        <td>美 FOMC 결과를 소화하는 과정에서 소폭 조정, 삼성전자·SK하이닉스가 한국전력의 25조원 규모 반도체 클러스터 전력공급 선지급 제안을 거부했다는 보도 등 개별 이슈 부각</td>
-        <td>미국 반도체 랠리(+2.54%) 대비 상대적으로 약한 흐름</td>
+        <td><b>9/30(수)</b><br>1,776,000<br><span style="color:var(--up); font-weight:600;">▲ +0.62%</span></td>
+        <td>마이크론 실적(10/1 새벽) 대기 속 소폭 반등. 3분기 마지막 거래일</td>
+        <td>ADR $184.15</td>
       </tr>
       <tr>
-        <td><b>9/18(금)</b><br>1,857,000<br><span style="color:var(--up); font-weight:600;">▲ +6.42%</span></td>
-        <td>코스피 전체가 2.66% 급등(6,894.23)하는 가운데 대형 반도체주가 지수 상승을 견인 — 외국인·기관 순매수 유입 속 "인상 재료 소진" 인식에 따른 글로벌 반도체 랠리 동참, 中 CXMT의 DRAM 양산 경쟁 심화 소식에도 낙폭과대 반등이 우세</td>
-        <td>지수(+2.66%) 대비 2배 이상의 강한 상대 강세</td>
+        <td><b>10/1(목)</b><br>1,833,000<br><span style="color:var(--up); font-weight:600;">▲ +3.21%</span></td>
+        <td><b>마이크론 깜짝 실적</b>(분기 매출 $54.2B<span class="krw">(약 73조 2,430억원)</span>, 예상 $51.1B 상회, 다음 분기 가이던스 $61.5B) + <b>9월 반도체 수출 사상 최대 $603억</b><span class="krw">(약 81조 4,410억원)</span>(전체 수출의 49.9%). 장 초반 약세 후 오전 11시부터 급반등</td>
+        <td>ADR $193.50 (+5.08%)</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>1,841,000<br><span style="color:var(--up); font-weight:600;">▲ +0.44%</span></td>
+        <td>美 10년물 금리 5.34%(2002년 이후 최고) 부담 vs AI·반도체 기대의 줄다리기. 외국인은 삼성전자·SK하이닉스 순매도(차익실현). 장중 +1.48%까지 올랐다가 상승폭 축소</td>
+        <td>ADR $195.13 (+0.84%) · 52주 고점 근접</td>
       </tr>
     </table>
-
     <div class="callout">
-      → 이번 주는 <b>유가·금리발 조정(9/14, -6.35%)</b>으로 시작했지만, 미국보다 하루 앞서 9/16부터 반등을 시작해
-      9/18 코스피 전체 급등(+2.66%)을 이끌며 <b>+6.42%</b>로 마무리했습니다. 한전 전력공급 선지급 거부, Solidigm
-      상장 추진 등 개별 이슈가 이어지는 가운데, ADR과 본주 간 시차·환율에 따른 가격 괴리는 여전히 유의할 부분입니다.
+      → 이번 2주는 <b>매크로(금리·유가) 악재 vs 업황(마이크론·수출) 호재</b>의 줄다리기였습니다. 연휴 중 쌓인 금리·유가 충격과 Solidigm 상장 보도로 9/28 급락했지만,
+      마이크론 실적이 "메모리 호황은 아직 진행 중"임을 확인시켜 주며 대부분 회복했습니다. 한 애널리스트의 말처럼 <b>"매크로와 반도체 사이클의 줄다리기에서 반도체 쪽이 점점 커지는"</b> 국면입니다.
+      다만 외국인이 계속 파는 점과 <b>한국장 연휴(10/5 대체공휴일, 10/9 한글날)</b> 중 美 재료가 몰려 반영되는 점은 주의가 필요합니다.
     </div>
   </section>
 
@@ -358,32 +407,48 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>HBM 글로벌 1위(점유율 약 56~58%) — Nvidia HBM4 물량의 약 3분의 2를 공급하는 것으로 알려짐</li>
-        <li>Q2 2026 기록적 실적 — 매출 약 79.3조원(+257% YoY), 영업이익 약 60.5조원, 영업이익률 76%</li>
-        <li>HBM4 양산 본격화, HBM4E는 2027년 양산 목표, 2030년까지 공급 부족 지속 전망</li>
-        <li>Solidigm(NAND 자회사) 나스닥 상장 추진 — 프리IPO 밸류에이션 약 $35B, ETF 사전등록 등 진전 신호</li>
-        <li>9/18 코스피 전체 급등(+2.66%)을 견인하며 +6.42% 기록 — 외국인·기관 순매수 유입, 낙폭과대 인식에 따른 반등</li>
-        <li>BofA 목표주가 $268(기존 $250에서 상향), Barclays·Cantor 등 $300 이상 제시 — 월가 목표주가 상향 지속</li>
+        <li><b>3분기 사상 최대 실적 전망</b> — 컨센서스 매출 약 99.5조원(+307% YoY), 영업이익 약 78.1조원(+586%)</li>
+        <li><b>마이크론 깜짝 실적</b>(10/1) — 데이터센터 매출 11배, 연간 영업이익률 74.6%, "FY2027은 더 강하다" — 메모리 호황 지속 확인</li>
+        <li>HBM 평균판매가격 내년 <b>+121%</b> 전망, 2027년 DRAM 웨이퍼의 약 30%가 HBM으로 전환 → 범용 DRAM도 공급 부족</li>
+        <li>9월 반도체 수출 사상 최대 $603억<span class="krw">(약 81조 4,410억원)</span> — 출하량·가격 동반 상승</li>
+        <li>NVIDIA·Microsoft 장기 공급계약, HBM4가 GPU뿐 아니라 맞춤형 AI칩(ASIC)에도 채택 → 고객 다변화</li>
+        <li>Solidigm 기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span> 평가 — 보유 자회사 가치 재조명</li>
       </ul>
     </div>
-
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>中 CXMT, DRAM 양산 경쟁 심화</b> — 中 자국산 메모리 업체의 첨단 DRAM 양산 진입 보도로 중장기 경쟁 구도 변화 우려</li>
-        <li>삼성전자·SK하이닉스, 한국전력의 반도체 클러스터 전력공급 25조원 선지급 제안 거부(9/17) — 인프라 투자 부담을 둘러싼 정부·기업 간 이견</li>
-        <li>ADR-본주 가격 괴리 지속 — 거래시간·환율 차이로 두 시장이 다른 폭으로 움직이는 사례 반복(9/18 본주 +6.42% vs ADR 상대적으로 완만)</li>
-        <li>Solidigm IPO는 아직 공식 확정 전 — 실제 상장까지는 불확실성 상존</li>
-        <li>연준의 추가 긴축 경로(9/16 FOMC 인상 이후 추가 인상 시사) — 반도체 대형주 전반 할인율 부담</li>
+        <li><b>외국인 매도</b> — 9/28 하루 1.73조원, 10/2에도 차익실현 순매도</li>
+        <li><b>美 금리 고공행진</b> — 10년물 5.34%(2002년 이후 최고), 30년물 5.52% → 반도체 대형주 할인율 부담</li>
+        <li><b>삼성전자 HBM 추격</b> — 삼성 HBM 점유율 1분기 21% → 2분기 33%로 급상승(HBM4 공격적 증산)</li>
+        <li>Solidigm 美 상장 시 <b>'자회사 중복 상장' 할인</b> 우려(9/28 급락 요인) — 아직 초기 검토 단계로 변동 가능</li>
+        <li>원화 강세 시 원화 환산 이익 감소 — 시티, 3분기 영업이익 추정 76.7조 → 74조원 하향(9/1)</li>
+        <li>中 CXMT 첨단 DRAM 양산 경쟁</li>
       </ul>
     </div>
-
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>Solidigm 상장 계획 공식 확정 + 반도체 랠리 지속 시 ADR $220 재도전, 본주 200만원대 재진입</div>
-      <div class="scenario base"><b>기본</b>ADR $180~$210, 본주 170만~190만원대 박스권. 10월 FOMC와 Solidigm 후속 공시를 소화하며 10월 말 실적 시즌 대기</div>
-      <div class="scenario bear"><b>약세</b>中 CXMT 경쟁 심화·반도체 섹터 조정 또는 Solidigm 상장 계획 무산 시 ADR $160대, 본주 150만원 하회 테스트 가능</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:24%">가격 범위 (본주 / ADR)</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">176만~190만원<br>/ $182~200</td>
+        <td>금리가 고점권에서 머물고 외국인 매도가 이어지는 가운데, 삼성 잠정실적·자사 실적(10월 말)을 기다리는 경우. <b>176만원 지지·190만원 저항</b></td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">190만 → 200만~210만원<br>/ $200 → $210~220</td>
+        <td>삼성 잠정실적·SK 3분기 실적이 컨센서스(영업이익 78조원)를 넘고 HBM4 가격 인상이 확인되는 경우. <b>본주 190만원·ADR $200(52주 고점) 돌파</b>가 신호</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">173.6만 이탈 → 165만~169만원<br>/ $175 부근</td>
+        <td>美 금리·유가 재급등, FOMC 의사록(10/8) 매파, 또는 Solidigm 상장 구체화로 할인 우려가 커지는 경우. 9/29 저점이 깨지면 9월 중순 저점(169만원)대 재시험</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다. ADR과 본주는 거래시간·환율 차이로 다르게 움직일 수 있습니다.</div>
   </section>
 
   <!-- 4. 매출구조/수익구조 -->
@@ -391,13 +456,14 @@
     <h2>4. 매출구조/수익구조</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
-      <tr><td>📊 Q2 2026 매출</td><td class="num">약 79.3조원</td><td class="num">+257% YoY (기록)</td></tr>
-      <tr><td>💰 Q2 영업이익</td><td class="num">약 60.5조원</td><td class="num">영업이익률 76%</td></tr>
-      <tr><td>🏆 HBM 점유율</td><td class="num">약 56~58%</td><td class="num">글로벌 1위</td></tr>
+      <tr><td>📊 Q2 2026 매출</td><td class="num">79.3조원</td><td class="num">+51% QoQ (컨센서스 84.1조원은 하회)</td></tr>
+      <tr><td>💰 Q2 영업이익</td><td class="num">60.5조원</td><td class="num">+61% QoQ · 영업이익률 76.3%</td></tr>
+      <tr><td>🎯 Q3 컨센서스</td><td class="num">매출 약 99.5조원 · 영업이익 약 78.1조원</td><td class="num">YoY +307% / +586% (사상 최대 전망)</td></tr>
+      <tr><td>🏆 HBM 점유율</td><td class="num">1분기 58% (글로벌 1위)</td><td class="num">삼성 2분기 33%로 추격</td></tr>
       <tr><td>🏭 주력 제품</td><td class="num">HBM3E / HBM4 · 서버 DRAM · NAND(eSSD)</td><td class="num">AI 메모리 핵심</td></tr>
-      <tr><td>🇺🇸 Solidigm(NAND 자회사)</td><td class="num">프리IPO 밸류에이션 ~$35B</td><td class="num">나스닥 상장 추진 중, 공식 확정 전</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.10.27 (예정)</td><td class="num">Q3 2026, 확정 일정</td></tr>
-      <tr><td>🇺🇸 ADR 상장</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7 상장, 약 265억 달러 조달</td></tr>
+      <tr><td>🇺🇸 Solidigm(NAND 자회사)</td><td class="num">기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span></td><td class="num">美 IPO 검토(2027년 이후), 초기 단계</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026년 10월 말 (예상)</td><td class="num">Q3 2026 · 회사 공지 전 (Q2는 7/29 08:00 발표)</td></tr>
+      <tr><td>🇺🇸 ADR 상장</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7.10 상장, 약 $265억<span class="krw">(약 35조 7,910억원)</span> 조달</td></tr>
     </table>
 
     <h3>매출구조 (개념도)</h3>
@@ -437,15 +503,15 @@
           <div class="desc">엔터프라이즈 SSD·eSSD, 옛 인텔 낸드사업 기반</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q2 2026 약 79.3조원, 영업이익률 76%) ↓</div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q2 2026 79.3조원, 영업이익률 76.3% · Q3 컨센서스 99.5조원) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>재투자 — R&D·설비 증설</b>
           <div class="desc">HBM4E 개발, 용인 클러스터·M15X 등 국내 생산능력 확충, 인디애나 패키징 공장($4B)</div>
         </div>
         <div class="flow-box reward">
-          <b>Solidigm 독자 자금조달</b>
-          <div class="desc">나스닥 상장 추진(프리IPO ~$35B)으로 모회사 투자 부담 없이 美 NAND 사업 확장 자금 확보</div>
+          <b>Solidigm 독자 자금조달 (검토)</b>
+          <div class="desc">美 IPO 검토(가치 최대 $150B, $15B 조달) — 뉴욕주 NAND 공장 건설 자금 확보, 다만 모회사 가치 할인 우려</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -462,7 +528,7 @@
       AI 서버향 고부가 제품인 HBM이 최근 매출·수익성 개선을 견인하고 있습니다. NAND는 미국 자회사 Solidigm을
       통해 별도 운영되며, 이 자회사의 나스닥 상장이 성사되면 모회사 투자 부담 없이 독자적으로 자금을 조달해
       미국 내 사업을 확장할 수 있는 구조로 이어집니다. Q2 실적은 사상 최고 수준이었고, HBM4와 미국 공장 투자,
-      Solidigm 상장이 중장기 스토리입니다. 단기적으로는 글로벌 금리 상승, 삼성 추격이 부담 요인입니다.
+      Solidigm 상장이 중장기 스토리입니다. 단기적으로는 <b>美 금리 고공행진·외국인 매도·삼성의 HBM 추격</b>이 부담 요인이며, Solidigm 상장은 자금조달에는 도움이 되지만 모회사 가치 할인 논란을 낳고 있습니다.
     </div>
   </section>
 
@@ -471,36 +537,83 @@
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>지속</td>
-        <td>Solidigm 나스닥 상장 관련 후속 공시, 中 CXMT DRAM 경쟁 진행상황, 한전 전력공급 협상 진행</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 1일 (목) 오전 5:00~5:30</td>
-        <td>Micron(마이크론) FY26 4분기 실적 발표(미국시각 9/30 장 마감 후) — 메모리 업종 벨웨더, SK하이닉스 주가에 간접 영향</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 27일 (화) (예정)</td>
-        <td>SK하이닉스 Q3 2026 실적 발표 — HBM 출하·가격·Q4 가이던스 핵심</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>지속</td>
-        <td>삼성전자 HBM4 조기공급 추진, 본주·ADR 가격 괴리, 미 국채금리 흐름</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
+      <tr><td>지속</td><td>美 국채금리·유가(美-이란), 외국인 수급, Solidigm 상장 후속 보도, 삼성 HBM4 추격</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 5일 (월)</td><td>🇰🇷 개천절 대체공휴일 — 한국 증시 휴장 (美 ISM 서비스업 23:00 발표는 10/6 개장 때 반영)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 9일 (금)</td><td>🇰🇷 한글날 — 한국 증시 휴장 (이번 주 한국장은 10/6~8 3일만 거래)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 둘째 주 (예상)</td><td>삼성전자 3분기 잠정실적 — 메모리 업황·HBM 가격의 첫 확인, SK하이닉스 실적 가늠자</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — AI 칩 생산(CoWoS) 증설 = HBM 수요 지표</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 말 (예상)</td><td><b>SK하이닉스 Q3 2026 실적</b> (회사 공지 전) — HBM4 출하·가격, Q4 가이던스, Solidigm 상장 언급 여부</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>NVIDIA 실적 — 최대 HBM 고객의 수요 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>메모리 호황으로 사상 최대 실적이 확실한데,</em><br><strong>美 금리와 외국인 매도가 발목을 잡는다.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>3분기 영업이익 78조원 예상</b><span>1년 전보다 약 7배 · 사상 최대</span></li>
+          <li><b>경쟁사 마이크론도 대박</b><span>"메모리 호황 아직 안 끝났다" 확인 · HBM 값 내년 2배 이상 전망</span></li>
+          <li><b>9월 반도체 수출 사상 최대</b><span>81조원어치 · 전체 수출의 절반</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>외국인이 계속 팜</b><span>9/28 하루에만 1.7조원 매도</span></li>
+          <li><b>미국 금리가 너무 높음</b><span>10년물 5.3% · 24년 만에 최고</span></li>
+          <li><b>삼성이 빠르게 추격</b><span>HBM 점유율 21% → 33% · 자회사 상장 할인 우려도</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/6 (화)</div>
+        <div class="e">연휴 후 한국장 개장</div>
+        <div class="w">美 재료 한꺼번에 반영 · 갭 주의</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10월 둘째 주</div>
+        <div class="e">삼성 잠정실적 (예상)</div>
+        <div class="w">메모리 업황 첫 성적표</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">10월 말</div>
+        <div class="e">3분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선 (본주 · ADR)</h4>
+      <div class="rung ok"><span class="px">190만원 ↑</span><span>넘으면 → 다시 상승 🚀 (ADR $200 돌파 = 52주 신고가)</span></div>
+      <div class="rung now"><span class="px">184.1만원</span><span>지금 (10/2 종가 · ADR $195.13)</span></div>
+      <div class="rung warn"><span class="px">176만원</span><span>이 아래면 → 조심 ⚠️ (9/28~30 바닥)</span></div>
+      <div class="rung bad"><span class="px">169만원</span><span>최후 방어선 🛑 (9월 중순 저점)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 실적은 역대급이 거의 확실하지만, 주가는 <b>미국 금리와 외국인 매도</b>에 눌려 176만~190만원 박스에 있습니다.
+      <b>10월 말 실적 전까지는 박스 하단(176만원 근처)에서 나눠 사는</b> 전략이 무난하고, 190만원을 거래량과 함께 넘으면 추세가 다시 위로 열립니다.
+      ADR이 52주 고점 근처라 <b>미국장 분위기가 본주보다 먼저 좋아지고 있다</b>는 점은 긍정적 신호입니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.09.18 코스피 종가 / Q2 실적은 2026.07 발표 기준. 업데이트: 2026.09.19 (KST). 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있으며, ADR 가격은 본주 대비 비율(10 ADR = 1주)을 적용한 추정치가 포함될 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.10.02 코스피 종가 / ADR(SKHY) 2026.10.02 나스닥 종가(KST 10/3 05:00). 일별 시세는 Investing.com 기준.
+    Q2 실적은 2026.07.29 발표 기준, Q3 컨센서스는 파이낸셜뉴스(9/28) 집계. Q3 실적일은 회사 공식 공지 전입니다. 달러 금액의 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용.
+    시나리오 확률은 주관적 판단입니다. 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있습니다.
   </footer>
 
 </div>
@@ -588,7 +701,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SKHYUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 최근 스냅샷 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 ADR 종가 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

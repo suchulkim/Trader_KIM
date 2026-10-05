@@ -168,6 +168,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:#3a3f4a;}
 
@@ -255,6 +262,39 @@
     gap:24px;
   }
 
+  /* 6. 핵심 한눈에 */
+  .key-hero{background:linear-gradient(135deg,rgba(66,133,244,.18),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(66,133,244,.14); border:1px dashed var(--accent);} .rung.now .px{color:#7aa7f7;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -269,20 +309,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.30 (수) · 최신 업데이트</span>
+      <span>2026.10.04 (일) · 최신 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/29 16:00 ET) 기준 · 최근 6거래일 흐름 및 주요 일정 최신화</span>
+      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준 · 9/30~10/2 흐름 및 주요 일정 최신화</span>
     </div>
     <h1>Alphabet (GOOGL) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: GOOGLUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main" id="googlPriceMain">$340.92 <span id="googlLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
-        <div class="chg-down" id="googlPriceChange">9/29 종가 -0.53% · 2거래일 연속 하락, 장중 $338.02로 박스 하단($337) 재시험 (실시간 불러오는 중…)</div>
-        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">EU DMA 명령 항소·Muse 경쟁 우려·10년물 5%대 금리 부담 소화 중 · <span id="googlLiveTime">가격 갱신 중…</span></div>
+        <div class="price-main" id="googlPriceMain">$343.50 <span id="googlLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-up" id="googlPriceChange">10/2 종가 +1.56% (+$5.26) · 10/1 -1.7% 하락분 회복, $338선 지지 재확인 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">Gemini 4 Argon 출시·궤도 TPU 위성 발사 vs 퍼블리셔 $32억 손해배상 소송·10년물 5%대 금리 · <span id="googlLiveTime">가격 갱신 중…</span></div>
       </div>
       <div class="price-sub">
-        9/23 Meta 'Muse' 쇼크(-3.80%, $337.83) 이후 저가 매수와 Evercore 목표가 상향($450)으로 $342~344선을 회복했으나, 9/28~29 이틀 연속 밀리며 $340선까지 내려왔습니다. 9/29에는 구글이 EU의 검색 데이터 공유·안드로이드 AI 개방 명령에 항소했다는 소식과 나스닥 -0.92% 약세가 겹쳤습니다. 장중 $338.02까지 밀렸다가 $340.92로 마감해 9/23 저점 지지는 유지했습니다. 52주 최고가 $408.61(5/18) 대비 약 -16.6%.
+        9/30 차세대 모델 <b>Gemini 4 Argon</b>을 공개하며 시간외 $346.5까지 올랐습니다. 하지만 사이버보안 전문가 대상 제한 출시(Fairwind 프로그램)라 매출화 시점이 불확실하다는 평가에 10/1 -1.7%($338.24) 밀렸습니다.
+        10/2에는 Project Suncatcher 궤도 TPU 위성 발사(SpaceX Falcon 9)와 JPMorgan 강세 의견으로 +1.56% 반등했습니다. 같은 날 뉴욕 연방법원이 퍼블리셔들의 <b>$32억 손해배상 청구</b><span class="krw">(약 4조 3,220억원)</span> 배심 재판을 허용해 상단은 제한되었습니다.
+        여전히 $335~355 박스 안이며, 52주 최고가 $408.61(5/18) 대비 약 -15.9%입니다.
       </div>
     </div>
 
@@ -313,8 +355,8 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9월 내내 $337~$355 박스권. 9/23 장대음봉 이후 $342~344 횡보 반등이 9/25 고가($347.03)에서 막히고, 9/28~29 연속 음봉으로 박스 하단 재접근 — 하방 압력이 조금 더 우세. 200일 이동평균선(약 $337 부근)과 9/23 저점이 겹쳐 중요한 지지 구간.<br>
-      <b>15분봉</b>: <b>$337~338</b>(9/23 종가·9/29 장중 저점)이 1차 지지, 이탈 시 <b>$325~326</b>이 다음 지지. <b>$344~347</b>(9/25 고점대)가 1차 저항, <b>$351~355</b>가 2차 저항. 거래량은 2,000만주 안팎으로 줄어 관망세 지속.
+      <b>일봉</b>: 9월 이후 <b>$335~355 박스</b>가 이어지고 있습니다. 9/23 장대음봉($337.83) 뒤 $338선이 세 번째로 지지되었고(9/29 장중 $338.02 · 10/1 종가 $338.24), 10/2 양봉으로 하단 방어에 성공했습니다. 다만 50일선(약 $344)·200일선(약 $348, MarketBeat 집계) 바로 아래라 <b>이평선 저항</b>을 넘어야 반등 추세가 확인됩니다. 거래량도 평균(약 3,090만주)보다 적은 2,270만주에 그쳐 관망세입니다.<br>
+      <b>15분봉</b>: <b>$337~338</b>(9/23·10/1 종가)이 1차 지지, 이탈 시 <b>$333</b> → <b>$325</b>가 다음 지지입니다. <b>$344~348</b>(50·200일선, 9/30 종가)가 1차 저항, <b>$352.5~355</b>(주간 고점·박스 상단)가 2차 저항입니다.
     </div>
   </section>
 
@@ -324,41 +366,41 @@
     <table>
       <tr><th style="width:18%">날짜·종가($)</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/22(화)</b><br>$351.16<br><span class="chg-down">▼ -1.07%</span></td>
-        <td><b>OpenAI·Anthropic, AI 모델 가격 인하</b> — OpenAI 신모델 토큰 단가가 기존 대비 절반 수준으로, AI 가격 경쟁 우려 부각. 증권 집단소송 공판 개시(美 현지)</td>
-        <td>AI 수익화 마진 우려</td>
-      </tr>
-      <tr>
-        <td><b>9/23(수)</b><br>$337.83<br><span class="chg-down">▼ -3.80%</span></td>
-        <td><b>Meta 'Muse' 美 앱스토어 1위</b> — Gmail·캘린더·Docs와 연동해 사용자 대신 작업을 수행, "검색을 거치지 않는 AI 에이전트"가 검색 광고를 잠식할 수 있다는 우려로 급락. 빅테크 내 AI 자금 이동(Meta 강세·Alphabet 약세)</td>
-        <td>거래량 3,560만주 · 9월 최대 낙폭</td>
-      </tr>
-      <tr>
-        <td><b>9/24(목)</b><br>$342.36<br><span class="chg-up">▲ +1.34%</span></td>
-        <td>낙폭과대 인식 속 저가 매수 유입. Evercore ISI, 목표주가 $420→<b>$450</b> 상향 — "8월 설문에서 78%가 여전히 구글을 주 검색엔진으로 사용"</td>
-        <td>반등 시도</td>
-      </tr>
-      <tr>
         <td><b>9/25(금)</b><br>$343.92<br><span class="chg-up">▲ +0.46%</span></td>
-        <td>TPU 경제성(자체 칩 투자 회수 1년 미만)·Gemini 기업 채택(Fortune 100의 약 90%) 재조명, 소폭 상승</td>
+        <td>TPU 경제성(자체 칩 투자 회수 1년 미만)과 Gemini 기업 채택(Fortune 100의 약 90%)이 재조명되며 소폭 올랐습니다.</td>
         <td>$342~344 횡보</td>
       </tr>
       <tr>
         <td><b>9/28(월)</b><br>$342.75<br><span class="chg-down">▼ -0.34%</span></td>
-        <td>OpenAI·Anthropic·MS·Meta 연구진의 "자기개선형 AI 규제 강화" 촉구 논문 발표, 국채금리·유가 상승에 나스닥 약세. Muse 경쟁 우려 지속</td>
+        <td>Piper Sandler가 목표가를 $395 → <b>$400</b>으로 올렸습니다(비중확대). 그러나 국채금리·유가 상승에 나스닥이 약세였고, Muse 경쟁 우려도 이어졌습니다.</td>
         <td>반도체 급락일 대비 선방</td>
       </tr>
       <tr>
         <td><b>9/29(화)</b><br>$340.92<br><span class="chg-down">▼ -0.53%</span></td>
-        <td><b>구글, EU DMA 명령에 항소</b> — 7월 EU 집행위의 "검색 데이터 경쟁사 공유(2027.1 시행)·안드로이드를 경쟁 AI 비서에 개방" 명령에 대해 EU 일반법원에 제소, "개인 검색 기록 공유는 사용자 프라이버시에 돌이킬 수 없는 피해" 주장. 증시는 강보합 출발 후 하락 반전(나스닥 -0.92%), 10월 FOMC 금리 인상 확률 약 70% 반영. OpenAI는 안전성 문제로 차세대 모델 출시를 보류</td>
-        <td>장중 $338.02 · 박스 하단 재시험 · 거래량 2,005만주</td>
+        <td><b>EU DMA 명령에 항소</b>했습니다(검색 데이터 공유·안드로이드 AI 개방 명령). 나스닥 -0.92%, 10월 FOMC 인상 확률 약 70%가 반영되었습니다.</td>
+        <td>장중 $338.02 · 박스 하단 재시험</td>
+      </tr>
+      <tr>
+        <td><b>9/30(수)</b><br>약 $344<br><span class="chg-up">▲ 약 +0.9%</span></td>
+        <td>차세대 플래그십 <b>Gemini 4 Argon</b>을 공개했습니다. 출력 한도를 100만 토큰으로 이전 대비 약 15.6배 늘렸고, 입력 100만 토큰당 $2·출력 $10으로 Anthropic보다 저렴합니다. 코드 취약점 자동 탐지·패치에 특화되어 있고, 공개 직후 시간외에서 $346.5까지 올랐습니다.</td>
+        <td>3분기 마감 · 분기말 종가는 10/1 등락률 기준 추정</td>
+      </tr>
+      <tr>
+        <td><b>10/1(목)</b><br>$338.24<br><span class="chg-down">▼ -1.7%</span></td>
+        <td>Argon이 검증된 사이버보안 전문가(<b>Fairwind 프로그램</b>)에게만 제한 출시되고, 일반 기업 공개는 "추가 안전장치 이후"로 미뤄졌습니다. <b>매출화 시점이 불투명</b>하다는 평가로 S&amp;P500(+0.2%) 상승일에 역행 하락했습니다.</td>
+        <td>$338선 3차 지지 테스트</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$343.50<br><span class="chg-up">▲ +1.56%</span></td>
+        <td><b>Project Suncatcher</b> 궤도 TPU 시험위성을 SpaceX Falcon 9로 발사했습니다(우주 데이터센터 실증). JPMorgan의 강세 의견 유지도 더해졌습니다. 반면 뉴욕 남부지법(Castel 판사)은 USA Today·Daily Mail과 퍼블리셔 약 5,000곳의 <b>광고기술 독점 손해배상 $32억</b><span class="krw">(약 4조 3,220억원)</span> 배심 재판 진행을 허용했습니다.</td>
+        <td>장중 $341.5~345.7 · 거래량 2,270만주(평균 이하)</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 9/16 반독점 판결로 <b>美 규제 리스크는 한 고비를 넘겼지만</b>, <b>"AI 에이전트가 검색을 대체한다"는 경쟁 서사</b>에 이어 <b>EU DMA 규제</b>가 다시 부각됐습니다.
-      9/23 급락 이후 반등이 $347선에서 막히고 이틀 연속 밀리며 $337~338 지지선을 재시험 중입니다. 다만 거래량이 크게 늘지 않아 투매보다는 관망에 가깝고,
-      10/27 Q3 실적 발표 전까지는 검색 매출 방어 여부에 대한 확인 심리가 우세할 것으로 보입니다. 경쟁사 OpenAI의 신모델 출시 보류는 단기적으로 구글의 경쟁 부담을 다소 덜어주는 요인입니다.
+      → 9월 말 구글 주가는 <b>"AI 기술력 과시 vs 수익화·규제 불확실성"</b> 사이에서 오갔습니다. Gemini 4 Argon은 성능(출력 15.6배)과 가격(경쟁사 대비 저가) 모두 인상적이었지만, <b>제한 출시로 매출 반영 시점이 불분명</b>해 하루 만에 상승분을 반납했습니다.
+      10/2 궤도 TPU 위성 발사로 다시 반등했지만, 광고기술 판결의 <b>민사 손해배상($32억)</b>이 새 리스크로 추가되었습니다.
+      $338선 지지가 세 차례 확인된 점은 긍정적입니다. 다만 50·200일선($344~348)을 회복하지 못하면 <b>10월 말 Q3 실적까지 $335~355 박스 횡보</b>가 이어질 가능성이 큽니다.
     </div>
   </section>
 
@@ -369,47 +411,65 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>9/16 광고기술 반독점 최종 판결 — AdX·DFP 강제 매각 없이 행위 규제(Prebid 연동, 6년 감독관)로 마무리, 최악의 분할 시나리오 해소</li>
-        <li>Google Cloud 고성장(+82% YoY, 백로그 $5,140억 중 50% 이상 2년 내 매출 인식 전망) — AI 수요의 실질적 매출 전환</li>
-        <li>TPU 경제성 — "자체 칩 투자 회수 1년 미만, 추론 가격 대비 성능 80% 우위"(9/8 Goldman 컨퍼런스)로 AI 가격 경쟁 속 원가 우위</li>
-        <li>Gemini 월간 사용자 9.5억 명, Fortune 100의 약 90%가 Gemini Enterprise 사용 — 기업용 에이전트(Gemini Spark) 경쟁력</li>
-        <li>Evercore ISI 목표가 $450 상향, 버크셔 해서웨이 지분 확대·핀란드 $15.1B AI 인프라 투자 등 장기 신뢰 요인</li>
-        <li>OpenAI의 차세대 모델 출시 보류(9/29, 안전성 문제) — 프런티어 모델 경쟁 압력 일시 완화</li>
+        <li><b>Gemini 4 Argon</b>(9/30): 출력 100만 토큰, 입력 100만 토큰당 $2로 Anthropic 대비 저가입니다. 내부 에이전트로 데이터센터 메모리 300TiB 이상을 확보해 자체 원가 효율을 입증했습니다.</li>
+        <li>Google Cloud 고성장: +82% YoY, 백로그 $5,140억<span class="krw">(약 694조 2,080억원)</span> 중 50% 이상이 2년 내 매출로 인식될 전망입니다.</li>
+        <li>TPU 경제성: 자체 칩 투자 회수 1년 미만이고, <b>Project Suncatcher</b> 궤도 TPU 실증(10/1 발사)으로 장기 AI 인프라 옵션을 확보했습니다. 4분기부터 TPU 시스템 외부 판매도 늘어날 예정입니다.</li>
+        <li>9/16 광고기술 반독점 판결에서 AdX·DFP 강제 매각 없이 행위 규제로 마무리되어, 최악의 분할 시나리오는 해소되었습니다.</li>
+        <li>애널리스트 압도적 매수: 매수 51 · 보유 4, 평균 목표가 약 $426~429(현재가 대비 +24% 안팎). Piper Sandler $400, Jefferies $445, Evercore $450입니다.</li>
+        <li>Forward PER 약 17배로 빅테크 중 저평가 구간이고, 1년 수익률 +39%(S&amp;P500 +16.8%)입니다.</li>
       </ul>
     </div>
 
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>Meta Muse 등 AI 에이전트의 검색 대체 우려</b> — 검색 광고(매출 52.8%) 성장 둔화 리스크, 현재 주가의 최대 부담</li>
-        <li>OpenAI·Anthropic 가격 인하로 AI 가격 전쟁 — Gemini 구독·API 수익성 압박</li>
-        <li>CapEx 가이던스 $195~205B 상향, 2분기 FCF <b>-$5.9B</b>(영업현금흐름 $39.1B < CapEx $44.9B), 감가상각 부담 확대</li>
-        <li>DOJ 항소 가능성(광고기술 판결 검토 중), 증권 집단소송 진행, AI 규제 강화 논의</li>
-        <li><b>EU DMA 명령</b> — 2027년부터 검색 데이터 경쟁사 공유·안드로이드 AI 개방 의무, 구글 항소(9/29)로 법적 다툼 장기화. 7월 €8.9억 과징금에 이은 유럽발 규제 부담</li>
-        <li>9/16 FOMC 25bp 인상 이후 금리 부담 — 美 10년물 5.2%대(2007년 고점 5.32% 근접), 10월 추가 인상 확률 약 70%로 빅테크 밸류에이션 상단 제한</li>
+        <li><b>Meta Muse 등 AI 에이전트의 검색 대체 우려</b>: 검색 광고(매출 52.8%) 성장 둔화 리스크이자 현재 주가의 최대 부담입니다.</li>
+        <li><b>광고기술 민사소송</b>: 10/2 뉴욕 연방법원이 퍼블리셔들의 $32억<span class="krw">(약 4조 3,220억원)</span> 손해배상 배심 재판을 허용했습니다(재판일 미정). DOJ 항소 가능성(11월 중순 기한)도 남아 있습니다.</li>
+        <li><b>AI 수익화 지연</b>: Argon 제한 출시로 매출 반영 시점이 불확실하고, OpenAI·Anthropic 가격 인하로 AI 가격 전쟁이 이어지고 있습니다.</li>
+        <li><b>CapEx·FCF 부담</b>: CapEx 가이던스 $195~205B<span class="krw">(약 263조 3,670억~276조 8,730억원)</span>이고, 2분기 FCF <b>-$5.9B</b><span class="krw">(약 -7조 9,690억원)</span>였습니다(영업현금흐름 $39.1B &lt; CapEx $44.9B). 감가상각 부담도 커지고 있습니다.</li>
+        <li><b>EU DMA 명령</b>: 2027년부터 검색 데이터 공유·안드로이드 AI 개방 의무가 생기고, 구글 항소(9/29)로 법적 다툼이 장기화될 전망입니다.</li>
+        <li><b>금리</b>: 9/16 FOMC 인상(3.75~4.00%), 10년물 약 5.25%(2007년 이후 최고), 10월 추가 인상 확률 약 70%로 빅테크 밸류에이션 상단이 제한됩니다.</li>
       </ul>
     </div>
 
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$347(9/25 고점) 돌파 후 $355 회복 시 Muse 충격 소화 신호 → $365~$380, Q3 실적에서 검색 성장 유지·Cloud 가속 확인 시 52주 신고가($408.61) 재도전</div>
-      <div class="scenario base"><b>기본</b>$335~$355 박스권에서 10/27 Q3 실적, DOJ 항소 여부, 10/28 FOMC를 소화하며 횡보</div>
-      <div class="scenario bear"><b>약세</b>$337(9/23 저점·200일선) 종가 이탈 시 $325 부근 1차 조정, 에이전트 경쟁 우려 확산 시 $320선, 실적에서 검색 성장 둔화·FCF 적자 확대 시 $300선 테스트</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스 상단 재테스트 후 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">335~355</td>
+        <td>Argon 수익화·광고기술 소송 등 재료가 엇갈린 채 10월 말 Q3 실적을 기다리는 경우. 50·200일선(344~348)을 넘어도 355를 종가로 넘지 못하고 335~355 사이를 오갑니다</td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">355 → 380, 넘으면 400~408</td>
+        <td>Argon 기업 공개 확대나 Q3 실적에서 검색 두 자릿수 성장과 Cloud 가속이 확인되는 경우. <b>355 위 종가 마감(거래량 동반)</b>이 확인 신호이고, 380을 넘으면 Piper 목표가 400과 52주 최고가 408.6이 열립니다</td>
+      </tr>
+      <tr>
+        <td>③ 하방 이탈</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">335 → 325 → 300</td>
+        <td>AI 에이전트의 검색 잠식 우려가 커지거나 10월 FOMC 추가 인상, 실적에서 검색 성장 둔화·FCF 적자 확대가 나오는 경우. 335(박스 하단·9/23 저점권)를 종가로 깨면 325, 그 아래는 300선까지 열립니다</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 현재 차트 구조·이벤트 일정·매크로를 종합한 주관적 판단이며, Q3 실적(10월 말)·10/29 FOMC 이후 재조정이 필요합니다. 가격 단위: USD(나스닥 GOOGL 종가 기준).</div>
   </section>
 
   <!-- 3. 매출구조 -->
   <section>
-    <h2>4. 매출 구조 (2026년 2분기 기준, 10/27(美 현지) 3분기 실적 발표 대기 중)</h2>
+    <h2>4. 매출 구조 (2026년 2분기 기준, 10월 말 3분기 실적 발표 대기 중)</h2>
+    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,350.6원 (2026.10.02 서울 외환시장 주간 종가 기준, 10억원 단위 반올림)</p>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>🔍 검색 및 기타(Search & Other)</td><td class="num">$63.3B</td><td class="num" style="color:var(--pos-text)">+17%</td><td class="num">52.8%</td></tr>
-      <tr><td>☁️ Google Cloud</td><td class="num">$24.8B</td><td class="num" style="color:var(--pos-text)">+82%</td><td class="num">20.7%</td></tr>
-      <tr><td>📱 구독·플랫폼·기기</td><td class="num">$12.9B</td><td class="num" style="color:var(--pos-text)">+15%</td><td class="num">10.8%</td></tr>
-      <tr><td>▶️ YouTube 광고</td><td class="num">$11.1B</td><td class="num" style="color:var(--pos-text)">+13%</td><td class="num">9.2%</td></tr>
-      <tr><td>🌐 Google 네트워크(기타)</td><td class="num">$7.2B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">6.0%</td></tr>
-      <tr><td>🚗 기타 베팅(Waymo 등)</td><td class="num">$0.38B</td><td class="num" style="color:var(--text-soft)">-</td><td class="num">0.3%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$119.8B</b></td><td class="num"><b>+24%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>🔍 검색 및 기타(Search & Other)</td><td class="num">$63.3B<span class="krw">(약 85조 4,930억원)</span></td><td class="num" style="color:var(--pos-text)">+17%</td><td class="num">52.8%</td></tr>
+      <tr><td>☁️ Google Cloud</td><td class="num">$24.8B<span class="krw">(약 33조 4,950억원)</span></td><td class="num" style="color:var(--pos-text)">+82%</td><td class="num">20.7%</td></tr>
+      <tr><td>📱 구독·플랫폼·기기</td><td class="num">$12.9B<span class="krw">(약 17조 4,230억원)</span></td><td class="num" style="color:var(--pos-text)">+15%</td><td class="num">10.8%</td></tr>
+      <tr><td>▶️ YouTube 광고</td><td class="num">$11.1B<span class="krw">(약 14조 9,920억원)</span></td><td class="num" style="color:var(--pos-text)">+13%</td><td class="num">9.2%</td></tr>
+      <tr><td>🌐 Google 네트워크(기타)</td><td class="num">$7.2B<span class="krw">(약 9조 7,240억원)</span></td><td class="num" style="color:var(--text-soft)">-</td><td class="num">6.0%</td></tr>
+      <tr><td>🚗 기타 베팅(Waymo 등)</td><td class="num">$0.38B<span class="krw">(약 5,130억원)</span></td><td class="num" style="color:var(--text-soft)">-</td><td class="num">0.3%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$119.8B</b><span class="krw">(약 161조 8,020억원)</span></td><td class="num"><b>+24%</b></td><td class="num"><b>100%</b></td></tr>
     </table>
 
     <div class="rev-bar-wrap">
@@ -441,7 +501,7 @@
     </div>
 
     <div class="callout">
-      → 검색 광고가 여전히 매출의 절반 이상(52.8%)을 차지하는 구조이나, <b>Google Cloud의 성장 기여도가 빠르게 확대</b>되고 있습니다(+82% YoY, 비중 20.7%). AI 에이전트 경쟁 속에서 <b>검색 매출이 두 자릿수 성장을 지키는지</b>, 그리고 클라우드 성장 지속과 AI 수익화 지표가 Q3 실적의 핵심 관전 포인트입니다.
+      → 검색 광고가 여전히 매출의 절반 이상(52.8%)을 차지하는 구조이나, <b>Google Cloud의 성장 기여도가 빠르게 확대</b>되고 있습니다(+82% YoY, 비중 20.7%). AI 에이전트 경쟁 속에서 <b>검색 매출이 두 자릿수 성장을 지키는지</b>, 그리고 클라우드 성장 지속과 AI 수익화 지표가 Q3 실적의 핵심 관전 포인트입니다. 3분기 컨센서스는 <b>매출 약 $127.3B</b><span class="krw">(약 171조 8,640억원)</span>, <b>EPS $3.04</b><span class="krw">(약 4,106원)</span>입니다(MarketBeat 집계).
     </div>
   </section>
 
@@ -451,28 +511,33 @@
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr>
-        <td>진행 중 (미 현지 9/22 개시)</td>
-        <td>증권 집단소송(2020.9~2023.1 매수분) 공판 — 헤드라인 리스크 주시</td>
+        <td>진행 중 (10/2 재판 허용, 기일 미정)</td>
+        <td>광고기술 독점 퍼블리셔 손해배상 소송 (뉴욕 남부지법, 청구액 약 $32억) — 배심 재판 일정 확정 시 헤드라인 리스크</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
         <td>진행 중 (9/29 제소)</td>
-        <td>EU 일반법원 — DMA 검색 데이터 공유·안드로이드 AI 개방 명령 항소 (판결까지 장기 소요, 관련 헤드라인 주의)</td>
+        <td>EU 일반법원 — DMA 검색 데이터 공유·안드로이드 AI 개방 명령 항소 (판결까지 장기 소요)</td>
         <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
-        <td>10월 1일 (목) (미 현지 9/30)</td>
-        <td>증권 집단소송 옵트아웃(제외 신청) 마감일(우편소인 기준)</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
+        <td>10월 중순 (미정)</td>
+        <td>Q3 실적 발표일 공식 공지 예상 · Gemini 4 Argon 기업·API 고객 확대 여부</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
       </tr>
       <tr>
-        <td>10월 28일 (수) 새벽 (예정)</td>
-        <td>FY2026 3분기 실적 발표 (미 현지 10/27 화 장 마감 후, 회사 공식 확정 전) — 검색 매출 성장 유지(Muse 영향), Cloud 성장·백로그, CapEx·FCF 가이던스가 핵심</td>
+        <td>10월 17일 (토) 오전 5:00 (현지 10/16 금 정규장 마감)</td>
+        <td>10월 월간 옵션만기 — 박스($335~355) 상하단 공방·변동성 확대 구간</td>
+        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+      </tr>
+      <tr>
+        <td>10월 28일 (수) 또는 29일 (목) 오전 5시경 (미확정)</td>
+        <td><b>FY2026 3분기 실적 발표</b> (현지 10/27 화 또는 10/28 수 장마감 후 — 회사 공식 공지 전, 데이터 제공처마다 엇갈림) — 검색 매출 성장 유지(Muse 영향), Cloud 성장·백로그, CapEx·FCF 가이던스, Argon 수익화 로드맵</td>
         <td><span class="star">★★★★★</span></td>
       </tr>
       <tr>
         <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 — 9/16 인상 이후 추가 인상 여부, 빅테크 밸류에이션 방향성</td>
+        <td>FOMC 금리결정 발표 — 9/16 인상 이후 추가 인상 여부(시장 확률 약 70%), 빅테크 밸류에이션 방향성</td>
         <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
       </tr>
       <tr>
@@ -483,8 +548,63 @@
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 🔍</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>AI 기술은 1등급인데,</em><br><strong>그게 언제 돈이 될지 모르고 소송이 계속 따라다닌다.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>새 AI 'Gemini 4 Argon' 출시</b><span>성능 좋고 경쟁사보다 저렴</span></li>
+          <li><b>클라우드 폭풍 성장</b><span>1년 새 +82% · 받아둔 주문만 694조원</span></li>
+          <li><b>주가가 싼 편</b><span>빅테크 중 저평가 · 월가 목표가 지금보다 +24%</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>AI가 돈 되는 시점이 불확실</b><span>Argon은 일부 전문가에게만 공개</span></li>
+          <li><b>검색을 위협받는 중</b><span>메타 AI 비서 등이 검색 광고(매출의 절반)를 잠식할 수 있음</span></li>
+          <li><b>소송이 줄줄이</b><span>언론사 4.3조원 손해배상, EU 규제, 美 법무부 항소 가능성</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date hot">
+        <div class="d">10/29 새벽</div>
+        <div class="e">3분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+      <div class="key-date">
+        <div class="d">11월 중순</div>
+        <div class="e">美 법무부 항소 마감</div>
+        <div class="w">항소하면 악재</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$355 ↑</span><span>여기를 넘으면 → 상승 시작 🚀 (다음 $380~400)</span></div>
+      <div class="rung now"><span class="px">$343</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$335</span><span>이 아래면 → 조심 ⚠️</span></div>
+      <div class="rung bad"><span class="px">$325</span><span>최후 방어선 🛑</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 9월 내내 <b>$335~355 안에서 오르락내리락</b> 중입니다. 박스를 벗어날 계기는 <b>10/29 실적</b>이니,
+      그 전엔 <b>박스 아래쪽($335~340) 근처에서 나눠서</b> 사는 게 안전합니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.29 16:00 ET 정규장 마감 (KST 2026.09.30 오전 5:00) / 실적은 Alphabet FY2026 Q2(발표일 2026.07.22, 미 현지) 기준. 가격은 OKX 퍼블릭 API(GOOGLUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 9/30 종가는 10/1 등락률 기준 추정치. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용. 시나리오 확률은 주관적 판단 / 실적은 Alphabet FY2026 Q2(발표일 2026.07.22, 미 현지) 기준. 가격은 OKX 퍼블릭 API(GOOGLUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 
 </div>

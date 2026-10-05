@@ -249,6 +249,155 @@
   @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
   .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
 
+  /* 6. 핵심 한눈에 보기 전용 스타일 */
+  .summary-card-top{
+    background: rgba(0, 113, 227, 0.05);
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    margin-bottom: 14px;
+  }
+  .summary-card-top .sub-head{
+    font-size: 12px;
+    color: var(--text-soft);
+    margin-bottom: 4px;
+  }
+  .summary-card-top .main-headline{
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .summary-card-top .main-headline span{
+    color: var(--up);
+  }
+
+  .summary-grid-2col{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px){
+    .summary-grid-2col{ grid-template-columns: 1fr; }
+  }
+
+  .box-pos{
+    background: var(--card);
+    border: 1px solid var(--pos-text);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .box-neg{
+    background: var(--card);
+    border: 1px solid var(--neg-text);
+    border-radius: 12px;
+    padding: 14px 16px;
+  }
+  .box-title-pos{
+    color: var(--pos-text);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .box-title-neg{
+    color: var(--neg-text);
+    font-weight: 700;
+    font-size: 14px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .summary-item{
+    margin-bottom: 10px;
+  }
+  .summary-item:last-child{ margin-bottom: 0; }
+  .summary-item .title{
+    font-weight: 700;
+    font-size: 13.5px;
+  }
+  .summary-item .desc{
+    font-size: 12.5px;
+    color: var(--text-soft);
+  }
+
+  .events-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 600px){
+    .events-grid{ grid-template-columns: 1fr; }
+  }
+  .event-card{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+  }
+  .event-card .date{
+    font-size: 16px;
+    font-weight: 700;
+  }
+  .event-card .name{
+    font-size: 13px;
+    color: var(--text-soft);
+  }
+  .event-card .sub{
+    font-size: 11.5px;
+    color: var(--text-soft);
+    margin-top: 2px;
+  }
+
+  .price-levels{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  .price-level-row{
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 13.5px;
+  }
+  .price-level-row .lvl-tag{
+    font-weight: 700;
+    width: 65px;
+    flex-shrink: 0;
+  }
+  .price-level-row .lvl-desc{
+    flex: 1;
+    color: var(--text);
+  }
+
+  .lvl-up{ background: rgba(217, 38, 38, 0.1); border: 1px solid var(--up); }
+  .lvl-up .lvl-tag{ color: var(--up); }
+  .lvl-curr{ background: rgba(0, 113, 227, 0.1); border: 1px solid var(--accent); }
+  .lvl-curr .lvl-tag{ color: var(--accent); }
+  .lvl-caution{ background: rgba(230, 140, 0, 0.1); border: 1px solid #e68c00; }
+  .lvl-caution .lvl-tag{ color: #e68c00; }
+  .lvl-stop{ background: rgba(197, 48, 48, 0.1); border: 1px solid var(--neg-text); }
+  .lvl-stop .lvl-tag{ color: var(--neg-text); }
+
+  .summary-conclusion{
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 13.5px;
+    color: var(--text-soft);
+  }
+  .summary-conclusion b{ color: var(--text); }
+
   footer{
     margin-top:44px;
     padding-top:14px;
@@ -515,6 +664,8 @@
     </div>
   </section>
 
+  
+
   <section>
     <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
@@ -547,6 +698,88 @@
     </table>
   </section>
 
+<section>
+    <h2>7. 핵심 한눈에 보기 🔍</h2>
+
+    <div class="summary-card-top">
+      <div class="sub-head">한 줄 요약</div>
+      <div class="main-headline">
+        인도량 호재로 <span>$370선 급반등</span>에 성공했으나,<br>
+        10/21 실적 마진과 로드스터·FOMC 일정을 소화하는 관망세가 이어진다.
+      </div>
+    </div>
+
+    <div class="summary-grid-2col">
+      <div class="box-pos">
+        <div class="box-title-pos">👍 좋은 점 3가지</div>
+        <div class="summary-item">
+          <div class="title">1. 3분기 인도량 서프라이즈</div>
+          <div class="desc">48.65만대로 예상 상회 · 연간 판매 감소 우려 일부 해소</div>
+        </div>
+        <div class="summary-item">
+          <div class="title">2. 세미트럭 양산 본격 출범</div>
+          <div class="desc">네바다 신공장 연 5만대 규모 · 상용차 신규 매출원 개척</div>
+        </div>
+        <div class="summary-item">
+          <div class="title">3. $300억 유동성 확보</div>
+          <div class="desc">대규모 신용한도 체결로 Capex 및 AI 투자 재원 마련</div>
+        </div>
+      </div>
+
+      <div class="box-neg">
+        <div class="box-title-neg">👎 나쁜 점 3가지</div>
+        <div class="summary-item">
+          <div class="title">1. 마진 회복 여부의 불확실성</div>
+          <div class="desc">Q2 영업이익률 1.4% 급락 · 재고 소진형 비트의 질적 한계</div>
+        </div>
+        <div class="summary-item">
+          <div class="title">2. 주요 이벤트 및 일정 재연기</div>
+          <div class="desc">로드스터 공개 10/15로 연기 · 옵티머스 생산 차질 보도</div>
+        </div>
+        <div class="summary-item">
+          <div class="title">3. 고금리 및 규제 리스크</div>
+          <div class="desc">국채금리 상승으로 할부 부담 지속 · NHTSA 감사 진행</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="events-grid">
+      <div class="event-card">
+        <div class="date">10/16 오전 (KST)</div>
+        <div class="name">로드스터 공개 이벤트</div>
+        <div class="sub">현지 10/15 · 웨이코</div>
+      </div>
+      <div class="event-card">
+        <div class="date">10/22 오전 (KST)</div>
+        <div class="name">Q3 실적 발표 (예상)</div>
+        <div class="sub">현지 10/21 장마감 후</div>
+      </div>
+    </div>
+
+    <div class="price-levels">
+      <div style="font-size: 13px; font-weight: 700; margin-bottom: 2px;">📍 가격 기준선</div>
+      <div class="price-level-row lvl-up">
+        <div class="lvl-tag">$385 ↑</div>
+        <div class="lvl-desc">여기를 넘으면 → 상단 돌파 & 상승 추세 시작 🚀 (다음 $400~420)</div>
+      </div>
+      <div class="price-level-row lvl-curr">
+        <div class="lvl-tag">$370.59</div>
+        <div class="lvl-desc">지금 (10/2 정규장 종가 기준)</div>
+      </div>
+      <div class="price-level-row lvl-caution">
+        <div class="lvl-tag">$354</div>
+        <div class="lvl-desc">이 아래면 → 조심 ⚠️ (10/1 저점 & 지지선)</div>
+      </div>
+      <div class="price-level-row lvl-stop">
+        <div class="lvl-tag">$330</div>
+        <div class="lvl-desc">최후 방어선 🛑</div>
+      </div>
+    </div>
+
+    <div class="summary-conclusion">
+      💡 <b>결론</b>: 인도량 서프라이즈로 $354 지지 후 $370선까지 빠르게 회복했습니다. 단기적으로는 <b>$354~385 박스권</b> 내 행보가 예상되며, <b>10/15 로드스터 공개</b>와 <b>10/21 실적 발표(자동차 마진 회복 여부)</b>가 상단($385) 돌파를 결정할 주요 분수령이 될 것입니다. 박스 하단 근처($354~360)에서의 분할 대응이 상대적으로 안전합니다.
+    </div>
+  </section>
   <footer>
     ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감(KST 2026.10.03 오전 5:00 환산). Q2 실적은 2026.07.22 발표 기준, 3분기 인도량은 2026.10.02 회사 발표 기준. 9/28 종가는 보도된 등락률 기준 추정치입니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용. 시나리오 확률은 주관적 판단이며, 로드스터 일정은 현지 사정에 따라 다시 바뀔 수 있습니다.
   </footer>

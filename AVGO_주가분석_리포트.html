@@ -72,6 +72,13 @@
   .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
@@ -98,28 +105,67 @@
   @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
   .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
+  .key-hero{background:linear-gradient(135deg,rgba(0,105,180,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(0,105,180,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.19 (토) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
+      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
     </div>
     <h1>Broadcom Inc. (AVGO) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AVGOUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$357.61</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">정규장 +2.97% (+$10.31) · 시간외 -0.18% · 3거래일 연속 상승, 9/15 저점 대비 +5.4%</div>
+        <div class="price-main"><span id="live-price">$355.14</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/2 정규장 ▲ +3.35% (+$11.50) · 2주간 -0.7% (9/18 $357.61 →) · $343~366 박스</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AVGOUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/14~15 유가·금리발 반도체 섹터 전반 약세와 Meta의 자체 AI칩 개발 경쟁 우려로 $339대까지 조정받았으나,
-        FOMC 금리 인상(9/16) 당일 보합 방어 후 9/17~18 애널리스트 강세 리포트와 반도체 랠리에 힘입어 이틀 연속
-        큰 폭 상승, $357.61로 마감했습니다. 6월 사상 최고가($480.77) 대비로는 여전히 약 -25.6% 조정된 상태입니다.
+        9/22 $364.54까지 오른 뒤 금리·유가 급등에 밀려 $343~366 사이에서 횡보 중입니다. 10/1 <b>Anthropic에 최대 $420억<span class="krw">(약 56조 7,250억원)</span> 칩 리스 자금 대출</b>(공시) 소식에 "고객에게 돈까지 빌려준다"는 우려로 -2.15%,
+        10/2엔 블랙스톤이 참여하는 <b>$600억<span class="krw">(약 81조 360억원)</span> 자금조달 구조</b>가 알려지며 "다년간 수요를 묶어 둔 것"이라는 재해석과 고용 쇼크·금리 하락에 +3.35% 반등했습니다.
+        6월 사상 최고가($480.77) 대비 약 -26%, 시가총액 약 $1.69조<span class="krw">(약 2,283조원)</span>.
       </div>
     </div>
 
@@ -146,48 +192,51 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/15 저점($339.27) 이후 3거래일 연속 상승하며 $357선 회복. $348~355 구간이 단기 저항에서 지지로 전환되는지 주목.<br>
-      <b>15분봉</b>: 9/17~18 이틀간 거래량 확대와 함께 상승 탄력 강화 — $360~370 저항대 반응 주시.
+      <b>일봉</b>: 9/15 저점 $339.27 → 9/22 $364.54(장중 $366.55) → 이후 2주간 <b>$343~366 박스</b>. 10/1 장중 $343.29까지 밀렸다가 10/2 장대양봉으로 박스 중단 회복. 8/19(Marvell의 구글 칩 수주 보도) 이전 가격 $380과 사상 최고가 $480.77은 아직 멀리 있습니다.<br>
+      <b>15분봉</b>: 10/2 시가 $349.86에서 $357.35까지 상승 후 $355 마감 — <b>$343~347</b>(10/1·9/24 저점)이 1차 지지, <b>$339</b>(9월 저점)가 2차 지지, <b>$362~366</b>이 저항입니다.
     </div>
   </section>
 
   <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일)</h2>
     <table>
       <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/14(월)</b><br>$344.72<br><span style="color:var(--up); font-weight:600;">▼ -4.77%</span></td>
-        <td>유가 급등·10년물 국채금리 19년래 최고치로 반도체 섹터 전반 동반 약세, Hock Tan CEO가 CNBC Cramer 방송에 출연했으나 시장 전반의 매크로 압력을 상쇄하지 못함</td>
-        <td>이번 주 최대 낙폭</td>
+        <td><b>9/25(금)</b><br>$352.81<br><span style="color:var(--up); font-weight:600;">▲ +0.70%</span></td>
+        <td>9/21~22 반도체 랠리로 $364.54까지 오른 뒤, 9/23~24 美 국채금리·유가 상승에 -3.9% 조정. 이날 소폭 반등</td>
+        <td>$347 지지</td>
       </tr>
       <tr>
-        <td><b>9/15(화)</b><br>$339.27<br><span style="color:var(--up); font-weight:600;">▼ -1.58%</span></td>
-        <td>Meta가 Nvidia 하드웨어 의존도를 낮추기 위해 자체 AI칩 개발을 준비 중이라는 보도 — 커스텀 반도체 경쟁 심화 우려, 일부 투자자는 "AVGO에 대한 이례적 반론(counterpoint)"을 제기하며 신중론 부각</td>
-        <td>이번 주 저점 형성</td>
+        <td><b>9/28(월)</b><br>$349.57<br><span style="color:var(--down); font-weight:600;">▼ -0.92%</span></td>
+        <td>美 30년물 금리 5.52%·유가 $100 근접으로 기술주 약세. 같은 날 NVDA는 자사주 매입 발표로 역행 상승 — AVGO는 상대적으로 약함</td>
+        <td>장중 $347.32</td>
       </tr>
       <tr>
-        <td><b>9/16(수)</b><br>$339.51<br><span style="color:var(--down); font-weight:600;">▲ +0.07%</span></td>
-        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 거의 보합 마감하며 낙폭을 방어, 저점을 다지는 흐름</td>
-        <td>매파적 FOMC를 무난히 소화</td>
+        <td><b>9/29(화)</b><br>$355.10<br><span style="color:var(--up); font-weight:600;">▲ +1.58%</span></td>
+        <td>저가 매수 유입. UBS($470)·Bernstein($575) 매수 의견 재확인</td>
+        <td>장중 $361.86</td>
       </tr>
       <tr>
-        <td><b>9/17(목)</b><br>$347.30<br><span style="color:var(--down); font-weight:600;">▲ +2.29%</span></td>
-        <td>TSMC 매출 가속화 전망이 반도체 공급망 전반에 훈풍, "AVGO는 AI 성장에도 저평가됐다"는 강세 분석 확산, 반도체 대형주 전반이 프리마켓부터 동반 반등</td>
-        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등과 동조</td>
+        <td><b>9/30(수)</b><br>$351.19<br><span style="color:var(--down); font-weight:600;">▼ -1.10%</span></td>
+        <td>장중 상승분 반납, 3분기 마지막 거래일 차익실현</td>
+        <td>$362 저항 확인</td>
       </tr>
       <tr>
-        <td><b>9/18(금)</b><br>$357.61<br><span style="color:var(--down); font-weight:600;">▲ +2.97%</span></td>
-        <td>"AI 반도체 40% 이상 상승여력" 등 애널리스트 강세 리포트 잇달아, NVDA·AMD·Intel·AVGO 반도체 대형주 동반 상승 지속 — 콜옵션 거래량 급증하며 강세 베팅 확산</td>
-        <td>3거래일 연속 상승, 거래량 4,395만주로 평소 대비 크게 증가</td>
+        <td><b>10/1(목)</b><br>$343.64<br><span style="color:var(--down); font-weight:600;">▼ -2.15%</span></td>
+        <td><b>Anthropic에 최대 $420억<span class="krw">(약 56조 7,250억원)</span> 대출</b> 공시 — Anthropic이 브로드컴 칩을 리스할 자금을 브로드컴이 빌려주는 구조. "공급사가 고객의 돈줄까지 된다"는 <b>순환금융·재무 부담 우려</b></td>
+        <td>장중 $343.29 · 2주 최저</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$355.14<br><span style="color:var(--up); font-weight:600;">▲ +3.35%</span></td>
+        <td><b>$600억<span class="krw">(약 81조 360억원)</span> 자금조달 구조</b> 보도(선순위 $420억 + 블랙스톤 주도 후순위 $180억) — "Anthropic의 2027년 최대 고객 지위와 다년간 수요를 묶어 둔 것"이라는 재해석. 美 고용 쇼크로 금리 하락, 반도체 동반 랠리(SOXX +3%)</td>
+        <td>박스 중단 회복</td>
       </tr>
     </table>
-
     <div class="callout">
-      → 이번 주는 <b>유가·금리발 조정(9/14) + Meta 자체 AI칩 경쟁 우려(9/15) → FOMC 방어(9/16) → 반도체 섹터
-      전반 랠리(9/17~18)</b>로 이어지는 흐름을 보였습니다. $339.27 저점에서 사흘 만에 +5.4% 반등하며 $357선을
-      회복했습니다. Meta의 자체 AI칩 개발 소식은 고객 집중도 리스크를 재확인시킨 이벤트지만, 이후 반도체 섹터
-      전반의 강세가 이를 압도한 모습입니다.
+      → 2주간 브로드컴은 <b>$343~366 박스</b>에서 금리와 함께 움직였고, 주말 직전 가장 큰 뉴스는 <b>Anthropic 자금 지원</b>이었습니다.
+      시장 반응은 하루 만에 바뀌었습니다 — 첫날은 "돈을 빌려줘야 팔리는 구조냐"(-2.15%), 다음 날은 "최대 고객의 다년 수요를 확보했다"(+3.35%).
+      다만 일부 보도대로 부채가 약 $665억 → $1,265억으로 늘어날 수 있어, <b>Anthropic의 성장(11월 중순 IPO 보도)</b>에 대한 의존도가 더 커졌다는 점은 기억해야 합니다.
     </div>
   </section>
 
@@ -198,30 +247,47 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>3분기 매출 $296억(+86% YoY), 비GAAP EPS $3.32 — 컨센서스(매출 약 $293.6억/EPS $3.24) 상회</li>
-        <li>AI 반도체 매출 $167억(+221% YoY), 4분기는 $217억(+236% YoY) 가이던스 — AI 매출 가속 지속</li>
-        <li>실적 콜에서 FY27 AI 반도체 매출 전망을 $1,000억→$1,150억으로 상향, Anthropic 2027년 5GW 배치·추가 10GW 가시성, Google향 연간 수백억 달러 규모 프로세서 공급 지속 언급</li>
-        <li>OpenAI 커스텀칩 'Jalapeño', Meta 'MTIA' 양산 출하 지속 — 고객 다변화 진행 중(다만 Meta의 Nvidia 의존도 축소 시도는 양면적 신호)</li>
-        <li>TSMC 매출 가속화 전망 등 반도체 공급망 전반 훈풍, 애널리스트 평균 목표주가 $531.85(50개 기관, Strong Buy 컨센서스)</li>
-        <li>FOMC 금리 인상(9/16) 당일에도 거의 보합 방어 — 반도체 대형주 실적 모멘텀이 금리 충격 상쇄</li>
+        <li>3분기 매출 $296억<span class="krw">(약 39조 9,780억원)</span>(+86% YoY), 비GAAP EPS $3.32 — 컨센서스 상회</li>
+        <li>AI 반도체 매출 $167억<span class="krw">(약 22조 5,550억원)</span>(+221% YoY), 4분기 가이던스 <b>$217억</b><span class="krw">(약 29조 3,080억원)</span>(+236% YoY)</li>
+        <li>FY27 AI 반도체 매출 전망 $1,000억 → <b>$1,150억</b><span class="krw">(약 155조 3,190억원)</span> 상향, Anthropic 2027년 5GW 배치·추가 10GW 가시성</li>
+        <li><b>Anthropic 자금 지원으로 최대 고객 확보</b> — 2027년 브로드컴 최대 컴퓨팅 고객 예상, 다년간 커스텀 칩·네트워킹 수요 고정</li>
+        <li>애널리스트 50명 중 매도 0, 평균 목표가 <b>$531.85</b>(현재가 대비 약 +50%) — Bernstein $575, UBS $470</li>
+        <li>OpenAI 'Jalapeño', Meta 'MTIA', Google TPU 등 커스텀 칩 고객 다변화</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>Meta가 Nvidia 하드웨어 의존도를 낮추기 위해 자체 AI칩을 준비 중이라는 보도(9/15) — 커스텀 반도체 경쟁 심화, 고객이 곧 잠재 경쟁자가 될 수 있다는 리스크</li>
-        <li>VMware 라이선싱 정책 변경에 대한 EU 반독점 조사 착수 — 인프라소프트웨어(매출 비중 약 30%) 부문 리스크</li>
-        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
-        <li>밸류에이션 부담 지속 — 트레일링 PER 140배 이상, 일부 하우스는 신중론 유지</li>
-        <li>고객 집중도 리스크 — Google·OpenAI·Anthropic·Meta 등 소수 대형 AI 고객사에 매출 의존도가 높음</li>
+        <li><b>순환금융·부채 부담</b> — Anthropic에 최대 $420억 대출 + $600억 자금조달 구조, 일부 보도는 부채가 약 $665억 → $1,265억으로 늘 수 있다고 분석. Anthropic이 흔들리면 칩 매출과 대출 양쪽이 동시에 위험</li>
+        <li>Marvell, 구글 커스텀 AI칩 일부 수주(8/19) — 2031년까지의 구글 독점 파트너 지위에 균열</li>
+        <li>Meta 자체 AI칩 개발 준비 — 고객이 곧 잠재 경쟁자</li>
+        <li>VMware 라이선스 정책 EU 반독점 조사 — 인프라소프트웨어(매출 약 30%) 리스크</li>
+        <li>올해 상승률이 AMD·Marvell·NVDA 대비 부진 — 투자심리 약함, 美 국채금리 고공행진</li>
       </ul>
     </div>
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$360~$370 저항 돌파 후 6월 사상 최고가($480.77) 재도전 시도, 반도체 섹터 전반 강세 지속 시 모멘텀 확대</div>
-      <div class="scenario base"><b>기본</b>$339~$370 박스권 내 등락, 10월 FOMC(10/29)·Meta 자체 AI칩 진행상황을 소화하며 방향성 탐색</div>
-      <div class="scenario bear"><b>약세</b>심리적 지지선 $339 붕괴 시 VMware 리스크·Meta 경쟁 우려와 맞물려 추가 조정 국면 장기화 가능</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">343~366</td>
+        <td>Anthropic 자금 지원을 두고 해석이 엇갈리고, 빅테크 실적(10/29~30) 전까지 금리 따라 등락하는 경우. <b>$343 지지·$366 저항</b></td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">366 → 380, 넘으면 400~420</td>
+        <td>구글·메타 실적에서 AI 설비투자 확대가 확인되고, Anthropic IPO(11월 중순 보도) 기대가 커지는 경우. <b>$366 위 종가 마감</b>이 신호, 8월 Marvell 쇼크 이전 가격 $380 회복 후 $400대</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">343 이탈 → 330~339, 이후 320</td>
+        <td>순환금융 우려가 커지거나(신용등급·부채 관련 뉴스), 고객사 자체 칩·Marvell 추가 수주, FOMC 의사록(10/8) 매파 쇼크가 오는 경우. <b>$343이 깨지면</b> 9월 저점 $339, 이후 $320대</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
@@ -229,12 +295,14 @@
     <h2>4. 매출구조/수익구조 (2026회계연도 3분기, 8/2 마감분)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>🖥️ 반도체 솔루션</td><td class="num">$208.4억</td><td class="num" style="color:var(--pos-text)">+127%</td><td class="num">70.4%</td></tr>
-      <tr><td style="padding-left:24px; color:var(--text-soft); font-size:13px;">↳ AI 반도체(커스텀 XPU·네트워킹)</td><td class="num">$167억</td><td class="num" style="color:var(--pos-text)">+221%</td><td class="num">56.4%</td></tr>
-      <tr><td style="padding-left:24px; color:var(--text-soft); font-size:13px;">↳ 非AI 반도체</td><td class="num">$41.4억</td><td class="num" style="color:var(--pos-text)">+12%</td><td class="num">14.0%</td></tr>
-      <tr><td>🧩 인프라 소프트웨어(VMware 등)</td><td class="num">$87.5억</td><td class="num" style="color:var(--pos-text)">+29%</td><td class="num">29.6%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$296억</b></td><td class="num"><b>+86%</b></td><td class="num"><b>100%</b></td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.12.11 (예정)</td><td class="num">-</td><td class="num">FY2026 4분기</td></tr>
+      <tr><td>🖥️ 반도체 솔루션</td><td class="num">$208.4억<span class="krw">(약 28조 1,470억원)</span></td><td class="num" style="color:var(--pos-text)">+127%</td><td class="num">70.4%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft); font-size:13px;">↳ AI 반도체(커스텀 XPU·네트워킹)</td><td class="num">$167억<span class="krw">(약 22조 5,550억원)</span></td><td class="num" style="color:var(--pos-text)">+221%</td><td class="num">56.4%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft); font-size:13px;">↳ 非AI 반도체</td><td class="num">$41.4억<span class="krw">(약 5조 5,910억원)</span></td><td class="num" style="color:var(--pos-text)">+12%</td><td class="num">14.0%</td></tr>
+      <tr><td>🧩 인프라 소프트웨어(VMware 등)</td><td class="num">$87.5억<span class="krw">(약 11조 8,180억원)</span></td><td class="num" style="color:var(--pos-text)">+29%</td><td class="num">29.6%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$296억</b><span class="krw">(약 39조 9,780억원)</span></td><td class="num"><b>+86%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>🎯 4분기 가이던스</td><td class="num">매출 $348억<span class="krw">(약 47조 10억원)</span></td><td class="num">AI $217억</td><td class="num">AI +236% YoY</td></tr>
+      <tr><td>🏦 Anthropic 자금 지원</td><td class="num">대출 최대 $420억 · 조달 구조 $600억</td><td class="num">-</td><td class="num">10/1~2 공시·보도</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.12.11 06:00 KST (예상)</td><td class="num">-</td><td class="num">FY2026 4분기 · 회사 공지 전</td></tr>
     </table>
 
     <h3>매출구조도 (가치 축적 구조)</h3>
@@ -257,7 +325,7 @@
           <div class="desc">이더넷 스위칭·광통신 부품 + VMware 구독형 소프트웨어</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q3 FY26 $296억, AI 반도체 비중 56%) ↓</div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q3 FY26 $296억<span class="krw">(약 39조 9,780억원)</span>, AI 반도체 비중 56%) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>재투자 — 커스텀 칩 R&D</b>
@@ -265,7 +333,7 @@
         </div>
         <div class="flow-box reward">
           <b>주주환원 — 배당·자사주</b>
-          <div class="desc">분기 배당(주당 $0.65) 및 잉여현금흐름 기반 자본배분</div>
+          <div class="desc">분기 배당(주당 $0.65) 및 잉여현금흐름 기반 자본배분 — 이제 <b>고객 자금 지원(Anthropic $420억)</b>에도 현금·부채 투입</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -280,7 +348,7 @@
       → 브로드컴의 매출은 <b>소수 대형 AI 고객사에 특화된 커스텀 반도체(XPU) 설계</b>를 중심으로 성장하고 있으며,
       이는 높은 고객 락인 효과를 만들지만 동시에 <b>고객 집중도 리스크</b>이기도 합니다. 벌어들인 현금은 차세대
       칩 R&D와 배당 등 주주환원에 배분되고 있으며, <b>4분기 가이던스 달성 여부와 VMware 부문 마진 안정성</b>이
-      다음 분기까지 핵심 변수입니다.
+      다음 분기까지 핵심 변수입니다. 10/1~2 Anthropic 자금 지원으로 <b>공급사이자 대주(돈 빌려주는 쪽)</b>가 되면서, 고객 집중도 리스크가 재무 구조로까지 확대됐습니다.
     </div>
   </section>
 
@@ -289,15 +357,82 @@
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>9월 21일 (월)</td><td>분기 배당 기준일(Ex-Dividend, 주당 $0.65)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (2026년 마지막 회의, 12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>12월 11일 (금) 오전 (예정)</td><td>2026회계연도 4분기(FY26 Q4) 실적 발표(美 현지 12/10 장마감 후) — Q4 가이던스($348억) 달성 여부·VMware 부문 마진 확인</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>지속</td><td>Anthropic 자금조달 세부·신용 영향, 고객사 자체 칩·Marvell 수주, VMware EU 조사, 美 국채금리</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — 브로드컴 커스텀 칩 생산사, AI 수요·CoWoS 증설</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) ~ 30일 (금) 새벽</td><td>Alphabet·Meta·Microsoft·Amazon 실적 — <b>핵심 고객(구글·메타)의 AI 설비투자 계획</b></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>11월 중순 (보도)</td><td>Anthropic IPO 예상(미확정) — 최대 고객이자 대출 상대방의 재무 체력 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 11일 (금) 오전 6:00 (예상)</td><td>FY2026 4분기 실적(美 현지 12/10 장마감 후, 회사 공지 전) — 매출 $348억·AI $217억 가이던스 달성, FY27 AI 전망, 자금 지원 구조 설명</td><td><span class="star">★★★★★</span></td></tr>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>AI 맞춤형 칩 주문은 넘치는데,</em><br><strong>최대 고객에게 돈까지 빌려줘야 하는 구조가 불안.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>AI 칩 매출 1년 새 3배</b><span>+221% · 다음 분기 AI 매출 29조원 목표</span></li>
+          <li><b>내년 AI 매출 155조원 전망</b><span>Anthropic이 2027년 최대 고객 예정</span></li>
+          <li><b>애널리스트 평균 목표가 +50%</b><span>$532 · 매도 의견 0개</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>고객에게 돈을 빌려줌</b><span>Anthropic에 최대 57조원 대출 → 빚이 크게 늘 수 있음</span></li>
+          <li><b>경쟁자가 구글 칩 일부 가져감</b><span>Marvell 수주(8월) · 메타도 자체 칩 준비</span></li>
+          <li><b>올해 주가가 동료보다 부진</b><span>최고가 대비 -26% · VMware 유럽 조사</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/29~30 새벽</div>
+        <div class="e">구글·메타 실적</div>
+        <div class="w">고객이 AI 투자 늘리면 호재</div>
+      </div>
+      <div class="key-date">
+        <div class="d">11월 중순</div>
+        <div class="e">Anthropic IPO (보도)</div>
+        <div class="w">돈 빌려준 고객의 체력 확인</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">12/11 새벽</div>
+        <div class="e">4분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$366 ↑</span><span>여기를 넘으면 → 박스 탈출 🚀 (다음 $380 → $400대)</span></div>
+      <div class="rung now"><span class="px">$355</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$343</span><span>이 아래면 → 조심 ⚠️ (10/1 저점)</span></div>
+      <div class="rung bad"><span class="px">$339</span><span>최후 방어선 🛑 (9월 저점, 깨지면 $320대)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 실적과 AI 주문은 탄탄한데, 시장은 <b>"고객에게 돈을 빌려줘서 파는 구조"</b>를 아직 어떻게 볼지 정하지 못해 $343~366 박스에 있습니다.
+      애널리스트 목표가와의 거리(+50%)는 크지만, <b>$343 근처에서 나눠서</b> 사고 <b>$366 돌파</b>를 확인한 뒤 비중을 늘리는 게 안전합니다.
+      다음 방향은 <b>10/29~30 구글·메타의 AI 투자 계획</b>이 정합니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산)
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시세는 Investing.com 기준.
+    실적은 FY2026 Q3(2026.08.02 마감, 9/2 발표) 기준. Anthropic 자금 지원은 10/1 공시(대출 최대 $420억)와 10/2 보도($600억 조달 구조)를 바탕으로 하며, 두 금액의 중복 여부는 보도마다 해석이 다릅니다.
+    다음 실적일과 Anthropic IPO 시기는 공식 확정 전 추정·보도입니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다.
   </footer>
 </div>
 
@@ -369,7 +504,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AVGOUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

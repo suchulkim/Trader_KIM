@@ -210,6 +210,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
 
@@ -272,6 +279,45 @@
     font-size:12px;
     color:var(--text-soft);
   }
+  .key-hero{background:linear-gradient(135deg,rgba(0,113,227,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(0,113,227,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
@@ -279,23 +325,22 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.19 (토) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
+      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
     </div>
     <h1>Micron (MU) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: MUUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$1,015.80</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">정규장 +3.92% (+$38.30) · 시간외 +0.19% · 이틀 연속 대형 양봉(+5.50%, +3.92%)으로 $1,000 재탈환</div>
+        <div class="price-main"><span id="live-price">$1,074.89</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-down" id="live-chg">10/2 정규장 ▼ -2.05% (-$22.50) · 실적 다음 날 +3.03% 후 차익실현 · 2주간 +5.8% (9/18 $1,015.80 →)</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX MUUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/14 유가 급등·국채금리 19년래 최고치로 $924까지 조정받았으나, 9/17~18 이틀간 강하게 반등하며 사상 최고가($1,255,
-        6/25) 재도전 기대감이 커지고 있습니다. 다만 대만 노조는 9/10 사측의 사상 최대 보너스(35~68개월치 급여) 제안을
-        <b>거부</b>하고 영업이익 15% 배분을 요구하며 9/18·21 중재 시한을 제시한 상태로, 파업 리스크는 아직 해소되지
-        않았습니다. 시가총액 약 $1.15T 수준.
+        9/30(현지) <b>사상 최대 4분기 실적</b> — 매출 $54.23B<span class="krw">(약 73조 2,430억원)</span>(+379% YoY), 매출총이익률 87%, 다음 분기 가이던스 $61.5B<span class="krw">(약 83조 620억원)</span>로 예상($57B)을 크게 웃돌았습니다.
+        그러나 "이미 기대만큼"이라는 반응 속에 10/1 +3.03% 후 10/2 -2.05%로 밀려 <b>$1,030~1,110 박스</b>에 머물러 있습니다.
+        <b>대만 타오위안 공장 노조가 10/1~6 파업 찬반 투표</b>에 들어가 단기 변수가 남았습니다. 사상 최고가 $1,255(6/25) 대비 -14%, 시가총액 약 $1.22조<span class="krw">(약 1,648조원)</span>.
       </div>
     </div>
 
@@ -322,49 +367,51 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/14 저점($924.03) 이후 강한 역헤드앤숄더 패턴을 그리며 반등, 9/17~18 이틀간 거래량 동반 급등(각 2,209만주·3,566만주)으로 $1,000 재탈환. 1차 저항은 9/8 고점($1,041), 돌파 시 사상 최고가($1,255) 시야.<br>
-      <b>15분봉</b>: 9/17~18 상승 탄력이 강하게 유지되는 모습, RSI는 58 부근으로 과매수 부담은 아직 크지 않은 수준.
+      <b>일봉</b>: 9/14 저점 $924.03 → 9/22 $1,096.16(6거래일 +18.6%, 실적 기대·인도 조립공장 가동) → 9/23~10/2 <b>$1,022~1,108 박스</b>. 9/23($1,105.50)·9/25($1,108.72)·10/2($1,108.00) 세 번 모두 $1,105~1,110에서 막혀 단기 '천장'이 형성됐습니다. 사상 최고가 $1,255까지는 약 +17%.<br>
+      <b>15분봉</b>: 10/1 실적 직후 장중 $1,022.90까지 밀렸다가 $1,097로 마감(긴 아래꼬리 = 저가 매수 강함), 10/2는 시가 $1,107에서 고점 찍고 하락. <b>$1,020~1,030</b>이 1차 지지, <b>$1,105~1,110</b>이 저항입니다.
     </div>
   </section>
 
   <!-- 2. 최근 주가 움직임의 주요 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일)</h2>
     <table>
       <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/14(월)</b><br>$924.03<br><span style="color:var(--up); font-weight:600;">▼ -5.25%</span></td>
-        <td>국제유가 급등·10년물 국채금리 19년래 최고치 기록 — 반도체·AI 인프라주 전반 동반 급락(AMD -4.40%, AVGO -4.77% 등), 이번 주 최대 낙폭 기록</td>
-        <td>이번 주 저점 형성</td>
+        <td><b>9/25(금)</b><br>$1,082.28<br><span style="color:var(--up); font-weight:600;">▲ +0.16%</span></td>
+        <td>9/21~22 실적 기대감으로 $1,096까지 급등 후 숨 고르기. 9/21 대만 노사 2차 중재 결렬 → 노조 파업 투표 예고에도 주가 영향은 제한적</td>
+        <td>장중 $1,108.72 · 저항 확인</td>
       </tr>
       <tr>
-        <td><b>9/15(화)</b><br>$927.60<br><span style="color:var(--down); font-weight:600;">▲ +0.39%</span></td>
-        <td><b>대만 노조, 사측의 보너스안(35~68개월치 급여) 거부</b> — 영업이익의 15%를 분기별로 배분하는 항구적 이익공유제를 요구하며 기자회견, "9/18·21 중재에서 구체안 없으면 파업 투표로 간다"고 경고. 다만 주가는 낙폭과대 인식 속 소폭 반등</td>
-        <td>노사 갈등 고조에도 주가 영향은 제한적</td>
+        <td><b>9/28(월)</b><br>$1,053.98<br><span style="color:var(--down); font-weight:600;">▼ -2.61%</span></td>
+        <td>美 30년물 금리 5.52%·유가 $100 근접으로 반도체 약세. 같은 날 SK하이닉스도 -5% 급락(메모리 동반 약세)</td>
+        <td>장중 $1,032 · 박스 하단</td>
       </tr>
       <tr>
-        <td><b>9/16(수)</b><br>$926.55<br><span style="color:var(--up); font-weight:600;">▼ -0.11%</span></td>
-        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상, 반도체 대형주 전반 거의 보합 방어</td>
-        <td>매파적 FOMC를 무난히 소화</td>
+        <td><b>9/29(화)</b><br>$1,065.08<br><span style="color:var(--up); font-weight:600;">▲ +1.05%</span></td>
+        <td>실적 발표 앞두고 매수세 유입</td>
+        <td>반등</td>
       </tr>
       <tr>
-        <td><b>9/17(목)</b><br>$977.50<br><span style="color:var(--down); font-weight:600;">▲ +5.50%</span></td>
-        <td>"인상 재료 소진" 인식에 따른 시장 전반 반등 + 노조 중재 1차 시한(9/18)을 앞두고 파국 우려보다 타결 기대가 우세하며 저가 매수세 유입, AI/HBM 메모리 수요 강세 스토리 재부각</td>
-        <td>메모리株 중 가장 강한 반등폭 기록</td>
+        <td><b>9/30(수)</b><br>$1,065.11<br><span style="font-weight:600;">― 0.00%</span></td>
+        <td>정규장 보합 마감 후 <b>장마감 후 4분기 실적 발표</b> — 매출 $54.23B(예상 $51.5B), EPS $33.42(예상 $31.82), 매출총이익률 87%, 다음 분기 가이던스 매출 $61.5B±1.5B·EPS $38.15 모두 예상 상회</td>
+        <td>시간외 등락 혼조</td>
       </tr>
       <tr>
-        <td><b>9/18(금)</b><br>$1,015.80<br><span style="color:var(--down); font-weight:600;">▲ +3.92%</span></td>
-        <td>이틀 연속 대형 양봉으로 $1,000 재탈환, 거래량 3,566만주로 평소 대비 급증 — 역헤드앤숄더 패턴 완성 기대감과 AI 메모리 슈퍼사이클 지속 전망이 겹치며 사상 최고가 재도전 기대감 확산. 노조 1차 중재 시한(9/18) 관련 파업 선언 등 부정적 뉴스는 아직 나오지 않음</td>
-        <td>9/8 저항($1,041) 근접, 2거래일 합산 약 +10% 급등</td>
+        <td><b>10/1(목)</b><br>$1,097.39<br><span style="color:var(--up); font-weight:600;">▲ +3.03%</span></td>
+        <td>장 초반 <b>"기대치(일부 기관 EPS 눈높이 $37)만큼일 뿐"</b>, 보너스로 다음 분기 마진 하락(87%→86.25%), FY27 설비투자 $50B+<span class="krw">(약 67조 5,300억원)</span> 우려에 $1,022.90까지 밀렸다가 강하게 반등. 경영진 "FY2027~28 수급은 올해보다 훨씬 더 빡빡" 발언이 힘을 실음. 같은 날 대만 노조 파업 찬반 투표 시작(~10/6)</td>
+        <td>긴 아래꼬리 · 저가 매수 강함</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$1,074.89<br><span style="color:var(--down); font-weight:600;">▼ -2.05%</span></td>
+        <td>시가 $1,107에서 박스 상단에 막혀 차익실현. NVDA가 사상 최고가를 찍는 사이 메모리는 쉬어 가는 흐름 — 파업 투표 결과(10/6) 대기</td>
+        <td>$1,105~1,110 저항 3번째 확인</td>
       </tr>
     </table>
-
     <div class="callout">
-      → 이번 주는 <b>유가·금리발 조정(9/14, -5.25%)</b>으로 시작했지만, FOMC 인상을 무난히 소화한 뒤 <b>9/17~18 이틀간
-      강한 반등(+5.50%, +3.92%)</b>하며 낙폭을 모두 만회하고 $1,000을 재탈환했습니다. 다만 <b>대만 노조가 사측의
-      사상 최대 보너스 제안을 거부(9/15~16)</b>하고 영업이익 15% 배분을 요구하며 파업 가능성을 열어둔 상태로,
-      9/18·21 중재 시한의 결과가 아직 확정되지 않았다는 점은 주가가 사상 최고가에 근접할수록 더 예민하게 반응할
-      수 있는 잠재 변수로 남아 있습니다.
+      → 실적은 <b>모든 숫자가 예상을 넘었지만</b> 주가는 "이미 반영됐다"며 제자리였습니다. 시장이 보는 건 이제 이번 분기 숫자가 아니라
+      ① <b>보너스·투자비가 커지며 마진이 꺾이는지</b>, ② <b>대만 공장 파업으로 생산 차질이 생기는지</b> 두 가지입니다.
+      다만 실적 날 $1,023까지 밀렸다가 바로 회복한 걸 보면 <b>아래에서 사려는 수요가 강하다</b>는 점은 확인됐습니다.
     </div>
   </section>
 
@@ -375,67 +422,97 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>AI/HBM 수요 폭증 — Q3 FY2026 매출 $41.46B(+346% YoY, +74% QoQ), 매출총이익률 84.6%(역대 최고), Non-GAAP EPS $25.11로 컨센서스 대폭 상회</li>
-        <li>Q4 FY2026 가이던스: 매출 $50B±$1B(+21% QoQ), 매출총이익률 ~86%, EPS $31±$1 — 시장 기대치 상회, 애널리스트들은 FY2026 매출 전망을 $113.4B→$129.6B로 상향</li>
-        <li>HBM4 고volume 양산 본격화, 관련 매출 $1B 돌파, Nvidia Vera Rubin 등 차세대 AI 플랫폼향 공급 확대 중</li>
-        <li>9/17~18 이틀 연속 대형 반등(+5.50%, +3.92%)으로 $1,000 재탈환 — 역헤드앤숄더 패턴, RSI 58로 과매수 부담 크지 않음</li>
-        <li>애널리스트 Strong Buy 우세, 평균 목표주가 약 $1,510 (상승 여력 존재), FY2027 예상 실적 기준 PER 약 6배로 저평가 주장 지속</li>
-        <li>DRAM·HBM 공급 부족이 2030년까지 지속될 것이라는 컨센서스 확산</li>
+        <li><b>4분기 사상 최대 실적</b> — 매출 $54.23B<span class="krw">(약 73조 2,430억원)</span>(+379% YoY, +31% QoQ), Non-GAAP 매출총이익률 87.0%, EPS $33.42. FY2026 연간 매출 $133.19B<span class="krw">(약 179조 8,860억원)</span>(+256%)</li>
+        <li><b>다음 분기 가이던스 매출 $61.5B</b><span class="krw">(약 83조 620억원)</span>±1.5B, EPS $38.15 — 컨센서스($57B) 크게 상회</li>
+        <li>경영진 "FY2027·2028 메모리 수급은 2026년보다 <b>훨씬 더 빡빡</b>" — 2027년 생산량 75% 이상 이미 고객 확정</li>
+        <li>26개 전략 고객과 <b>2030년까지 약 $150B</b><span class="krw">(약 202조 5,900억원)</span> 규모 장기계약(SCA) — 가격 하한·상한 구조로 하락기 방어</li>
+        <li>현금·투자자산 $73.48B<span class="krw">(약 99조 2,420억원)</span>, 연간 조정 FCF $62.31B<span class="krw">(약 84조 1,560억원)</span> — 1년간 부채 $10B 상환</li>
+        <li>선행 PER 7배 미만(FY27 EPS 추정 약 $172) — "아직 싸다"는 평가, BofA 목표가 $1,550</li>
       </ul>
     </div>
-
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>대만 노조, 사측의 사상 최대 보너스안(35~68개월치 급여)을 거부(9/15~16)</b> — 영업이익 15% 분기별 배분을 요구하며 "9/18·21 중재에서 구체안 없으면 파업 투표"로 경고, 협상은 아직 타결되지 않은 상태</li>
-        <li>HBM 시장 점유율 경쟁 심화 — 2026년 2분기 기준 SK하이닉스 50%(1위), 삼성전자 33%(HBM4 조기 양산으로 급등), Micron 18%로 3사 중 유일하게 점유율 하락(Counterpoint)</li>
-        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사</li>
-        <li>메모리 사이클 특성상 급등락 반복 — 최근 5거래일 -5.25%~+5.50% 등 높은 변동성 지속</li>
-        <li>중국 반도체 업체들의 경쟁 심화 및 공급 증설 리스크 지속 제기</li>
-        <li>밸류에이션이 이미 크게 상승(연초 대비 3배 이상)한 상태라 9/30 실적에서 가이던스 미달 시 변동성 확대 가능</li>
+        <li><b>대만 타오위안 노조 파업 찬반 투표(10/1~6)</b> — 2차례 중재 결렬, 영업이익 15% 상시 배분 요구. 대만은 DRAM·HBM 핵심 생산기지(약 1.5만 명). 타이중 노조는 10/22 중재</li>
+        <li><b>FY2027 설비투자 $50B+</b><span class="krw">(약 67조 5,300억원)</span> (FY26 $27.4B의 약 2배) — 현금흐름 유지에 대한 의문</li>
+        <li>사상 최대 보너스로 다음 분기 비용 약 $10억<span class="krw">(약 1조 3,510억원)</span> 증가 → 매출총이익률 87.0% → 86.25%로 소폭 하락 가이던스</li>
+        <li>HBM 점유율 3위(2분기 18%, Counterpoint) — SK하이닉스 50%·삼성 33%에 밀리며 유일하게 하락</li>
+        <li>美 국채금리 고공행진(10년물 5.3%대) — 반도체 대형주 할인율 부담</li>
+        <li>$1,105~1,110 저항 3회 실패 — 단기 상단 매물 부담</li>
       </ul>
     </div>
-
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>노조 중재(9/18·21)가 타결로 이어지고 $1,041 저항 돌파 시 사상 최고가($1,255) 재도전, 9/30 실적에서 매출 $50B 상회·HBM4 가이던스 상향 확인 시 목표가 $1,300~$1,500 구간 재평가</div>
-      <div class="scenario base"><b>기본</b>$950~$1,041 박스권 등락. 노조 중재 결과와 9/30 실적 발표를 앞두고 관망 심리와 매수세가 교차</div>
-      <div class="scenario bear"><b>약세</b>노조 중재 결렬·파업 투표 현실화 시 생산 차질 우려로 $900 이하 조정, HBM 점유율 하락 추세 지속 시 밸류에이션 재평가 압력으로 추가 조정 가능</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">1,020~1,110</td>
+        <td>파업 투표가 가결돼도 실제 파업까지는 시간이 걸리고 협상이 이어지는 경우. 실적 재료는 소화됐고 다음 재료(SK하이닉스·삼성 실적, 10월 말)를 기다리며 <b>$1,020 지지·$1,110 저항</b></td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">1,110 → 1,180, 넘으면 1,255</td>
+        <td>파업 투표 부결 또는 노사 타결로 리스크가 걷히고, 경쟁사 실적이 메모리 호황을 재확인하는 경우. <b>$1,110 위 종가 마감</b>이 신호, 사상 최고가 $1,255 재도전</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">1,020 이탈 → 950~1,000, 파업 시 924</td>
+        <td>파업이 실제로 시작되거나 금리 재급등·FOMC 의사록(10/8) 매파 쇼크가 오는 경우. <b>$1,020이 깨지면</b> $1,000 심리선, 실제 생산 차질 시 9/14 저점 $924 재시험</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
   <!-- 4. 매출구조/수익구조 -->
   <section>
-    <h2>4. 매출구조/수익구조 (Q3 FY2026, 2026.06.25 발표)</h2>
+    <h2>4. 매출구조/수익구조 (Q4 FY2026, 2026.09.30 발표)</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
-      <tr><td>📊 Q3 FY2026 매출</td><td class="num">$41.46B</td><td class="num">+346% YoY, +74% QoQ</td></tr>
-      <tr><td>💰 Q3 Non-GAAP EPS</td><td class="num">$25.11</td><td class="num">컨센서스 대폭 상회</td></tr>
-      <tr><td>📐 Q3 매출총이익률</td><td class="num">84.6%</td><td class="num">역대 최고 기록</td></tr>
-      <tr><td>🎯 Q4 FY2026 가이던스</td><td class="num">매출 $50B±1B</td><td class="num">EPS $31±1, GM ~86%</td></tr>
-      <tr><td>🏭 주력 제품</td><td class="num">DRAM / HBM / NAND</td><td class="num">HBM4 매출 누적 $1B 돌파</td></tr>
-      <tr><td>📈 시가총액</td><td class="num">약 $1.08T~$1.1T</td><td class="num">AI 메모리 대장</td></tr>
-      <tr><td>🎯 애널리스트 목표가</td><td class="num">평균 $1,510</td><td class="num">Strong Buy 우세</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.09.30 (현지)</td><td class="num">FY2026 Q4, KST 10/1 새벽</td></tr>
+      <tr><td>📊 Q4 FY2026 매출</td><td class="num">$54.23B<span class="krw">(약 73조 2,430억원)</span></td><td class="num">+379% YoY, +31% QoQ (예상 $51.5B)</td></tr>
+      <tr><td>💰 Q4 순이익 / EPS</td><td class="num">$38.40B<span class="krw">(약 51조 8,630억원)</span> / $33.42</td><td class="num">Non-GAAP · 예상 $31.82 상회</td></tr>
+      <tr><td>📐 Q4 매출총이익률</td><td class="num">87.0%</td><td class="num">역대 최고 (Q3 84.6%)</td></tr>
+      <tr><td>📆 FY2026 연간</td><td class="num">매출 $133.19B<span class="krw">(약 179조 8,860억원)</span></td><td class="num">순이익 $86.76B<span class="krw">(약 117조 1,780억원)</span> · 조정 FCF $62.31B</td></tr>
+      <tr><td>🎯 Q1 FY2027 가이던스</td><td class="num">매출 $61.5B<span class="krw">(약 83조 620억원)</span>±1.5B</td><td class="num">EPS $38.15±1, 매출총이익률 ~86.25%</td></tr>
+      <tr><td>🏗️ 설비투자</td><td class="num">FY26 $27.37B → FY27 $50B+</td><td class="num">뉴욕·아이다호 신공장, 인도 조립공장 가동</td></tr>
+      <tr><td>🤝 장기계약(SCA)</td><td class="num">26개 고객 · 약 $150B<span class="krw">(약 202조 5,900억원)</span></td><td class="num">2030년까지, 가격 하한·상한 구조</td></tr>
+      <tr><td>💵 주주환원</td><td class="num">분기 배당 $0.15</td><td class="num">10/29(현지) 지급 · FY26 자사주 $6.5억</td></tr>
+      <tr><td>📈 시가총액</td><td class="num">약 $1.22T<span class="krw">(약 1,648조원)</span></td><td class="num">10/2 종가 기준</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026년 12월 중순 (예상)</td><td class="num">Q1 FY2027 · 회사 공지 전</td></tr>
     </table>
 
+    <h3>사업부별 매출 (Q4 FY2026)</h3>
     <div class="rev-bar-wrap">
       <div class="rev-row">
-        <div class="rev-label">DRAM ($31.3B)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:75%; background:#0071e3;"></div></div>
-        <div class="rev-pct">~75%</div>
+        <div class="rev-label">코어 데이터센터</div>
+        <div class="rev-track"><div class="rev-fill" style="width:33.2%; background:#0071e3;"></div></div>
+        <div class="rev-pct">33.2%</div>
       </div>
       <div class="rev-row">
-        <div class="rev-label">NAND ($9.9B)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:24%; background:#34c759;"></div></div>
-        <div class="rev-pct">~24%</div>
+        <div class="rev-label">클라우드 메모리(HBM 등)</div>
+        <div class="rev-track"><div class="rev-fill" style="width:30.0%; background:#5e5ce6;"></div></div>
+        <div class="rev-pct">30.0%</div>
       </div>
       <div class="rev-row">
-        <div class="rev-label">기타</div>
-        <div class="rev-track"><div class="rev-fill" style="width:1%; background:#8e8e93;"></div></div>
-        <div class="rev-pct">~1%</div>
+        <div class="rev-label">모바일·PC</div>
+        <div class="rev-track"><div class="rev-fill" style="width:24.2%; background:#34c759;"></div></div>
+        <div class="rev-pct">24.2%</div>
+      </div>
+      <div class="rev-row">
+        <div class="rev-label">자동차·임베디드</div>
+        <div class="rev-track"><div class="rev-fill" style="width:12.6%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">12.6%</div>
       </div>
     </div>
+    <table>
+      <tr><th>사업부</th><th class="num">Q4 매출</th><th class="num">매출총이익률</th><th class="num">영업이익률</th></tr>
+      <tr><td>🖥️ 코어 데이터센터 (CDBU)</td><td class="num">$18.00B<span class="krw">(약 24조 3,110억원)</span></td><td class="num">90%</td><td class="num">85%</td></tr>
+      <tr><td>☁️ 클라우드 메모리 (CMBU, HBM 포함)</td><td class="num">$16.28B<span class="krw">(약 21조 9,880억원)</span></td><td class="num">83%</td><td class="num">76%</td></tr>
+      <tr><td>📱 모바일·PC (MCBU)</td><td class="num">$13.11B<span class="krw">(약 17조 7,060억원)</span></td><td class="num">90%</td><td class="num">88%</td></tr>
+      <tr><td>🚗 자동차·임베디드 (AEBU)</td><td class="num">$6.82B<span class="krw">(약 9조 2,110억원)</span></td><td class="num">84%</td><td class="num">79%</td></tr>
+    </table>
 
     <h3>HBM 경쟁구도 (2026년 2분기 기준, Counterpoint)</h3>
     <div class="rev-bar-wrap">
@@ -473,35 +550,33 @@
         <div class="flow-arrow">→</div>
         <div class="flow-box accent">
           <b>제품화</b>
-          <div class="desc">DRAM·HBM(비중 75%), NAND(비중 24%)</div>
+          <div class="desc">데이터센터·클라우드(HBM) 63%, 모바일·PC 24%, 자동차·임베디드 13%</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q3 FY26 $41.46B, 매출총이익률 84.6%) ↓</div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q4 FY26 $54.23B<span class="krw">(약 73조 2,430억원)</span>, 매출총이익률 87.0%) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>재투자 — R&D·설비 증설</b>
-          <div class="desc">HBM4→HBM4E 차세대 개발, Powerchip 대만 팹 인수 등 생산능력 확충</div>
+          <div class="desc">FY27 설비투자 $50B+ — 뉴욕·아이다호 신공장, 인도 조립·테스트 공장, HBM4→HBM4E 차세대 개발</div>
         </div>
         <div class="flow-box reward">
           <b>재투자 — 인력 보상(성과급 풀)</b>
-          <div class="desc">대만 노조向 사상 최대 성과급안 제시(35~68개월치, 9/10)했으나 노조는 거부, 영업이익 15% 분기배분을 요구하며 협상 진행 중 — 삼성·SK하이닉스식 이익공유 모델 벤치마크</div>
+          <div class="desc">사상 최대 성과급(35~68개월치) 지급 → 다음 분기 비용 약 $10억 증가. 대만 노조는 영업이익 15% 상시 배분을 요구하며 파업 찬반 투표(10/1~6)</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
         <div class="flow-box">
-          <b>안정적 생산·고객 신뢰 확보 → 차기 공급계약 확대</b>
+          <b>안정적 생산·고객 신뢰 확보 → 장기계약(2030년까지 $150B) 확대</b>
           <div class="desc">노사 안정과 캐파 확충이 Nvidia 등 대형 고객사向 장기 공급 신뢰도로 연결</div>
         </div>
       </div>
     </div>
 
     <div class="callout">
-      → Micron은 <b>AI 서버용 DRAM·HBM 공급</b>이 실적의 핵심(매출의 약 75%)이며, NAND가 나머지(~24%)를 차지합니다.
-      HBM4가 고volume 양산에 들어가며 Nvidia 차세대 AI 플랫폼향 공급이 확대되고 있으나,
-      HBM 시장에서는 삼성전자가 HBM4 조기 양산으로 점유율을 끌어올린 반면 Micron은 3사 중 유일하게 점유율이 하락해
-      경쟁 강도가 높아지고 있습니다. 벌어들인 막대한 이익을 두고 <b>대만 인력과의 이익 배분 비율을 놓고 노사가
-      이견</b>을 좁히지 못하고 있으며, 이는 안정적 생산 기반 유지와 직결되는 구조입니다.
+      → Micron은 이제 매출의 <b>63%가 데이터센터·AI(HBM 포함)</b>에서 나오고, 모든 사업부가 매출총이익률 80% 이상인 '초호황' 구조입니다.
+      다만 HBM 시장에서는 SK하이닉스·삼성에 밀려 3위이고, 번 돈을 <b>공장 증설(FY27 $50B+)</b>과 <b>직원 보상</b>에 크게 쓰기 시작하면서
+      "이익이 계속 이만큼 남을까"가 다음 관전 포인트입니다. 대만 노사 협상은 단순한 비용 문제가 아니라 <b>HBM·DRAM 공급 안정성</b>과 직결됩니다.
     </div>
   </section>
 
@@ -510,41 +585,84 @@
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>9월 18일·21일 (현지)</td>
-        <td>대만 Micron 노조-사측 중재 시한 — 구체적 진전 없으면 노조가 협상 결렬 선언 후 파업 투표로 이행 경고. 9/18은 이미 지났으나 결과 미확인, 9/21이 다음 분수령</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 1일 (목) 오전 5:00~5:30</td>
-        <td>FY2026 4분기 실적 발표 (미국시간 9/30 수 장 마감 후) + 컨퍼런스콜 — 매출 $50B 가이던스 달성·HBM4 진행 상황 핵심</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 반도체·성장주 전반 민감</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>12월 10일 (목) 오전 4:00</td>
-        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>지속</td>
-        <td>HBM4 출하·수율 및 삼성전자·SK하이닉스 점유율 변동 뉴스, Nvidia/클라우드 CAPEX 관련 뉴스, 대만 노조 협상 진행상황</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>메모리 가격</td>
-        <td>DRAM·NAND·HBM 현물/계약 가격 동향 — 실적 가시성 직결</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
+      <tr><td>지속</td><td>DRAM·HBM 가격, 삼성·SK하이닉스 HBM4 점유율, 美 국채금리·유가</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 6일 (화)</td><td><b>대만 타오위안 노조 파업 찬반 투표 마감</b> — 가결 시 파업 일정·규모가 다음 변수, 부결·타결 시 리스크 해소</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 둘째 주 (예상)</td><td>삼성전자 3분기 잠정실적 — 메모리 가격·HBM 흐름 첫 확인</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — AI 칩 생산(CoWoS) 증설 = HBM 수요 지표</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 22일 (목, 대만)</td><td>타이중 노조 노사 중재</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 말 (예상)</td><td>SK하이닉스 3분기 실적 — 경쟁사 HBM 가격·점유율 비교</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%) · 같은 날(현지) 분기 배당 $0.15 지급</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>NVIDIA 실적 — 최대 HBM 고객의 수요 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 중순 (예상)</td><td>Micron Q1 FY2027 실적 (회사 공지 전) — 가이던스 $61.5B 달성 여부, 보너스 반영 마진</td><td><span class="star">★★★★★</span></td></tr>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>역대 최대 실적에 다음 분기는 더 좋다는데,</em><br><strong>대만 공장 파업 투표와 늘어나는 투자비가 발목.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>매출이 1년 새 4.8배</b><span>분기 73조원 · 남는 이익률 87%</span></li>
+          <li><b>다음 분기는 더 큼</b><span>83조원 목표 · "내년·내후년 공급은 더 부족"</span></li>
+          <li><b>2030년까지 주문 확보</b><span>26개 고객과 202조원 장기계약</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>대만 공장 파업 투표</b><span>10/6 결과 · 핵심 메모리 생산기지</span></li>
+          <li><b>내년 투자비 2배</b><span>공장 짓는 데 68조원+ → 남는 현금 줄 수 있음</span></li>
+          <li><b>HBM은 3등</b><span>점유율 18% · SK하이닉스·삼성에 밀림</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date hot">
+        <div class="d">10/6</div>
+        <div class="e">파업 투표 결과</div>
+        <div class="w">🔥 가장 가까운 고비</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10월 말</div>
+        <div class="e">SK하이닉스 실적</div>
+        <div class="w">경쟁사 성적 = 업황 확인</div>
+      </div>
+      <div class="key-date">
+        <div class="d">12월 중순</div>
+        <div class="e">다음 실적 (예상)</div>
+        <div class="w">83조원 목표 달성 여부</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$1,110 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $1,180 → 최고가 $1,255)</span></div>
+      <div class="rung now"><span class="px">$1,075</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$1,020</span><span>이 아래면 → 조심 ⚠️ (실적 날 바닥)</span></div>
+      <div class="rung bad"><span class="px">$1,000</span><span>최후 방어선 🛑 (깨지면 $924)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 실적은 흠잡을 데가 없지만 이미 주가에 반영돼 <b>$1,020~1,110 박스</b>에 갇혀 있습니다.
+      당장은 <b>10/6 파업 투표 결과</b>가 방향을 정하니, 새로 사려면 결과를 확인한 뒤 <b>$1,020~1,050 근처에서 나눠서</b> 사는 게 안전합니다.
+      파업 리스크가 걷히고 $1,110을 넘으면 사상 최고가 재도전 구간이 열립니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산). Q3 실적은 FY2026 Q3(2026.06.25 발표) 기준, HBM 점유율은 Counterpoint 2026년 2분기 데이터 기준. 대만 노조 협상 관련 내용은 공개 보도(Reuters, TrendForce 등) 기준이며 진행 상황에 따라 달라질 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시세는 Investing.com 기준.
+    실적은 Micron FY2026 Q4(2026.09.30 발표) 기준, HBM 점유율은 Counterpoint 2026년 2분기 데이터 기준. 대만 노조 관련 내용은 공개 보도 기준이며 진행 상황에 따라 달라질 수 있습니다. 다음 실적일은 회사 공식 공지 전 추정입니다.
+    원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다. 가격은 OKX 퍼블릭 API(MUUSDT.P)로 30초마다 자동 갱신됩니다.
   </footer>
 
 </div>
@@ -632,7 +750,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX MUUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

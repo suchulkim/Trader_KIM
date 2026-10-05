@@ -590,7 +590,7 @@
   <div class="grid" id="kospi">
     <a class="card" href="SAMSUNG_주가분석_리포트.html" data-q="samsung 삼성전자 삼성" data-sym="SAMSUNG"><div class="card-top"><div class="card-info"><div class="sym">SAMSUNG</div><div class="name">삼성전자</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-SAMSUNG">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-SAMSUNG">9시</span><span class="chg loading" id="chg-prev-SAMSUNG">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-SAMSUNG">21시</span><span class="chg loading" id="chg-today-SAMSUNG">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
     <a class="card" href="HYUNDAI_주가분석_리포트.html" data-q="hyundai 현대차 현대자동차" data-sym="HYUNDAI"><div class="card-top"><div class="card-info"><div class="sym">HYUNDAI</div><div class="name">현대차</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-HYUNDAI">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-HYUNDAI">9시</span><span class="chg loading" id="chg-prev-HYUNDAI">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-HYUNDAI">21시</span><span class="chg loading" id="chg-today-HYUNDAI">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
-    <a class="card" href="LGELECTRONICS_주가분석_리포트.html" data-q="lgelectronics lg electronics lg전자 엘지" data-sym="LGELECTRONICS"><div class="card-top"><div class="card-info"><div class="sym">LG전자</div><div class="name">LG전자</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-LGELECTRONICS">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-LGELECTRONICS">9시</span><span class="chg loading" id="chg-prev-LGELECTRONICS">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-LGELECTRONICS">21시</span><span class="chg loading" id="chg-today-LGELECTRONICS">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
+    <a class="card" href="LGELECTRONICS_주가분석_리포트.html" data-q="lgelectronics lg electronics lg전자 엘지" data-sym="LGELECTRONICS"><div class="card-top"><div class="card-info"><div class="sym">LGELECTRONICS</div><div class="name">LG전자</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-LGELECTRONICS">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-LGELECTRONICS">9시</span><span class="chg loading" id="chg-prev-LGELECTRONICS">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-LGELECTRONICS">21시</span><span class="chg loading" id="chg-today-LGELECTRONICS">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
     <a class="card" href="NAVER_주가분석_리포트.html" data-q="naver 네이버" data-sym="NAVER"><div class="card-top"><div class="card-info"><div class="sym">NAVER</div><div class="name">네이버</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-NAVER">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-NAVER">9시</span><span class="chg loading" id="chg-prev-NAVER">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-NAVER">21시</span><span class="chg loading" id="chg-today-NAVER">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
     <a class="card" href="HANMI_주가분석_리포트.html" data-q="hanmi 한미 한미반도체 한미약품" data-sym="HANMI"><div class="card-top"><div class="card-info"><div class="sym">HANMI</div><div class="name">한미</div></div><div class="chg-group"><div class="price-row"><span class="price-label">현재가</span><span class="price loading" id="price-HANMI">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-prev-HANMI">9시</span><span class="chg loading" id="chg-prev-HANMI">···</span></div><div class="chg-row"><span class="chg-label" id="chg-label-today-HANMI">21시</span><span class="chg loading" id="chg-today-HANMI">···</span></div></div></div><span class="tag stock">KR Perp</span></a>
   </div>
@@ -920,7 +920,12 @@
 
   function eventDateTime(ev) {
     // dateKST/timeKST는 한국시간(KST, UTC+9) 기준이므로 명시적 오프셋을 붙여 파싱한다.
-    return new Date(ev.dateKST + 'T' + ev.timeKST + ':00+09:00');
+    // timeKST가 없는(시각 미정) 일정은 그날 하루가 끝날 때까지 '예정'으로 취급한다.
+    return new Date(ev.dateKST + 'T' + (ev.timeKST || '23:59') + ':00+09:00');
+  }
+
+  function evTimeText(ev) {
+    return ev.timeKST ? ev.timeKST + ' KST' : '시각 미정';
   }
 
   function ddayLabel(ev, now) {
@@ -942,7 +947,7 @@
       '<div class="event-row imp-' + ev.importance + (done ? ' done' : '') + '">' +
         '<div class="ev-dday">' + ddayLabel(ev, now) + '</div>' +
         '<div class="ev-meta">' +
-          '<div class="ev-datetime">' + ev.dateLabel + ' ' + ev.timeKST + ' KST</div>' +
+          '<div class="ev-datetime">' + ev.dateLabel + ' · ' + evTimeText(ev) + '</div>' +
           '<div class="ev-title">' + ev.event + (ev.note ? ' <span class="ev-note">(' + ev.note + ')</span>' : '') + '</div>' +
           '<div class="ev-tickers">' + ev.tickers.join(', ') + '</div>' +
         '</div>' +
@@ -973,7 +978,7 @@
           '<div class="ev-banner-item">' +
             '<span class="dday">' + ddayLabel(ev, now) + '</span>' +
             '<span class="ev-name">' + ev.event + '</span>' +
-            '<span class="ev-time">· ' + ev.dateLabel + ' ' + ev.timeKST + '</span>' +
+            '<span class="ev-time">· ' + ev.dateLabel + ' ' + (ev.timeKST || '') + '</span>' +
           '</div>'
         ).join('');
         const more = upcoming.length > 2 ? '<a href="#eventsSection" class="ev-more">전체 일정 →</a>' : '';

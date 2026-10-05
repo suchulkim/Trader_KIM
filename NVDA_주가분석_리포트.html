@@ -214,6 +214,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
 
@@ -336,6 +343,45 @@
     font-size:12px;
     color:var(--text-soft);
   }
+  .key-hero{background:linear-gradient(135deg,rgba(118,185,0,.18),rgba(95,209,136,.08)); border:1px solid #76b900; border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(118,185,0,.14); border:1px dashed #76b900;} .rung.now .px{color:#76b900;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid #76b900; border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
@@ -343,22 +389,21 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.19 (토) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/18 16:00 ET, 실시간 변동 반영) 기준</span>
+      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
     </div>
     <h1>NVIDIA (NVDA) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: NVDAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$222.27</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">정규장 +1.34% (+$2.93) · 시간외 +0.12% · 3거래일 연속 상승, 9/14 저점 대비 +5.4%</div>
+        <div class="price-main"><span id="live-price">$233.95</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/2 정규장 ▲ +1.34% (+$3.09) · <b>장중 사상 최고가 $237.88</b> · 9/14 저점 대비 +10.9%</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX NVDAUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/14 반도체 섹터 전반의 AI 밸류에이션 재조정 우려로 $210.96까지 조정받았으나, 9/16 FOMC 금리 인상 당일에도 견조하게 방어한 뒤
-        9/17 젠슨 황의 "내년 칩 판매량 2배" 발언과 함께 3거래일 연속 상승하며 $222선을 회복했습니다.
-        52주 최고가 $236.54 대비 약 -6.0% 지점, 시가총액 약 $5.36T.
+        9/28 <b>역대 최대 자사주 매입 확대($150B<span class="krw">(약 202조 5,900억원)</span>)</b> 발표 후 $230 저항을 뚫었고, 10/2 고용 쇼크로 금리가 내려가자 모건스탠리의 '반도체 최선호주' 복귀와 함께
+        <b>5월 이후 처음으로 사상 최고가($237.88)</b>를 경신했습니다. 종가 $233.95, 시가총액 약 $5.7조<span class="krw">(약 7,700조원)</span>로 $6조에 근접.
       </div>
     </div>
 
@@ -385,47 +430,51 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/8 고점($225.73) 이후 조정받아 9/14 $210.96까지 하락, 이후 3거래일 연속 반등하며 $222선 회복. $210~215 구간이 단기 지지선으로 재확인됐습니다.<br>
-      <b>15분봉</b>: 9/17 젠슨 황 발언 이후 거래량 감소 속 상승폭 축소 — 상단 저항($225~230) 접근 시 반응 주시.
+      <b>일봉</b>: 9/14 저점 $210.96 → 9/22 $228.87 → 9/23~25 금리·유가 상승에 $224~225로 숨 고르기 → 9/28 자사주 발표로 재상승 → 10/2 장중 <b>$237.88 사상 최고가</b>(종전 $236.54, 5월). 3주간 +10.9%로 $211~235 박스를 위로 벗어나는 중입니다.<br>
+      <b>15분봉</b>: 10/2 시가 $236.05에서 고점을 찍고 $233.6까지 밀려 마감(윗꼬리) — <b>$237.9</b>(사상 최고가)가 저항, <b>$228</b>(9/28~10/1 저점대)가 1차 지지, <b>$221~225</b>가 2차 지지입니다.
     </div>
   </section>
 
   <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일)</h2>
     <table>
       <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/14(월)</b><br>$210.96<br><span style="color:var(--up); font-weight:600;">▼ -3.36%</span></td>
-        <td>Anthropic·OpenAI 등 업계 리더들의 "AI 리셋" 발언과 Huawei의 AI 칩 가속화 소식이 겹치며 반도체 섹터 전반 약세 — 밸류에이션 재조정 우려로 3거래일 연속 하락 흐름 지속</td>
-        <td>이번 주 최대 낙폭, 저점 형성</td>
+        <td><b>9/25(금)</b><br>$225.07<br><span style="color:var(--up); font-weight:600;">▲ +0.22%</span></td>
+        <td>9/21~22 반도체 랠리로 $228.87까지 오른 뒤, 9/23~24 국채금리·유가 상승에 조정. 이날은 보합으로 숨 고르기</td>
+        <td>$221~225 지지 확인</td>
       </tr>
       <tr>
-        <td><b>9/15(화)</b><br>$212.17<br><span style="color:var(--down); font-weight:600;">▲ +0.57%</span></td>
-        <td>CLARITY Act 부결 등 크립토 악재는 NVDA에 직접 영향 제한적, FOMC(9/16)를 앞둔 관망세 속 낙폭과대 인식으로 소폭 반등</td>
-        <td>보합권 등락</td>
+        <td><b>9/28(월)</b><br>$228.86<br><span style="color:var(--up); font-weight:600;">▲ +1.68%</span></td>
+        <td><b>자사주 매입 한도 $150B<span class="krw">(약 202조 5,900억원)</span> 추가</b> — 남은 한도 총 $235B<span class="krw">(약 317조 3,910억원)</span>, FY2028까지 집행 예정. 美 기업 역사상 최대 규모 증액(애플 $110B 기록 경신). 나스닥 -0.9%에도 역행 상승</td>
+        <td>장중 $233.21 · 시장 역행 강세</td>
       </tr>
       <tr>
-        <td><b>9/16(수)</b><br>$213.90<br><span style="color:var(--down); font-weight:600;">▲ +0.82%</span></td>
-        <td><b>FOMC, 25bp 금리 인상 발표(3.75~4.00%)</b> — 3년 만의 첫 인상에도 NVDA는 QQQ와 마찬가지로 견조하게 방어, 반도체 대형주 실적 모멘텀이 금리 충격을 상쇄</td>
-        <td>QQQ 대비 상대 강세 흐름 동참</td>
+        <td><b>9/29(화)</b><br>$227.21<br><span style="color:var(--down); font-weight:600;">▼ -0.72%</span></td>
+        <td>자사주 재료 소화 후 차익실현. 장중 $232.82까지 올랐다가 밀림</td>
+        <td>$230 저항 재확인</td>
       </tr>
       <tr>
-        <td><b>9/17(목)</b><br>$219.34<br><span style="color:var(--down); font-weight:600;">▲ +2.54%</span></td>
-        <td><b>젠슨 황 CEO, "내년 칩 판매량이 2배가 될 것"이라 언급</b> — "인상 재료 소진" 인식에 따른 시장 전반 반등과 맞물리며 콜옵션 매수세 확산(NVDA 강세 옵션 포지셔닝 증가)</td>
-        <td>이번 주 최대 상승폭</td>
+        <td><b>9/30(수)</b><br>$228.38<br><span style="color:var(--up); font-weight:600;">▲ +0.51%</span></td>
+        <td>8월 근원 PCE 예상 하회로 10월 금리 인상 확률 71%→35% 하락. 3분기 마지막 거래일</td>
+        <td>$228 지지</td>
       </tr>
       <tr>
-        <td><b>9/18(금)</b><br>$222.27<br><span style="color:var(--down); font-weight:600;">▲ +1.34%</span></td>
-        <td>Huawei의 AI 칩 가속화 소식에도 "40% 이상 상승여력" 등 애널리스트 강세 리포트가 이어지며 3거래일 연속 상승 마무리</td>
-        <td>거래량 1.9억주로 평소 대비 높은 수준</td>
+        <td><b>10/1(목)</b><br>$230.86<br><span style="color:var(--up); font-weight:600;">▲ +1.09%</span></td>
+        <td>전날 밤 <b>Micron 실적 대폭 상회</b>(매출 +379%, 다음 분기 가이던스도 예상 상회) — HBM 메모리 수요로 AI 칩 수요 재확인</td>
+        <td>$230 위 첫 종가 마감</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$233.95<br><span style="color:var(--up); font-weight:600;">▲ +1.34%</span></td>
+        <td><b>장중 사상 최고가 $237.88</b> — ① 美 9월 고용 쇼크(+2.9만명)로 금리 인상 확률 16%로 급락 ② 모건스탠리, NVDA를 반도체 최선호주로 복귀(목표가 $300) ③ DGX Spark 64GB(10/23 출시, $4,999) 공개. 다만 <b>아마존 '칩 리스백' 검토</b> 보도에 상승폭 일부 반납</td>
+        <td>5월 이후 첫 신고가 · 윗꼬리</td>
       </tr>
     </table>
     <div class="callout">
-      → 이번 주는 <b>AI 밸류에이션 재조정 우려(9/14) → FOMC 금리 인상 방어(9/16) → 젠슨 황의 강세 발언(9/17)</b>으로 이어지는
-      전형적인 조정 후 반등 패턴을 보였습니다. $210.96 저점에서 사흘 만에 +5.4% 반등하며 $222선을 회복했고,
-      FOMC 당일에도 QQQ와 함께 상대적으로 견조했다는 점이 인상적입니다. 다만 <b>Huawei 등 中 AI 칩 경쟁 심화</b>는
-      여전히 잠재 리스크로 남아 있어, $225~230 저항 돌파 여부가 다음 관전 포인트입니다.
+      → 2주간 흐름은 <b>금리 상승에 숨 고르기(9/23~25) → 역대 최대 자사주 매입(9/28) → Micron 호실적(10/1) → 고용 쇼크·금리 하락에 사상 최고가(10/2)</b>입니다.
+      회사 자체 재료(자사주)와 업황(Micron), 매크로(금리) 세 가지가 동시에 받쳐 준 상승이라 질이 좋은 편입니다.
+      다만 아마존이 칩을 빌려 쓰는 방식까지 검토한다는 보도는 <b>"고객들이 칩 살 돈을 어떻게 마련하나"</b>라는 순환금융 의문을 다시 키웠습니다.
     </div>
   </section>
 
@@ -436,60 +485,76 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li><b>젠슨 황 CEO, "내년 칩 판매량이 2배가 될 것"이라 언급(9/17)</b> — 수요 가시성에 대한 강한 자신감 표명, 강세 옵션 포지셔닝 확산</li>
-        <li>Palantir와 'Sovereign AI' 공급망 스택 공동 출시(9/10) — Nemotron+Foundry/AIP 결합, 방위·제조·정부 부문으로 상업화 확장 잠재력</li>
-        <li>Hugging Face 인수($12.9B) 공식 완료 — 1,800만 명 이상의 개발자 생태계 확보로 오픈소스 AI 모델 주도권 강화</li>
-        <li>Vera Rubin 램프업 본격화 — 8월 출하 개시, 모든 주요 하이퍼스케일러·AI클라우드向 발주 확보, Q3 데이터센터 매출의
-        약 20% 비중을 차지할 전망</li>
-        <li>FOMC 금리 인상(9/16) 당일에도 QQQ와 함께 견조하게 방어 — 반도체 대형주 실적 모멘텀이 금리 충격 상쇄</li>
-        <li>컨센서스 목표주가 약 $327(현재가 대비 +47% 상승여력), 58명 매수·1명 매도 의견으로 Strong Buy 등급 유지</li>
+        <li><b>사상 최고가 경신(10/2 장중 $237.88)</b> — 시가총액 $6조 근접, 5개월간 막혔던 고점을 돌파</li>
+        <li><b>자사주 매입 한도 $235B</b><span class="krw">(약 317조 3,910억원)</span>(9/28 $150B 증액) — 2분기에만 $26.0B<span class="krw">(약 35조 1,160억원)</span> 주주환원, "주가가 싸다"는 경영진 신호</li>
+        <li>2분기 매출 $96.2B<span class="krw">(약 129조 9,280억원)</span>(+106% YoY), 3분기 가이던스 <b>$108B</b><span class="krw">(약 145조 8,650억원)</span>(±2%, 중국 데이터센터 제외) — 젠슨 황 "내년 칩 판매 2배"</li>
+        <li>Vera Rubin 램프업 본격화, Micron 호실적으로 AI 메모리·GPU 수요 재확인</li>
+        <li>모건스탠리 최선호주 복귀($300), 애널리스트 61명 평균 목표가 <b>$327.70</b>(약 +40%), 최고 Evercore $465</li>
+        <li>Hugging Face 인수($12.9B<span class="krw">(약 17조 4,230억원)</span>)·Palantir 협업 — 소프트웨어·생태계 확장</li>
       </ul>
     </div>
-
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>Huawei의 AI 칩 가속화</b> — 中 자국산 AI 반도체 경쟁 심화 우려, 9/18에도 관련 보도로 주가 상승폭 제한</li>
-        <li>순환금융 구조에 대한 시장 의구심 지속 — OpenAI·Anthropic 등 고객사이자 투자대상이라는 이중적 관계가 매출의 질에 대한
-        논란을 키움</li>
-        <li>연준의 추가 긴축 경로 — 9/16 FOMC 25bp 인상 이후 SEP상 정책위원 다수가 2026년 추가 인상 시사, 고밸류에이션 성장주 할인율 부담 지속</li>
-        <li>OpenAI의 Hugging Face 관련 데이터 유출 의혹에 대한 美 상원 조사 착수 — 생태계 신뢰도 리스크로 번질 가능성</li>
-        <li>$225~230 구간이 다음 저항선으로 부각, 9/8 고점($225.73) 재돌파 여부가 단기 방향성의 분수령</li>
+        <li><b>순환금융 의문</b> — OpenAI·Anthropic 등 고객에 대한 지분투자, Brookfield AI 펀드 $2B, 빅테크의 AI 데이터센터 부채 보증, 아마존 칩 리스백 검토 → "빚으로 칩을 사는 구조" 우려</li>
+        <li>중국 데이터센터 매출은 가이던스에서 제외 — Huawei 등 中 자국산 AI 칩 경쟁 심화</li>
+        <li>매출총이익률 75.0% → 3분기 가이던스 74.0%로 소폭 하락</li>
+        <li>최근 3개월 내부자 매도 약 $9.7억<span class="krw">(약 1조 3,070억원)</span></li>
+        <li>10/8 FOMC 의사록·10/29 FOMC — 금리 재상승 시 고밸류 반도체 부담</li>
+        <li>사상 최고가 부근 윗꼬리 — 단기 차익 매물 출회 가능성</li>
       </ul>
     </div>
-
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$225~230 저항 돌파 시 9/8 고점 재도전 후 52주 고점($236.54) 재도전, Vera Rubin 출하 가속·젠슨 황 발언 후속 확인 시 모멘텀 지속</div>
-      <div class="scenario base"><b>기본</b>$210~$225 박스권에서 10월 FOMC(10/29)·Micron 실적(10/1)을 소화하며 등락, 순환금융 우려 완화 여부를 주시</div>
-      <div class="scenario bear"><b>약세</b>$210 붕괴 시 $195~$200 심리적 지지선까지 조정, Huawei 등 中 AI 칩 경쟁 심화 뉴스나 추가 금리 인상 시 반도체 섹터 전반 밸류에이션 재조정 가속</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 신고가권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">225~240</td>
+        <td>금리가 안정되고 빅테크 실적(10/29~30) 전까지 새 재료가 없는 경우. <b>$228 지지·$238 저항</b> 사이에서 신고가 소화</td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">238 → 250, 넘으면 260~270</td>
+        <td>TSMC 실적(10/15)과 빅테크 설비투자 계획(10/29~30)이 AI 수요를 다시 확인하는 경우. <b>$238 위 종가 마감</b>이 신호, $250 심리선 돌파 시 모건스탠리 목표 $300을 향한 랠리</td>
+      </tr>
+      <tr>
+        <td>③ 되돌림</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">225 이탈 → 215~221, 이후 210</td>
+        <td>FOMC 의사록이 매파적이거나 순환금융·빅테크 투자 축소 우려가 커지는 경우. <b>$225가 깨지면</b> $215~221, 9월 저점 $210까지 열립니다</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
   <section>
-    <h2>4. 매출구조/수익구조 (Q2 FY2027 기준)</h2>
+    <h2>4. 매출구조/수익구조 (Q2 FY2027 기준, 2026년 5~7월)</h2>
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
-      <tr><td>📊 총 매출</td><td class="num">$96.2B</td><td class="num">+106% YoY / +18% QoQ</td></tr>
-      <tr><td>🖥️ 데이터센터</td><td class="num">$89.0B</td><td class="num">+117% YoY (핵심 성장)</td></tr>
-      <tr><td>💰 Non-GAAP EPS</td><td class="num">$2.22</td><td class="num">컨센서스 상회 (+120% YoY)</td></tr>
-      <tr><td>📈 매출총이익률</td><td class="num">75.0%</td><td class="num">GAAP·Non-GAAP 동일 (Q4 71~72%대 전망)</td></tr>
-      <tr><td>🎯 Q3 가이던스</td><td class="num">$108B ±2%</td><td class="num">중국 DC 제외 가정, Vera Rubin 약 20% 비중 전망</td></tr>
-      <tr><td>🤝 최근 M&A 및 파트너십</td><td class="num">HF 인수 / Palantir 협업</td><td class="num">Hugging Face($12.9B) 완료, Palantir 공급망 AI(9/10)</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.11.26 (예정)</td><td class="num">Q3 FY2027</td></tr>
+      <tr><td>📊 총 매출</td><td class="num">$96.2B<span class="krw">(약 129조 9,280억원)</span></td><td class="num">+106% YoY / +18% QoQ</td></tr>
+      <tr><td>🖥️ 데이터센터</td><td class="num">$89.0B<span class="krw">(약 120조 2,030억원)</span></td><td class="num">+117% YoY (매출의 약 92.5%)</td></tr>
+      <tr><td>🎮 엣지 컴퓨팅 (게이밍·PC·로봇·자동차)</td><td class="num">$7.2B<span class="krw">(약 9조 7,240억원)</span></td><td class="num">+27% YoY</td></tr>
+      <tr><td>⚙️ 영업이익 / 순이익</td><td class="num">$63.7B<span class="krw">(약 86조 330억원)</span> / $59.7B<span class="krw">(약 80조 6,310억원)</span></td><td class="num">영업이익률 약 66%</td></tr>
+      <tr><td>💰 EPS</td><td class="num">GAAP $2.46 · Non-GAAP $2.22</td><td class="num">컨센서스 상회</td></tr>
+      <tr><td>📈 매출총이익률</td><td class="num">75.0%</td><td class="num">3분기 가이던스 74.0%(±0.5%p)</td></tr>
+      <tr><td>🎯 Q3 가이던스</td><td class="num">$108B<span class="krw">(약 145조 8,650억원)</span> ±2%</td><td class="num">중국 데이터센터 제외 가정</td></tr>
+      <tr><td>💵 주주환원</td><td class="num">Q2 $26.0B<span class="krw">(약 35조 1,160억원)</span></td><td class="num">자사주 한도 잔여 $235B<span class="krw">(약 317조 3,910억원)</span>(9/28 증액)</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.26 (목) 06:00 KST (예상)</td><td class="num">Q3 FY2027 · 美 현지 11/25 장마감 후, 회사 공지 전</td></tr>
     </table>
 
     <div class="rev-bar-wrap">
       <div class="rev-row">
         <div class="rev-label">데이터센터</div>
-        <div class="rev-track"><div class="rev-fill" style="width:92%; background:#76b900;"></div></div>
-        <div class="rev-pct">~92%</div>
+        <div class="rev-track"><div class="rev-fill" style="width:92.5%; background:#76b900;"></div></div>
+        <div class="rev-pct">92.5%</div>
       </div>
       <div class="rev-row">
-        <div class="rev-label">기타 (게이밍 등)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:8%; background:#8e8e93;"></div></div>
-        <div class="rev-pct">~8%</div>
+        <div class="rev-label">엣지 (게이밍 등)</div>
+        <div class="rev-track"><div class="rev-fill" style="width:7.5%; background:#8e8e93;"></div></div>
+        <div class="rev-pct">7.5%</div>
       </div>
     </div>
 
@@ -513,15 +578,15 @@
           <div class="desc">CUDA, Nemotron 오픈모델, Hugging Face, Palantir 협업 스택</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q2 FY27 $96.2B, 데이터센터 비중 ~92%) ↓</div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q2 FY27 $96.2B<span class="krw">(약 129조 9,280억원)</span>, 데이터센터 비중 92.5%) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
-          <b>재투자 — R&D·CapEx</b>
-          <div class="desc">차세대 아키텍처(Rubin 이후) 개발, 생산능력 확충</div>
+          <b>재투자 — R&D·자사주</b>
+          <div class="desc">차세대 아키텍처(Rubin 이후) 개발·생산능력 확충 + 자사주 매입 한도 $235B</div>
         </div>
         <div class="flow-box reward">
           <b>재투자 — 고객사·파트너 지분투자</b>
-          <div class="desc">OpenAI·Anthropic·Thinking Machines Lab 등에 대한 지분투자·인프라 파이낸싱(순환금융 구조)</div>
+          <div class="desc">OpenAI·Anthropic·Thinking Machines Lab 지분투자, Brookfield AI 펀드 $2B 등 인프라 파이낸싱(순환금융 구조)</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -536,7 +601,7 @@
       → NVIDIA의 매출은 하드웨어(GPU·시스템)와 소프트웨어(CUDA·Nemotron·인수한 Hugging Face)가 결합된 형태로 발생하며, 벌어들인
       현금의 상당 부분이 <b>차세대 R&D</b>뿐 아니라 <b>고객사에 대한 지분투자·파이낸싱</b>으로도 재순환됩니다. 이 구조가 생태계
       락인과 수요 선점에는 유리하지만, 최근 시장에서는 이를 <b>순환금융(Circular Financing)</b>으로 부르며 매출의 질에 대한
-      의구심을 제기하고 있는 것이 위 2번 항목의 핵심 배경입니다.
+      의구심을 제기하고 있습니다. 10/2 아마존의 칩 리스백 검토 보도가 이 논란을 다시 키웠지만, 동시에 9/28 <b>역대 최대 자사주 매입</b>으로 현금 창출력을 증명한 상황입니다.
     </div>
   </section>
 
@@ -545,41 +610,82 @@
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>지속</td>
-        <td>Huawei 등 中 AI 칩 경쟁 동향, 반도체 섹터 전반(SOX) 흐름</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 1일 (목) 오전 5:00</td>
-        <td>Micron(MU) FY2026 4분기 실적 발표 — HBM 가격·수요 가이던스가 NVDA 공급망(메모리 원가) 밸류체인에 영향</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 1일 (목) 오전 9:00</td>
-        <td>NVIDIA 분기 배당 지급일 (주당 $0.25)</td>
-        <td><span class="star">★</span><span class="star-dim">★★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9/16 25bp 인상 이후 두 번째 결정, 추가 인상 확률 약 53~60% 반영 중</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>11월 26일 (목) 오전 6:00</td>
-        <td>NVIDIA Q3 FY2027 실적 발표 (예정) — Vera Rubin 매출 비중, Hugging Face·Palantir 협업 성과, 순환금융 관련 코멘트 핵심 관전포인트</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>12월 10일 (목) 오전 4:00</td>
-        <td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의)</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
+      <tr><td>지속</td><td>순환금융·AI 데이터센터 자금조달 뉴스, Huawei 등 中 AI 칩 경쟁, 반도체 섹터(SOX) 흐름</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — '추가 인상' 논의 강도 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — NVDA 칩 위탁생산사, AI 수요·CoWoS 증설·4분기 가이던스</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 23일 (금, 美 현지)</td><td>DGX Spark 64GB 출시($4,999) — 1,000억 파라미터 모델 구동, 개인·연구용 AI PC</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) ~ 30일 (금) 새벽</td><td>MSFT·GOOGL·META·AMZN 실적 — <b>AI 설비투자(capex) 계획</b>이 NVDA 수요의 직접 지표</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>NVIDIA Q3 FY2027 실적 (美 현지 11/25 장마감 후, 회사 공지 전) — Vera Rubin 매출·4분기 가이던스·중국·순환금융 코멘트</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>11월 30일 (월) ~ 12월 3일</td><td>GTC Washington, D.C. — 젠슨 황 기조연설, 정부·국방 AI 메시지</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>사상 최고가 + 역대 최대 자사주 매입,</em><br><strong>다만 '고객이 빚내서 칩 사는' 구조가 불안 요소.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>5개월 만에 사상 최고가</b><span>10/2 장중 $237.88 · 시가총액 $6조 근접</span></li>
+          <li><b>자기 주식을 317조원어치 사겠다</b><span>역대 최대 자사주 매입 한도 → 주가 바닥을 받쳐 줌</span></li>
+          <li><b>매출이 1년 새 2배</b><span>분기 130조원(+106%) · 다음 분기 146조원 목표</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>고객이 빚내서 칩을 삼</b><span>OpenAI 투자·아마존 칩 리스백 → "돈이 돌고 도는 구조" 의심</span></li>
+          <li><b>중국 매출이 빠져 있음</b><span>화웨이 등 중국산 AI 칩 추격</span></li>
+          <li><b>마진 살짝 하락 예고</b><span>75% → 74% · 임원들 최근 1.3조원어치 매도</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/15 오후</div>
+        <div class="e">TSMC 실적</div>
+        <div class="w">칩 만드는 회사 = 수요 체크</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10/29~30 새벽</div>
+        <div class="e">빅테크 실적</div>
+        <div class="w">AI 투자 늘리면 호재</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">11/26 새벽</div>
+        <div class="e">3분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$238 ↑</span><span>여기를 넘으면 → 신고가 랠리 🚀 (다음 $250)</span></div>
+      <div class="rung now"><span class="px">$234</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$228</span><span>이 아래면 → 조심 ⚠️ (최근 1주 바닥)</span></div>
+      <div class="rung bad"><span class="px">$221</span><span>최후 방어선 🛑 (깨지면 $210대)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 자사주·업황·금리가 한꺼번에 받쳐 주며 <b>신고가를 뚫은 강한 흐름</b>입니다. 다만 신고가 첫 돌파는 흔들림이 잦으니,
+      새로 사려면 <b>$228 근처 눌림에서 나눠서</b>, 갖고 있다면 <b>$228 지지만 확인</b>하면 됩니다. 다음 방향은 <b>10/29~30 빅테크의 AI 투자 계획</b>이 정합니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.18 16:00 ET 정규장 마감(KST 2026.09.19 오전 5:00 환산).
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 종가는 Investing.com 기준.
+    실적은 NVIDIA Q2 FY2027(2026.08.26 발표) 기준이며, Q3 실적일(11/25 현지)은 회사 공식 공지 전 추정입니다. Hugging Face 인수 완료 시점은 보도마다 차이가 있습니다.
+    원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다. 가격은 OKX 퍼블릭 API(NVDAUSDT.P)로 30초마다 자동 갱신됩니다.
   </footer>
 
 </div>
@@ -667,7 +773,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX NVDAUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/18 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

@@ -72,6 +72,46 @@
   .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
+
+  /* 6. 핵심 한눈에 */
+  .key-hero{background:linear-gradient(135deg,rgba(237,28,36,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(237,28,36,.10); border:1px dashed var(--accent);} .rung.now .px{color:var(--accent);}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#c89a1e;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
@@ -104,22 +144,23 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.29 (화) · 업데이트</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(9/28 16:00 ET, 실시간 변동 반영) 기준</span>
+      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
     </div>
     <h1>AMD (Advanced Micro Devices) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AMDUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$607.87</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-down" id="live-chg">9/28 정규장 -3.61% (-$22.76) · 9/25 사상 최고 종가($630.63) 대비 조정 · 장중 $596.07까지 밀린 뒤 일부 회복</div>
+        <div class="price-main"><span id="live-price">$633.91</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/2 정규장 ▲ +2.95% (+$18.18) · <b>사상 최고 종가 경신</b> · 장중 사상 최고가 $645.46</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX AMDUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/21 시가총액 1조 달러 첫 돌파(+9.95%)로 $600선에 안착한 뒤 9/25 사상 최고 종가 $630.63(장중 최고 $639.00)까지
-        상승했습니다. 9/28에는 국채금리·유가 상승에 반도체 섹터 전반이 급락하며 -3.61% 조정, $607.87로 마감했습니다.
-        사상 최고가 $639.00 대비 약 -4.9%, 2026년 연초 대비 약 +180% 수준.
+        9/28 금리·유가 급등에 -3.61% 밀린 뒤 9/29~10/1 사흘간 $600선을 지키며 바닥을 다졌고, 10/2 美 9월 고용 쇼크(+2.9만명)로
+        금리가 떨어지자 반도체가 일제히 오르며 +2.95%, <b>사상 최고 종가 $633.91</b>로 마감했습니다(장중 $645.46 신고가).
+        같은 주 World Labs 인수($8.2B<span class="krw">(약 11조 750억원)</span>, 9/28)·Vultr의 Helios 랙 $1.2B<span class="krw">(약 1조 6,210억원)</span> 주문 소식이 겹쳤습니다.
+        시가총액 약 $1.03조<span class="krw">(약 1,391조원)</span>, 2026년 연초 대비 약 +190%.
       </div>
     </div>
 
@@ -146,8 +187,8 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/14 저점 $493.41 → 9/25 종가 $630.63까지 9거래일간 +27.8% 급등 후 9/28 첫 의미 있는 조정(-3.61%). 20일 이동평균 대비 약 +16% 이격, RSI 73 안팎의 과매수 구간.<br>
-      <b>15분봉</b>: 9/28 장중 $596.07까지 밀린 뒤 $600선 회복 — <b>$585~600</b>(9/21 돌파 구간)이 1차 지지, <b>$630~639</b>(사상 최고가)가 저항.
+      <b>일봉</b>: 9/14 저점 $493.41 → 9/25 $630.63(+27.8%) 급등 → 9/28 -3.61% 조정 → 9/29~10/1 <b>$600~605에서 3일 연속 지지</b> → 10/2 장대양봉으로 사상 최고 종가 $633.91. 조정이 사흘 만에 끝나며 상승 추세가 유지된 모습이지만, 단기 이격이 커 RSI 70 안팎 과열권은 여전합니다.<br>
+      <b>15분봉</b>: 10/2 장중 $645.46 신고가 후 $634 부근으로 되밀려 마감(윗꼬리) — <b>$600~605</b>(9/28~10/1 저점대)가 1차 지지, <b>$645</b>(새 사상 최고가)가 저항입니다.
     </div>
   </section>
 
@@ -157,42 +198,41 @@
     <table>
       <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/21(월)</b><br>$615.52<br><span style="color:var(--up); font-weight:600;">▲ +9.95%</span></td>
-        <td><b>시가총액 1조 달러 첫 돌파</b> — 유가 약 3% 하락·국채금리 하락에 반도체 섹터 급반등(SOXX +3.4%). 한국 9월 1~20일 수출 사상 최대(반도체 호조), Meta AI 에이전트 흥행에 따른 추론용 서버 CPU 수요 기대 부각</td>
-        <td>거래량 4,450만주 · Nvidia·Broadcom·Micron에 이어 美 반도체 4번째 1조 달러</td>
-      </tr>
-      <tr>
-        <td><b>9/22(화)</b><br>$623.77<br><span style="color:var(--up); font-weight:600;">▲ +1.34%</span></td>
-        <td>1조 달러 돌파 후 상승 탄력 유지, 사상 최고 종가 경신. AI 칩 전반 약 10% 가격 인상 보도가 가격결정력 기대를 뒷받침</td>
-        <td>$620 부근 피보나치 저항 테스트</td>
-      </tr>
-      <tr>
-        <td><b>9/23(수)</b><br>$614.61<br><span style="color:var(--down); font-weight:600;">▼ -1.47%</span></td>
-        <td>연초 대비 +187% 급등에 따른 차익실현 — "섹터 동반 랠리일 뿐 개별 모멘텀은 아니다"라는 경계론 제기</td>
-        <td>단기 숨고르기</td>
-      </tr>
-      <tr>
-        <td><b>9/24(목)</b><br>$629.26<br><span style="color:var(--up); font-weight:600;">▲ +2.38%</span></td>
-        <td>프리마켓 -2%대 약세 출발 후 AI 컴퓨팅 수요 기대 재부각으로 강하게 반등, 장중 $630.80 신고가. 나스닥(+0.1% 미만) 대비 뚜렷한 상대 강세</td>
-        <td>장중 하락을 매수세가 흡수</td>
-      </tr>
-      <tr>
         <td><b>9/25(금)</b><br>$630.63<br><span style="color:var(--up); font-weight:600;">▲ +0.22%</span></td>
-        <td><b>사상 최고 종가</b> — 장중 $639.00까지 상승. "11월까지 $750 가능" 등 공격적 전망 등장, 다만 RSI 72~73 과매수 신호</td>
+        <td>당시 <b>사상 최고 종가</b> — 장중 $639.00. 9/21 시총 1조 달러 돌파 이후 랠리 연장, 다만 RSI 72~73 과매수</td>
         <td>주간 +12.6%</td>
       </tr>
       <tr>
         <td><b>9/28(월)</b><br>$607.87<br><span style="color:var(--down); font-weight:600;">▼ -3.61%</span></td>
-        <td><b>국채금리·유가 상승으로 반도체 급락</b> — 성장주 전반 약세(나스닥 선물 -1%대), 회사 고유 악재는 없음. 장중 $596.07까지 밀렸다가 $600선 회복 마감</td>
-        <td>$585 지지 여부가 단기 관건</td>
+        <td><b>국채금리·유가 급등으로 반도체 급락</b>. 같은 날 <b>World Labs(페이페이 리) $8.2B<span class="krw">(약 11조 750억원)</span> 전액 주식 인수</b> 발표 — 공간지능·3D 월드모델 연구소를 사들여 AI 모델 역량 내재화, 페이페이 리는 수석과학자(EVP)로 합류. 시장은 금리 악재에 더 크게 반응</td>
+        <td>장중 $596.07 · 인수 희석 약 0.8%(추정)</td>
+      </tr>
+      <tr>
+        <td><b>9/29(화)</b><br>$607.57<br><span style="color:var(--down); font-weight:600;">▼ -0.05%</span></td>
+        <td>장 초반 $624까지 반등 시도했으나 매물에 밀려 보합 마감. 회사 고유 악재는 없음</td>
+        <td>저점 $605.25 — $600 지지</td>
+      </tr>
+      <tr>
+        <td><b>9/30(수)</b><br>$611.76<br><span style="color:var(--up); font-weight:600;">▲ +0.69%</span></td>
+        <td>3분기 마지막 거래일. 8월 근원 PCE가 예상 하회(전년비 3.0%)해 10월 인상 확률 71%→35% 급락. 다만 10년물 금리는 5.29%(2007년 이후 최고)로 올라 나스닥 -0.37% — 그 속에서 AMD는 소폭 상승하며 상대 강세</td>
+        <td>저점 $600.10 — 이틀 연속 $600 방어</td>
+      </tr>
+      <tr>
+        <td><b>10/1(목)</b><br>$615.73<br><span style="color:var(--up); font-weight:600;">▲ +0.65%</span></td>
+        <td>4분기 첫 거래일. 전날 밤 <b>Micron 실적 대폭 상회</b>(매출 +379%, 다음 분기 가이던스도 예상 상회)로 AI 반도체 수요 재확인. 9월 ISM 제조업 54.5, 고용보고서 대기 속 완만한 상승</td>
+        <td>저점 $601.50 — 사흘 연속 바닥 확인</td>
+      </tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$633.91<br><span style="color:var(--up); font-weight:600;">▲ +2.95%</span></td>
+        <td><b>사상 최고 종가</b> — ① 美 9월 고용 +2.9만명 쇼크로 10월 금리 인상 확률 64%→16% 급락, 국채금리 하락 ② HPE 발표: <b>Vultr가 AMD Helios 랙(MI455X 72개+EPYC) $1.2B<span class="krw">(약 1조 6,210억원)</span> 주문</b> ③ 반도체 동반 랠리(SOXX +3%, Arm +8%, NVDA +2%)</td>
+        <td>장중 $645.46 신고가 · 거래량은 평소의 0.7배</td>
       </tr>
     </table>
 
     <div class="callout">
-      → 지난 2주는 <b>유가·금리 안정(9/21) → 시총 1조 달러 돌파 → 사상 최고가($639) → 금리·유가 재상승에 조정(9/28)</b>으로
-      이어졌습니다. 상승과 하락 모두 개별 뉴스보다 <b>금리·유가·반도체 섹터 흐름</b>에 좌우되는 모습이며, PER 160배 수준의
-      밸류에이션 때문에 금리 변동에 특히 민감합니다. 컨센서스 목표주가(평균 약 $615)를 이미 주가가 따라잡아 추가 상승은
-      목표가 상향이나 11월 실적이 뒷받침해야 하는 구간입니다.
+      → 한 주 흐름은 <b>금리 급등에 하락(9/28) → $600에서 3일 버티기 → 고용 쇼크로 금리 하락하자 신고가(10/2)</b>입니다.
+      여전히 주가를 움직이는 1번 변수는 <b>금리</b>이고, 그 위에 <b>World Labs 인수·Helios 대형 주문</b>이 AI 성장 스토리를 보강했습니다.
+      다만 주가($634)가 애널리스트 평균 목표가(약 $620)를 이미 넘어서, 더 오르려면 목표가 상향이나 11월 실적 서프라이즈가 필요한 구간입니다.
     </div>
   </section>
 
@@ -202,29 +242,47 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li><b>시가총액 1조 달러 돌파(9/21)·사상 최고가 $639</b> — 연초 대비 약 +180%, 반도체 섹터(+67%)·NVDA(+21%) 대비 압도적 상대 강세</li>
-        <li>AI 추론·에이전트 확산으로 <b>서버 CPU 수요</b> 기대 확대, GPU·CPU 가격 인상(약 10%)으로 가격결정력 강화</li>
-        <li>2분기 매출 $11.54B(+50% YoY), 데이터센터 $6.72B(+107%), Non-GAAP EPS $1.66(+246% YoY)</li>
-        <li>3분기 가이던스 매출 ~$13B(±$0.3B, +41% YoY), Helios/MI450 램프업·MI500(2027) 로드맵</li>
-        <li>목표주가 상향 지속 — BofA $720, Raymond James Strong Buy 상향($641), Piper Sandler 신규 비중확대($600)</li>
+        <li><b>사상 최고가 경신(10/2 장중 $645.46)</b> — 9/28 조정을 사흘 만에 회복, 연초 대비 약 +190%로 반도체 섹터·NVDA 대비 압도적 상대 강세</li>
+        <li><b>Helios 랙 첫 대형 수주 확인</b> — Vultr $1.2B<span class="krw">(약 1조 6,210억원)</span>(HPE 경유), MI450/MI455X 램프업이 숫자로 나오기 시작</li>
+        <li><b>World Labs 인수</b>($8.2B<span class="krw">(약 11조 750억원)</span>, 연내 완료 예정) — 칩 회사가 AI 모델 연구소를 품어 '하드웨어+모델' 경쟁력 강화, 페이페이 리 수석과학자 합류</li>
+        <li>4분기 GPU·CPU 약 10% 가격 인상(웨이퍼 원가 전가) → 가격결정력 강화</li>
+        <li>2분기 매출 $11.54B<span class="krw">(약 15조 5,860억원)</span>(+50% YoY), 데이터센터 $6.72B<span class="krw">(약 9조 760억원)</span>(+107%) · 3분기 가이던스 ~$13B<span class="krw">(약 17조 5,580억원)</span>, 컨센서스($12.4B<span class="krw">(약 16조 7,470억원)</span>)를 웃돎</li>
+        <li>커버 애널리스트 55~57명 중 매도 의견 0 — BofA $720, 최고 목표가 $1,250</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>PER 약 160배 — 국채금리 상승 시 멀티플 압축에 가장 먼저 노출(9/28 사례)</li>
-        <li>컨센서스 평균 목표가(약 $615)와 현재가가 거의 같아 <b>추가 상승 여력 소진</b> 논란</li>
-        <li>RSI 70 이상·20일선 대비 +16% 이격 — 단기 과열, 되돌림 가능성</li>
-        <li>9/16 FOMC 25bp 인상 이후 추가 긴축 경로, 유가·美-이란 갈등 등 매크로 불확실성</li>
-        <li>비GAAP 총마진 역사적 수준 하회, 영업비용 급증, 게이밍 부문 -31% YoY 부진</li>
+        <li>PER 약 160배 — 국채금리가 다시 오르면 가장 먼저 맞는 종목(9/28 사례)</li>
+        <li>평균 목표가(약 $620)를 주가가 넘어섬 → <b>추가 상승 근거 부족</b> 논란, 한 달 +39% 급등으로 단기 과열</li>
+        <li>World Labs 인수가 <b>전액 주식</b> → 약 1,300만주 신규 발행(희석 약 0.8%, 추정), 인수 효과는 수년 뒤</li>
+        <li>10/8 FOMC 의사록(매파 가능성)·10/29 FOMC, 유가 $100 이상·美-이란 긴장 등 매크로 변수</li>
+        <li>비GAAP 총마진 역사적 수준 하회, 영업비용 급증, 게이밍 -31% YoY 부진</li>
       </ul>
     </div>
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>사상 최고가 $639 돌파 시 피보나치 확장 목표 $660, 이후 $700~$720(BofA 목표가) 구간 도전</div>
-      <div class="scenario base"><b>기본</b>$585~$640 박스권에서 과열 해소하며 10월 FOMC(10/29 KST)·11/3 실적 대기</div>
-      <div class="scenario bear"><b>약세</b>$585 이탈 시 9/17~18 갭 구간인 $550~$560까지 되돌림 가능, 금리 급등 지속 시 $500선 재테스트</div>
-    </div>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 신고가권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">600~650</td>
+        <td>금리가 안정되지만 새로운 재료 없이 실적(11/4 KST)을 기다리는 경우. 과열을 식히며 <b>$600 지지·$645 저항</b> 사이를 오갑니다</td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">645 → 680, 넘으면 700~720</td>
+        <td>FOMC 의사록이 무난하고 금리가 계속 내려가며, Helios 추가 수주·목표가 상향이 이어지는 경우. <b>$645 위 종가 마감(거래량 동반)</b>이 확인 신호이고, BofA 목표가 $720까지 열립니다</td>
+      </tr>
+      <tr>
+        <td>③ 되돌림</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">585~600 이탈 → 550~560</td>
+        <td>의사록이 매파적이거나 유가·금리가 재급등하는 경우. 사흘간 지킨 <b>$600이 깨지면</b> 9월 중순 갭 구간 $550~560까지 밀릴 수 있고, 금리 급등이 길어지면 $500선 재테스트</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
   <!-- 3. 매출구조/수익구조 -->
@@ -232,11 +290,11 @@
     <h2>4. 매출구조/수익구조 (FY2026 2분기 기준)</h2>
     <table>
       <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>🖥️ 데이터센터</td><td class="num">$6.72B</td><td class="num" style="color:var(--pos-text)">+107%</td><td class="num">58.2%</td></tr>
-      <tr><td>💻 클라이언트</td><td class="num">$3.06B</td><td class="num" style="color:var(--pos-text)">+23%</td><td class="num">26.5%</td></tr>
-      <tr><td>🎮 게이밍</td><td class="num">$0.78B</td><td class="num" style="color:var(--neg-text)">-31%</td><td class="num">6.8%</td></tr>
-      <tr><td>🔧 임베디드</td><td class="num">$0.98B</td><td class="num" style="color:var(--pos-text)">+19%</td><td class="num">8.5%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$11.54B</b></td><td class="num"><b>+50%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>🖥️ 데이터센터</td><td class="num">$6.72B<span class="krw">(약 9조 760억원)</span></td><td class="num" style="color:var(--pos-text)">+107%</td><td class="num">58.2%</td></tr>
+      <tr><td>💻 클라이언트</td><td class="num">$3.06B<span class="krw">(약 4조 1,330억원)</span></td><td class="num" style="color:var(--pos-text)">+23%</td><td class="num">26.5%</td></tr>
+      <tr><td>🎮 게이밍</td><td class="num">$0.78B<span class="krw">(약 1조 530억원)</span></td><td class="num" style="color:var(--neg-text)">-31%</td><td class="num">6.8%</td></tr>
+      <tr><td>🔧 임베디드</td><td class="num">$0.98B<span class="krw">(약 1조 3,240억원)</span></td><td class="num" style="color:var(--pos-text)">+19%</td><td class="num">8.5%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$11.54B</b><span class="krw">(약 15조 5,860억원)</span></td><td class="num"><b>+50%</b></td><td class="num"><b>100%</b></td></tr>
     </table>
     <h3>수익성 지표</h3>
     <table>
@@ -244,8 +302,9 @@
       <tr><td>GAAP EPS</td><td class="num">$1.38</td><td class="num">$0.54</td><td class="num" style="color:var(--pos-text)">+156%</td></tr>
       <tr><td>Non-GAAP EPS</td><td class="num">$1.66</td><td class="num">$0.48</td><td class="num" style="color:var(--pos-text)">+246%</td></tr>
       <tr><td>Non-GAAP 총마진</td><td class="num">약 56%</td><td class="num">-</td><td class="num">역사적 수준 하회</td></tr>
-      <tr><td>3분기 매출 가이던스</td><td class="num">~$13.0B(±$0.3B)</td><td class="num">-</td><td class="num" style="color:var(--pos-text)">YoY +41% 전망</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.11.03 (美 현지)</td><td class="num">-</td><td class="num">FY2026 3분기</td></tr>
+      <tr><td>3분기 매출 가이던스</td><td class="num">~$13.0B(±$0.3B)<span class="krw">(약 17조 5,580억원)</span></td><td class="num">-</td><td class="num" style="color:var(--pos-text)">YoY +41% 전망</td></tr>
+      <tr><td>3분기 매출 컨센서스</td><td class="num">$12.4B<span class="krw">(약 16조 7,470억원)</span></td><td class="num">-</td><td class="num">가이던스 중간값보다 낮음</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.04 06:00 KST (예상)</td><td class="num">-</td><td class="num">美 현지 11/3 장마감 후, 회사 공지 전</td></tr>
     </table>
 
     <h3>매출구조도 (가치 축적 구조)</h3>
@@ -265,10 +324,10 @@
         <div class="flow-arrow">+</div>
         <div class="flow-box accent">
           <b>소프트웨어 생태계</b>
-          <div class="desc">ROCm 오픈소스 스택, Xanadu Quantum 협업 'Backline'</div>
+          <div class="desc">ROCm 오픈소스 스택 + <b>World Labs 월드모델(Marble)</b> 인수 예정, Xanadu Quantum 협업 'Backline'</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q2 FY26 $11.54B, 데이터센터 비중 58%) ↓</div>
+      <div class="flow-arrow down">↓ 매출로 정산 (Q2 FY26 $11.54B<span class="krw">(약 15조 5,860억원)</span>, 데이터센터 비중 58%) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
           <b>재투자 — R&D·파운드리 발주</b>
@@ -276,7 +335,7 @@
         </div>
         <div class="flow-box reward">
           <b>재투자 — 전략적 파트너십</b>
-          <div class="desc">Cisco·Humain 사우디 AI 인프라, OpenAI 등 대형 AI 고객向 공급 계약 확대</div>
+          <div class="desc">Cisco·Humain 사우디 AI 인프라, OpenAI 등 대형 AI 고객向 공급 계약 확대, Vultr Helios $1.2B 주문</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
@@ -300,15 +359,74 @@
     <h2>5. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>지속</td><td>Helios(MI450) 초기 출하·램프업, GPU·CPU 가격 인상 효과, 美 국채금리·유가 흐름(최근 주가의 핵심 변수)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의) — 9/16 25bp 인상 이후 첫 결정, 추가 인상 여부가 고밸류 반도체주 방향 결정</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>11월 4일 (수) 새벽 (오전 6시경)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후) — 서버 CPU·Helios 매출 가이던스, 가격 인상 효과의 마진 반영 여부 핵심 관전포인트</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (2026년 마지막 회의, 12/8~9 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>지속</td><td>Helios(MI450/MI455X) 출하·추가 수주, 4분기 가격 인상 효과, 美 국채금리·유가 흐름(최근 주가의 핵심 변수)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 5일 (월) 오후 11:00</td><td>美 9월 ISM 서비스업 PMI — 가격지수가 높으면 금리 반등 위험</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 공개 — '추가 인상' 논의 강도 확인, 고밸류 반도체에 직접 영향</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — AMD 칩 위탁생산사, AI 수요·CoWoS 증설·4분기 가이던스가 반도체 전반 방향성</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 발표 (10/27~28 회의) — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>11월 4일 (수) 오전 6:00경 (예상)</td><td>FY2026 3분기 실적발표 (美 현지 11/3 장마감 후, 회사 공식 공지 전) — Helios 매출·4분기 가이던스, 가격 인상의 마진 반영 여부</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 발표 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>2026년 말 (예정)</td><td>World Labs 인수 완료 — 규제 승인 후 주식 발행</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>AI 칩 주문이 쏟아져 사상 최고가인데,</em><br><strong>너무 빨리 올라서 금리만 오르면 흔들린다.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>사상 최고가 경신</b><span>10/2 장중 $645 · 올해만 약 +190%</span></li>
+          <li><b>큰 주문이 들어옴</b><span>AI 서버 랙 'Helios' 1.6조원어치 주문(Vultr)</span></li>
+          <li><b>AI 두뇌 연구소 인수</b><span>페이페이 리의 World Labs를 11조원에 인수 · 칩값 10% 인상도 예정</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>너무 비쌈</b><span>번 돈의 160배 가격 · 애널리스트 평균 목표가($620)도 이미 넘음</span></li>
+          <li><b>금리에 약함</b><span>9/28 금리 오르자 하루에 -3.6%</span></li>
+          <li><b>인수 대금을 주식으로 냄</b><span>새 주식 발행 → 기존 주주 몫이 조금 줄어듦 · 게임 부문 -31%</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/8 새벽 3시</div>
+        <div class="e">FOMC 의사록</div>
+        <div class="w">'금리 더 올리자'가 많으면 하락 주의</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">11/4 새벽</div>
+        <div class="e">3분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$645 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $680~720)</span></div>
+      <div class="rung now"><span class="px">$634</span><span>지금 (10/2 종가, 사상 최고 종가)</span></div>
+      <div class="rung warn"><span class="px">$600</span><span>이 아래면 → 조심 ⚠️ (사흘간 지킨 바닥)</span></div>
+      <div class="rung bad"><span class="px">$585</span><span>최후 방어선 🛑 (깨지면 $550대)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 금리가 내려가자 바로 신고가를 찍을 만큼 <b>힘은 강합니다</b>. 다만 이미 목표가를 넘어 <b>비싸게 산 사람이 많은 자리</b>라,
+      새로 사려면 <b>$600 근처로 내려올 때 나눠서</b>, 갖고 있다면 <b>$600 이탈 여부</b>만 지켜보면 됩니다. 진짜 방향은 <b>11/4 실적</b>이 정합니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.28 16:00 ET 정규장 마감(KST 2026.09.29 오전 5:00 환산)
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시가·고가·저가·종가는 StockAnalysis 기준. 실적은 AMD FY2026 Q2 기준이며, 3분기 실적은 2026.11.03(현지) 장마감 후 발표가 예상되나 회사 공식 공지 전입니다. 인수 희석률(약 0.8%)은 인수가 ÷ 발표 당시 주가로 계산한 추정치. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다. 가격은 OKX 퍼블릭 API(AMDUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 </div>
 
@@ -380,7 +498,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX AMDUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 9/28 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }

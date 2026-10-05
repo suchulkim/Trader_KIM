@@ -191,6 +191,13 @@
   .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
   .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
 
+  table.scn td{font-size:14px; line-height:1.55;}
+  table.scn td:first-child{font-weight:600;}
+  table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
+  table.scn td.rng{font-variant-numeric:tabular-nums;}
+  table.scn td b{color:var(--text);}
+  .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:#3a3f4a;}
 
@@ -353,6 +360,45 @@
     font-size:12px;
     color:var(--text-soft);
   }
+  .key-hero{background:linear-gradient(135deg,rgba(255,153,0,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(255,153,0,.12); border:1px dashed var(--accent);} .rung.now .px{color:var(--accent);}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
 </style>
 </head>
 <body>
@@ -360,31 +406,32 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.09.23 (수) · 실시간 자동 갱신</span>
+      <span>2026.10.04 (일) · 업데이트</span>
       <span>·</span>
-      <span>기준시각: <span id="last-updated-time">로딩 중...</span> · 최근 5거래일 흐름 반영</span>
+      <span>美 정규장 마감(10/2 16:00 ET = KST 10/3 05:00) 기준 · 실시간 갱신: <span id="last-updated-time">로딩 중...</span></span>
     </div>
-    <h1>아마존 (AMZN)<span class="ticker">NASDAQ · Perpetual: AMZNUSDT.P</span></h1>
+    <h1>아마존 (AMZN) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AMZNUSDT.P</span></h1>
 
     <!-- 실시간 변동 가격 카드 -->
     <div class="price-card">
       <div>
         <div class="price-main-wrap">
-          <div class="price-main" id="live-price">$258.40</div>
-          <div class="price-badge" id="live-chg-badge">+1.77%</div>
+          <div class="price-main" id="live-price">$251.52</div>
+          <div class="price-badge" id="live-chg-badge" style="background:var(--pos-bg);color:var(--pos-text);">+1.33%</div>
         </div>
         <div id="live-chg-detail" class="chg-up" style="margin-top:4px;">
-          실시간 시세 로딩 중...
+          10/2 정규장 ▲ +1.33% (+$3.29) · 주간 +0.74% (9/25 $249.67 → $251.52)
         </div>
       </div>
       <div class="price-sub">
-        AMZN은 9/17 FOMC 금리결정 소화와 $253 지지선 확인 후 $258선으로 반등했습니다. 
-        Q2 실적 서프라이즈 모멘텀과 8월 중순 52주 최고가($287.20) 도달 이후, FTC 광고 소송 및 2026년 CapEx($220B) 부담에 따른 재조정을 마치고 10/29 Q3 실적 발표를 앞두고 돌파를 시도하는 국면입니다.
+        9/21 $258.45까지 반등했다가 금리·유가 급등(9/22~23)에 다시 밀려, 2주째 <b>$244~254 박스</b>에 갇혀 있습니다. 10/2 고용 쇼크로 금리가 떨어지자 +1.33% 오른 $251.52로 마감했습니다.
+        AWS는 18분기 만에 가장 빠르게 크고 있지만, <b>올해 AI 투자 $220B</b><span class="krw">(약 297조 1,320억원)</span> 부담과 소송 이슈로 빅테크 중 상승률이 낮습니다(연초 대비 약 +9%).
+        시가총액 약 $2.71조<span class="krw">(약 3,660조원)</span>, 52주 범위 $196.00~$287.20.
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · AMZNUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="cap">📊 실시간 차트 · AMZNUSDT.P (OKX) · 15분봉 / 1일봉 — 브라우저에서 열면 실시간 갱신</div>
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
@@ -406,236 +453,257 @@
     </div>
   </header>
 
-  <!-- 1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준) -->
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 8/1 실적 서프라이즈(+15%) 후 52주 최고가 $287.20 → 9/16 저점 $245.96까지 조정 → 9/21 $258.45 반등 → 9/22~23 금리·유가 급등에 재하락. 이후 2주째 <b>$244.7~253.6 박스</b>. 200일선(약 $241.4) 위는 지키고 있지만 20주선 아래, 일봉 MACD 음수·RSI 45~50으로 힘은 약합니다.<br>
+      <b>15분봉</b>: 10/2 장중 $253.56에서 막혀 마감 — <b>$253.5~257</b>이 1차 저항(넘으면 $259.5·$266), <b>$244.6</b>(9/28 저점)이 1차 지지, 깨지면 <b>$241.4(200일선)</b>이 최후 방어선입니다.
+    </div>
+  </section>
+
+  <!-- 2. 원인 -->
+  <section>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 본주 기준)</h2>
     <table class="daily-table">
-      <thead>
-        <tr>
-          <th style="width:20%;">날짜 · 종가($)</th>
-          <th style="width:62%;">내용</th>
-          <th style="width:18%;">비고</th>
-        </tr>
-      </thead>
+      <thead><tr><th style="width:20%;">날짜 · 종가($)</th><th style="width:58%;">내용</th><th style="width:22%;">비고</th></tr></thead>
       <tbody>
         <tr>
-          <td class="date-cell">
-            9/16(수)<br>
-            <span class="price-val">$253.10</span><br>
-            <span class="rate-down">▼ -1.25%</span>
-          </td>
-          <td>
-            FOMC 통화정책 발표 직전 관망세와 FTC 광고 소송 악재 여파, CapEx 상향($220B) 부담이 겹치며 단기 저점 형성
-          </td>
-          <td>단기 저점 형성</td>
+          <td class="date-cell">9/25(금)<br><span class="price-val">$249.67</span><br><span class="rate-up">▲ +0.12%</span></td>
+          <td>9/21 <b>Meta AI 쇼핑 비서 'Muse' 차단</b> 이후 논란 지속 — "고객을 지키려는 방어" vs "AI 쇼핑 시대에 고립될 위험" 평가가 엇갈림. 9/24 인디애나 첨단 제조시설 $1억+ 투자 발표</td>
+          <td>9/23 급락 후 횡보</td>
         </tr>
         <tr>
-          <td class="date-cell">
-            9/17(목)<br>
-            <span class="price-val">$255.40</span><br>
-            <span class="rate-up">▲ +0.91%</span>
-          </td>
-          <td>
-            9/17 FOMC 금리결정 발표 결과 소화로 불확실성 해소. 저가 매수세 유입되며 $253 지지선 반등 성공
-          </td>
-          <td>저점 다지기</td>
+          <td class="date-cell">9/28(월)<br><span class="price-val">$246.15</span><br><span class="rate-down">▼ -1.41%</span></td>
+          <td>美 국채금리·유가 급등으로 빅테크 동반 약세. 9/16 발표한 물류직 최저시급 $20 인상(연 $15억<span class="krw">(약 2조 260억원)</span>+) 비용 부담도 거론</td>
+          <td>장중 $244.73 · 박스 하단</td>
         </tr>
         <tr>
-          <td class="date-cell">
-            9/18(금)<br>
-            <span class="price-val">$257.80</span><br>
-            <span class="rate-up">▲ +0.94%</span>
-          </td>
-          <td>
-            AWS +37% 고성장 및 Anthropic, OpenAI 장기 계약 AI 인프라 모멘텀 재조명으로 빅테크 상승세 동참
-          </td>
-          <td>$255선 안착 성공</td>
+          <td class="date-cell">9/29(화)<br><span class="price-val">$246.67</span><br><span class="rate-up">▲ +0.21%</span></td>
+          <td>개별 뉴스 없이 보합. 전날 저점 부근에서 매수세 유입</td>
+          <td>$245 지지 확인</td>
         </tr>
         <tr>
-          <td class="date-cell">
-            9/21(월)<br>
-            <span class="price-val">$256.90</span><br>
-            <span class="rate-down">▼ -0.35%</span>
-          </td>
-          <td>
-            10월 예정된 FTC 독점남용 소송 본안 재판을 앞둔 헤드라인 리스크 및 매크로 지표 대기 심리로 소폭 숨고르기
-          </td>
-          <td>상방 저항 확인</td>
+          <td class="date-cell">9/30(수)<br><span class="price-val">$249.15</span><br><span class="rate-up">▲ +1.01%</span></td>
+          <td>8월 근원 PCE 예상 하회로 10월 인상 확률 71%→35%. <b>Rosenblatt 목표가 $335→$360 상향</b>(매수 유지). 3분기 마지막 거래일</td>
+          <td>장중 $252.44</td>
         </tr>
         <tr>
-          <td class="date-cell">
-            9/22(화)<br>
-            <span class="price-val">$258.40</span><br>
-            <span class="rate-up">▲ +0.58%</span>
-          </td>
-          <td>
-            구글 반독점 분할 우려 완화로 인한 빅테크 투자심리 회복 및 클라우드 3사(AMZN, MSFT, GOOGL) 동반 강세
-          </td>
-          <td>전고점 돌파 시도</td>
+          <td class="date-cell">10/1(목)<br><span class="price-val">$248.23</span><br><span class="rate-down">▼ -0.37%</span></td>
+          <td>NVIDIA 칩 약 $80억<span class="krw">(약 10조 8,050억원)</span>어치를 별도 법인(SPV)에 넘기고 빌려 쓰는 <b>'칩 리스백' 검토</b> 보도 — 설비투자 부담을 장부에서 덜려는 시도로 해석, 확정 아님. 장중 $251.83에서 밀림</td>
+          <td>AI 투자 부담 재부각</td>
+        </tr>
+        <tr>
+          <td class="date-cell">10/2(금)<br><span class="price-val">$251.52</span><br><span class="rate-up">▲ +1.33%</span></td>
+          <td>美 9월 고용 +2.9만명 쇼크 → 10월 인상 확률 64%→16% 급락, 금리 하락에 기술주 동반 상승. 다만 장중 $253.56 박스 상단에서 막힘</td>
+          <td>박스 상단 테스트</td>
         </tr>
       </tbody>
     </table>
+    <div class="callout">
+      → 아마존은 2주째 <b>$244~254 박스</b>에서 금리 따라 오르내리고 있습니다. 회사 자체 뉴스는 <b>Muse 차단(AI 쇼핑 경쟁)·칩 리스백 검토(투자 부담)</b>처럼 "AI에 돈을 얼마나, 어떻게 쓰나"에 집중돼 있고,
+      AWS 성장이라는 좋은 재료는 이미 주가에 반영된 상태입니다. 박스를 깨려면 <b>10/30 실적에서 AWS 성장 + 이익 개선</b>이 확인돼야 합니다.
+    </div>
   </section>
 
-  <!-- 2. 향후 전망 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>2. 향후 전망</h2>
-
+    <h2>3. 향후 전망</h2>
     <div class="kpi-grid">
-      <div class="kpi">
-        <div class="label">52주 최고가</div>
-        <div class="value">$287.20</div>
-        <div class="sub">2026년 8월 중순 고점</div>
-      </div>
-      <div class="kpi">
-        <div class="label">단기 저항선</div>
-        <div class="value">$266.00</div>
-        <div class="sub">8월 하순 조정 전 상단권</div>
-      </div>
-      <div class="kpi">
-        <div class="label">1차 지지선</div>
-        <div class="value">$253.00</div>
-        <div class="sub">최근 매수 수급 확인 저점</div>
-      </div>
+      <div class="kpi"><div class="label">52주 최고가</div><div class="value">$287.20</div><div class="sub">8월 실적 랠리 고점</div></div>
+      <div class="kpi"><div class="label">1차 저항선</div><div class="value">$253.5~257</div><div class="sub">10/2 고점 · 박스 상단</div></div>
+      <div class="kpi"><div class="label">1차 지지선</div><div class="value">$244.6</div><div class="sub">9/28 저점</div></div>
+      <div class="kpi"><div class="label">최후 방어선</div><div class="value">$241.4</div><div class="sub">200일 이동평균</div></div>
     </div>
-
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Q2 FY2026 매출 $200.6B(+20% YoY), 영업이익 $27.5B(+43%)로 사상 최대 실적 달성</li>
-        <li>AWS 매출 $42.2B(+37%), 영업이익률 39.4%, 수주잔고 $496B 달성으로 AI 클라우드 독주</li>
-        <li>AWS AI 사업 연환산 매출 $25B 돌파, Anthropic·OpenAI 등 장기 용량 계약 확보 완료</li>
-        <li>월가 컨센서스 Strong Buy 유지가 압도적 (목표주가 평균 $327.38, 상단 $405)</li>
+        <li><b>AWS 고성장</b> — 2분기 매출 $42.2B<span class="krw">(약 56조 9,950억원)</span>(+37%, 18분기 만에 최고 성장률), 영업이익 $16.6B<span class="krw">(약 22조 4,200억원)</span>(+63%)로 회사 이익의 약 60%</li>
+        <li>수주잔고 <b>$496B</b><span class="krw">(약 669조 8,980억원)</span>, AI·자체 칩 사업 각각 연 $25B+ 규모 — 경영진 "2026년 내내 용량이 부족"</li>
+        <li>3분기 가이던스 영업이익 $22.5~26.5B<span class="krw">(약 30조 3,880억~35조 7,910억원)</span> — 중간값 기준 약 +40% 증가 예상</li>
+        <li>10/6~7 <b>Prime Big Deal Days</b>(22개국)로 연말 쇼핑 시즌 시작, 광고 매출 성장 지속</li>
+        <li>애널리스트 59명 중 매수 56·매도 0, 평균 목표가 약 $322~331(현재가 대비 +28~31%), 최고 $400</li>
+        <li>금리 인상 확률 급락(16%) → 성장주 부담 완화</li>
       </ul>
     </div>
-
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li>9/1 FTC 광고가격 조작 소송 제기 — 약 $20B 과다청구 주장에 따른 법정 소송 노이즈 장기화</li>
-        <li><b>[주의] 10월 FTC·18개 주 독점남용(모노폴리) 소송 본안 재판 개시 예정</b> 리스크</li>
-        <li>2026년 CapEx 가이던스 상향($220B)에 따른 단기 잉여현금흐름(FCF) 압박</li>
+        <li><b>AI 투자 부담</b> — 2026 설비투자 약 $220B<span class="krw">(약 297조 1,320억원)</span>(매출의 1/4 이상), 잉여현금흐름(TTM) <b>-$7.6B</b><span class="krw">(약 10조 2,650억원)</span>로 마이너스 전환. 칩 리스백 검토도 이 부담의 신호</li>
+        <li>2분기 순이익 $62.6B 중 $53.4B는 <b>Anthropic 지분 평가이익</b>(일회성) — 겉보기 PER(약 20배)이 실제보다 싸 보임</li>
+        <li>3분기 매출 성장 둔화(가이던스 +9~12%) — 여름 프라임데이가 7월→6월(2분기)로 옮겨간 영향</li>
+        <li><b>소송</b>: FTC·22개 주 광고 경매가격 조작 소송(8/31 제기) · FTC 독점(모노폴리) 소송 본안 재판 <b>2027년 2월</b></li>
+        <li>AI 쇼핑 비서 경쟁 — Muse 차단은 단기 방어지만 고객이 AI 비서로 넘어가면 쇼핑·광고 트래픽 잠식 위험</li>
       </ul>
     </div>
-
     <h3>시나리오</h3>
-    <div class="scenario-grid">
-      <div class="scenario bull"><b>강세</b>$266 재돌파 성공 시 8월 랠리 재개되며 $280대 및 52주 고점($287.20) 재시도</div>
-      <div class="scenario base"><b>기본</b>$252~$268 박스권. 10월 독점남용 재판 및 10/29 실적 발표 소화하며 방향성 모색</div>
-      <div class="scenario bear"><b>약세</b>$250 하향 이탈 시 FTC 소송 리스크 가중으로 $235~$240 지지선 재테스트 가능</div>
-    </div>
+    <table class="daily-table scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 횡보</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">244~257</td>
+        <td>금리가 안정되고 새 재료 없이 실적(10/30 KST)을 기다리는 경우. <b>$244.6 지지·$253.5~257 저항</b> 사이를 오갑니다</td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">257 → 266, 넘으면 280~287</td>
+        <td>MS·구글 실적(10/29)에서 클라우드 수요가 강하게 확인되고, 아마존 실적에서 AWS 성장 유지 + 영업이익이 가이던스 상단을 넘는 경우. <b>$257 위 종가 마감</b>이 신호, 52주 고점 $287 재도전</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">241 이탈 → 230~235</td>
+        <td>FOMC 의사록(10/8)이 매파적이거나 설비투자 상향·현금흐름 악화 우려가 커지는 경우. <b>200일선 $241.4가 깨지면</b> $230대까지 밀릴 수 있습니다</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
   </section>
 
-  <!-- 3. 매출구조/수익구조 -->
+  <!-- 4. 매출구조 -->
   <section>
-    <h2>3. 매출구조 · 수익구조 (매출구조도)</h2>
+    <h2>4. 매출구조 · 수익구조 (FY2026 2분기 기준)</h2>
     <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
-      Amazon은 매출을 북미(리테일), 국제(리테일), AWS(클라우드) 3개 세그먼트로 보고합니다. 
-      Q2 FY2026 매출은 $200.6B(+20%)이며, 세그먼트별 비중은 다음과 같습니다.
+      Amazon은 매출을 북미(리테일), 국제(리테일), AWS(클라우드) 3개 부문으로 보고합니다.
+      2분기 매출은 $200.6B<span class="krw">(약 270조 9,300억원)</span>(+20% YoY)입니다.
     </p>
-
     <div class="bar-chart">
       <div class="bar-row">
-        <div class="bar-label"><span class="name">🛒 북미 (리테일 + 스폰서 광고)</span><span class="val">$116.2B · +16% YoY</span></div>
+        <div class="bar-label"><span class="name">🛒 북미 (리테일 + 광고 + 구독)</span><span class="val">$116.2B<span class="krw">(약 156조 9,400억원)</span> · +16% YoY</span></div>
         <div class="bar-track"><div class="bar-fill na" style="width:100%">57.9%</div></div>
       </div>
       <div class="bar-row">
-        <div class="bar-label"><span class="name">☁️ AWS (클라우드 + AI 인프라)</span><span class="val">$42.2B · +37% YoY</span></div>
-        <div class="bar-track"><div class="bar-fill aws" style="width:36.4%">21.1%</div></div>
+        <div class="bar-label"><span class="name">☁️ AWS (클라우드 + AI 인프라)</span><span class="val">$42.2B<span class="krw">(약 56조 9,950억원)</span> · +37% YoY</span></div>
+        <div class="bar-track"><div class="bar-fill aws" style="width:36.3%">21.0%</div></div>
       </div>
       <div class="bar-row">
-        <div class="bar-label"><span class="name">🌍 국제 (리테일)</span><span class="val">$42.2B · +15% YoY</span></div>
-        <div class="bar-track"><div class="bar-fill intl" style="width:36.2%">21.0%</div></div>
+        <div class="bar-label"><span class="name">🌍 국제 (리테일)</span><span class="val">$42.2B<span class="krw">(약 56조 9,950억원)</span> · +15% YoY</span></div>
+        <div class="bar-track"><div class="bar-fill intl" style="width:36.3%">21.0%</div></div>
       </div>
     </div>
 
-    <div class="flow-diagram" style="margin-top:16px;">
+    <h3>수익성 지표</h3>
+    <table class="daily-table">
+      <tr><th>지표</th><th>Q2 FY2026</th><th>비고</th></tr>
+      <tr><td>영업이익</td><td>$27.5B<span class="krw">(약 37조 1,420억원)</span></td><td style="color:var(--pos-text)">+43% YoY</td></tr>
+      <tr><td>AWS 영업이익</td><td>$16.6B<span class="krw">(약 22조 4,200억원)</span></td><td style="color:var(--pos-text)">+63% YoY · 전사 이익의 약 60%</td></tr>
+      <tr><td>순이익 / EPS</td><td>$62.6B<span class="krw">(약 84조 5,480억원)</span> / $5.75</td><td>Anthropic 평가이익 $53.4B<span class="krw">(약 72조 1,220억원)</span> 포함(일회성)</td></tr>
+      <tr><td>잉여현금흐름 (TTM)</td><td style="color:var(--neg-text)">-$7.6B<span class="krw">(약 10조 2,650억원)</span></td><td>설비투자 급증으로 마이너스</td></tr>
+      <tr><td>3분기 가이던스</td><td>매출 $197~202B<span class="krw">(약 266조 680억~272조 8,210억원)</span><br>영업이익 $22.5~26.5B<span class="krw">(약 30조 3,880억~35조 7,910억원)</span></td><td>매출 +9~12% YoY</td></tr>
+      <tr><td>3분기 컨센서스</td><td>매출 $202.1B<span class="krw">(약 272조 9,560억원)</span> · EPS $1.96</td><td>가이던스 상단 수준</td></tr>
+      <tr><td>📅 다음 실적</td><td>2026.10.30 (금) 05:00 KST (예상)</td><td>美 현지 10/29 장마감 후, 회사 공지 전</td></tr>
+    </table>
+
+    <h3>매출구조도 (돈이 흐르는 길)</h3>
+    <div class="flow-diagram">
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>고객 · 기업 활동</b>
-          <div class="desc">소비자 온라인 쇼핑(1P/3P), 셀러 광고 집행, 기업 AWS 워크로드·AI 인프라 이용, Prime 구독</div>
-        </div>
+        <div class="flow-box accent"><b>고객 · 기업 활동</b><div class="desc">온라인 쇼핑(직판·3P 셀러), 셀러 광고, Prime 구독, 기업 AWS 클라우드·AI 인프라 이용</div></div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>북미·국제 리테일 (78.9%)</b>
-          <div class="desc">자체 판매 마진 + 3P 수수료 + 스폰서 광고(Sponsored Ads) + Prime 구독료</div>
-        </div>
-        <div class="flow-box accent">
-          <b>AWS (21.1%)</b>
-          <div class="desc">클라우드 인프라·AI 서비스 사용량 기반 종량제 과금 — 영업이익의 약 60% 창출</div>
-        </div>
+        <div class="flow-box accent"><b>북미·국제 리테일 (79%)</b><div class="desc">상품 판매 + 3P 수수료 + 스폰서 광고 + Prime 구독료 — 매출은 크지만 마진은 얇음</div></div>
+        <div class="flow-box accent"><b>AWS (21%)</b><div class="desc">클라우드·AI 사용량 과금 — 매출 21%로 영업이익 약 60% 창출</div></div>
       </div>
-      <div class="flow-arrow down">↓ 매출 인식(상품판매 + 수수료 + 광고 + 구독료 + 클라우드 사용료) ↓</div>
+      <div class="flow-arrow down">↓ 분기 매출 $200.6B · 영업이익 $27.5B ↓</div>
       <div class="flow-split">
-        <div class="flow-box burn">
-          <b>비용 · 재투자 (Capex)</b>
-          <div class="desc">2026년 AI 데이터센터/물류망 투자 $220B(상향) — 리테일 저마진을 AWS·광고 고마진으로 상쇄</div>
-        </div>
-        <div class="flow-box reward">
-          <b>법적·규제 리스크 대응 비용</b>
-          <div class="desc">FTC 광고소송 및 독점남용 소송 대응 — 배당은 미지급, 자사주 매입 위주 주주환원</div>
-        </div>
+        <div class="flow-box burn"><b>재투자 — AI 데이터센터·물류</b><div class="desc">2026 설비투자 약 $220B — 번 돈보다 많이 써서 FCF 마이너스, 칩 리스백 등 자금조달 방식 검토</div></div>
+        <div class="flow-box reward"><b>미래 수익 — 수주잔고·AI 지분</b><div class="desc">AWS 수주잔고 $496B, Anthropic 지분 가치 상승 — 배당 없음, 성장 재투자 우선</div></div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box">
-          <b>영업이익 · 마진 구조</b>
-          <div class="desc">Q2 영업이익 $27.5B(+43%) — 매출 비중은 북미가 압도적이나 <b>AWS(21%)와 광고(+26%)가 이익의 대부분을 창출</b></div>
-        </div>
+        <div class="flow-box"><b>핵심 질문</b><div class="desc">"$220B 투자가 AWS 성장으로 충분히 돌아오는가?" — 매 분기 실적에서 AWS 성장률과 현금흐름으로 확인</div></div>
       </div>
     </div>
-
     <div class="callout">
-      → 매출 비중은 북미 리테일이 절반 이상을 차지하지만, <b>AWS(21%)가 전체 영업이익의 약 60%를 창출</b>하는 핵심 수익원입니다.
+      → 매출은 리테일이 79%지만, <b>돈은 AWS가 법니다(이익의 약 60%)</b>. 그 돈을 다시 AI 데이터센터에 쏟아붓고 있어 현금흐름이 마이너스가 됐고,
+      시장은 <b>"투자 대비 AWS 성장이 충분한가"</b>를 분기마다 확인하는 중입니다.
     </div>
   </section>
 
-  <!-- 4. 주요 일정 -->
+  <!-- 5. 주요 일정 -->
   <section>
-    <h2>4. 주요 일정 (KST 기준)</h2>
+    <h2>5. 주요 일정 (KST 기준)</h2>
     <table class="daily-table">
-      <thead>
-        <tr>
-          <th style="width:22%;">일정 (KST)</th>
-          <th style="width:62%;">내용</th>
-          <th style="width:16%;">중요도</th>
-        </tr>
-      </thead>
+      <thead><tr><th style="width:24%;">일정 (KST)</th><th style="width:60%;">내용</th><th style="width:16%;">중요도</th></tr></thead>
       <tbody>
-        <tr>
-          <td><b>9월 30일 (수) 밤 9:30</b></td>
-          <td><b>미국 8월 근원 PCE 물가지수</b> — 연준이 선호하는 인플레이션 지표, FOMC 이후 금리 경로 점검 핵심 변수</td>
-          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-        </tr>
-        <tr>
-          <td><b>10월 02일 (금) 밤 9:30</b></td>
-          <td><b>미국 9월 CPI (소비자물가지수)</b> — 매크로 유동성 및 빅테크 투심 직결 지표</td>
-          <td><span class="star">★★★★★</span></td>
-        </tr>
-        <tr>
-          <td><b>10월 (일자 미정)</b></td>
-          <td><b>FTC·18개 주 독점남용(모노폴리) 소송 재판 개시</b> — 본안 심리 시작에 따른 헤드라인 노이즈 주의</td>
-          <td><span class="star">★★★★★</span></td>
-        </tr>
-        <tr>
-          <td><b>10월 29일 (목, 美 현지)</b><br>KST 10/30(금) 새벽 (추정)</td>
-          <td><b>Amazon FY2026 3Q 실적 발표 (예정)</b> — AWS 성장률 및 Q4 연말 쇼핑 시즌 가이던스가 핵심 변수</td>
-          <td><span class="star">★★★★★</span></td>
-        </tr>
-        <tr>
-          <td><b>10월 28일 (수) ~ 29일 (목)</b></td>
-          <td><b>미국 10월 FOMC 통화정책 회의</b> — 통화정책 방향성 재확인</td>
-          <td><span class="star">★★★★★</span></td>
-        </tr>
+        <tr><td><b>10월 5일 (월) 23:00</b></td><td>美 9월 ISM 서비스업 PMI — 가격지수가 높으면 금리 반등 위험</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+        <tr><td><b>10월 6일 (화) ~ 7일 (수)</b><br>美 현지 기준</td><td><b>Prime Big Deal Days</b>(22개국) — 연말 쇼핑 시즌 시작. 4분기 매출로 잡혀 3분기 실적엔 반영 안 됨</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+        <tr><td><b>10월 8일 (목) 03:00</b></td><td>9월 FOMC 의사록 — '추가 인상' 논의 강도 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+        <tr><td><b>10월 29일 (목) 03:00</b></td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★★</span></td></tr>
+        <tr><td><b>10월 29일 (목) 05:00경 (예상)</b></td><td>Microsoft·Alphabet 실적 — Azure·구글 클라우드 성장률이 AWS 실적의 미리보기</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+        <tr><td><b>10월 30일 (금) 05:00경 (예상)</b></td><td><b>Amazon 3분기 실적</b> (美 현지 10/29 장마감 후, 회사 공지 전) — AWS 성장률·영업이익·설비투자 상향 여부·4분기 가이던스</td><td><span class="star">★★★★★</span></td></tr>
+        <tr><td><b>진행 중</b></td><td>FTC·22개 주 광고가격 소송 · Muse 차단 관련 논란</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+        <tr><td><b>2027년 2월</b></td><td>FTC 독점(모노폴리) 소송 본안 재판 개시</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
       </tbody>
     </table>
   </section>
 
+  <!-- 6. 핵심 한눈에 -->
+  <section>
+    <h2>6. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>클라우드(AWS)는 역대급으로 잘 되는데,</em><br><strong>AI에 돈을 너무 많이 써서 주가가 제자리.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>AWS가 쑥쑥 큼</b><span>1년 새 +37% · 4년 반 만에 가장 빠른 성장</span></li>
+          <li><b>받아 둔 주문이 670조원</b><span>AWS 수주잔고 $496B · "컴퓨터가 모자랄 정도"</span></li>
+          <li><b>애널리스트들은 아직 낙관</b><span>평균 목표가 $320대 → 지금보다 약 +28%</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>돈을 너무 많이 씀</b><span>올해 AI 투자 297조원 → 남는 현금이 마이너스</span></li>
+          <li><b>소송이 줄줄이</b><span>광고 가격 조작 소송(FTC+22개 주) · 2027년 2월 독점 재판</span></li>
+          <li><b>AI 쇼핑 비서 경쟁</b><span>Meta 'Muse' 차단 → 손님이 AI 비서로 갈지 시험대</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/6~7</div>
+        <div class="e">프라임 세일</div>
+        <div class="w">연말 쇼핑 분위기 체크</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10/29 새벽</div>
+        <div class="e">MS·구글 실적</div>
+        <div class="w">클라우드 경쟁사 성적 = 미리보기</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">10/30 새벽</div>
+        <div class="e">3분기 실적 (예상)</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$257 ↑</span><span>여기를 넘으면 → 박스 탈출 🚀 (다음 $266)</span></div>
+      <div class="rung now"><span class="px">$251.5</span><span>지금 (10/2 종가)</span></div>
+      <div class="rung warn"><span class="px">$244</span><span>이 아래면 → 조심 ⚠️ (박스 하단)</span></div>
+      <div class="rung bad"><span class="px">$241</span><span>최후 방어선 🛑 (200일선, 깨지면 $230대)</span></div>
+    </div>
+
+    <div class="key-final">
+      💡 <b>결론:</b> 사업은 잘 되는데 <b>"투자한 만큼 벌어 오느냐"</b>를 시장이 의심하는 중이라 2주째 박스($244~257)에 갇혀 있습니다.
+      답은 <b>10/30 실적</b>에서 나옵니다 — AWS 성장이 유지되고 이익이 늘면 박스 탈출, 투자만 더 늘리면 $241 시험. 그 전까지는 <b>박스 하단 근처에서 나눠 사는</b> 정도가 안전합니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.09.23 · FY2026 Q2 실적 반영. 
-    상단 가격 및 차트는 OKX 퍼블릭 API(AMZNUSDT.P) 및 TradingView 위젯을 통해 30초마다 실시간으로 자동 갱신됩니다[cite: 1, 3].
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 종가는 Investing.com 기준.
+    실적은 Amazon FY2026 Q2(2026.07.30 발표) 기준이며, 3분기 실적은 2026.10.29(현지) 발표가 예상되나 회사 공식 공지 전입니다. 칩 리스백은 보도된 검토 단계로 확정이 아닙니다.
+    원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다.
+    상단 가격은 OKX 퍼블릭 API(AMZNUSDT.P)로 30초마다, 차트는 TradingView 위젯으로 실시간 갱신됩니다.
   </footer>
 
 </div>
