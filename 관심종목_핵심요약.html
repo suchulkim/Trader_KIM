@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>관심종목 핵심요약</title>
+<style>
+  :root{
+    --bg:#0e1015; --card:#161a21; --card2:#1b2029; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#262b35; --accent:#8a92ff; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --warn:#f5b942; --warn-bg:#2e2512; --chip-bg:#1c2028; --table-head:#1a1e26;
+    --shadow:0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;line-height:1.6;}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 16px 60px;}
+  .eyebrow{font-size:13px;color:var(--text-soft);}
+  h1{font-size:26px;margin:6px 0 4px;letter-spacing:-0.3px;}
+  .sub{font-size:14px;color:var(--text-soft);margin:0;}
+  section{margin-top:34px;}
+  h2{font-size:18.5px;margin:0 0 14px;padding-bottom:8px;border-bottom:2px solid var(--text);}
+
+  /* 머리에 쏙 */
+  .hero{margin-top:18px;background:linear-gradient(135deg,rgba(138,146,255,.14),rgba(95,209,136,.06));
+    border:1px solid var(--border);border-radius:14px;padding:18px 20px;}
+  .hero .tag{font-size:12px;color:var(--accent);font-weight:700;letter-spacing:.5px;}
+  .hero .line{font-size:17px;margin-top:6px;line-height:1.7;}
+  .hero .line b{color:#fff;}
+
+  /* 분위기 보드 */
+  .mood-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+  .mood{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);}
+  .mood h3{margin:0 0 4px;font-size:15px;}
+  .mood p{margin:0 0 10px;font-size:12.5px;color:var(--text-soft);}
+  .mood.g{border-top:3px solid var(--pos-text);} .mood.y{border-top:3px solid var(--warn);} .mood.r{border-top:3px solid var(--neg-text);}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;}
+  .chip{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border-radius:999px;background:var(--chip-bg);
+    border:1px solid var(--border);font-size:13px;color:var(--text);text-decoration:none;font-weight:600;}
+  .chip:hover{border-color:var(--accent);}
+  .chip small{color:var(--text-soft);font-weight:500;}
+
+  /* 표 */
+  .tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border);}
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px;min-width:640px;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:middle;}
+  th{background:var(--table-head);font-weight:600;font-size:12.5px;color:var(--text-soft);white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  td.num{font-variant-numeric:tabular-nums;white-space:nowrap;}
+  td.tk a{color:var(--text);font-weight:700;text-decoration:none;}
+  td.tk a:hover{color:var(--accent);}
+  .c-up{color:var(--pos-text);} .c-now{color:#fff;font-weight:700;} .c-warn{color:var(--warn);} .c-bad{color:var(--neg-text);}
+  tr.hot td{background:rgba(255,107,107,.06);}
+  tr.hot td:first-child{border-left:3px solid var(--up);}
+  tr.today td:first-child{border-left:3px solid var(--accent);}
+  .badge{display:inline-block;font-size:11px;padding:1px 7px;border-radius:6px;margin-left:6px;background:var(--neg-bg);color:var(--neg-text);font-weight:700;}
+  .badge.today{background:rgba(138,146,255,.18);color:var(--accent);}
+
+  /* 필터 */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px;}
+  .filters button{background:var(--chip-bg);color:var(--text-soft);border:1px solid var(--border);border-radius:999px;
+    padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;}
+  .filters button.on{background:var(--accent);color:#0e1015;border-color:var(--accent);font-weight:700;}
+
+  /* 종목 카드 */
+  .tcard{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:16px;box-shadow:var(--shadow);scroll-margin-top:12px;}
+  .tcard.g{border-left:4px solid var(--pos-text);} .tcard.y{border-left:4px solid var(--warn);} .tcard.r{border-left:4px solid var(--neg-text);}
+  .t-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:6px 16px;}
+  .t-name{font-size:19px;font-weight:800;}
+  .t-name small{font-size:13px;color:var(--text-soft);font-weight:500;margin-left:6px;}
+  .t-meta{display:flex;flex-wrap:wrap;gap:6px 14px;align-items:center;font-size:13px;color:var(--text-soft);}
+  .mood-pill{font-size:12px;padding:2px 9px;border-radius:999px;font-weight:700;}
+  .mood-pill.g{background:var(--pos-bg);color:var(--pos-text);} .mood-pill.y{background:var(--warn-bg);color:var(--warn);} .mood-pill.r{background:var(--neg-bg);color:var(--neg-text);}
+  .live{font-variant-numeric:tabular-nums;color:var(--text);}
+  .live .dot{display:inline-block;width:7px;height:7px;border-radius:50%;background:#555;margin-right:5px;vertical-align:middle;}
+  .live.ok .dot{background:var(--pos-text);} .live.fail .dot{background:var(--neg-text);}
+  .live .chg.up{color:var(--up);} .live .chg.down{color:var(--down);}
+  .t-line{margin:12px 0 14px;font-size:15.5px;line-height:1.65;padding:12px 14px;background:var(--card2);border-radius:10px;}
+  .t-line em{font-style:normal;color:var(--pos-text);}
+  .t-line strong{color:var(--neg-text);}
+
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .gb{border-radius:10px;padding:10px 12px;font-size:13.5px;}
+  .gb.good{background:var(--pos-bg);} .gb.bad{background:var(--neg-bg);}
+  .gb h4{margin:0 0 6px;font-size:13.5px;}
+  .gb ol{margin:0;padding-left:18px;}
+  .gb li{margin-bottom:5px;}
+  .gb li span{display:block;font-size:12px;color:var(--text-soft);}
+
+  .bottom{display:grid;grid-template-columns:1.1fr 1fr;gap:10px;margin-top:10px;}
+  .box{background:var(--card2);border-radius:10px;padding:10px 12px;}
+  .box h4{margin:0 0 8px;font-size:13px;color:var(--text-soft);}
+  .rung{display:flex;gap:10px;align-items:baseline;font-size:13px;padding:5px 8px;border-radius:7px;margin-bottom:4px;}
+  .rung .px{min-width:88px;font-weight:700;font-variant-numeric:tabular-nums;}
+  .rung.ok{background:rgba(95,209,136,.10);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(138,146,255,.16);outline:1px solid var(--accent);} .rung.now .px{color:#fff;}
+  .rung.warn{background:rgba(245,185,66,.10);} .rung.warn .px{color:var(--warn);}
+  .rung.bad{background:rgba(255,128,128,.10);} .rung.bad .px{color:var(--neg-text);}
+  .gauge{position:relative;height:8px;border-radius:999px;margin:10px 4px 4px;
+    background:linear-gradient(90deg,var(--neg-text) 0%,var(--warn) 35%,var(--pos-text) 100%);opacity:.85;}
+  .gauge i{position:absolute;top:-4px;width:4px;height:16px;background:#fff;border-radius:2px;box-shadow:0 0 6px rgba(255,255,255,.7);transform:translateX(-2px);}
+  .gauge-lbl{display:flex;justify-content:space-between;font-size:11px;color:var(--text-soft);padding:0 2px;}
+  .dt{display:flex;gap:10px;font-size:13px;padding:6px 8px;border-radius:7px;margin-bottom:4px;background:rgba(255,255,255,.02);}
+  .dt .d{min-width:92px;font-weight:700;white-space:nowrap;}
+  .dt .w{color:var(--text-soft);font-size:12px;}
+  .dt.hot{background:rgba(255,107,107,.10);} .dt.hot .d{color:var(--up);}
+  .final{margin-top:10px;font-size:13.5px;padding:10px 12px;border-radius:10px;background:var(--chip-bg);color:var(--text-soft);}
+  .final b{color:var(--text);}
+  .t-foot{margin-top:8px;font-size:12px;text-align:right;}
+  .t-foot a{color:var(--accent);text-decoration:none;}
+
+  .concl li{margin-bottom:8px;font-size:14px;}
+  footer{margin-top:44px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--text-soft);}
+
+  @media (max-width:680px){
+    .two,.bottom{grid-template-columns:1fr;}
+    h1{font-size:22px;}
+    .hero .line{font-size:15.5px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="eyebrow">2026.10.05 (월) 작성 · 가격 기준 10/2 (금) 美 정규장 종가 · 모든 일시 KST</div>
+    <h1>관심종목 핵심요약 — 한 장으로 보기</h1>
+    <p class="sub">종목별 리포트의 '핵심 한눈에 보기'를 12종목 한 페이지로 모았습니다. 카드 오른쪽 위 가격은 OKX 무기한선물 실시간(30초 갱신)입니다.</p>
+
+    <div class="hero">
+      <div class="tag">🧠 머리에 쏙</div>
+      <div class="line">
+        신고가를 낸 건 <b>AI 칩 회사</b>(NVDA·AMD)와 신고가 문턱의 <b>MSFT</b>.<br>
+        <b>메모리 3종</b>(SK하이닉스·MU·SNDK)은 실적은 역대급인데 주가는 박스.<br>
+        <b>빅테크</b>(AMZN·META·GOOGL·AAPL)는 "AI에 돈을 쓰는 쪽"이라 실적 발표(10/29~30)까지 박스.<br>
+        공통 고비는 <b>10/8 새벽 FOMC 의사록 → 10/14 CPI → 10/29 FOMC</b>.
+      </div>
+    </div>
+  </header>
+
+  <!-- 1. 분위기 -->
+  <section>
+    <h2>1. 지금 분위기 한눈에</h2>
+    <div class="mood-grid" id="moodGrid"></div>
+  </section>
+
+  <!-- 2. 한 줄 요약 + 가격 기준선 -->
+  <section>
+    <h2>2. 한 줄 요약 &amp; 가격 기준선</h2>
+    <div class="tbl-wrap">
+      <table id="sumTable">
+        <thead><tr>
+          <th>종목</th><th>한 줄 요약</th>
+          <th>🚀 넘으면 상승</th><th>📍 지금(10/2)</th><th>⚠️ 아래면 조심</th><th>🛑 최후 방어선</th>
+        </tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 3. 날짜 -->
+  <section>
+    <h2>3. 꼭 봐야 할 날짜 (한국 시간)</h2>
+    <div class="tbl-wrap">
+      <table id="dateTable">
+        <thead><tr><th style="width:22%">날짜 (KST)</th><th>이벤트</th><th style="width:26%">영향 종목</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- 4. 종목별 -->
+  <section>
+    <h2>4. 종목별 핵심 카드</h2>
+    <div class="filters" id="filters">
+      <button data-f="all" class="on">전체</button>
+      <button data-f="semi">AI·반도체</button>
+      <button data-f="bigtech">빅테크</button>
+      <button data-f="g">🟢 강함</button>
+      <button data-f="y">🟡 박스</button>
+      <button data-f="r">🔴 약함</button>
+    </div>
+    <div id="cards"></div>
+  </section>
+
+  <!-- 5. 결론 -->
+  <section>
+    <h2>5. 💡 한 줄 결론</h2>
+    <ul class="concl">
+      <li><b>강한 쪽(NVDA·AMD·MSFT)</b> — 신고가·저항선 바로 앞이라 흔들림이 잦은 자리. 새로 사려면 <b>조심선 근처 눌림에서 나눠서</b>.</li>
+      <li><b>박스 쪽(메모리 3종·AVGO·AMZN·META·GOOGL·SPCX)</b> — <b>박스 아래쪽에서 나눠 사고, 위를 뚫을 때 비중 확대</b>. 방향은 각자 실적이 정함.</li>
+      <li><b>AAPL</b> — 가장 약함. <b>10/13 신제품(AI Siri) 반응</b>을 본 뒤 판단해도 늦지 않음.</li>
+      <li><b>SPCX</b> — 사업은 좋지만 <b>10/9·10/24 락업, 11월 초 13억주 해제</b>로 수급이 불리. 해제일 전날 하락 패턴 주의.</li>
+      <li><b>공통 변수</b> — 10/2 고용 쇼크로 10월 인상 확률이 16%까지 내려왔지만, <b>10/8 의사록·10/14 CPI</b>가 매파적으로 나오면 12종목 모두 같이 흔들립니다. 무기한선물은 레버리지를 낮추고 청산가 여유를 두세요.</li>
+    </ul>
+  </section>
+
+  <footer>
+    ※ 본 자료는 각 종목 리포트(10/2 美 정규장 마감 = KST 10/3 05:00 기준)의 '핵심 한눈에 보기'를 모은 요약이며 투자 조언이 아닙니다.
+    가격 기준선은 기술적 참고 구간이고, 실적일 중 (예상) 표기는 회사 공식 공지 전 추정입니다. SK하이닉스 기준선은 코스피 본주(원) 기준이며 실시간 가격은 OKX ADR 무기한선물(SKHYUSDT.P, 달러)입니다.
+    TSLA·PLTR은 아직 리포트에 '핵심 한눈에 보기' 섹션이 없어 이번 요약에서 빠졌습니다. 개별 리포트 링크는 이 파일과 같은 폴더에 리포트가 있을 때 열립니다.
+  </footer>
+</div>
+
+<script>
+const STOCKS = [
+  { t:"NVDA", name:"엔비디아", grp:"semi", mood:"g", moodTxt:"가장 강함", sym:"NVDA",
+    a:"사상 최고가 + 역대 최대 자사주 매입,", b:"다만 '고객이 빚내서 칩 사는' 구조가 불안 요소.",
+    short:"사상 최고가에 역대 최대 자사주 매입, 다만 '고객이 빚내서 칩 사는' 구조가 불안",
+    good:[["5개월 만에 사상 최고가","10/2 장중 $237.88 · 시가총액 $6조 근접"],["자기 주식 317조원어치 매입 한도","역대 최대 → 주가 바닥을 받쳐 줌"],["매출이 1년 새 2배","분기 130조원(+106%) · 다음 분기 146조원 목표"]],
+    bad:[["고객이 빚내서 칩을 삼","OpenAI 투자·아마존 칩 리스백 → '돈이 돌고 도는 구조' 의심"],["중국 매출이 빠져 있음","화웨이 등 중국산 AI 칩 추격"],["마진 살짝 하락 예고","75% → 74% · 임원들 최근 1.3조원어치 매도"]],
+    dates:[["10/15 오후","TSMC 실적","AI 칩 수요 체크",0],["10/29~30 새벽","빅테크 실적","AI 투자 늘리면 호재",0],["11/26 새벽","3분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[238,"$238","신고가 랠리 (다음 $250)"],now:[234,"$234"],warn:[228,"$228","최근 1주 바닥"],bad:[221,"$221","깨지면 $210대"]},
+    final:"신고가를 뚫은 강한 흐름. 새로 사려면 <b>$228 근처 눌림에서 나눠서</b>, 보유 중이면 <b>$228 지지만 확인</b>. 다음 방향은 <b>10/29~30 빅테크 AI 투자 계획</b>." },
+
+  { t:"AMD", name:"AMD", grp:"semi", mood:"g", moodTxt:"강함 (과열)", sym:"AMD",
+    a:"AI 칩 주문이 쏟아져 사상 최고가인데,", b:"너무 빨리 올라서 금리만 오르면 흔들린다.",
+    short:"AI 칩 주문이 쏟아져 사상 최고가, 너무 빨리 올라 금리만 오르면 흔들림",
+    good:[["사상 최고가 경신","10/2 장중 $645 · 올해만 약 +190%"],["큰 주문이 들어옴","AI 서버 랙 'Helios' 1.6조원어치(Vultr)"],["AI 연구소 인수","World Labs 11조원 인수 · 칩값 10% 인상 예정"]],
+    bad:[["너무 비쌈","번 돈의 160배 · 평균 목표가($620)도 이미 넘음"],["금리에 약함","9/28 금리 오르자 하루 -3.6%"],["인수 대금을 주식으로","신주 발행 → 기존 주주 몫 소폭 감소 · 게임 -31%"]],
+    dates:[["10/8 03:00","FOMC 의사록","'더 올리자' 많으면 하락 주의",0],["11/4 새벽","3분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[645,"$645","다시 상승 (다음 $680~720)"],now:[634,"$634"],warn:[600,"$600","사흘간 지킨 바닥"],bad:[585,"$585","깨지면 $550대"]},
+    final:"힘은 강하지만 <b>비싸게 산 사람이 많은 자리</b>. 새로 사려면 <b>$600 근처에서 나눠서</b>, 보유 중이면 <b>$600 이탈 여부</b>만 확인. 진짜 방향은 <b>11/4 실적</b>." },
+
+  { t:"MSFT", name:"마이크로소프트", grp:"bigtech", mood:"g", moodTxt:"강함 (저항 앞)", sym:"MSFT",
+    a:"돈 잘 버는 모범생 회사인데,", b:"AI에 돈을 너무 많이 쏟아붓고 있다.",
+    short:"돈 잘 버는 모범생 회사인데, AI에 돈을 너무 많이 쏟아붓는 중",
+    good:[["클라우드(Azure)가 잘 나감","연 매출 약 135조원, 1년 새 +43%"],["Copilot 유료 가입자 3,000만","9/25 코딩·자동화 기능 개편"],["이익률 빅테크 최고","100원 팔면 47원 남김 · 배당 19년 연속 인상"]],
+    bad:[["투자비 폭증","내년 AI 투자 약 345조원 → 남는 현금 감소"],["AI 비서 경쟁","메타 Muse 등이 오피스·Copilot 가격 위협"],["게임·PC 부진","Xbox -10% · 금리 오르면 같이 흔들림"]],
+    dates:[["10/7","Surface 신제품 행사","영향은 작은 편",0],["10/29 새벽","1분기 실적 (예상)","🔥 Azure 45% 성장 여부",1]],
+    lad:{up:[520,"$520","다음 $540~553 신고가"],now:[517.5,"$517.5"],warn:[505,"$505",""],bad:[491,"$491",""]},
+    final:"7~9월 <b>+37.5%</b>(1991년 이후 최고 분기)로 지금은 <b>$520 문턱 앞</b>. 따라가기보다 <b>$505 근처 눌릴 때 나눠서</b>. 방향은 <b>10/29 실적</b>." },
+
+  { t:"SKHY", name:"SK하이닉스", grp:"semi", mood:"y", moodTxt:"박스", sym:"SKHY", krw:true,
+    a:"메모리 호황으로 사상 최대 실적이 확실한데,", b:"美 금리와 외국인 매도가 발목을 잡는다.",
+    short:"사상 최대 실적이 확실한데, 미국 금리와 외국인 매도가 발목",
+    good:[["3분기 영업이익 78조원 예상","1년 전보다 약 7배 · 사상 최대"],["마이크론도 대박","'메모리 호황 안 끝났다' 확인 · HBM 값 내년 2배+ 전망"],["9월 반도체 수출 사상 최대","81조원어치 · 전체 수출의 절반"]],
+    bad:[["외국인이 계속 팜","9/28 하루에만 1.7조원 매도"],["미국 금리가 너무 높음","10년물 5.3% · 2007년 이후 최고"],["삼성이 빠르게 추격","HBM 점유율 21% → 33% · 자회사 상장 할인 우려"]],
+    dates:[["10/6 (화)","연휴 후 한국장 개장","美 재료 한꺼번에 반영 · 갭 주의",0],["10월 둘째 주","삼성 잠정실적 (예상)","메모리 업황 첫 성적표",0],["10/27 16:00","3분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[190,"190만원","ADR $200 돌파 = 52주 신고가"],now:[184.1,"184.1만원"],warn:[176,"176만원","9/28~30 바닥"],bad:[169,"169만원","9월 중순 저점"]},
+    final:"실적은 역대급이 거의 확실하지만 <b>176만~190만원 박스</b>. 실적 전까지는 <b>박스 하단(176만원)에서 나눠 사기</b>, 190만원을 거래량과 함께 넘으면 추세 재개." },
+
+  { t:"MU", name:"마이크론", grp:"semi", mood:"y", moodTxt:"박스", sym:"MU",
+    a:"역대 최대 실적에 다음 분기는 더 좋다는데,", b:"대만 공장 파업 투표와 늘어나는 투자비가 발목.",
+    short:"역대 최대 실적인데 대만 공장 파업 투표와 늘어나는 투자비가 발목",
+    good:[["매출이 1년 새 4.8배","분기 73조원 · 남는 이익률 87%"],["다음 분기는 더 큼","83조원 목표 · '내년·내후년 공급 더 부족'"],["2030년까지 주문 확보","26개 고객과 202조원 장기계약"]],
+    bad:[["대만 공장 파업 투표","10/6 결과 · 핵심 메모리 생산기지"],["내년 투자비 2배","공장에 68조원+ → 남는 현금 줄 수 있음"],["HBM은 3등","점유율 18% · SK하이닉스·삼성에 밀림"]],
+    dates:[["10/6","파업 투표 결과","🔥 가장 가까운 고비",1],["10/27","SK하이닉스 실적 (예상)","경쟁사 성적 = 업황 확인",0],["12월 중순","다음 실적 (예상)","83조원 목표 달성 여부",0]],
+    lad:{up:[1110,"$1,110","다음 $1,180 → 최고가 $1,255"],now:[1075,"$1,075"],warn:[1020,"$1,020","실적 날 바닥"],bad:[1000,"$1,000","깨지면 $924"]},
+    final:"실적은 이미 반영돼 <b>$1,020~1,110 박스</b>. 당장은 <b>10/6 파업 투표 결과</b>가 방향 — 확인 후 <b>$1,020~1,050에서 나눠서</b>." },
+
+  { t:"SNDK", name:"샌디스크", grp:"semi", mood:"y", moodTxt:"박스 (변동 큼)", sym:"SNDK",
+    a:"AI 데이터센터 덕에 돈은 1년 새 4배 넘게 버는데,", b:"\"이 호황이 얼마나 갈까\" 의심에 주가는 롤러코스터.",
+    short:"돈은 1년 새 4배 넘게 버는데 '호황이 언제까지?' 의심에 롤러코스터",
+    good:[["매출이 1년 새 4.7배","분기 12조원 · 다음 분기 +15~20% 예상"],["2년치 주문을 미리 받아 둠","장기계약 127조원 · 내년 생산량 절반 확보"],["자사주 19조원어치 매입 중","분기에만 6조원 · S&P 100 편입"]],
+    bad:[["이익률이 더 안 오름","84.6% → 83~85% · 가격 상승 둔화 신호"],["소비자용은 줄어듦","스마트폰·PC용 매출 -32%"],["하루에도 크게 출렁","2주 새 -4% ~ +11% · 최고가 대비 -27%"]],
+    dates:[["10/8 03:00","FOMC 의사록","금리 오르면 하락 주의",0],["10/27","SK하이닉스 실적 (예상)","메모리 가격 흐름 확인",0],["10/30 새벽","실적 발표 (확정)","🔥 제일 큰 고비",1]],
+    lad:{up:[1820,"$1,820","다음 $1,910 → $2,000대"],now:[1720,"$1,720"],warn:[1690,"$1,690","최근 바닥"],bad:[1660,"$1,660","깨지면 $1,500대"]},
+    final:"\"NAND 가격 언제 꺾이나\" 걱정 속에 <b>$1,660~1,820</b>을 크게 오감. <b>$1,700 아래에서 나눠서</b>, 방향은 <b>10/30 실적의 마진·가이던스</b>로." },
+
+  { t:"AVGO", name:"브로드컴", grp:"semi", mood:"y", moodTxt:"박스", sym:"AVGO",
+    a:"AI 맞춤형 칩 주문은 넘치는데,", b:"최대 고객에게 돈까지 빌려줘야 하는 구조가 불안.",
+    short:"AI 칩 주문은 넘치는데, 최대 고객에게 돈까지 빌려줘야 하는 구조가 불안",
+    good:[["AI 칩 매출 1년 새 3배","+221% · 다음 분기 AI 매출 29조원 목표"],["내년 AI 매출 155조원 전망","Anthropic이 2027년 최대 고객 예정"],["평균 목표가 +50%","$532 · 매도 의견 0개"]],
+    bad:[["고객에게 돈을 빌려줌","Anthropic에 최대 57조원 대출 → 빚 증가 가능"],["경쟁자가 구글 칩 일부 가져감","Marvell 수주(8월) · 메타 자체 칩 준비"],["올해 주가가 동료보다 부진","최고가 대비 -26% · VMware 유럽 조사"]],
+    dates:[["10/29~30 새벽","구글·메타 실적","고객이 AI 투자 늘리면 호재",0],["11월 중순","Anthropic IPO (보도)","돈 빌려준 고객의 체력 확인",0],["12/11 새벽","4분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[366,"$366","박스 탈출 (다음 $380 → $400대)"],now:[355,"$355"],warn:[343,"$343","10/1 저점"],bad:[339,"$339","깨지면 $320대"]},
+    final:"시장이 \"돈 빌려줘서 파는 구조\"를 어떻게 볼지 못 정해 <b>$343~366 박스</b>. <b>$343 근처에서 나눠 사고 $366 돌파 확인 후 비중 확대</b>." },
+
+  { t:"AMZN", name:"아마존", grp:"bigtech", mood:"y", moodTxt:"박스", sym:"AMZN",
+    a:"클라우드(AWS)는 역대급으로 잘 되는데,", b:"AI에 돈을 너무 많이 써서 주가가 제자리.",
+    short:"AWS는 역대급인데 AI에 돈을 너무 많이 써서 주가가 제자리",
+    good:[["AWS가 쑥쑥 큼","1년 새 +37% · 4년 반 만에 가장 빠른 성장"],["받아 둔 주문 670조원","AWS 수주잔고 $496B"],["애널리스트는 낙관","평균 목표가 $320대 → 약 +28%"]],
+    bad:[["돈을 너무 많이 씀","올해 AI 투자 297조원 → 남는 현금 마이너스"],["소송이 줄줄이","광고 가격 조작 소송(FTC+22개 주) · 27년 2월 독점 재판"],["AI 쇼핑 비서 경쟁","Meta 'Muse' 차단 → 손님 이탈 시험대"]],
+    dates:[["10/6~7","프라임 세일","연말 쇼핑 분위기 체크",0],["10/29 새벽","MS·구글 실적","클라우드 경쟁사 미리보기",0],["10/30 새벽","3분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[257,"$257","박스 탈출 (다음 $266)"],now:[251.5,"$251.5"],warn:[244,"$244","박스 하단"],bad:[241,"$241","200일선, 깨지면 $230대"]},
+    final:"\"투자한 만큼 벌어 오느냐\" 의심에 <b>$244~257 박스</b>. 답은 <b>10/30 실적</b>. 그 전엔 <b>박스 하단 근처에서 나눠서</b>." },
+
+  { t:"META", name:"메타", grp:"bigtech", mood:"y", moodTxt:"숨 고르기", sym:"META",
+    a:"새로 낸 AI 비서가 대박 났는데,", b:"돈을 너무 많이 쓰고 벌금 폭탄이 기다린다.",
+    short:"새로 낸 AI 비서가 대박 났는데, 돈을 너무 많이 쓰고 벌금 폭탄 대기",
+    good:[["AI 비서 'Muse' 인기","쇼핑·예약 대행 · 한 달 만에 500만 다운로드"],["광고로 여전히 잘 벎","매출 1년 새 +28%"],["스마트안경 신제품","레이밴 3세대, 오디오 안경(10/13 출시)"]],
+    bad:[["돈을 너무 많이 씀","번 돈의 97%를 AI에 투자"],["벌금 폭탄 대기","뉴멕시코 판결(10월 중) + 합의금 13조원 3분기 비용"],["경쟁자 등장","OpenAI 'Dots' 출시, 아마존은 Muse 차단"]],
+    dates:[["10월 중","뉴멕시코 벌금 판결","금액 크면 급락 주의",0],["10/29 새벽","3분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[760,"$760","다시 상승 (다음 $780~820)"],now:[728,"$728"],warn:[720,"$720",""],bad:[700,"$700",""]},
+    final:"AI 비서 덕에 9월에만 +27% 오른 뒤 <b>숨 고르는 중</b>. <b>벌금 판결과 10/29 실적 전후로 나눠서</b>." },
+
+  { t:"GOOGL", name:"구글", grp:"bigtech", mood:"y", moodTxt:"박스", sym:"GOOGL",
+    a:"AI 기술은 1등급인데,", b:"그게 언제 돈이 될지 모르고 소송이 계속 따라다닌다.",
+    short:"AI 기술은 1등급인데, 언제 돈이 될지 모르고 소송이 계속 따라다님",
+    good:[["새 AI 'Gemini 4 Argon'","성능 좋고 경쟁사보다 저렴"],["클라우드 폭풍 성장","1년 새 +82% · 받아둔 주문 694조원"],["주가가 싼 편","빅테크 중 저평가 · 월가 목표가 +24%"]],
+    bad:[["AI 수익화 시점 불확실","Argon은 일부 전문가에게만 공개"],["검색을 위협받는 중","AI 비서가 검색 광고(매출 절반) 잠식 가능"],["소송이 줄줄이","언론사 4.3조원 손해배상, EU 규제, 법무부 항소 가능성"]],
+    dates:[["10/29 새벽","3분기 실적 (예상)","🔥 제일 큰 고비",1],["11월 중순","美 법무부 항소 마감","항소하면 악재",0]],
+    lad:{up:[355,"$355","상승 시작 (다음 $380~400)"],now:[343,"$343"],warn:[335,"$335",""],bad:[325,"$325",""]},
+    final:"9월 내내 <b>$335~355 박스</b>. 계기는 <b>10/29 실적</b> — 그 전엔 <b>$335~340 근처에서 나눠서</b>." },
+
+  { t:"SPCX", name:"스페이스X", grp:"bigtech", mood:"y", moodTxt:"수급 부담", sym:"SPCX",
+    a:"가게 장사(사업)는 잘 되는데,", b:"곧 창고에서 물건(주식)이 대량으로 풀린다.",
+    short:"사업은 잘 되는데, 곧 락업 해제로 주식이 대량으로 풀림",
+    good:[["큰 로켓이 드디어 성공","9/28 Starship 첫 궤도 진입·위성 배치"],["AI 컴퓨터 임대 사업 확대","구글·Anthropic이 매달 1조원+ 지불(10월부터)"],["매출이 1년 새 2배 가까이","2분기 약 10.5조원, +92%"]],
+    bad:[["팔 수 있는 주식이 쏟아짐","10월 두 번 + 11월 대량 · 지난번 해제마다 약 -4%"],["최근 너무 빨리 올랐음","10/2 하루에만 +7%"],["아직 적자","버는 돈보다 투자에 쓰는 돈이 더 많음"]],
+    dates:[["10/8~9","락업 해제 ① (3.3억주)","전날부터 하락 조심",0],["10/24~26","락업 해제 ② (3.3억주)","전날부터 하락 조심",0],["11월 초","실적 + 13억주 해제","🔥 제일 큰 고비",1]],
+    lad:{up:[165,"$165","다음 목표 $175~200"],now:[159,"$159"],warn:[148,"$148","$155 위면 괜찮음"],bad:[135,"$135","상장 가격"]},
+    final:"회사는 좋지만 <b>10~11월은 주식이 풀리는 기간</b>. <b>한 번에 사지 말고 해제일 전후로 나눠서</b>." },
+
+  { t:"AAPL", name:"애플", grp:"bigtech", mood:"r", moodTxt:"가장 약함", sym:"AAPL",
+    a:"10월에 신제품이 줄줄이 나오는데,", b:"새 사장님 구조조정과 AI 경쟁이 발목을 잡는다.",
+    short:"10월 신제품이 줄줄이 나오는데, 새 CEO 구조조정과 AI 경쟁이 발목",
+    good:[["새 제품 2연타","10/13 스마트홈 허브 → 10/16 접는 아이폰 사전주문"],["중국에서도 잘 팔림","아이폰18 Pro 판매 +12%, 점유율 33%"],["돈은 여전히 잘 벎","분기 매출 148조원, +16%"]],
+    bad:[["새 CEO의 구조조정","중간관리자 감축·출시 일정 변경 → 하루 -2.7%"],["AI 비서 경쟁","Meta 'Muse'가 쇼핑·추천을 가져갈 수 있음"],["비싸고 소송도 많음","번 돈의 37배 · 특허 배상 7.7조원 평결(항소 예정)"]],
+    dates:[["10/13","스마트홈 신제품 (예상)","AI Siri 괜찮으면 반등 재료",0],["10/16","접는 아이폰 사전주문","매진되면 호재",0],["10/30 새벽","4분기 실적 (예상)","🔥 제일 큰 고비",1]],
+    lad:{up:[340,"$340","다음 $345 사상 최고가"],now:[334,"$334"],warn:[326,"$326","10/1 저점"],bad:[321,"$321","50일선, 깨지면 $310"]},
+    final:"실적은 튼튼하지만 시장은 <b>'새 CEO가 회사를 어떻게 바꿀지'</b> 지켜보는 중. <b>10/13 AI Siri 평가</b>가 좋으면 $340 돌파, 그 전엔 <b>$326~340 박스</b>." }
+];
+
+const DATES = [
+  {d:"10/5 (월) 23:00", e:"美 9월 ISM 서비스업 PMI — 고용 쇼크 후 서비스 경기 확인", tk:"전체", today:1},
+  {d:"10/6 (화)", e:"한국장 연휴 후 개장(美 재료 일괄 반영) · 마이크론 대만 노조 파업 투표 마감", tk:"SK하이닉스, MU, SNDK", hot:1},
+  {d:"10/6~7", e:"아마존 프라임 빅딜 데이 · MS Surface 행사(10/7)", tk:"AMZN, MSFT"},
+  {d:"10/8 (목) 03:00", e:"🔥 9월 FOMC 의사록 — 전 종목 공통 고비", tk:"전체", hot:1},
+  {d:"10/9 (금) 22:30", e:"SpaceX 락업 해제 ① (약 3.28억주) — 전일 선매도 주의", tk:"SPCX"},
+  {d:"10/13 (화)", e:"애플 스마트홈 신제품 공개 (보도·예상)", tk:"AAPL"},
+  {d:"10/14 (수) 21:30", e:"🔥 美 9월 CPI — 10월 FOMC 직전 마지막 물가지표", tk:"전체", hot:1},
+  {d:"10/15 (목) 15:00경", e:"TSMC 3분기 실적 = AI 칩 수요 체크", tk:"NVDA, AMD, AVGO"},
+  {d:"10/16 (금)", e:"접는 아이폰 Duo 사전주문 개시", tk:"AAPL"},
+  {d:"10월 중", e:"뉴멕시코 법원 Meta 벌금 판결", tk:"META"},
+  {d:"10/24~26", e:"SpaceX 락업 해제 ② (美 개장 10/26 22:30 반영)", tk:"SPCX"},
+  {d:"10/27 (화) 16:00", e:"SK하이닉스 3분기 실적 (예상)", tk:"SK하이닉스, MU, SNDK"},
+  {d:"10/29 (목) 03:00~06:30", e:"🔥 FOMC 금리결정 + 구글·MS·메타 실적 (예상)", tk:"전체 / GOOGL, MSFT, META", hot:1},
+  {d:"10/30 (금) 새벽", e:"샌디스크 실적 (확정) · 애플·아마존 실적 (예상)", tk:"SNDK, AAPL, AMZN", hot:1},
+  {d:"11월 초", e:"SpaceX 3분기 실적 + 최대 13억주 락업 해제", tk:"SPCX", hot:1},
+  {d:"11/4 (수) 06:00", e:"AMD 3분기 실적 (예상)", tk:"AMD"},
+  {d:"11/26 (목) 06:00", e:"엔비디아 3분기 실적 (예상)", tk:"NVDA, 메모리 3종"},
+  {d:"12월 중순", e:"마이크론 다음 실적 (예상)", tk:"MU"},
+  {d:"12/11 (금) 06:00", e:"브로드컴 4분기 실적 (예상)", tk:"AVGO"}
+];
+
+const MOOD_LABEL = {g:"🟢",y:"🟡",r:"🔴"};
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+const reportLink = s => `${s.t}_주가분석_리포트.html`;
+
+/* 1. 분위기 보드 */
+(function(){
+  const groups = [
+    {k:"g", title:"🟢 강함", desc:"신고가 / 저항선 바로 앞 — 눌림에서 나눠 사기"},
+    {k:"y", title:"🟡 박스", desc:"실적은 좋은데 주가는 박스 — 아래에서 나눠 사고 돌파 시 추가"},
+    {k:"r", title:"🔴 약함", desc:"이벤트 반응 확인 후 판단"}
+  ];
+  document.getElementById("moodGrid").innerHTML = groups.map(g => `
+    <div class="mood ${g.k}">
+      <h3>${g.title}</h3><p>${g.desc}</p>
+      <div class="chips">${STOCKS.filter(s=>s.mood===g.k).map(s=>
+        `<a class="chip" href="#c-${s.t}">${s.t} <small>${s.moodTxt}</small></a>`).join("")}</div>
+    </div>`).join("");
+})();
+
+/* 2. 요약표 */
+document.querySelector("#sumTable tbody").innerHTML = STOCKS.map(s => `
+  <tr>
+    <td class="tk">${MOOD_LABEL[s.mood]} <a href="#c-${s.t}">${s.t}</a></td>
+    <td>${esc(s.short)}</td>
+    <td class="num c-up">${s.lad.up[1]}</td>
+    <td class="num c-now">${s.lad.now[1]}</td>
+    <td class="num c-warn">${s.lad.warn[1]}</td>
+    <td class="num c-bad">${s.lad.bad[1]}</td>
+  </tr>`).join("");
+
+/* 3. 날짜표 */
+document.querySelector("#dateTable tbody").innerHTML = DATES.map(x => `
+  <tr class="${x.hot?'hot':''} ${x.today?'today':''}">
+    <td class="num"><b>${x.d}</b>${x.today?'<span class="badge today">오늘</span>':''}</td>
+    <td>${esc(x.e)}</td><td>${esc(x.tk)}</td>
+  </tr>`).join("");
+
+/* 4. 카드 */
+function gauge(l){
+  const lo=l.bad[0], hi=l.up[0];
+  const pct=Math.max(2,Math.min(98,(l.now[0]-lo)/(hi-lo)*100));
+  return `<div class="gauge"><i style="left:${pct}%"></i></div>
+          <div class="gauge-lbl"><span>🛑 ${l.bad[1]}</span><span>지금 위치</span><span>🚀 ${l.up[1]}</span></div>`;
+}
+function card(s){
+  const li = arr => arr.map(([b,sp])=>`<li><b>${esc(b)}</b><span>${esc(sp)}</span></li>`).join("");
+  const l = s.lad;
+  return `
+  <div class="tcard ${s.mood}" id="c-${s.t}" data-grp="${s.grp}" data-mood="${s.mood}">
+    <div class="t-head">
+      <div class="t-name">${s.t}<small>${s.name}</small></div>
+      <div class="t-meta">
+        <span class="mood-pill ${s.mood}">${MOOD_LABEL[s.mood]} ${s.moodTxt}</span>
+        <span class="live" id="live-${s.t}"><span class="dot"></span>실시간 <b class="px">—</b> <span class="chg"></span>${s.krw?' <small>(ADR $)</small>':''}</span>
+      </div>
+    </div>
+    <div class="t-line"><em>${esc(s.a)}</em><br><strong>${esc(s.b)}</strong></div>
+    <div class="two">
+      <div class="gb good"><h4>👍 좋은 점 3가지</h4><ol>${li(s.good)}</ol></div>
+      <div class="gb bad"><h4>👎 나쁜 점 3가지</h4><ol>${li(s.bad)}</ol></div>
+    </div>
+    <div class="bottom">
+      <div class="box">
+        <h4>📍 가격 기준선${s.krw?' (본주 · 원)':''}</h4>
+        <div class="rung ok"><span class="px">${l.up[1]} ↑</span><span>넘으면 → 상승 🚀 ${l.up[2]?'· '+esc(l.up[2]):''}</span></div>
+        <div class="rung now"><span class="px">${l.now[1]}</span><span>지금 (10/2 종가)</span></div>
+        <div class="rung warn"><span class="px">${l.warn[1]}</span><span>이 아래면 → 조심 ⚠️ ${l.warn[2]?'· '+esc(l.warn[2]):''}</span></div>
+        <div class="rung bad"><span class="px">${l.bad[1]}</span><span>최후 방어선 🛑 ${l.bad[2]?'· '+esc(l.bad[2]):''}</span></div>
+        ${gauge(l)}
+      </div>
+      <div class="box">
+        <h4>📅 기억할 날짜 (KST)</h4>
+        ${s.dates.map(([d,e,w,h])=>`<div class="dt ${h?'hot':''}"><span class="d">${esc(d)}</span><span>${esc(e)}<br><span class="w">${esc(w)}</span></span></div>`).join("")}
+      </div>
+    </div>
+    <div class="final">💡 <b>결론:</b> ${s.final}</div>
+    <div class="t-foot"><a href="${reportLink(s)}">상세 리포트 열기 →</a></div>
+  </div>`;
+}
+document.getElementById("cards").innerHTML = STOCKS.map(card).join("");
+
+/* 필터 */
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#filters button").forEach(x=>x.classList.toggle("on", x===b));
+  const f = b.dataset.f;
+  document.querySelectorAll(".tcard").forEach(c => {
+    const show = f==="all" || c.dataset.grp===f || c.dataset.mood===f;
+    c.style.display = show ? "" : "none";
+  });
+});
+
+/* 실시간 가격 (OKX 무기한선물, 30초) */
+async function fetchOne(s){
+  const el = document.getElementById("live-"+s.t);
+  try{
+    const r = await fetch(`https://www.okx.com/api/v5/market/ticker?instId=${s.sym}-USDT-SWAP`);
+    const j = await r.json();
+    const d = j && j.data && j.data[0];
+    if(!d) throw new Error("no data");
+    const last = parseFloat(d.last), open = parseFloat(d.sodUtc8 || d.open24h);
+    const chg = open ? (last-open)/open*100 : 0;
+    el.querySelector(".px").textContent = "$" + last.toLocaleString("en-US",{maximumFractionDigits: last<100?2:1});
+    const c = el.querySelector(".chg");
+    c.textContent = (chg>=0?"+":"") + chg.toFixed(2) + "%";
+    c.className = "chg " + (chg>=0?"up":"down");
+    el.classList.add("ok"); el.classList.remove("fail");
+  }catch(err){
+    el.classList.add("fail"); el.classList.remove("ok");
+  }
+}
+function refresh(){ STOCKS.forEach(fetchOne); }
+refresh(); setInterval(refresh, 30000);
+</script>
+</body>
+</html>
