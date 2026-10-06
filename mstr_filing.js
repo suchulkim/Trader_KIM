@@ -1,6 +1,6 @@
 // 자동 생성 파일 — 수정하지 마세요 (run_market_intel.py가 생성)
 window.MstrFiling = {
-  "generatedAt": "2026-10-06 06:40:02",
+  "generatedAt": "2026-10-06 18:10:04",
   "filing": {
     "action": "매입",
     "btcAmount": null,
