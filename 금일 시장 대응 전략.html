@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>금일 시장 대응 전략 · 10/6 금리 체크</title>
+<title>금일 시장 대응 전략 · 10/7 의사록·10년물 입찰</title>
 <style>
   :root {
     --bg: #0f1115;
@@ -72,6 +72,7 @@
   .stat .desc { font-size: 12.5px; color: var(--soft); }
   .val.gold { color: var(--gold); }
   .val.bear { color: var(--bear); }
+  .val.bull { color: var(--bull); }
   .val.blue { color: var(--accent); }
   .note { font-size: 12.5px; color: var(--soft); margin-top: 10px; }
 
@@ -82,6 +83,7 @@
   .formula .eq { font-size: 18px; font-weight: 800; }
   .formula .eq .arrow { color: var(--soft); margin: 0 6px; }
   .formula .eq .neg { color: var(--bear); }
+  .formula .eq .pos { color: var(--bull); }
   .formula p { margin-top: 8px; color: var(--soft); font-size: 14px; }
   .formula p b { color: var(--text); }
 
@@ -169,70 +171,71 @@
 <div class="wrap">
   <a class="back" href="index.html">← MARKET DASHBOARD</a>
 
-  <div class="eyebrow">2026년 10월 6일 (화) · 이벤트 대응 · 20:40 업데이트</div>
+  <div class="eyebrow">2026년 10월 7일 (수) · 이벤트 대응 · 20:40 업데이트</div>
   <h1>금일 시장 대응 전략</h1>
-  <p class="sub">오늘 밤은 큰 지표 하나가 아니라 <b>작은 재료 여러 개</b> — ADP 주간 고용 · 무역수지 · 연준 위원 발언 · 3년물 입찰. 결국 답은 <b>10년물 금리</b>가 냅니다.</p>
+  <p class="sub">오늘 밤은 <b>이번 주 진짜 고비</b> — 새벽 <b>02:00 10년물 입찰</b> → <b>03:00 9월 FOMC 의사록</b>이 1시간 간격으로 연달아 나옵니다. 어제 내려왔던 10년물이 오늘 다시 <b>5.33%</b>로 올라온 상태라, 답은 또 <b>금리</b>가 냅니다.</p>
 
   <div class="time-banner">
-    <span class="clock" id="nextClock">21:15 KST</span>
+    <span class="clock" id="nextClock">22:30 KST</span>
     <div class="tb-text">
-      <b id="nextName">ADP 주간 고용 (Pulse)</b>
-      <div>오늘 밤 첫 재료 · 진짜 고비는 <b>10/8(목) 03:00 FOMC 의사록</b></div>
+      <b id="nextName">美 정규장 개장</b>
+      <div>오늘 밤 진짜 고비는 <b>10/8(목) 02:00 10년물 입찰 → 03:00 FOMC 의사록</b>, 아침엔 <b>삼성 잠정실적</b></div>
     </div>
     <span class="countdown" id="countdown">계산 중…</span>
   </div>
 
-  <h2><span class="num">0</span>어제(10/5) ISM 복기</h2>
+  <h2><span class="num">0</span>어제(10/6)·오늘 복기</h2>
   <div class="stats">
     <div class="stat">
-      <div class="lbl">ISM 서비스업 (예상 55.0)</div>
-      <div class="val gold">54.9</div>
-      <div class="desc">8월 55.4 → 소폭 둔화 · 시나리오 ③ "예상 부근"</div>
-    </div>
-    <div class="stat">
-      <div class="lbl">가격지수 (예상 71.5)</div>
-      <div class="val bear">74</div>
-      <div class="desc">2022년 이후 최고 · 물가 경고등</div>
+      <div class="lbl">S&amp;P500 (10/6 마감)</div>
+      <div class="val bull">7,818.9</div>
+      <div class="desc">+0.58% · 사상 첫 7,800 돌파 · 나스닥도 최고치 · 러셀2000은 -0.57%</div>
     </div>
     <div class="stat">
       <div class="lbl">美 10년물 금리</div>
-      <div class="val bear">5.32%</div>
-      <div class="desc">장중 2002년 이후 최고권 · 지금은 약 5.27%</div>
+      <div class="val bear">5.336%</div>
+      <div class="desc">10/6 5.275%로 내려왔다가 10/7 아침 다시 상승 · 글로벌 채권 매도</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">美 30년물 금리</div>
+      <div class="val bear">5.70%</div>
+      <div class="desc">10/7 장중 5.704% · 24년 만의 최고 · 브렌트유 $101대 재반등</div>
     </div>
   </div>
   <div class="recap" style="margin-top:12px">
-    교과서대로라면 <b>가격지수 74 = 악재</b>였지만, 나스닥은 <b>사상 최고</b>로 마감 — 금리가 올라도 <b>AI 기술주만은 버티는 장</b>입니다.
-    반대로 오늘 한국장은 외국인 1.75조 매도로 SK하이닉스 -3.7%. <b>"금리 부담이 약한 고리부터 흔든다"</b>는 신호로 보세요.
+    어제 밤은 <b>금리·유가가 잠시 쉬어 준 덕에</b> S&amp;P가 7,800을 넘었지만, 오늘 아침 <b>물가·재정 우려로 세계 채권이 다시 팔리며</b> 그 숨통이 하루 만에 닫혔습니다.<br>
+    한국장도 같은 방향 — 코스피 <b>-1.98%(6,803.9)</b>, SK하이닉스 <b>-2.8%(172.3만원)</b>로 박스 하단 176만원 이탈. 여기에 <b>마이크론 타오위안 노조 파업 가결(99%)</b> 헤드라인까지 겹쳤습니다.
+    <b>"금리 부담이 약한 고리(메모리·소형주)부터 흔든다"</b>는 흐름이 이틀째 이어지는 중입니다.
   </div>
 
   <h2><span class="num">1</span>오늘 밤 일정 (KST)</h2>
   <div class="tl" id="tl"></div>
-  <p class="note">※ 시간은 발표처 기준 환산(美 동부 서머타임). 연준 위원 발언은 행사 일정상 시각이라 실제 헤드라인은 몇 분 늦게 나올 수 있습니다.</p>
+  <p class="note">※ 시간은 발표처 기준 환산(美 동부 서머타임). 삼성 잠정실적은 통상 한국장 개장 전 공시 — 정확한 시각은 공시 시점 기준입니다.</p>
 
   <h2><span class="num">2</span>먼저 알아둘 숫자</h2>
   <div class="stats">
     <div class="stat">
-      <div class="lbl">9월 고용 (10/2 발표)</div>
-      <div class="val bear">2.9만</div>
-      <div class="desc">예상 8.4만 크게 하회 · 실업률 4.2%(예상 4.1%) · 7·8월 6만 하향</div>
-    </div>
-    <div class="stat">
-      <div class="lbl">ADP 주간 (4주 평균, 직전)</div>
-      <div class="val blue">2.0만</div>
-      <div class="desc">그 전 1.6만 · 9월 월간 ADP는 9만(9/30)</div>
-    </div>
-    <div class="stat">
       <div class="lbl">10월 금리 인상 확률</div>
-      <div class="val gold">약 20%</div>
-      <div class="desc">고용쇼크 전 70% → 급락 · 연내 인상 가능성은 아직 높음</div>
+      <div class="val gold">약 17%</div>
+      <div class="desc">일주일 전 36% → 고용쇼크(10/2) 후 급락 · 보우먼 "올해 추가 인상 원치 않아"</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">직전 10년물 입찰 금리</div>
+      <div class="val blue">4.834%</div>
+      <div class="desc">지금 시장 금리(5.33%)보다 크게 낮음 → 이번 입찰은 '고금리에 수요가 붙나' 시험</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">삼성 3분기 영업익 컨센서스</div>
+      <div class="val gold">105~108조</div>
+      <div class="desc">사상 첫 분기 100조 돌파 여부 · 10/8 오전 잠정 발표</div>
     </div>
   </div>
-  <p class="note">※ ADP 주간 지표는 공식 컨센서스가 거의 없습니다. 직전 값(2.0만)과 비교해 방향만 보세요.</p>
+  <p class="note">※ 의사록은 <b>9/15~16 회의(25bp 인상)</b> 기록이라, 10/2 고용쇼크·9/30 PCE 하회 <b>이전</b>의 시각입니다. 매파적으로 읽혀도 '지난 이야기'로 소화될 여지가 있습니다.</p>
 
-  <h2><span class="num">3</span>핵심 공식 (지금 장)</h2>
+  <h2><span class="num">3</span>핵심 공식 (오늘 밤)</h2>
   <div class="formula">
-    <div class="eq">고용 약함<span class="arrow">→</span>금리 인상 확률↓<span class="arrow">→</span>호재 &nbsp;|&nbsp; 물가 높음<span class="arrow">→</span>10년물↑<span class="arrow">→</span><span class="neg">악재</span></div>
-    <p>두 힘이 맞서는 구간입니다. 오늘 밤 지표들은 무게가 가벼워서, <b>10년물이 5.2%대로 내려가느냐 / 5.35%를 넘느냐</b>로 판단하는 게 가장 단순합니다. 기준선 <b>5.4%</b>를 넘으면 신고가 종목부터 흔들릴 수 있습니다.</p>
+    <div class="eq">입찰 양호 + 의사록 "서두를 필요 없다"<span class="arrow">→</span>10년물↓<span class="arrow">→</span><span class="pos">호재</span> &nbsp;|&nbsp; 입찰 부진(테일) + 의사록 "추가 인상 다수"<span class="arrow">→</span>10년물↑<span class="arrow">→</span><span class="neg">악재</span></div>
+    <p>판단 기준은 단순하게 <b>10년물 5.3%</b>. 입찰·의사록 후 <b>5.2%대로 내려오면 안도</b>, <b>5.35%를 넘으면 경계</b>, 기준선 <b>5.4%</b>를 넘으면 신고가 종목(NVDA·AMD·TSM·MSFT)부터 흔들릴 수 있습니다. 의사록 속 단어는 <b>"several(몇몇)" vs "many·most(다수)"</b>가 추가 인상 지지 세력의 크기를 말해 줍니다.</p>
   </div>
 
   <h2><span class="num">4</span>시나리오별 정리</h2>
@@ -240,26 +243,26 @@
     <div class="sc bull">
       <div class="no">①</div>
       <div>
-        <div class="cond">ADP 주간 둔화 (2만 아래) + 10년물 5.2%대</div>
-        <div class="meaning">고용 약세 재확인, 금리 부담 완화</div>
-        <div class="react">인상 확률 더 하락 → 기술주·코인 우호적 · 메모리·박스권 종목 반등 기대</div>
+        <div class="cond">10년물 입찰 양호 (응찰률↑, 테일 없음) + 의사록 "추가 인상은 지켜보며"</div>
+        <div class="meaning">고금리에도 수요 확인 · 연준 내부도 서두르지 않음</div>
+        <div class="react">10년물 5.2%대 → 기술주·코인 우호적 · 메모리·박스권 종목 반등 시도</div>
       </div>
       <span class="pill">상승 가능</span>
     </div>
     <div class="sc flat">
       <div class="no">②</div>
       <div>
-        <div class="cond">ADP 2만 안팎 · 금리 보합 (5.25~5.32%)</div>
-        <div class="meaning">재료 없음</div>
-        <div class="react">반응 제한적 → 22:05 윌리엄스 발언이 방향을 정함</div>
+        <div class="cond">입찰 무난 + 의사록 "인상 지지 몇몇(several)" — 예상 범위</div>
+        <div class="meaning">고용쇼크 이전 기록이라 새 정보 없음</div>
+        <div class="react">반응 제한적 → 관심은 아침 <b>삼성 잠정실적</b>·다음 주 <b>10/14 CPI</b>로 이동</div>
       </div>
-      <span class="pill">발언 확인</span>
+      <span class="pill">관망</span>
     </div>
     <div class="sc bear">
       <div class="no">③</div>
       <div>
-        <div class="cond">ADP 반등 (3만 이상) 또는 연준 위원 매파 발언</div>
-        <div class="meaning">"고용쇼크는 일시적" + "인상 배제 안 해"</div>
+        <div class="cond">의사록 "다수(many·most)가 추가 인상 필요" 또는 물가 경고 강조</div>
+        <div class="meaning">연말 인상 시나리오 재부각</div>
         <div class="react">10년물 5.35%↑ → 달러↑ · 고평가 종목(PLTR·AMD)과 코인 먼저 하락</div>
       </div>
       <span class="pill">하락 압력</span>
@@ -267,69 +270,70 @@
     <div class="sc bull">
       <div class="no">④</div>
       <div>
-        <div class="cond">윌리엄스·보우먼이 "고용 둔화" 강조</div>
-        <div class="meaning">10월 동결 쪽으로 무게</div>
-        <div class="react">금리↓ → 단기 상승 · 다만 10/8 의사록 전이라 추격은 제한</div>
+        <div class="cond">10/8 오전 삼성 영업익 100조↑ 서프라이즈</div>
+        <div class="meaning">메모리 업황 '숫자'로 재확인</div>
+        <div class="react">SK하이닉스 176만원 재회복 시도 · 단, 10/9 한글날 휴장 앞이라 오후엔 차익매물 가능</div>
       </div>
-      <span class="pill">단기 상승</span>
+      <span class="pill">메모리 반등</span>
     </div>
     <div class="sc crash">
       <div class="no">⑤</div>
       <div>
-        <div class="cond">10년물 5.4% 돌파 (새벽 3년물 입찰 부진 등)</div>
-        <div class="meaning">금리가 기술주를 이기기 시작</div>
-        <div class="react">신고가 종목(NVDA·TSM·MSFT) 차익매물 → 지수 급락 가능</div>
+        <div class="cond">입찰 부진(테일) + 매파 의사록 → 10년물 5.4% 돌파</div>
+        <div class="meaning">30년물 24년 최고에 이어 금리가 기술주를 이기기 시작</div>
+        <div class="react">신고가 종목(NVDA·TSM·MSFT·AMD) 차익매물 → 지수 급락 가능</div>
       </div>
       <span class="pill">급락 주의</span>
     </div>
   </div>
-  <p class="note">※ ADP 2만/3만, 금리 5.2·5.35·5.4%는 공식 기준이 아니라 이 페이지의 참고용 경계선입니다.</p>
+  <p class="note">※ 금리 5.2·5.3·5.35·5.4%는 공식 기준이 아니라 이 페이지의 참고용 경계선입니다.</p>
 
   <h2><span class="num">5</span>한 줄 요약</h2>
   <div class="summary">
-    <div class="sm bull"><div class="if">고용 약함 + 금리 하락</div><div class="then">→ 상승 쪽</div></div>
-    <div class="sm bear"><div class="if">고용 반등·매파 발언 + 금리 상승</div><div class="then">→ 하락 쪽</div></div>
+    <div class="sm bull"><div class="if">입찰 양호 + 의사록 무난 + 금리 하락</div><div class="then">→ 상승 쪽</div></div>
+    <div class="sm bear"><div class="if">의사록 매파 + 금리 상승</div><div class="then">→ 하락 쪽</div></div>
     <div class="sm crash"><div class="if">10년물 5.4% 돌파</div><div class="then">→ 급락 주의</div></div>
   </div>
 
   <h2><span class="num">6</span>실전 팁</h2>
   <div class="tips">
-    <div class="tip"><span class="ic">📉</span><div>오늘 밤 지표는 모두 <b>가벼운 재료</b>입니다. 숫자 하나에 크게 베팅하기보다 <b>10년물·달러 방향</b>을 보고 따라가세요.</div></div>
-    <div class="tip"><span class="ic">🎙️</span><div><b>윌리엄스(뉴욕 연은)</b>는 FOMC 상시 투표권자라 발언 무게가 가장 큽니다. "인상"이라는 단어가 나오는지만 체크.</div></div>
-    <div class="tip"><span class="ic">🌙</span><div>새벽 <b>02:00 3년물 입찰</b>이 부진하면(응찰률↓) 금리가 튈 수 있습니다. 자기 전 포지션 정리 여부를 결정해 두세요.</div></div>
-    <div class="tip"><span class="ic">🧠</span><div>진짜 고비는 <b>10/8(목) 03:00 FOMC 의사록</b> → 같은 날 삼성 잠정실적·TSMC 9월 매출. 무기한선물은 <b>오늘~내일 레버리지를 미리 낮춰</b> 두는 편이 안전합니다.</div></div>
-    <div class="tip"><span class="ic">🏭</span><div>오늘 밤~내일 <b>마이크론 대만 노조 파업투표 결과</b>가 나옵니다. 메모리(MU·SNDK·SK하이닉스) 포지션은 헤드라인 확인 후 대응.</div></div>
+    <div class="tip"><span class="ic">🕑</span><div><b>02:00 입찰 → 03:00 의사록</b>은 한국 새벽이라 자는 사이 결정됩니다. 무기한선물은 <b>자기 전에 레버리지를 낮추고 청산가 여유</b>를 확인해 두세요.</div></div>
+    <div class="tip"><span class="ic">📜</span><div>의사록은 <b>고용쇼크 이전 회의</b> 기록입니다. 매파적 문구에 첫 반응이 나와도 <b>10년물이 따라 오르는지</b> 확인한 뒤 따라가는 편이 안전합니다.</div></div>
+    <div class="tip"><span class="ic">🛢️</span><div>오늘 금리 상승의 연료는 <b>유가(브렌트 $101대)</b>입니다. <b>23:30 EIA 원유재고</b>에서 재고 감소가 크면 유가 → 금리가 한 번 더 튈 수 있습니다.</div></div>
+    <div class="tip"><span class="ic">🏭</span><div><b>마이크론 파업 가결</b>은 '권리 확보'일 뿐 날짜는 미정. 다음 고비는 <b>10/9~10(KST) 마이크론 이사회</b>의 새 보상안입니다. MU는 파업 날짜가 잡히면 약세, SK하이닉스·삼성은 반사이익 재료.</div></div>
+    <div class="tip"><span class="ic">🇰🇷</span><div>한국은 <b>10/9(금) 한글날 휴장</b> — 내일(10/8) 하루 거래 후 사흘 쉽니다. 의사록·삼성 실적 반응은 내일, 그 뒤 美 재료(SpaceX 락업 해제 10/9 등)는 <b>10/12(월)</b>에 몰려 반영 → 갭 위험.</div></div>
   </div>
 
   <h2><span class="num">7</span>오늘 밤 체크리스트</h2>
   <div class="check">
-    <label><input type="checkbox"><span>21:15 ADP 주간 — 직전 2.0만보다 높은지 낮은지</span></label>
-    <label><input type="checkbox"><span>22:05 윌리엄스 발언 — '인상' 언급 여부</span></label>
-    <label><input type="checkbox"><span>10년물 5.2% / 5.35% / 5.4% 중 어디에 있는지</span></label>
-    <label><input type="checkbox"><span>보유 포지션 손절가·레버리지 점검 (10/8 의사록 대비)</span></label>
-    <label><input type="checkbox"><span>MU 파업투표 결과 헤드라인 확인</span></label>
+    <label><input type="checkbox"><span>22:30 개장 — 10년물 5.33% 위에서 시작하는지, 나스닥 7,800·신고가 종목 버티는지</span></label>
+    <label><input type="checkbox"><span>23:30 EIA 원유재고 — 유가 추가 상승 여부</span></label>
+    <label><input type="checkbox"><span>보유 포지션 손절가·레버리지 점검 (자기 전, 02~03시 대비)</span></label>
+    <label><input type="checkbox"><span>02:00 10년물 입찰 — 테일(낙찰금리 &gt; 발행 전 금리) 발생 여부</span></label>
+    <label><input type="checkbox"><span>03:00 의사록 — 추가 인상 지지가 "several"인지 "many·most"인지</span></label>
+    <label><input type="checkbox"><span>아침 — 삼성 잠정실적 100조 돌파 여부 → SK하이닉스 176만원 회복 여부</span></label>
   </div>
 
   <footer>
-    ※ 투자 판단은 본인 몫이고, 위 내용은 일반적인 시장 반응 패턴일 뿐 실제 반응은 그날 분위기에 따라 다를 수 있습니다. 시나리오 경계선은 참고용 자체 기준입니다.<br>
-    참고: <a href="https://www.xtb.com/int/market-analysis/news-and-research/economic-calendar-retail-sales-and-fed-speakers-in-focus-06-10-2026" target="_blank" rel="noopener">XTB (10/6 경제 캘린더)</a> ·
-    <a href="https://newsquawk.com/headlines/newsquawk-daily-us-opening-news---6th-october-2026" target="_blank" rel="noopener">Newsquawk (10/6 美 개장 전)</a> ·
-    <a href="https://finance.yahoo.com/economy/articles/september-2026-jobs-report-payrolls-123334753.html" target="_blank" rel="noopener">Yahoo Finance (9월 고용)</a> ·
-    <a href="https://tradingeconomics.com/united-states/adp-employment-change-weekly" target="_blank" rel="noopener">Trading Economics (ADP 주간)</a> ·
-    <a href="https://riotimesonline.com/global-economy-briefing-october-6-2026" target="_blank" rel="noopener">Rio Times (금리·인상 확률)</a>
+    ※ 투자 판단은 본인 몫이고, 위 내용은 일반적인 시장 반응 패턴일 뿐 실제 반응은 그날 분위기에 따라 다를 수 있습니다. 시나리오 경계선은 참고용 자체 기준입니다. 금리·유가 수치는 10/7 오전(美 동부) 보도 기준이라 개장 시점엔 달라졌을 수 있습니다.<br>
+    참고: <a href="https://www.metatradingclub.com/stock-market-today-oct-6-sp-500-record-above-7800/" target="_blank" rel="noopener">Meta Trading Club (10/6 마감)</a> ·
+    <a href="https://investing.com/news/economy-news/us-30year-bond-yield-hits-fresh-24year-high-4936064" target="_blank" rel="noopener">Reuters/Investing.com (30년물 24년 최고)</a> ·
+    <a href="https://www.investing.com/news/stock-market-news/us-economic-data-preview-fomc-minutes-and-bond-auctions-in-focus-93CH-4932637" target="_blank" rel="noopener">Investing.com (10/7 일정)</a> ·
+    <a href="https://jorgai.com/blog/fed-minutes-october-7-2026-what-to-watch" target="_blank" rel="noopener">의사록 프리뷰 (인상 확률)</a> ·
+    <a href="https://focustaiwan.tw/business/202610070021" target="_blank" rel="noopener">Focus Taiwan (마이크론 파업 가결)</a> ·
+    <a href="https://www.pinpointnews.co.kr/news/articleView.html?idxno=493396" target="_blank" rel="noopener">핀포인트뉴스 (삼성 컨센서스)</a>
   </footer>
 </div>
 
 <script>
   const EVENTS = [
-    { at:'2026-10-06T21:15:00+09:00', t:'21:15', n:'ADP 주간 고용 (Pulse)', w:'직전 4주 평균 2.0만 · 고용쇼크 이어지나', key:1 },
-    { at:'2026-10-06T21:30:00+09:00', t:'21:30', n:'8월 무역수지', w:'예상 -1,020억 달러 (직전 -886억)' },
-    { at:'2026-10-06T22:05:00+09:00', t:'22:05', n:'윌리엄스 뉴욕 연은 총재 발언', w:'FOMC 상시 투표권자 · 오늘 밤 핵심', key:1 },
-    { at:'2026-10-06T22:30:00+09:00', t:'22:30', n:'美 정규장 개장', w:'선물 나스닥 +0.3% · 10년물 약 5.27%' },
-    { at:'2026-10-06T23:45:00+09:00', t:'23:45', n:'보우먼 연준 부의장 발언', w:'금리·은행 규제 언급 주목' },
-    { at:'2026-10-07T02:00:00+09:00', t:'02:00', n:'美 3년물 국채 입찰', w:'직전 금리 4.474% · 응찰률 2.72', key:1 },
-    { at:'2026-10-07T02:15:00+09:00', t:'02:15', n:'슈미드 캔자스시티 연은 총재 발언', w:'대표적 매파 (올해 투표권 없음)' },
-    { at:'2026-10-08T03:00:00+09:00', t:'10/8 03:00', n:'🔥 9월 FOMC 의사록', w:'이번 주 진짜 고비', key:1 }
+    { at:'2026-10-07T15:30:00+09:00', t:'15:30', n:'한국장 마감', w:'코스피 -1.98% · SK하이닉스 172.3만원(박스 하단 이탈)' },
+    { at:'2026-10-07T22:30:00+09:00', t:'22:30', n:'美 정규장 개장', w:'10년물 약 5.33% · 30년물 5.70% 24년 최고권' },
+    { at:'2026-10-07T23:30:00+09:00', t:'23:30', n:'EIA 주간 원유재고', w:'직전 +92만 배럴 · 유가 → 금리 연결고리' },
+    { at:'2026-10-08T02:00:00+09:00', t:'02:00', n:'美 10년물 국채 입찰', w:'직전 낙찰금리 4.834% · 테일 여부가 핵심', key:1 },
+    { at:'2026-10-08T03:00:00+09:00', t:'03:00', n:'🔥 9월 FOMC 의사록', w:'추가 인상 지지가 몇 명인지 · 이번 주 진짜 고비', key:1 },
+    { at:'2026-10-08T08:30:00+09:00', t:'08:30경', n:'삼성전자 3분기 잠정실적', w:'영업익 컨센서스 105~108조 · 메모리 업황 성적표', key:1 },
+    { at:'2026-10-08T09:00:00+09:00', t:'09:00', n:'한국장 개장', w:'의사록·삼성 실적 반영 · 다음 날(10/9) 한글날 휴장' }
   ];
   const tl = document.getElementById('tl');
   const cd = document.getElementById('countdown');
