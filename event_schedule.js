@@ -8,7 +8,7 @@
  * 각 이벤트 필드: dateKST(YYYY-MM-DD), timeKST(HH:MM, KST), dateLabel(표시용 한글 날짜),
  *                event(제목), tickers(관련 종목 배열), importance(1~5), note(선택, 부연설명)
  * 모든 일시는 한국시간(KST, UTC+9) 기준입니다.
- * 마지막 자동 업데이트: 2026-10-04 (KST, 10/5 주간 일정 반영)
+ * 마지막 업데이트: 2026-10-09 17:40 (KST) — 9월 FOMC 의사록·삼성 3분기 잠정실적·TSMC 9월 매출·美 10/8 마감·30년물 입찰 결과 반영, ETH 일정(Glamsterdam·Deribit 만기) 추가
  * 실적일 표기: (확정)=회사 공식 공지, (예상)=데이터 제공처 추정·미공지
  */
 
@@ -255,9 +255,9 @@ const SEPTEMBER_2026_SCHEDULE = [
     note: "예상 55.1(전월 55.4). 고용 쇼크 직후라 '서비스 경기도 꺾이나'가 관건 — 가격지수(물가 압력)·신규주문 세부 항목 주목. 가격지수 높게 나오면 금리 인하 기대 되돌림 위험" },
 
   { dateKST: "2026-10-06", timeKST: null, dateLabel: "10월 6일 (화, 대만)",
-    event: "Micron 대만 타오위안 노조 파업 찬반 투표 마감",
+    event: "Micron 대만 타오위안 노조 파업 찬반 투표 마감 — 가결 (결과 확정)",
     tickers: ["MU","SKHY","SNDK"], importance: 4,
-    note: "2차례 중재 결렬 후 10/1부터 6일간 투표. 노조는 영업이익 15% 상시 배분 요구(회사는 35~68개월치 일회성 보너스 지급). 가결 시 파업 일정·규모가 다음 변수 — DRAM·HBM 핵심 생산기지라 공급 차질 우려 시 MU 약세, 경쟁사(SK하이닉스) 반사이익 가능" },
+    note: "결과(10/7 발표): 조합원 2,258명 중 1,994명 찬성(투표자 기준 약 99%)으로 파업권 확보, 날짜는 미정. 노조는 영업이익 15% 상시 배분 요구(회사는 35~68개월치 일회성 보너스 제시). MU는 가결 당일 장중 $1,011 → $1,088(+4.1%)로 '공급 타이트' 해석에 역전 마감" },
 
   { dateKST: "2026-10-06", timeKST: null, dateLabel: "10월 6일 (화) ~ 7일 (수), 美 현지 기준",
     event: "Amazon Prime Big Deal Days (22개국, 10월 프라임데이)",
@@ -269,45 +269,80 @@ const SEPTEMBER_2026_SCHEDULE = [
     tickers: ["SPY","QQQ"], importance: 2,
     note: "예상 -$952억. 관세·유가 영향 확인용, 시장 영향은 제한적" },
 
+  { dateKST: "2026-10-06", timeKST: "22:53", dateLabel: "10월 6일 (화)",
+    event: "이더리움 Glamsterdam 업그레이드 — Sepolia 테스트넷 활성화 (결과 확정)",
+    tickers: ["ETH"], importance: 3,
+    note: "결과: 13:53 UTC Sepolia 포크. 블록 빌딩을 프로토콜 내부로(ePBS)·블록 단위 접근 목록(BAL, EIP-7928)으로 병렬 실행 기반 마련. 다음 단계 Hoodi 테스트넷(10/27 잠정) → 메인넷(4분기 목표, 날짜 미확정). 같은 주 현물 ETF 유출로 가격 반응은 제한적" },
+
   { dateKST: "2026-10-07", timeKST: null, dateLabel: "10월 7일 (수, 美 현지 기준)",
     event: "Microsoft Windows·Surface 이벤트",
     tickers: ["MSFT"], importance: 2,
     note: "Windows의 미래·Surface 신제품 공개 예정(정확한 KST 시각 미공지). Copilot+ PC·AI 기능 메시지가 주가 포인트, 하드웨어 자체 영향은 작음" },
 
+  { dateKST: "2026-10-07", timeKST: null, dateLabel: "10월 7일 (수, 美 현지 10/6 기준)",
+    event: "현물 ETH ETF 6거래일 연속 순유출 — 10/6 하루 -$2.02억 (결과 확정)",
+    tickers: ["ETH"], importance: 4,
+    note: "9/29부터 6거래일 연속 유출, 합계 약 -$4.1억(9월 한 달은 +$8.32억 순유입). 같은 기간 BTC ETF는 순유입 → 기관 자금 ETH→BTC 이동. ETH는 10/5 $2,712 → 10/7 $2,562 → 10/9 $2,430대" },
+
   { dateKST: "2026-10-08", timeKST: "02:00", dateLabel: "10월 8일 (목)",
-    event: "미국 10년물 국채 입찰",
+    event: "미국 10년물 국채 입찰 (결과 반영)",
     tickers: ["SPY","QQQ","XAU"], importance: 3,
-    note: "10년물 5%대 고금리 구간 — 입찰 수요 부진(테일) 시 금리 재상승·성장주 압박" },
+    note: "결과: 입찰 세부 수치는 미확인. 10/7 장중 10년물이 5.36%(2002년 이후 최고)까지 치솟았다가 5.28%대로 마감 — 입찰 자체가 추가 금리 급등을 부르진 않음" },
 
   { dateKST: "2026-10-08", timeKST: "03:00", dateLabel: "10월 8일 (목)",
-    event: "9월 FOMC 의사록 공개",
+    event: "9월 FOMC 의사록 공개 (결과 확정)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","NVDA","SPY","QQQ","TSLA","AAPL","AMZN","BTC","XAU","PLTR","MSFT"], importance: 4,
-    note: "9월 회의 당시 '인상 검토' 의견이 얼마나 많았는지가 핵심. 고용 쇼크 이전 회의라 매파적으로 읽힐 수 있음 — 10월 FOMC(10/29) 앞둔 마지막 연준 내부 힌트" },
+    note: "결과: 다수 위원이 '연말까지 한 번 더 인상이 적절할 것' — 다만 10월(10/29)이냐 12월이냐는 데이터에 따라 판단. 예상 범위로 소화, 발표 후 10월 인상 확률 약 20%. 고용 쇼크(10/2) 이전 회의 기록이라 시장은 10/14 CPI에 더 무게" },
+
+  { dateKST: "2026-10-08", timeKST: "08:00", dateLabel: "10월 8일 (목)",
+    event: "삼성전자 3분기 잠정실적 — 영업이익 사상 첫 100조 돌파 (결과 확정)",
+    tickers: ["SAMSUNG","SKHY","MU","SNDK","EWY","KORU"], importance: 5,
+    note: "결과: 영업이익 107.4조원(전년비 +782.5%, 컨센서스 약 105.4조원 대비 +1% 상회) — 국내 기업 최초 분기 100조 돌파. 매출은 컨센서스(약 200조원) 대비 약 3% 하회 — 원·달러 환율이 1,500원대에서 1,300원대로 급락한 영향. 3분기 누적 영업이익 254.1조원. 프리마켓 +1.7%(27.3만원) 강세 출발. 부문별 상세·3분기 특별배당은 10/29 확정 실적 때 발표" },
+
+  { dateKST: "2026-10-08", timeKST: "14:30", dateLabel: "10월 8일 (목)",
+    event: "TSMC 9월 매출 — 3분기 사상 최대, 가이던스 상단 상회 (결과 확정)",
+    tickers: ["TSM","NVDA","AMD","AVGO","SOXL"], importance: 4,
+    note: "결과: 9월 매출 NT$5,118.6억(전월비 -0.6%, 전년비 +54.6%). 3분기 합계 약 NT$1.49조(전분기비 +17.6%, 전년비 +51%)로 분기 사상 최대 — 회사 가이던스 상단(NT$ 기준 약 1.47조) 상회. 1~9월 누적 NT$3.90조(+41.1%). 4분기는 두 자릿수 성장(약 NT$1.66조)·2027년 선단공정 5~10% 가격 인상 관측. 10/15 3분기 실적에서 4분기 가이던스 확인" },
 
   { dateKST: "2026-10-08", timeKST: "21:30", dateLabel: "10월 8일 (목)",
     event: "미국 주간 신규 실업수당 청구건수",
     tickers: ["SPY","QQQ"], importance: 3,
-    note: "예상 20만건. 고용 쇼크가 일시적인지 확인 — 급증 시 경기침체 우려·인하 기대 동시 확대" },
+    note: "예상 20만건. 고용 쇼크가 일시적인지 확인 — 급증 시 경기침체 우려·인하 기대 동시 확대 (결과 수치는 재확인 필요)" },
+
+  { dateKST: "2026-10-09", timeKST: "05:00", dateLabel: "10월 9일 (금)",
+    event: "美 10/8 정규장 마감 — 호르무즈 기뢰 폭발 + OpenAI 매출 경고로 기술주 급락 (결과 확정)",
+    tickers: ["SPY","QQQ","NVDA","AMD","MU","SNDK","SPCX","MSFT","AMZN","META","TSLA","SOXL","CL","BTC","ETH"], importance: 5,
+    note: "결과: S&P500·나스닥 2거래일 연속 하락, 나스닥 7주래 최대 낙폭·반도체지수 -3%대·광통신주 급락. 호르무즈 남부 항로에서 유조선 다수가 기뢰 접촉 폭발 → 유가 1개월래 최대 상승. 美 국방부 '3일간 이란 공습안' 보도, 트럼프는 '중간선거 전 공격 없다·협상 중'. 종목(종가 근사): NVDA $231.4(-2.3%)·AMD $621.6(-3.9%)·MU $1,049.5(-3.5%)·SNDK $1,622(-6.1%)·SPCX $162.6(-3.1%)·MSFT $522.8(-1.6%)·AMZN $255.6(-1.4%)·META $719.2(-0.9%)·TSLA $371.7(-1.3%)·GOOGL $347.5(-0.2%)·AAPL $339.9(+0.9%). SpaceX 주파수 대역 인수 발표로 버라이즌·AT&T·T모바일 -6~7%. 코인: BTC $81.4k(-2.3%)·ETH $2,438(-4.6%)" },
 
   { dateKST: "2026-10-09", timeKST: null, dateLabel: "10월 9일 (금)",
     event: "🇰🇷 한글날 — 한국 증시 휴장",
     tickers: ["EWY","KORU","SKHY","SAMSUNG"], importance: 2,
-    note: "이번 주 한국장은 10/6~10/8 3일만 거래. 美 의사록·실업수당 반영은 다음 주(10/12) 개장 때" },
+    note: "이번 주 한국장은 10/6~10/8 3일만 거래. 美 10/8 급락(반도체 -3%대)·SPCX 해제·미시간 심리는 다음 주(10/12) 개장 때 몰아서 반영 — 갭 하락 출발 주의" },
 
   { dateKST: "2026-10-09", timeKST: "02:00", dateLabel: "10월 9일 (금)",
-    event: "미국 30년물 국채 입찰",
+    event: "미국 30년물 국채 입찰 (결과 확정)",
     tickers: ["SPY","QQQ","XAU"], importance: 3,
-    note: "장기물 수요 체크 — 재정적자 우려가 커지는 국면이라 결과에 따라 장기금리 변동" },
+    note: "결과: 장기물 입찰 수요가 '견조'하게 소화되며 국채 가격 상승(금리 하락) 마감. 30년물 금리 5.7%권(24년 만의 최고권)에서 한숨 돌림 — 다만 유가 상승이 기대인플레 경로로 재압박할 수 있음" },
 
   { dateKST: "2026-10-09", timeKST: "22:30", dateLabel: "10월 9일 (금)",
     event: "SpaceX(SPCX) 락업 해제 — 약 3.28억주",
     tickers: ["SPCX","QQQ"], importance: 3,
-    note: "스태거드 락업 스케줄상 10월 1차 해제(美 개장 시점 반영). 직전 9/9·9/24 해제 모두 해제일 또는 전일 약 -4% 하락 패턴 — 전일(10/8) 선제 매도 여부 주목" },
+    note: "스태거드 락업 스케줄상 10월 1차 해제(美 개장 시점 반영). 직전 9/9·9/24 해제 모두 해제일 또는 전일 약 -4% 하락 패턴 — 전일(10/8)은 -3.1%($162.6)로 선제 매도 재현. 같은 날 美 무선 주파수 대역 인수 발표('미국 전역 휴대폰 커버리지' 목표)로 통신 진출 재료 부각. 10/7에는 $400억 부채 조달·엔비디아 칩 구매 보도" },
 
   { dateKST: "2026-10-09", timeKST: "23:00", dateLabel: "10월 9일 (금)",
     event: "미시간대 10월 소비자심리 (예비치)",
-    tickers: ["SPY","QQQ","XAU"], importance: 3,
-    note: "예상 48.1(역대 최저권). 1년·5년 기대인플레이션이 핵심 — 유가 $100 이상 지속으로 기대인플레 상승 시 연준 부담" },
+    tickers: ["SPY","QQQ","XAU","BTC","ETH"], importance: 3,
+    note: "예상 47.5(전월 48.1, 역대 최저권). 1년·5년 기대인플레이션이 핵심 — 호르무즈 기뢰 사태로 유가 재상승 중이라 기대인플레 반등 시 연준 부담·금리 재상승 위험" },
+
+  { dateKST: "2026-10-10", timeKST: null, dateLabel: "10월 9~10일 (KST, 美 현지 10/8~9)",
+    event: "Micron 이사회 — 대만 노조 보상안 대응 주목",
+    tickers: ["MU","SKHY","SNDK"], importance: 4,
+    note: "타오위안 노조가 이사회에 영업이익 15% 배분 등 구체안 제시를 요구. 새 보상안이 나오면 파업 리스크 완화(MU 호재), 없으면 파업 날짜 확정 가능성(MU 약세·SK하이닉스 반사이익). 대만은 10/10 국경일 휴장" },
+
+  { dateKST: "2026-10-12", timeKST: "09:00", dateLabel: "10월 12일 (월)",
+    event: "🇰🇷 한국장 3일 휴장 후 개장 — 美 10/8~9 재료 일괄 반영",
+    tickers: ["EWY","KORU","SKHY","SAMSUNG"], importance: 4,
+    note: "10/8 美 반도체지수 -3%대·SNDK -6%·MU -3.5% 급락, 호르무즈 사태, SPCX 해제, 미시간 심리까지 한 번에 반영. 삼성 잠정실적(107.4조) 호재와 美 반도체 급락 악재가 맞부딪히는 첫 거래일 — 갭 하락 출발 후 저가 매수 유입 여부 주목" },
 
   { dateKST: "2026-10-13", timeKST: null, dateLabel: "10월 13일 (화, 美 현지 기준)",
     event: "Apple 스마트홈 신제품 공개 (홈 허브·HomePod mini 2·Apple TV) (예상)",
@@ -326,11 +361,11 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-14", timeKST: "21:30", dateLabel: "10월 14일 (수)",
     event: "미국 9월 소비자물가지수(CPI)",
     tickers: ["SPY","QQQ","EWY","KORU","BTC","ETH","XAU"], importance: 5,
-    note: "BLS 일정 기준 10/14 08:30 ET. 10월 FOMC(10/29 KST) 직전 마지막 핵심 물가지표 — 8월 CPI는 전월비 +0.3%로 예상 상회했으나 8월 PCE는 하회, 방향성 확인 필요" },
+    note: "BLS 일정 기준 10/14 08:30 ET. 10월 FOMC(10/29 KST) 직전 마지막 핵심 물가지표 — 9월 의사록은 '연내 1회 추가 인상, 시점은 데이터 의존'. 8월 CPI는 전월비 +0.3%로 예상 상회, 8월 PCE는 하회. 호르무즈 사태發 유가 반등이 헤드라인 물가에 얼마나 반영될지 주목" },
 
   { dateKST: "2026-10-15", timeKST: "15:00", dateLabel: "10월 15일 (목)",
     event: "TSMC 3분기 실적 발표(잠정확정)",
-    tickers: ["TSM","SOXL","NVDA","AMD"], importance: 5, note: "실적 캘린더 기준 10/15(목) 잠정 확정. TSMC 실적 컨퍼런스는 통상 대만 14:00(KST 15:00) — 공식 IR 공지 근접 시 재확인 필요. AI 수요·CoWoS 증설·4분기 가이던스가 반도체 전반 방향성" },
+    tickers: ["TSM","SOXL","NVDA","AMD"], importance: 5, note: "실적 캘린더 기준 10/15(목) 잠정 확정. TSMC 실적 컨퍼런스는 통상 대만 14:00(KST 15:00) — 공식 IR 공지 근접 시 재확인 필요. 3분기 매출(NT$1.49조, 사상 최대)은 이미 확인 — 관건은 마진·4분기 가이던스(시장 기대 약 NT$1.66조)·CoWoS 증설·2027년 가격 인상" },
 
   { dateKST: "2026-10-16", timeKST: null, dateLabel: "10월 16일 (금, KST 오전 예상)",
     event: "테슬라 신형 로드스터 공개 이벤트 (텍사스 맥그레거, 10/1에서 연기)",
@@ -346,6 +381,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "10월 월간 옵션만기 (美 현지 10/16 금 정규장 마감)",
     tickers: ["SPY","QQQ","TSLA","PLTR","GOOGL","META","NVDA","AAPL","AMZN","MSFT"], importance: 3,
     note: "빅테크 실적 시즌 직전 만기 — 테슬라 로드스터(10/15)·실적(10/22) 사이 변동성 확대 구간" },
+
+  { dateKST: "2026-10-19", timeKST: null, dateLabel: "10월 19일 (월, 대만)",
+    event: "Micron 타오위안 노조 타이베이 집회 (파업 아님)",
+    tickers: ["MU"], importance: 2,
+    note: "노조가 단체 휴가 형태 참여를 독려하는 집회 — 참여 규모가 실제 파업 동력의 가늠자" },
 
   { dateKST: "2026-10-20", timeKST: null, dateLabel: "10월 20일 (화)",
     event: "OpenAI DevDay Exchange — 도쿄",
@@ -375,6 +415,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "Amazon(AMZN) 3분기 실적 발표(예상)",
     tickers: ["AMZN"], importance: 5, note: "美 현지 10/29(목) 장마감 후 예상(콜 17:00 ET = KST 06:00) — 회사 공식 공지 전. 기존 '10/23 확정' 표기는 근거 없어 정정(MarketBeat 등 과거 패턴 기준 추정)" },
 
+  { dateKST: "2026-10-30", timeKST: "17:00", dateLabel: "10월 30일 (금)",
+    event: "Deribit 비트코인·이더리움 10월 월간 옵션 만기(추정)",
+    tickers: ["BTC","ETH"], importance: 3,
+    note: "매월 마지막 금요일 08:00 UTC. FOMC(10/29)·빅테크 실적 직후라 만기 전후 BTC/ETH 변동성 확대 가능" },
+
   { dateKST: "2026-10-24", timeKST: null, dateLabel: "10월 24일 (토)",
     event: "SpaceX(SPCX) 락업 해제 — 약 3.28억주",
     tickers: ["SPCX","QQQ"], importance: 2,
@@ -388,11 +433,16 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-22", timeKST: null, dateLabel: "10월 22일 (목, 대만)",
     event: "Micron 대만 타이중 노조 노사 중재",
     tickers: ["MU"], importance: 3,
-    note: "타오위안 노조 파업 투표(10/6)에 이은 두 번째 노사 협상 분수령" },
+    note: "타오위안 노조 파업권 확보(10/7)에 이은 두 번째 노사 협상 분수령 — 결렬 시 타이중 노조(조합원 약 1.1만) 파업 투표 진행 가능" },
 
   { dateKST: "2026-10-27", timeKST: "16:00", dateLabel: "10월 27일 (화)",
     event: "SK하이닉스 3분기 실적 발표(예상)",
-    tickers: ["SKHY","SAMSUNG","EWY","KORU"], importance: 5, note: "회사 공식 공지 전 — 날짜·시각 근접 시 재확인 필요(2분기는 7/29 08:00 발표). 컨센서스 매출 약 99.5조원·영업이익 약 78.1조원(사상 최대). HBM4 가격·4분기 가이던스·Solidigm 상장 언급 여부 주목" },
+    tickers: ["SKHY","SAMSUNG","EWY","KORU"], importance: 5, note: "회사 공식 공지 전 — 날짜·시각 근접 시 재확인 필요(2분기는 7/29 08:00 발표). 컨센서스 매출 약 99.5조원·영업이익 약 78.1조원(사상 최대). 삼성 잠정실적(10/8, 영업익 107.4조·컨센서스 소폭 상회)으로 업황은 확인됐으나 원화 강세에 따른 매출 하회 패턴 주의. HBM4 가격·4분기 가이던스·Solidigm 상장 언급 여부 주목" },
+
+  { dateKST: "2026-10-27", timeKST: null, dateLabel: "10월 27일 (화) (잠정)",
+    event: "이더리움 Glamsterdam — Hoodi 테스트넷 활성화 (잠정)",
+    tickers: ["ETH"], importance: 3,
+    note: "Sepolia(10/6) 다음 단계, 날짜는 개발자 콜 기준 잠정. 순조로우면 메인넷 날짜 확정 논의로 이어짐 — 메인넷은 상반기 → 4분기로 이미 연기된 이력이 있어 추가 지연 시 실망 재료" },
 
   { dateKST: "2026-10-28", timeKST: null, dateLabel: "10월 28일 (수)",
     event: "OpenAI DevDay Exchange — 파리",
@@ -406,7 +456,7 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-10-29", timeKST: "03:00", dateLabel: "10월 29일 (목)",
     event: "FOMC 금리결정 발표 (10/27~28 회의)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "9/16 FOMC에서 25bp 인상(3.75→4.00%) 이후 두 번째 결정 — 9/16 SEP상 정책위원 다수가 추가 인상 시사, 10월 인상 확률은 9월 말 약 71%까지 올랐다가 9/30 PCE 하회로 약 35%로 급락, 10/2 고용 쇼크(+2.9만·실업률 4.2%·2개월 6만명 하향 수정)로 동결 기대가 더 강해짐. 반면 ISM 지불가격 77.9로 물가 압력은 잔존 — 10/14 CPI가 마지막 변수" },
+    importance: 5, note: "9/16 FOMC에서 25bp 인상(3.75→4.00%) 이후 두 번째 결정. 9월 의사록(10/8): 다수 위원 '연말까지 1회 추가 인상 적절', 시점은 데이터 의존. 10월 인상 확률은 9월 말 약 71% → 9/30 PCE 하회로 35% → 10/2 고용 쇼크로 16% → 의사록 후 약 20%. 반면 ISM 지불가격 77.9·호르무즈發 유가 반등으로 물가 압력 잔존 — 10/14 CPI가 마지막 변수" },
 
   { dateKST: "2026-10-29", timeKST: "05:00", dateLabel: "10월 29일 (목)",
     event: "Microsoft(MSFT) FY2027 1분기 실적 발표(예상)",
@@ -416,6 +466,11 @@ const SEPTEMBER_2026_SCHEDULE = [
     event: "Meta(META) 3분기 실적 발표(예상)",
     tickers: ["META"], importance: 5, note: "美 현지 10/28(수) 장마감 후 예상 — 회사 공식 공지 전(작년엔 10/1 공지). 매출 가이던스 $610~640억, 약 $100억 법적 비용 일시 반영, Muse 초기 매출·Capex 가이던스가 핵심" },
 
+  { dateKST: "2026-10-29", timeKST: null, dateLabel: "10월 29일 (목)",
+    event: "삼성전자 3분기 확정 실적 + 특별배당 발표",
+    tickers: ["SAMSUNG","SKHY","EWY","KORU"], importance: 4,
+    note: "10/8 잠정실적(영업익 107.4조) 이후 부문별(DS·메모리·HBM) 상세와 3분기 특별배당 확정. 같은 날 새벽 FOMC·빅테크 실적과 겹침 — 정확한 시각은 공시 근접 시 재확인" },
+
   { dateKST: "2026-10-30", timeKST: "05:30", dateLabel: "10월 30일 (금)",
     event: "Apple(AAPL) 4분기 실적 발표(예상)",
     tickers: ["AAPL"], importance: 5, note: "美 현지 10/29(목) 장마감 후 예상 — 회사 공식 공지 전(통상 실적 약 4주 전 공지)" },
@@ -423,7 +478,7 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-11-01", timeKST: null, dateLabel: "11월 초 (미정)",
     event: "SpaceX(SPCX) 3분기 실적 발표(미확정) + 최대 약 13억주 락업 해제",
     tickers: ["SPCX","QQQ","TSLA"], importance: 5,
-    note: "정확한 날짜 미발표(근접 시 재확인 필요 — 정렬용 임시 날짜). 신규 클라우드 계약 $141억 매출 반영 첫 분기, 2026년 말 ARR $1,000억 목표 진척 확인. 실적 발표 2거래일 후 스태거드 락업 최대 물량(약 13억주) 해제가 함께 트리거되는 핵심 이벤트" },
+    note: "정확한 날짜 미발표(근접 시 재확인 필요 — 정렬용 임시 날짜, 보도상 美 현지 11/5 잠정). 신규 클라우드 계약 $141억 매출 반영 첫 분기, 2026년 말 ARR $1,000억 목표 진척 확인. 실적 발표 2거래일 후 스태거드 락업 최대 물량(약 13억주) 해제가 함께 트리거되는 핵심 이벤트" },
 
   { dateKST: "2026-11-03", timeKST: "06:00", dateLabel: "11월 3일 (화)",
     event: "Palantir(PLTR) 3분기 실적 발표(예상)",
@@ -482,11 +537,16 @@ const SEPTEMBER_2026_SCHEDULE = [
   { dateKST: "2026-12-10", timeKST: "04:00", dateLabel: "12월 10일 (목)",
     event: "FOMC 금리결정 발표 (12/8~9 회의)",
     tickers: ["EWY","ETH","META","GOOGL","KORU","MSTR","MU","NVDA","SKHY","SPY","ONDO","SOL","SNDK","SOXL","QQQ","TSLA","TSM","AAPL","AMZN","AMD","CL","BTC","XAU","PLTR","AVGO","CRCL"],
-    importance: 5, note: "2026년 마지막 FOMC (EST 전환으로 발표시각 04:00 KST)" },
+    importance: 5, note: "2026년 마지막 FOMC (EST 전환으로 발표시각 04:00 KST). 9월 의사록상 '연내 1회 추가 인상'이 10월에 나오지 않으면 이 회의가 유력 시점" },
 
   { dateKST: "2026-12-11", timeKST: "06:00", dateLabel: "12월 11일 (금)",
     event: "Broadcom(AVGO) 4분기 실적 발표(예상)",
-    tickers: ["AVGO"], importance: 5, note: "美 현지 12/10 장마감 후 예상 — 회사 공지 전. 가이던스 매출 $348억·AI $217억, Anthropic 자금 지원($420억 대출·$600억 조달) 구조 설명 주목" }
+    tickers: ["AVGO"], importance: 5, note: "美 현지 12/10 장마감 후 예상 — 회사 공지 전. 가이던스 매출 $348억·AI $217억, Anthropic 자금 지원($420억 대출·$600억 조달) 구조 설명 주목" },
+
+  { dateKST: "2026-12-31", timeKST: null, dateLabel: "2026년 4분기 중 (미정)",
+    event: "이더리움 Glamsterdam 메인넷 활성화 (목표)",
+    tickers: ["ETH"], importance: 4,
+    note: "정렬용 임시 날짜 — 공식 날짜 미확정(코어 개발자 콜에서 결정). 실행계층 Amsterdam + 합의계층 Gloas. ePBS·BAL(병렬 실행)·가스 한도 확대 기반. 상반기 → 4분기로 연기된 이력" }
 ];
 
 function sortedByDate(list) {
