@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금일 시장 대응 전략 · 10/8 삼성 잠정실적·30년물 입찰</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #181b22;
+    --card-2: #1e222c;
+    --text: #eef0f4;
+    --soft: #9aa2b1;
+    --border: #2a2e38;
+    --accent: #4ea1ff;
+    --gold: #ffc94d;
+    --bull: #5fd188;   /* 상승 */
+    --bear: #ff6b6b;   /* 하락 */
+    --warn: #f7931a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+  .back {
+    display: inline-block; font-size: 13px; font-weight: 700; color: var(--soft);
+    text-decoration: none; border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 12px; margin-bottom: 18px;
+  }
+  .back:hover { border-color: var(--accent); color: var(--text); }
+  .eyebrow { font-size: 13px; color: var(--soft); margin-bottom: 4px; }
+  h1 {
+    font-size: 30px; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 6px;
+    color: var(--gold);
+    background: linear-gradient(90deg, #ffe066 0%, #ffb340 50%, #ff7a3d 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .sub { color: var(--soft); font-size: 14px; }
+
+  .time-banner {
+    margin: 22px 0 28px; padding: 18px 20px; border-radius: 12px;
+    background: linear-gradient(90deg, rgba(255,59,59,.16), var(--card));
+    border: 1px solid rgba(255,107,107,.5);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .time-banner .clock {
+    font-size: 26px; font-weight: 900; color: #fff; background: #ff3b3b;
+    border-radius: 10px; padding: 6px 14px; white-space: nowrap;
+    box-shadow: 0 0 12px rgba(255,59,59,.45);
+  }
+  .time-banner .tb-text b { font-size: 17px; }
+  .time-banner .tb-text div { color: var(--soft); font-size: 13.5px; }
+  .countdown { margin-left: auto; font-size: 14px; font-weight: 800; color: var(--gold); white-space: nowrap; }
+
+  h2 {
+    font-size: 20px; font-weight: 800; color: var(--accent);
+    margin: 34px 0 12px; display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 7px;
+    border: 1.5px solid var(--gold); color: var(--gold); font-size: 14px;
+  }
+
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .stat .lbl { font-size: 13px; color: var(--soft); }
+  .stat .val { font-size: 30px; font-weight: 900; letter-spacing: -0.5px; margin: 4px 0; }
+  .stat .desc { font-size: 12.5px; color: var(--soft); }
+  .val.gold { color: var(--gold); }
+  .val.bear { color: var(--bear); }
+  .val.bull { color: var(--bull); }
+  .val.blue { color: var(--accent); }
+  .note { font-size: 12.5px; color: var(--soft); margin-top: 10px; }
+
+  .formula {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--gold);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .formula .eq { font-size: 18px; font-weight: 800; }
+  .formula .eq .arrow { color: var(--soft); margin: 0 6px; }
+  .formula .eq .neg { color: var(--bear); }
+  .formula .eq .pos { color: var(--bull); }
+  .formula p { margin-top: 8px; color: var(--soft); font-size: 14px; }
+  .formula p b { color: var(--text); }
+
+  .scen { display: flex; flex-direction: column; gap: 10px; }
+  .sc {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px;
+    border-left: 4px solid var(--border);
+  }
+  .sc .no {
+    font-size: 22px; font-weight: 900; text-align: center; border-radius: 10px; padding: 6px 0;
+    background: var(--card-2);
+  }
+  .sc .cond { font-size: 16px; font-weight: 800; }
+  .sc .meaning { font-size: 13.5px; color: var(--soft); margin-top: 2px; }
+  .sc .react { font-size: 13.5px; margin-top: 4px; }
+  .pill {
+    font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid var(--border); background: var(--card-2); color: var(--soft);
+  }
+  .sc.bear { border-left-color: var(--bear); }
+  .sc.bear .no, .sc.bear .pill { color: var(--bear); }
+  .sc.bear .pill { background: rgba(255,107,107,.12); border-color: rgba(255,107,107,.45); }
+  .sc.bull { border-left-color: var(--bull); }
+  .sc.bull .no, .sc.bull .pill { color: var(--bull); }
+  .sc.bull .pill { background: rgba(95,209,136,.12); border-color: rgba(95,209,136,.45); }
+  .sc.flat { border-left-color: var(--soft); }
+  .sc.crash { border-left-color: #ff0044; box-shadow: 0 0 10px rgba(255,0,68,.25); }
+  .sc.crash .no, .sc.crash .pill { color: #ff4d6d; }
+  .sc.crash .pill { background: rgba(255,0,68,.14); border-color: rgba(255,0,68,.5); }
+
+  .summary { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .sm { border-radius: 12px; padding: 16px; border: 1px solid var(--border); background: var(--card); }
+  .sm .if { font-size: 14.5px; font-weight: 700; }
+  .sm .then { font-size: 22px; font-weight: 900; margin-top: 6px; }
+  .sm.bear { border-color: rgba(255,107,107,.45); } .sm.bear .then { color: var(--bear); }
+  .sm.bull { border-color: rgba(95,209,136,.45); } .sm.bull .then { color: var(--bull); }
+  .sm.crash { border-color: rgba(255,0,68,.5); } .sm.crash .then { color: #ff4d6d; }
+
+  .tips { display: flex; flex-direction: column; gap: 10px; }
+  .tip {
+    display: flex; gap: 12px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; font-size: 14.5px;
+  }
+  .tip .ic { font-size: 20px; flex: none; }
+  .tip b { color: var(--gold); }
+
+  .check { display: flex; flex-direction: column; gap: 8px; }
+  .check label {
+    display: flex; align-items: center; gap: 10px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; cursor: pointer;
+  }
+  .check input { width: 18px; height: 18px; accent-color: var(--bull); flex: none; }
+  .check input:checked + span { color: var(--soft); text-decoration: line-through; }
+
+  footer {
+    margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--soft); line-height: 1.7;
+  }
+  footer a { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .stats, .summary { grid-template-columns: 1fr; }
+    .sc { grid-template-columns: 44px 1fr; }
+    .sc .pill { grid-column: 2; justify-self: start; }
+    .countdown { margin-left: 0; }
+    h1 { font-size: 25px; }
+  }
+  .tl { display:flex; flex-direction:column; gap:8px; }
+  .tl .row { display:grid; grid-template-columns:92px 1fr auto; gap:12px; align-items:center;
+    background:var(--card); border:1px solid var(--border); border-radius:10px; padding:11px 14px; font-size:14px; }
+  .tl .row .t { font-weight:900; color:var(--gold); font-variant-numeric:tabular-nums; }
+  .tl .row .w { color:var(--soft); font-size:12.5px; }
+  .tl .row.key { border-color:rgba(255,107,107,.5); background:linear-gradient(90deg,rgba(255,59,59,.10),var(--card)); }
+  .tl .row.done { opacity:.5; }
+  .tl .row.next { outline:2px solid var(--gold); }
+  .tag { font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:999px; background:var(--card-2); color:var(--soft); white-space:nowrap; }
+  .tag.hi { color:var(--bear); background:rgba(255,107,107,.12); }
+  .recap { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:12px; padding:16px 18px; font-size:14.5px; }
+  .recap b { color:var(--gold); }
+  @media (max-width:640px){ .tl .row{ grid-template-columns:70px 1fr; } .tl .row .tag{ grid-column:2; justify-self:start; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← MARKET DASHBOARD</a>
+
+  <div class="eyebrow">2026년 10월 8일 (목) · 이벤트 대응 · 07:45 업데이트</div>
+  <h1>금일 시장 대응 전략</h1>
+  <p class="sub">새벽 고비는 <b>무난히 통과</b> — 10년물 입찰은 <b>A급 호조</b>, 의사록은 <b>"다수가 연내 추가 인상"</b>으로 예상 범위. 오늘의 답은 <b>한국 아침(삼성 잠정실적)</b>과 <b>오후(TSMC 9월 매출)</b>, 그리고 <b>내일 새벽 30년물 입찰</b>이 냅니다. 한국은 <b>내일부터 사흘 휴장</b>이라 오늘이 연휴 전 마지막 거래일입니다.</p>
+
+  <div class="time-banner">
+    <span class="clock" id="nextClock">08:30 KST</span>
+    <div class="tb-text">
+      <b id="nextName">삼성전자 3분기 잠정실적</b>
+      <div>오늘 핵심 순서: <b>삼성 잠정실적 → 09:00 한국장 → 14:30경 TSMC 9월 매출 → 22:30 美장(SPCX 해제 전날) → 10/9 02:00 30년물 입찰</b></div>
+    </div>
+    <span class="countdown" id="countdown">계산 중…</span>
+  </div>
+
+  <h2><span class="num">0</span>밤사이 복기 (10/7 美장 · 새벽 이벤트)</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="lbl">S&amp;P500 (10/7 마감)</div>
+      <div class="val bear">7,801.8</div>
+      <div class="desc">-0.22% · 나스닥 -0.22% · 다우 -0.66% · <b>러셀2000 -1.31%</b> — 신고가 다음 날 숨 고르기</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">美 10년물 금리</div>
+      <div class="val gold">5.28~5.29%</div>
+      <div class="desc">장중 <b>5.36%(2002년 이후 최고)</b> → 입찰 호조로 반락 · 30년물 5.67%(52주 최고권)</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">10년물 입찰 (02:00)</div>
+      <div class="val bull">5.300%</div>
+      <div class="desc">발행 전 5.317%보다 <b>1.7bp 낮게 낙찰</b> · 응찰 2.77배 · 해외 80.3% — 'A급'</div>
+    </div>
+  </div>
+  <div class="recap" style="margin-top:12px">
+    어젯밤은 <b>"금리가 2002년 이후 최고를 찍었는데도 지수는 -0.2%"</b>로 버틴 하루. 걱정했던 <b>10년물 입찰은 해외 수요가 몰리며 호조</b>(고금리에 사겠다는 손이 있다는 확인)였고,
+    <b>의사록은 "대부분(most) 위원이 연말까지 한 번 더 인상이 적절"</b> — 단어는 매파 쪽이지만 9월 점도표로 이미 알려진 내용이라 시장은 <b>"10월 동결·12월 인상"</b>을 기본값으로 유지했습니다.<br>
+    종목은 엇갈림: <b>MU +4.1%(파업 가결에도 역전)·SNDK +1.9%·AMZN +1.4%</b> vs <b>TSM -2.1%·META -2.4%·SPCX -2.5%</b>. 다만 <b>SK하이닉스 ADR -2.4%·비트코인 -2.6%·금 -1.2%</b>로 위험자산 전반엔 부담이 남았습니다.
+  </div>
+
+  <h2><span class="num">1</span>오늘 일정 (KST)</h2>
+  <div class="tl" id="tl"></div>
+  <p class="note">※ 삼성 잠정실적은 통상 한국장 개장 전 공시 — 정확한 시각은 공시 시점 기준입니다. 마이크론 이사회(美 현지 10/8~9)는 결과 발표 시각 미정이라 참고용으로 배치했습니다.</p>
+
+  <h2><span class="num">2</span>먼저 알아둘 숫자</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="lbl">삼성 3분기 영업익 컨센서스</div>
+      <div class="val gold">약 106조</div>
+      <div class="desc">범위 105~108조 · <b>사상 첫 분기 100조 돌파</b> 여부 · SK하이닉스 172.3만원(박스 하단 176만원 이탈 상태)</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">10월 인상 확률 (10/29)</div>
+      <div class="val blue">약 20%</div>
+      <div class="desc">의사록 후에도 '10월 동결·12월 인상'이 기본값 · 다음 결정타는 <b>10/14 CPI</b></div>
+    </div>
+    <div class="stat">
+      <div class="lbl">美 30년물 금리</div>
+      <div class="val bear">5.67%</div>
+      <div class="desc">어제 장중 5.73% · 24년 최고권 — <b>내일 02:00 30년물 입찰</b>이 오늘 밤 시험대</div>
+    </div>
+  </div>
+  <p class="note">※ 의사록의 "most(대부분)"는 어제 이 페이지 공식의 매파 쪽 단어였지만, 입찰 호조가 금리 상승을 막아 <b>시나리오 ②(예상 범위·반응 제한적)</b>에 가깝게 끝났습니다.</p>
+
+  <h2><span class="num">3</span>핵심 공식 (오늘)</h2>
+  <div class="formula">
+    <div class="eq">삼성 100조↑ + TSMC 9월 매출 호조<span class="arrow">→</span>반도체 숫자 재확인<span class="arrow">→</span><span class="pos">호재</span> &nbsp;|&nbsp; 삼성 100조 미달 or 30년물 입찰 부진(테일)<span class="arrow">→</span>실망·금리↑<span class="arrow">→</span><span class="neg">악재</span></div>
+    <p>낮엔 <b>"반도체 숫자"</b>, 밤엔 <b>"금리"</b>. 한국장은 <b>SK하이닉스 176만원 재회복 여부</b>가 기준선(169만원은 최후 방어선), 미국은 어제와 같이 <b>10년물 5.3%</b>·<b>30년물 5.7%</b>가 기준. 10년물이 <b>5.35%를 다시 넘으면 경계</b>, <b>5.4%</b>를 넘으면 신고가 종목부터 흔들릴 수 있습니다.</p>
+  </div>
+
+  <h2><span class="num">4</span>시나리오별 정리</h2>
+  <div class="scen">
+    <div class="sc bull">
+      <div class="no">①</div>
+      <div>
+        <div class="cond">삼성 영업익 108조 이상 — 컨센서스 상단 초과 서프라이즈</div>
+        <div class="meaning">메모리 초호황을 '숫자'로 재확인 · 밤사이 MU +4.1%와 같은 방향</div>
+        <div class="react">SK하이닉스 176만원 재회복 시도 · 단, 사흘 휴장 앞이라 오후 차익매물로 윗꼬리 가능</div>
+      </div>
+      <span class="pill">메모리 반등</span>
+    </div>
+    <div class="sc flat">
+      <div class="no">②</div>
+      <div>
+        <div class="cond">삼성 100~106조 — 컨센서스 부합</div>
+        <div class="meaning">좋은 숫자지만 이미 예상된 범위 · '재료 소멸' 반응 가능</div>
+        <div class="react">한국장 혼조 · SK하이닉스 172~176만원 박스, 관심은 <b>14:30 TSMC 매출</b>·밤 美장으로 이동</div>
+      </div>
+      <span class="pill">관망</span>
+    </div>
+    <div class="sc bear">
+      <div class="no">③</div>
+      <div>
+        <div class="cond">삼성 100조 미달 — 기대 대비 실망</div>
+        <div class="meaning">'메모리 고점론' 재부각 · 외국인 매도 연장</div>
+        <div class="react">SK하이닉스 169만원(최후 방어선) 시험 · 휴장 앞 비중 축소 매물까지 겹칠 수 있음</div>
+      </div>
+      <span class="pill">하락 압력</span>
+    </div>
+    <div class="sc bull">
+      <div class="no">④</div>
+      <div>
+        <div class="cond">14:30경 TSMC 9월 매출 강세 — 3분기 가이던스(446~458억 달러) 상단 초과 페이스</div>
+        <div class="meaning">AI 칩 수요 재확인 · 어제 $479 이탈한 TSM의 회복 계기</div>
+        <div class="react">TSM $479 재회복 시도 · NVDA·AMD·AVGO 동반 우호적 (대만은 10/10 휴장)</div>
+      </div>
+      <span class="pill">AI칩 우호</span>
+    </div>
+    <div class="sc crash">
+      <div class="no">⑤</div>
+      <div>
+        <div class="cond">내일 02:00 30년물 입찰 부진(테일) → 10년물 5.4% 돌파</div>
+        <div class="meaning">10년물 입찰 호조가 '일회성'이었음을 확인 · 장기금리 재급등</div>
+        <div class="react">러셀2000·고평가 종목(PLTR·SPCX)부터 하락 → 신고가 종목(NVDA·AMD·MSFT) 차익매물 확산</div>
+      </div>
+      <span class="pill">급락 주의</span>
+    </div>
+  </div>
+  <p class="note">※ 삼성 108조·100조, 금리 5.3·5.35·5.4·5.7%는 공식 기준이 아니라 이 페이지의 참고용 경계선입니다.</p>
+
+  <h2><span class="num">5</span>한 줄 요약</h2>
+  <div class="summary">
+    <div class="sm bull"><div class="if">삼성 서프라이즈 + TSMC 매출 호조</div><div class="then">→ 반도체 반등</div></div>
+    <div class="sm bear"><div class="if">삼성 100조 미달 or 실업수당 급감(금리↑)</div><div class="then">→ 하락 쪽</div></div>
+    <div class="sm crash"><div class="if">30년물 테일 + 10년물 5.4%</div><div class="then">→ 급락 주의</div></div>
+  </div>
+
+  <h2><span class="num">6</span>실전 팁</h2>
+  <div class="tips">
+    <div class="tip"><span class="ic">🇰🇷</span><div>한국은 <b>오늘이 사흘 연휴(10/9 한글날~주말) 전 마지막 거래일</b>. 오늘 종가가 <b>10/12(월)까지 기준</b>이 되고, 그 사이 美 재료(30년물 입찰·SPCX 해제·미시간대)가 월요일에 몰려 반영 → <b>SKHY 무기한선물은 주말 갭</b>에 대비해 레버리지를 낮추세요.</div></div>
+    <div class="tip"><span class="ic">📊</span><div>삼성 잠정실적은 <b>숫자보다 첫 반응</b>이 중요. 공시 직후 <b>SKHY 선물·삼성 동시호가</b>가 어느 쪽으로 가는지 보고, 9시 첫 10분 변동성에 따라가기보다 <b>176만원 회복 여부를 확인</b>한 뒤 대응하는 편이 안전합니다.</div></div>
+    <div class="tip"><span class="ic">🚀</span><div><b>SPCX 해제 전날</b> — 오늘 밤 22:30 美장. 9/23엔 해제 전날 -4.1%가 먼저 나왔고 당일(9/24)은 -0.2%. 어제 $400억 부채 보도로 이미 -2.5%($167.6)라, <b>$165.65(어제 저점)·$160</b>을 지키는지가 관건. 추격 금지.</div></div>
+    <div class="tip"><span class="ic">🏭</span><div><b>MU는 파업 가결에도 +4.1%</b> — 시장은 '공급 차질 = 메모리 가격 강세'로 읽는 중. 다음 고비는 <b>10/9~10(KST) 마이크론 이사회 보상안</b>. 파업 날짜가 잡히면 MU 단기 변동성, SK하이닉스·삼성엔 반사이익 재료.</div></div>
+    <div class="tip"><span class="ic">🕑</span><div><b>02:00 30년물 입찰</b>은 또 자는 사이 결정됩니다. 어제 10년물은 호조였지만 30년물은 재정적자 우려가 더 직접적으로 묻어나는 만기 — <b>자기 전에 레버리지·청산가 여유</b>를 확인해 두세요.</div></div>
+  </div>
+
+  <h2><span class="num">7</span>오늘 체크리스트</h2>
+  <div class="check">
+    <label><input type="checkbox"><span>08:30경 — 삼성 영업익 100조 돌파 여부 (컨센서스 약 106조, 상단 108조)</span></label>
+    <label><input type="checkbox"><span>09:00 개장 — SK하이닉스 176만원 재회복 여부 / 169만원 지지</span></label>
+    <label><input type="checkbox"><span>14:30경 — TSMC 9월 매출로 3분기 가이던스 상단 초과 페이스인지</span></label>
+    <label><input type="checkbox"><span>15:30 마감 전 — 연휴(10/9~11) 앞 보유 포지션·선물 레버리지 정리</span></label>
+    <label><input type="checkbox"><span>21:30 — 美 신규 실업수당 청구 (예상 약 20만건) · 고용 냉각 지속 여부</span></label>
+    <label><input type="checkbox"><span>22:30 美 개장 — 10년물 5.3% 위/아래, SPCX $165.65 지지 여부</span></label>
+    <label><input type="checkbox"><span>자기 전 — 02:00 30년물 입찰 대비 손절가·레버리지 점검</span></label>
+  </div>
+
+  <footer>
+    ※ 투자 판단은 본인 몫이고, 위 내용은 일반적인 시장 반응 패턴일 뿐 실제 반응은 그날 분위기에 따라 다를 수 있습니다. 시나리오 경계선은 참고용 자체 기준입니다. 지수·금리 수치는 10/7 美 정규장 마감(KST 10/8 05:00) 기준이며, 삼성 잠정실적·TSMC 9월 매출은 이 업데이트(07:45) 이후 발표라 미반영입니다.<br>
+    참고: <a href="https://finance.yahoo.com/markets/live/stock-market-today-wednesday-october-7-dow-sp-500-nasdaq-080241833.html" target="_blank" rel="noopener">Yahoo Finance (10/7 마감)</a> ·
+    <a href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-07-2026" target="_blank" rel="noopener">TheStreet (10/7 금리·의사록)</a> ·
+    <a href="https://investinglive.com/news/the-us-treasury-sells-39-billion-of-10-year-notes-at-a-high-yield-of-5-300-versus-wi-level-of-5-317/" target="_blank" rel="noopener">investingLive (10년물 입찰)</a> ·
+    <a href="https://www.tftc.io/10-year-treasury-auction-5-300-yield-record-foreign-demand-2026" target="_blank" rel="noopener">TFTC (입찰 세부)</a> ·
+    <a href="https://www.investing.com/news/economy-news/fed-policymakers-divided-over-ratehike-logic-in-september-minutes-show-4937320" target="_blank" rel="noopener">Reuters/Investing.com (의사록)</a> ·
+    <a href="https://in.investing.com/news/stock-market-news/micron-shares-fall-as-taiwan-workers-authorize-strike-amid-bonus-dispute-5622467" target="_blank" rel="noopener">Investing.com (마이크론 파업·주가)</a> ·
+    <a href="https://www.slist.kr/news/articleView.html?idxno=771623" target="_blank" rel="noopener">싱글리스트 (삼성 컨센서스)</a>
+  </footer>
+</div>
+
+<script>
+  const EVENTS = [
+    { at:'2026-10-08T03:00:00+09:00', t:'03:00', n:'9월 FOMC 의사록', w:'"대부분 위원이 연말까지 추가 인상 적절" — 예상 범위, 10월 동결·12월 인상 기본값' },
+    { at:'2026-10-08T05:00:00+09:00', t:'05:00', n:'美 10/7 정규장 마감', w:'S&P -0.22% · 러셀 -1.31% · 10년물 5.28~5.29% (입찰 5.300% 호조)' },
+    { at:'2026-10-08T08:30:00+09:00', t:'08:30경', n:'삼성전자 3분기 잠정실적', w:'영업익 컨센서스 약 106조 · 사상 첫 100조 돌파 여부', key:1 },
+    { at:'2026-10-08T09:00:00+09:00', t:'09:00', n:'한국장 개장', w:'SK하이닉스 176만원 재회복 여부 · 연휴 전 마지막 거래일' },
+    { at:'2026-10-08T14:30:00+09:00', t:'14:30경', n:'TSMC 9월 매출', w:'3분기 가이던스 446~458억 달러 대비 페이스 · TSM $479 회복 계기?', key:1 },
+    { at:'2026-10-08T15:30:00+09:00', t:'15:30', n:'한국장 마감 (사흘 휴장 전)', w:'오늘 종가가 10/12(월)까지 기준 · 선물 갭 대비' },
+    { at:'2026-10-08T21:30:00+09:00', t:'21:30', n:'美 신규 실업수당 청구', w:'예상 약 20만건 · 고용쇼크 이후 냉각 지속 여부' },
+    { at:'2026-10-08T22:30:00+09:00', t:'22:30', n:'美 정규장 개장 · SPCX 해제 전날', w:'10년물 5.3% 기준 · SPCX $165.65 지지 / 9/23 같은 선매도 여부', key:1 },
+    { at:'2026-10-09T02:00:00+09:00', t:'02:00', n:'🔥 美 30년물 국채 입찰', w:'30년물 5.67% 24년 최고권 · 테일 나오면 장기금리 재급등', key:1 },
+    { at:'2026-10-09T06:00:00+09:00', t:'10/9~10', n:'마이크론 이사회 (美 현지 10/8~9)', w:'새 보상안 → 타오위안 파업 날짜 확정 여부 (발표 시각 미정)' }
+  ];
+  const tl = document.getElementById('tl');
+  const cd = document.getElementById('countdown');
+  function render() {
+    const now = Date.now();
+    const nextIdx = EVENTS.findIndex(e => new Date(e.at).getTime() > now);
+    tl.innerHTML = EVENTS.map((e, i) => {
+      const done = new Date(e.at).getTime() <= now;
+      const cls = ['row', e.key ? 'key' : '', done ? 'done' : '', i === nextIdx ? 'next' : ''].join(' ');
+      const tag = done ? '✅ 완료' : (i === nextIdx ? '⏳ 다음' : (e.key ? '중요' : ''));
+      return `<div class="${cls}"><span class="t">${e.t}</span><div><b>${e.n}</b><div class="w">${e.w}</div></div>${tag ? `<span class="tag ${e.key && !done ? 'hi' : ''}">${tag}</span>` : '<span></span>'}</div>`;
+    }).join('');
+    if (nextIdx < 0) { cd.textContent = '✅ 오늘 일정 종료 — 결과 확인'; return; }
+    const ev = EVENTS[nextIdx];
+    document.getElementById('nextClock').textContent = ev.t + ' KST';
+    document.getElementById('nextName').textContent = ev.n;
+    const diff = new Date(ev.at).getTime() - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const s = Math.floor((diff % 60000) / 1000);
+    cd.textContent = '⏳ ' + (h ? h + '시간 ' : '') + String(m).padStart(2, '0') + '분 ' + String(s).padStart(2, '0') + '초 남음';
+  }
+  render();
+  setInterval(render, 1000);
+</script>
+</body>
+</html>
