@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>현대차 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  /* 테이블 스타일 */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:13.5px;
+  }
+  th, td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  
+  .date-col b{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+  }
+  .price-val{
+    font-size:13px;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .chg-tag{
+    display:inline-block;
+    font-weight:600;
+    font-size:12px;
+    margin-top:4px;
+  }
+  .chg-tag.up{color:var(--up);}
+  .chg-tag.down{color:var(--down);}
+
+  /* 긍정/부정 요소 블록 (이미지 양식 호환) */
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 12px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .factor-block.pos h4{color:var(--pos-text);}
+  .factor-block.neg h4{color:var(--neg-text);}
+
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  ul.plain li{
+    margin-bottom:8px;
+    line-height:1.5;
+  }
+  ul.plain li:last-child{margin-bottom:0;}
+
+  /* 시나리오 그리드 스타일 (이미지 양식 호환) */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    border:1px solid var(--border);
+    background:var(--card);
+    display:flex;
+    align-items:flex-start;
+  }
+  .scenario b{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:12px;
+    margin-right:12px;
+    flex-shrink:0;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-top:16px;
+    line-height:1.6;
+  }
+  .callout b{color:var(--text);}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  /* 매출 구조 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(78,161,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.10.10 (토) · 신규 작성</span>
+      <span>·</span>
+      <span>KRX 10/8 종가 기준 (10/9 한글날 휴장) · 장외 시간은 OKX 무기한선물 가격 반영</span>
+    </div>
+    <h1>현대차 (005380) 주가 분석 리포트<span class="ticker">Perpetual: HYUNDAIUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main" id="hyPriceMain">324,500원 <span id="hyLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9aa2b1;margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-down" id="hyPriceChange">KRX 10/8 종가 ▼ -3.42% · 선물 $239.43 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">2거래일 연속 -3%대 급락 · 증권사 목표가 줄하향 · 시총 약 66조 · 52주 범위 214,000~783,000원 · <span id="hyLiveTime">가격 갱신 중…</span></div>
+      </div>
+      <div class="price-sub">
+        10/6~7 NH·하나증권이 3분기 실적 추정치를 대폭 낮추며(영업이익 2.2~2.4조, 기존 기대 3.0조) 목표가를 연달아 하향하자
+        10/7~8 이틀간 -6.8% 급락했습니다. 8월 파업(약 5.5만 대 생산 손실)·추석 연휴로 9월 글로벌 판매가 -16% 감소했고, 원자재·환율 부담과
+        노후 모델 문제가 겹쳤습니다. 10/8에는 코스피 -2.62% 급락까지 더해졌고, 휴장 중 OKX 선물은 $235까지 밀렸다가
+        $239선(원화 환산 약 32만 원)에서 등락 중입니다. 반면 미국 판매는 9월·3분기 모두 사상 최대를 기록했습니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · HYUNDAIUSDT.P (OKX) · 15분봉 / 일봉 — KRX 휴장·야간에도 24시간 거래</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_hy_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_hy_1d" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>선물 흐름(4시간봉 기준)</b>: 9/27~10/6 $256~262 박스권 횡보 후 10/7 대량 거래 장대음봉으로 이탈, 10/8~9 $235까지 급락. 가격이 20MA($243.4)·200MA($265.7) 모두 아래에 있고 20MA가 급격히 꺾이는 <b>강한 하락 추세</b>. 10/9 대량 거래 양봉으로 $235 저점 반등 후 $239선 소강.<br>
+      <b>일봉(본주)</b>: 상반기 보스턴다이내믹스 상장·로보틱스 기대로 사상 최고가(783,000원)를 찍은 뒤, 7월 2분기 실적 부진·美 12.5% 관세 발표 이후 하락 추세 지속. 현재 336,000~349,000원이 단기 저항, 32만 원·30만 원이 지지 구간.
+    </div>
+  </header>
+
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(원)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>10/1(목)</b>
+            <div class="price-val">349,000</div>
+            <div class="chg-tag" style="color:var(--text-soft);">― 장중 343,500~349,500</div>
+          </td>
+          <td>
+            <b>9월 판매 실적: 글로벌 -16% vs 미국 사상 최대</b><br>
+            9월 글로벌 판매 307,998대(-16.0%), 국내 -25.7%·해외 -13.9% — 추석 연휴로 영업일 감소, 신차(신형 투싼) 대기 수요. 반면 美 판매는 77,439대(+9%)로 9월 사상 최대, 하이브리드 비중 28%. 코스피 반도체 랠리 속 소폭 등락
+          </td>
+          <td>판매 혼조 · 영향 제한</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/2(금)</b>
+            <div class="price-val">347,000</div>
+            <div class="chg-tag down">▼ -0.57%</div>
+          </td>
+          <td>
+            <b>연휴 앞두고 소폭 약세</b><br>
+            개천절·대체공휴일 연휴(10/3~5)를 앞둔 관망세 속 34만 원대 후반 유지. 3분기 美 판매 246,896대(+3%)로 역대 3분기 최대 확인
+          </td>
+          <td>연휴 전 관망</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/6(화)</b>
+            <div class="price-val">348,000</div>
+            <div class="chg-tag up">▲ +0.29%</div>
+          </td>
+          <td>
+            <b>NH투자증권 목표가 62만 → 54만 원 하향</b><br>
+            3분기 영업이익 추정 2.40조(-5.3% YoY)로 기존 기대(3.01조) 대비 대폭 하향 — 생산 차질·파업·영업일 감소·원자재 가격 상승 반영. 장중 353,000원까지 올랐으나 상승폭 반납
+          </td>
+          <td>실적 눈높이 하향 시작</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/7(수)</b>
+            <div class="price-val">336,000</div>
+            <div class="chg-tag down">▼ -3.45%</div>
+          </td>
+          <td>
+            <b>하나증권 목표가 -21.5% 하향 · 34만 원선 붕괴</b><br>
+            3분기 영업이익 추정 2.23조로 하향 — 수요 둔화·생산 차질·노후 모델·환율·원자재 부담, 계열사 지분가치 할인. 외국인 코스피 2.61조 순매도 속 저가권 마감
+          </td>
+          <td>목표가 줄하향 · 코스피 -1.98%</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/8(목)</b>
+            <div class="price-val">324,500</div>
+            <div class="chg-tag down">▼ -3.42%</div>
+          </td>
+          <td>
+            <b>코스피 -2.62% 급락 동반, 5거래일 최저</b><br>
+            美 10년물 5.36%·유가 $100+ 인플레 우려로 외국인 2조·기관 1.7조 동반 순매도. 자동차 업종 -2.89%보다 큰 낙폭, 거래대금 약 3,594억 원
+          </td>
+          <td>업종 대비 약세 · 2일간 -6.8%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 이번 주 현대차 급락의 핵심은 <b>"3분기 실적 눈높이 하향"</b>입니다. 8월 파업(약 120시간, 5.5만 대 생산 손실)·추석 영업일 감소·원자재 상승이 3분기 이익을 깎을 것이란 증권사 리포트가 10/6~7 연달아 나오며
+      목표가가 줄하향됐고, 10/8 코스피 급락이 매도세를 키웠습니다. 다만 <b>美 판매 사상 최대·하이브리드 호조</b>는 4분기 회복의 근거로 남아 있으며,
+      휴장 중 선물은 원화 환산 약 32만 원(10/8 종가 대비 약 -1.2%)이라 <b>10/12(월) 개장 시 32만 원 지지 여부</b>가 단기 관전 포인트입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>미국 판매 사상 최대</b> — 9월 77,439대(+9%)·3분기 246,896대(+3%) 모두 역대 최대, 팰리세이드 +52%·투싼 +32%</li>
+        <li><b>하이브리드 고성장</b> — 美 3분기 하이브리드 판매 +35%(분기 최대), 9월 비중 28%로 EV 수요 둔화를 상쇄하는 수익원</li>
+        <li><b>파업 리스크 해소</b> — 117일 만에 임단협 타결(9/1, 찬성 61.6%), 생산 정상화로 4분기 이연 판매 회복 기대 (NH 4Q 영업이익 2.48조 전망)</li>
+        <li><b>신차 사이클</b> — 신형 투싼 등 신차 출시로 대기 수요 해소 기대, 2027 쏘나타 출시</li>
+        <li><b>로보틱스 옵션</b> — 보스턴다이내믹스 美 상장 기대가 상반기 사상 최고가(783,000원)를 이끈 재료, 상장 진척 시 재평가 여지</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>3분기 실적 부진 예고</b> — 영업이익 추정 2.2~2.4조(기존 기대 3.0조), 매출 42~45조. 2분기에도 영업이익률 5.8%로 하락(전년 7.5%)</li>
+        <li><b>증권사 목표가 줄하향</b> — NH 62만→54만, 하나증권 -21.5% 하향 등 실적 추정치 하향 사이클 진행 중</li>
+        <li><b>美 관세 부담</b> — 7월 한국산 12.5% 관세 발표 이후 수익성 압박 지속, 인센티브 확대·가격 경쟁 심화</li>
+        <li><b>글로벌 도매 판매 둔화</b> — 9월 글로벌 -16%, 국내 -25.7%. 노후 모델·EV 수요 둔화로 미국 외 지역 부진</li>
+        <li><b>매크로·수급</b> — 美 10년물 5.3%대, 유가 $100+로 원자재·물류비 부담, 외국인 코스피 대규모 순매도. 원화 강세(1,338원)는 수출 채산성 악화</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:20px; font-size:15px; color:var(--text);">시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull">
+        <b>강세</b>
+        <span>10/29 3분기 실적이 낮아진 눈높이(2.2~2.4조)를 상회하고 4분기 회복 가이던스 확인 시 336,000원 → 349,000원 회복, 보스턴다이내믹스 상장 진척 시 36만 원대 시도 (선물 $250 → $260)</span>
+      </div>
+      <div class="scenario base">
+        <b>기본</b>
+        <span>315,000~349,000원 박스권 등락. 실적 발표 전까지 美 판매·관세 뉴스와 외국인 수급을 확인하며 바닥 다지기 (선물 $235~$255)</span>
+      </div>
+      <div class="scenario bear">
+        <b>약세</b>
+        <span>32만 원 이탈 시 30만 원 심리선 테스트, 3분기 실적이 2조 원 아래로 쇼크 나거나 관세 추가 인상 시 28만 원대까지 하방 열림 (선물 $235 하향 이탈)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 매출 구조도 -->
+  <section>
+    <h2>3. 현대차 매출 구조도</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
+      완성차 판매가 매출의 대부분이고, 현대캐피탈 등 금융 부문이 이익을 보완하는 구조입니다. 최대 시장은 미국이며, 관세·환율·인센티브가 수익성을 좌우합니다. (사업 비중은 연간 기준 대략치)
+    </p>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>현대차 연결 실적</b>
+          <div class="desc">2Q26 매출 49.22조(분기 최대) · 영업이익 2.85조 · 영업이익률 5.8% → 3Q26 추정 매출 42~45조 · 영업이익 2.2~2.4조</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 사업 부문 ↓</div>
+      <div class="flow-split">
+        <div class="flow-box reward">
+          <b>차량 부문 (약 80%)</b>
+          <div class="desc">현대·제네시스 완성차 판매 — 美(최대 시장, 하이브리드·SUV 호조), 국내, 유럽, 인도 등. 고가 SUV·하이브리드 믹스가 이익 핵심</div>
+        </div>
+        <div class="flow-box">
+          <b>금융 부문 (약 15%)</b>
+          <div class="desc">현대캐피탈·현대카드 등 — 할부·리스로 차량 판매를 지원하고 안정적 이자 이익 창출</div>
+        </div>
+      </div>
+      <div class="flow-split" style="margin-top:10px;">
+        <div class="flow-box">
+          <b>기타 (약 5%)</b>
+          <div class="desc">철도·방산(현대로템 지분) 등. 보스턴다이내믹스(로보틱스) 지분은 기업가치 옵션</div>
+        </div>
+        <div class="flow-box burn">
+          <b>비용 압박 요인</b>
+          <div class="desc">美 12.5% 관세, 인센티브 확대, 원자재·물류비 상승, 파업 성과급(기본급 10만 원↑·성과급 400%+1,270만 원)</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 주가 결정 변수 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>美 판매·믹스 × 관세 × 환율 × 로보틱스 기대</b>
+          <div class="desc">본업은 미국 하이브리드 판매와 관세 부담의 줄다리기, 주가 프리미엄은 보스턴다이내믹스 상장 기대가 좌우</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>핵심 지표 요약</h3>
+    <table>
+      <thead>
+        <tr><th>항목</th><th>수치/내용</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>💰 시가총액</td><td>약 66조 원</td><td>10/8 종가 기준</td></tr>
+        <tr><td>📈 52주 범위</td><td>214,000원 ~ 783,000원</td><td>상반기 로보틱스 기대로 최고가</td></tr>
+        <tr><td>🚗 9월 판매</td><td>글로벌 307,998대(-16%) · 美 77,439대(+9%)</td><td>美 9월 사상 최대</td></tr>
+        <tr><td>🔋 하이브리드</td><td>美 3Q 판매 +35% · 9월 비중 28%</td><td>분기 최대</td></tr>
+        <tr><td>🛠 노사</td><td>임단협 타결(9/1) · 파업 약 120시간</td><td>생산 손실 약 5.5만 대(2.3조+)</td></tr>
+        <tr><td>📉 3Q 추정</td><td>영업이익 2.23조(하나) ~ 2.40조(NH)</td><td>기존 기대 3.01조 대비 하향</td></tr>
+        <tr><td>🎯 목표가</td><td>NH 54만 원 · 하나 -21.5% 하향</td><td>매수 의견은 유지</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 주요 일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%;">일정 (KST)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:16%;">중요도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>10월 12일 (월) 오전 9:00</b></td>
+          <td>한글날 연휴 후 KRX 개장 — 휴장 중 선물 하락분(원화 환산 약 -1.2%) 반영 및 32만 원 지지 여부</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 14일 (수) 밤 9:30</b></td>
+          <td>미국 9월 CPI — 美 금리·환율 경로 → 외국인 수급 및 美 자동차 할부 수요에 영향</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) (예정)</b></td>
+          <td><b>3분기 실적 발표 · 컨퍼런스콜</b> — 눈높이 하향(영업이익 2.2~2.4조) 대비 실제 결과, 4분기 회복·관세 대응 가이던스</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td>FOMC 금리결정 — 동결 우세, 12월 인상 시그널 강도</td>
+          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+        </tr>
+        <tr>
+          <td><b>11월 3일 (화) 전후</b></td>
+          <td>10월 글로벌·미국 판매 실적 발표 — 생산 정상화·신차 효과 확인 / 美 중간선거(11/3)와 관세 정책 변화</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>수시</b></td>
+          <td>美 관세 정책 변화, 보스턴다이내믹스 상장 관련 소식, 증권사 목표가 조정</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.08 KRX 종가 (10/9 한글날 휴장, KST 2026.10.10 작성).
+    상단 차트는 OKX HYUNDAIUSDT.P 무기한선물(TradingView 위젯)로, KRX 본주와 별개로 24시간 거래되며 환율·장외 수급에 따라 괴리가 발생할 수 있습니다.
+    실적 추정치·목표가는 증권사 보도 기준이며, 사업 부문 비중은 연간 기준 대략치입니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_hy_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:HYUNDAIUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_hy_1d",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:HYUNDAIUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+<script type="text/javascript">
+  (function(){
+    const changeEl = document.getElementById('hyPriceChange');
+    const timeEl = document.getElementById('hyLiveTime');
+    const dot = document.getElementById('hyLiveDot');
+
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateHyPrice(){
+      try{
+        const res = await fetch('https://www.okx.com/api/v5/market/ticker?instId=HYUNDAI-USDT-SWAP');
+        const json = await res.json();
+        const t = json && json.data && json.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const pct = open24h ? ((last - open24h) / open24h) * 100 : null;
+        if(changeEl){
+          const sign = pct !== null && pct >= 0 ? '+' : '';
+          changeEl.textContent = `KRX 10/8 종가 ▼ -3.42% · 선물 $${last.toFixed(2)}` + (pct !== null ? ` (24H ${sign}${pct.toFixed(2)}%)` : '');
+          changeEl.className = (pct !== null && pct >= 0) ? 'chg-up' : 'chg-down';
+        }
+        if(dot){ dot.style.background = '#5fd188'; }
+        if(timeEl){ timeEl.textContent = '선물 실시간 반영 · ' + fmtTimeKST(); }
+      }catch(err){
+        if(timeEl){ timeEl.textContent = '실시간 선물 가격 갱신 실패 · 마지막 표시값 유지'; }
+        if(dot){ dot.style.background = '#c53030'; }
+      }
+    }
+
+    updateHyPrice();
+    setInterval(updateHyPrice, 30000);
+  })();
+</script>
+</body>
+</html>
