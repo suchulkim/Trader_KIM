@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAVER 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  /* 테이블 스타일 */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:13.5px;
+  }
+  th, td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  
+  .date-col b{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+  }
+  .price-val{
+    font-size:13px;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .chg-tag{
+    display:inline-block;
+    font-weight:600;
+    font-size:12px;
+    margin-top:4px;
+  }
+  .chg-tag.up{color:var(--up);}
+  .chg-tag.down{color:var(--down);}
+
+  /* 긍정/부정 요소 블록 (이미지 양식 호환) */
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 12px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .factor-block.pos h4{color:var(--pos-text);}
+  .factor-block.neg h4{color:var(--neg-text);}
+
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  ul.plain li{
+    margin-bottom:8px;
+    line-height:1.5;
+  }
+  ul.plain li:last-child{margin-bottom:0;}
+
+  /* 시나리오 그리드 스타일 (이미지 양식 호환) */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    border:1px solid var(--border);
+    background:var(--card);
+    display:flex;
+    align-items:flex-start;
+  }
+  .scenario b{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:12px;
+    margin-right:12px;
+    flex-shrink:0;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-top:16px;
+    line-height:1.6;
+  }
+  .callout b{color:var(--text);}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  /* 매출 구조 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(78,161,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.10.10 (토) · 신규 작성</span>
+      <span>·</span>
+      <span>KRX 10/8 종가 기준 (10/9 한글날 휴장) · 장외 시간은 OKX 무기한선물 가격 반영</span>
+    </div>
+    <h1>NAVER (035420) 주가 분석 리포트<span class="ticker">Perpetual: NAVERUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main" id="nvPriceMain">183,200원 <span id="nvLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9aa2b1;margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-down" id="nvPriceChange">KRX 10/8 종가 ▼ -3.07% · 선물 $136.13 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">52주 최저가(181,100원) 근접 · 두나무 합병 3번째 연기 · 6월 고점권(약 25만 원) 대비 약 -26% · <span id="nvLiveTime">가격 갱신 중…</span></div>
+      </div>
+      <div class="price-sub">
+        10/7 네이버파이낸셜–두나무 주식교환일이 12/31에서 2027년 3/31로 세 번째 연기되면서(공정위 기업결합 심사·금융당국 대주주 변경 승인 지연,
+        디지털자산기본법 불확실성) 2거래일 연속 하락했습니다. 10/8에는 코스피 -2.62% 급락까지 겹쳐 -3.07%로 업종 평균(-2.50%)보다 크게 빠지며
+        52주 최저가에 바짝 다가섰습니다. 휴장 중 OKX 선물은 $134까지 밀렸다가 $136선(원화 환산 약 18.2만 원)에서 등락 중입니다.
+        본업은 2분기 매출 3.39조(+16.2%, 분기 최대)로 견조하지만, AI 인프라 투자로 이익이 정체된 점이 주가를 누르고 있습니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · NAVERUSDT.P (OKX) · 15분봉 / 일봉 — KRX 휴장·야간에도 24시간 거래</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_nv_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_nv_1d" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>선물 흐름(4시간봉 기준)</b>: 9/28 장중 $147.5 고점(윗꼬리) 이후 $140~146 박스권 등락, 10/6~7 $144 부근에서 꺾인 뒤 10/8 장대음봉으로 박스 하단($140) 이탈 → 10/9 $134 저점. 20MA($137.8)가 가파르게 하락 중이고 가격은 그 아래 $135~137에서 약한 반등. (신규 상장으로 200MA는 아직 미형성)<br>
+      <b>일봉(본주)</b>: 6월 24만~26만 원 박스 이후 하락 추세 지속, 10월 초 19만 원대 횡보 후 18만 원대로 하향. 현재 189,000~192,200원이 단기 저항, 52주 최저가 181,100원이 핵심 지지.
+    </div>
+  </header>
+
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(원)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>10/1(목)</b>
+            <div class="price-val">191,900</div>
+            <div class="chg-tag" style="color:var(--text-soft);">― 보합권</div>
+          </td>
+          <td>
+            <b>반도체 랠리 속 인터넷주 소외</b><br>
+            9월 수출 사상 최대로 코스피 +1.95% 반등했지만 자금이 삼성전자·SK하이닉스 등 반도체로 쏠리며 네이버는 19만 원대 초반 횡보
+          </td>
+          <td>업종 순환매 소외</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/2(금)</b>
+            <div class="price-val">192,200</div>
+            <div class="chg-tag up">▲ +0.16%</div>
+          </td>
+          <td>
+            <b>연휴 앞두고 관망</b><br>
+            개천절 연휴(10/3~5)를 앞두고 거래 위축 속 소폭 상승. 두나무 합병 일정·규제 관련 소식 대기
+          </td>
+          <td>연휴 전 관망</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/6(화)</b>
+            <div class="price-val">191,900</div>
+            <div class="chg-tag down">▼ -0.16%</div>
+          </td>
+          <td>
+            <b>연휴 후 방향성 부재</b><br>
+            장중 192,600원까지 올랐으나 반납. 코스피 7,000선 붕괴(-1.14%) 속 상대적으로 선방했지만 반등 모멘텀 부재
+          </td>
+          <td>박스권 하단 횡보</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/7(수)</b>
+            <div class="price-val">189,000</div>
+            <div class="chg-tag down">▼ -1.51%</div>
+          </td>
+          <td>
+            <b>네이버파이낸셜–두나무 합병 세 번째 연기</b><br>
+            주식교환일 2026.12/31 → 2027.3/31, 주주총회 11/19 → 2027.2/26로 연기 정정공시. 공정위 기업결합 심사·금융당국 대주주 변경 승인·특금법 신고 미완료, 디지털자산기본법 국회 계류로 "향후 법률이 결과에 영향 줄 수 있다" 명시. 합병 후 네이버파이낸셜 IPO도 순연. 외국인 코스피 2.61조 순매도
+          </td>
+          <td>핵심 재료 지연 · 코스피 -1.98%</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/8(목)</b>
+            <div class="price-val">183,200</div>
+            <div class="chg-tag down">▼ -3.07%</div>
+          </td>
+          <td>
+            <b>코스피 급락 동반, 52주 최저가 근접</b><br>
+            美 10년물 5.36%·유가 $100+로 코스피 -2.62%, 외국인 2조·기관 1.7조 동반 순매도. 업종 평균(-2.50%)보다 큰 낙폭, 장중 183,100원으로 52주 최저가(181,100원)에 근접. 김상훈 의원이 "공정위 심사 지연할 이유 없다"며 신속 결정 촉구했으나 주가 반영은 제한적
+          </td>
+          <td>2거래일간 -4.7%</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 이번 주 네이버 하락의 핵심은 <b>두나무 합병 지연</b>입니다. 연초부터 "네이버 = 두나무(업비트) 편입 + 핀테크·가상자산 성장" 기대가 주가 하단을 받쳐왔는데,
+      세 번째 연기로 편입 시점이 2027년 3월 이후로 밀리면서 기대감이 약해졌습니다. 여기에 반도체로만 쏠리는 코스피 수급과 10/8 시장 급락이 겹쳐 <b>52주 최저가(181,100원)</b>에 다가섰습니다.
+      휴장 중 선물은 원화 환산 약 18.2만 원으로, <b>10/12(월) 52주 최저가 지지 여부</b>가 단기 최대 관전 포인트입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>본업 성장 견조</b> — 2Q 매출 3.39조(+16.2%, 분기 최대), 커머스 서비스 매출 +31.3%, Npay 결제액 25.2조(+21.0%), C2C(포시마크 등) +74.9%</li>
+        <li><b>AI 광고 수익화 시작</b> — 7월 말 출시한 'AI 브리핑' 광고가 기존 검색광고보다 높은 클릭·구매 전환율 기록, AI 기반 광고 상품(ADVoost) 확대</li>
+        <li><b>엔비디아 AI 팩토리 사업</b> — 2027년 상반기부터 매출 발생 예정, 소버린 AI·클라우드 성장 동력</li>
+        <li><b>두나무 합병 방향성 유지</b> — 회사 측 "거래 목적·방향 변함없음, 공정위 승인 시간 문제". 국회에서도 신속 심사 촉구 목소리, 승인 시 국내 최대 핀테크·가상자산 그룹 탄생</li>
+        <li><b>밸류에이션 매력</b> — 52주 최저가 근접, 증권사 컨센서스 목표가 약 30만 원(한화 30만·하나 35만 원 등) 대비 괴리 확대</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>두나무 합병 장기 지연</b> — 3차 연기로 주식교환 2027.3/31, 디지털자산기본법·거래소 대주주 지분 제한 논의 결과에 따라 일정·조건 변경 가능성</li>
+        <li><b>이익 정체</b> — 2Q 영업이익 5,203억(-0.2%)으로 매출 성장에도 AI 인프라·월드컵 중계권·마케팅 비용 증가로 영업이익률 15%대로 하락</li>
+        <li><b>AI 수익화 검증 필요</b> — AI 광고가 기존 광고를 잠식할지 추가 매출일지 판단에 최소 2개 분기 필요(한화), 단기 실적 모멘텀 제한</li>
+        <li><b>수급 소외</b> — 코스피 자금이 반도체에 집중, 외국인 대규모 순매도 속 인터넷 플랫폼주 상대 약세</li>
+        <li><b>매크로</b> — 美 10년물 5.3%대 고금리는 성장주 밸류에이션에 부담, 12월 FOMC 추가 인상 확률 ~81%</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:20px; font-size:15px; color:var(--text);">시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull">
+        <b>강세</b>
+        <span>52주 최저가 지지 확인 후 공정위 승인 등 합병 진척 소식·3분기 실적(11월 초)에서 AI 광고 성과 확인 시 189,000원 → 192,200원 회복, 20만 원 재도전 (선물 $140 → $144~147)</span>
+      </div>
+      <div class="scenario base">
+        <b>기본</b>
+        <span>180,000~192,000원 박스권 등락. 합병 관련 규제 뉴스와 3분기 실적 발표를 기다리며 52주 저점 부근 바닥 다지기 (선물 $134~$141)</span>
+      </div>
+      <div class="scenario bear">
+        <b>약세</b>
+        <span>181,100원(52주 최저가) 이탈 시 신저가 갱신으로 17만 원대 중반까지 하방 열림. 합병 조건 변경·디지털자산법 규제 강화·코스피 약세 지속 시 (선물 $134 하향 이탈)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 매출 구조도 -->
+  <section>
+    <h2>3. NAVER 매출 구조도 (2026년 2분기)</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
+      검색·광고·커머스를 묶은 'NAVER 플랫폼'이 매출의 절반 이상을 차지하고, 핀테크(네이버파이낸셜)와 글로벌 사업(C2C·콘텐츠·클라우드)이 뒤를 받치는 구조입니다.
+    </p>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>NAVER 연결 실적</b>
+          <div class="desc">2Q26 매출 3조 3,888억(+16.2%, 분기 최대) · 영업이익 5,203억(-0.2%) · 영업이익률 약 15.4%</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 사업 부문별 매출 (2Q26) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box reward">
+          <b>NAVER 플랫폼 — 1조 9,022억 (약 56%, +12.3%)</b>
+          <div class="desc">검색광고(+7.5%, AI 브리핑·ADVoost) + 커머스 서비스(+31.3%, 스마트스토어·수수료) — 현금창출의 핵심</div>
+        </div>
+        <div class="flow-box">
+          <b>파이낸셜 플랫폼 — 4,707억 (약 14%, +16.0%)</b>
+          <div class="desc">네이버페이 결제(결제액 25.2조, +21%) — 두나무 합병 시 가상자산·핀테크 그룹으로 확장 예정</div>
+        </div>
+      </div>
+      <div class="flow-split" style="margin-top:10px;">
+        <div class="flow-box accent">
+          <b>글로벌 이니셔티브 — 1조 159억 (약 30%, +24.4%)</b>
+          <div class="desc">C2C(포시마크·크림 등, +74.9%), 콘텐츠(웹툰, +0.5%), 엔터프라이즈·클라우드(+21.3%)</div>
+        </div>
+        <div class="flow-box burn">
+          <b>비용 압박 요인</b>
+          <div class="desc">AI 인프라(GPU·데이터센터) 투자, 월드컵 중계권 등 파트너 비용, 마케팅비 증가 → 매출 성장에도 이익 정체</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 주가 결정 변수 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>두나무 합병 진척 × AI 광고 수익화 × AI 팩토리</b>
+          <div class="desc">본업은 커머스·광고로 안정 성장, 주가 재평가는 두나무 편입(가상자산)과 AI 투자의 이익 전환 시점에 달림</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>핵심 지표 요약</h3>
+    <table>
+      <thead>
+        <tr><th>항목</th><th>수치/내용</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>💰 현재가</td><td>183,200원 (10/8)</td><td>52주 최저가 181,100원 근접</td></tr>
+        <tr><td>📊 2Q 실적</td><td>매출 3.39조(+16.2%) · 영업이익 5,203억(-0.2%)</td><td>분기 최대 매출, AI 투자로 이익 정체</td></tr>
+        <tr><td>🛒 커머스</td><td>서비스 매출 +31.3% · C2C +74.9%</td><td>스마트스토어·포시마크 성장</td></tr>
+        <tr><td>💳 Npay</td><td>결제액 25.2조 원 (+21.0%)</td><td>2Q 기준</td></tr>
+        <tr><td>🔗 두나무 합병</td><td>주식교환 2027.3/31 · 주총 2027.2/26</td><td>3번째 연기, 공정위·금융당국 승인 대기</td></tr>
+        <tr><td>🤖 AI</td><td>AI 브리핑 광고 · 엔비디아 AI 팩토리</td><td>AI 팩토리 매출 2027년 상반기 시작</td></tr>
+        <tr><td>👥 외국인 소진율</td><td>약 35.3%</td><td>10/8 기준</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 주요 일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%;">일정 (KST)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:16%;">중요도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>10월 12일 (월) 오전 9:00</b></td>
+          <td>한글날 연휴 후 KRX 개장 — 52주 최저가(181,100원) 지지 여부</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 14일 (수) 밤 9:30</b></td>
+          <td>미국 9월 CPI — 美 금리 경로 → 성장주 밸류에이션·외국인 수급 영향</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>수시</b></td>
+          <td>공정위 네이버파이낸셜–두나무 기업결합 심사 결과, 금융당국 대주주 변경 승인, 디지털자산기본법 국회 논의</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td>FOMC 금리결정 — 동결 우세, 12월 인상 시그널 강도</td>
+          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+        </tr>
+        <tr>
+          <td><b>11월 초 (예정)</b></td>
+          <td><b>3분기 실적 발표</b> — AI 브리핑 광고 성과, 커머스 성장률, AI 인프라 비용 추이, 합병 일정 코멘트</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>2027년 2월 26일 / 3월 31일</b></td>
+          <td>두나무 합병 주주총회 / 주식교환일 (변경 가능)</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.08 KRX 종가 (10/9 한글날 휴장, KST 2026.10.10 작성).
+    상단 차트는 OKX NAVERUSDT.P 무기한선물(TradingView 위젯)로, KRX 본주와 별개로 24시간 거래되며 환율·장외 수급에 따라 괴리가 발생할 수 있습니다.
+    10/1 등락률은 보도 수치 부재로 방향만 표기했으며, 목표가는 증권사 보도 기준입니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_nv_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:NAVERUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_nv_1d",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:NAVERUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+<script type="text/javascript">
+  (function(){
+    const changeEl = document.getElementById('nvPriceChange');
+    const timeEl = document.getElementById('nvLiveTime');
+    const dot = document.getElementById('nvLiveDot');
+
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateNvPrice(){
+      try{
+        const res = await fetch('https://www.okx.com/api/v5/market/ticker?instId=NAVER-USDT-SWAP');
+        const json = await res.json();
+        const t = json && json.data && json.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const pct = open24h ? ((last - open24h) / open24h) * 100 : null;
+        if(changeEl){
+          const sign = pct !== null && pct >= 0 ? '+' : '';
+          changeEl.textContent = `KRX 10/8 종가 ▼ -3.07% · 선물 $${last.toFixed(2)}` + (pct !== null ? ` (24H ${sign}${pct.toFixed(2)}%)` : '');
+          changeEl.className = (pct !== null && pct >= 0) ? 'chg-up' : 'chg-down';
+        }
+        if(dot){ dot.style.background = '#5fd188'; }
+        if(timeEl){ timeEl.textContent = '선물 실시간 반영 · ' + fmtTimeKST(); }
+      }catch(err){
+        if(timeEl){ timeEl.textContent = '실시간 선물 가격 갱신 실패 · 마지막 표시값 유지'; }
+        if(dot){ dot.style.background = '#c53030'; }
+      }
+    }
+
+    updateNvPrice();
+    setInterval(updateNvPrice, 30000);
+  })();
+</script>
+</body>
+</html>
