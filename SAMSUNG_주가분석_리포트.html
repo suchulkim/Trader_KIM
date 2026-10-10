@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>삼성전자 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  /* 테이블 스타일 */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:13.5px;
+  }
+  th, td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  
+  .date-col b{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+  }
+  .price-val{
+    font-size:13px;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .chg-tag{
+    display:inline-block;
+    font-weight:600;
+    font-size:12px;
+    margin-top:4px;
+  }
+  .chg-tag.up{color:var(--up);}
+  .chg-tag.down{color:var(--down);}
+
+  /* 긍정/부정 요소 블록 (이미지 양식 호환) */
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 12px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .factor-block.pos h4{color:var(--pos-text);}
+  .factor-block.neg h4{color:var(--neg-text);}
+
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  ul.plain li{
+    margin-bottom:8px;
+    line-height:1.5;
+  }
+  ul.plain li:last-child{margin-bottom:0;}
+
+  /* 시나리오 그리드 스타일 (이미지 양식 호환) */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    border:1px solid var(--border);
+    background:var(--card);
+    display:flex;
+    align-items:flex-start;
+  }
+  .scenario b{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:12px;
+    margin-right:12px;
+    flex-shrink:0;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-top:16px;
+    line-height:1.6;
+  }
+  .callout b{color:var(--text);}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  /* 매출 구조 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(78,161,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.10.10 (토) · 신규 작성</span>
+      <span>·</span>
+      <span>KRX 10/8 종가 기준 (10/9 한글날 휴장) · 장외 시간은 OKX 무기한선물 가격 반영</span>
+    </div>
+    <h1>삼성전자 (005930) 주가 분석 리포트<span class="ticker">Perpetual: SAMSUNGUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main" id="samPriceMain">262,000원 <span id="samLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9aa2b1;margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-down" id="samPriceChange">KRX 10/8 종가 ▼ -2.42% · 선물 $192.52 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">3분기 영업이익 107.4조 "역대 최대"에도 셀온 · 외국인 5거래일 연속 순매도 · 시총 약 1,660조 · <span id="samLiveTime">가격 갱신 중…</span></div>
+      </div>
+      <div class="price-sub">
+        10/8 발표된 3분기 잠정실적은 매출 195조·영업이익 107.4조(전년 대비 약 8.8배)로 국내 기업 최초 분기 영업이익 100조를 돌파했지만,
+        컨센서스(블룸버그 108.7조) 소폭 하회·원화 강세·美 10년물 5.36%(2002년 이후 최고) 급등이 겹치며 "재료 소멸" 매도로 -2.42% 하락했습니다.
+        같은 날 15조 자사주 매입 종료 임박, 반도체 ETF 리밸런싱, 옵션만기까지 겹쳐 수급이 꼬였고, 한글날 휴장 중 OKX 선물은
+        $188까지 밀렸다가 $192선(원화 환산 약 25.8만 원)에서 등락 중입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · SAMSUNGUSDT.P (OKX) · 15분봉 / 일봉 — KRX 휴장·야간에도 24시간 거래</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_sam_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_sam_1d" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>선물 흐름(4시간봉 기준)</b>: 10/5~6 $206~208 고점 이후 하락 전환, 10/7~8 20MA($195.5)·200MA($197.7)를 연달아 하향 이탈하며 20MA가 200MA 아래로 내려가는 <b>데드크로스</b> 진행. 10/9 장중 $188 저점(대량 거래 아래꼬리) 후 $190~194 박스에서 반등 시도 중.<br>
+      <b>일봉(본주)</b>: 6/19 사상 최고가 374,500원 이후 조정 → 7/28 220,000원 저점 → 9월 285,500원까지 회복 후 재차 하락. 현재 270,000~276,000원이 단기 저항, 26만 원 초반이 1차 지지.
+    </div>
+  </header>
+
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(원)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>10/1(목)</b>
+            <div class="price-val">276,000</div>
+            <div class="chg-tag up">▲ +2.79%</div>
+          </td>
+          <td>
+            <b>9월 수출 사상 최대 + 마이크론 호실적</b><br>
+            9월 수출이 전년 대비 +83.5% 급증한 1,209억 달러로 사상 최대, 반도체는 3배 이상 증가. 美 마이크론의 가이던스 상회·장기공급계약 320억 달러 공개로 메모리 업황 확신 강화. 코스피 +1.95%로 3거래일 연속 하락 탈출
+          </td>
+          <td>반도체 업황 확인 반등</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/2(금)</b>
+            <div class="price-val">276,000</div>
+            <div class="chg-tag" style="color:var(--text-soft);">― 0.00%</div>
+          </td>
+          <td>
+            <b>연휴 앞두고 보합 마감</b><br>
+            장중 271,500~277,000원 등락 후 보합. 개천절·대체공휴일 연휴(10/3~5)를 앞둔 관망세 속 전일 상승분 유지
+          </td>
+          <td>연휴 전 관망</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/6(화)</b>
+            <div class="price-val">271,000</div>
+            <div class="chg-tag down">▼ -1.81%</div>
+          </td>
+          <td>
+            <b>연휴 후 반도체 차익실현, 코스피 7,000 붕괴</b><br>
+            278,500원 시가로 출발했으나 외국인 매도에 하락 반전. SK하이닉스도 -2.7%. 美 국채금리 수십 년래 최고, 3분기 잠정실적 발표 앞둔 경계감
+          </td>
+          <td>코스피 -1.14%</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/7(수)</b>
+            <div class="price-val">268,500</div>
+            <div class="chg-tag down">▼ -1.29%</div>
+          </td>
+          <td>
+            <b>외국인 2.6조 순매도 · 원화 강세 우려</b><br>
+            장 초반 +2% 이상 올랐다가 외국인 코스피 2.61조 순매도에 밀려 하락 전환. 원화 강세로 수출 실적 환산 감소 우려, 국내 유동성 위축 지적. 월가 사상 최고치에도 한국 증시 디커플링
+          </td>
+          <td>코스피 -1.98%</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/8(목)</b>
+            <div class="price-val">262,000</div>
+            <div class="chg-tag down">▼ -2.42%</div>
+          </td>
+          <td>
+            <b>3Q 영업이익 107.4조 "역대 최대"에도 셀온</b><br>
+            매출 195조·영업이익 107.4조로 4분기 연속 사상 최대, 그러나 블룸버그 컨센서스(108.7조) 소폭 하회. 美 10년물 5.36% 급등·필라델피아 반도체지수 -1.15%. 반도체 ETF 7종 리밸런싱(삼성전자 비중 상한 → 기계적 매도), 옵션만기, 15조 자사주 매입 종료 임박이 겹침. 외국인 삼성전자 약 2,907억 순매도
+          </td>
+          <td>코스피 -2.62% · 3일 연속 하락</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 이번 주 삼성전자는 <b>"사상 최대 실적 vs 수급 악재"</b>의 전형이었습니다. 10/1 수출 호조로 276,000원까지 올랐지만, 연휴 이후 외국인 매도·美 금리 급등·원화 강세가 이어졌고,
+      10/8 107조 실적 발표일에는 <b>ETF 리밸런싱·옵션만기·자사주 매입 종료</b>라는 기술적 매도 요인까지 겹치며 3거래일간 약 -5% 하락했습니다.
+      10/9 휴장 중 OKX 선물은 원화 환산 약 25.8만 원까지 추가로 밀린 상태라, <b>10/12(월) 개장 시 갭하락 여부</b>가 단기 관전 포인트입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>4분기 연속 사상 최대 실적</b> — 3Q 영업이익 107.4조(전분기 89.5조 대비 +20%), 국내 기업 최초 분기 100조 돌파. 선행 PER 약 4.3배로 이익 대비 저평가</li>
+        <li><b>메모리 가격 상승 지속</b> — 트렌드포스 3Q DRAM +13~18%, 4Q NAND +15~20%·기업용 SSD +23~28% 전망, 2027년 HBM 계약가 +50% 이상 기대</li>
+        <li><b>HBM4 본격화</b> — 2Q HBM4 판매 확대·업계 최초 HBM4E 샘플 출하, 3Q HBM4 매출 3배 이상 증가 기대. HBM 점유율 33%(2Q)로 상승</li>
+        <li><b>파운드리 반전 카드</b> — 테슬라 약 165억 달러 계약(~2033), 美 테일러 공장 연말 시험생산·2027년 양산</li>
+        <li><b>대규모 주주환원</b> — 2026년 환원 재원 90~110조, 3Q 배당 약 30조(10월 이사회 확정 예정), 증권사 36곳 '강력 매수'·평균 목표가 약 47.9만 원</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>외국인 매도 지속</b> — 삼성전자 5거래일 연속 순매도(약 26억 달러), 6월 이후 코스피 누적 약 96.6조 순매도. 美·대만 증시 신고가에도 한국 디커플링</li>
+        <li><b>자사주 매입 종료</b> — 15조 원 매입 프로그램 이번 주 종료로 일별 매수 지지 소멸</li>
+        <li><b>매크로 역풍</b> — 美 10년물 5.36%(2002년 이후 최고), 유가 $100+, 12월 FOMC 추가 인상 확률 ~81%. 원화 강세(1,338원)는 달러 매출 환산 감소</li>
+        <li><b>메모리 가격 상승률 둔화</b> — 1Q DRAM +90%대 → 3Q +10%대로 급감, 피크아웃 논란. 中 CXMT·YMTC 범용 메모리 공세, 2026년 美 데이터센터 투자 취소 보도</li>
+        <li><b>비메모리 적자</b> — 2Q MX(모바일) -0.7조·VD/DA 소폭 적자, 부품가 상승으로 3Q에도 적자 지속 전망. HBM4 엔비디아 물량은 SK하이닉스가 약 2/3 확보 추정</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:20px; font-size:15px; color:var(--text);">시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull">
+        <b>강세</b>
+        <span>10/29 확정실적·이사회에서 30조 배당 및 HBM4 엔비디아 공급 확대 확인, 외국인 순매수 전환 시 276,000원 돌파 → 285,500원(9/23) → 296,000원 재도전 (선물 $200 → $206~208)</span>
+      </div>
+      <div class="scenario base">
+        <b>기본</b>
+        <span>255,000~276,000원 박스권 등락. 10/14 美 CPI·美 금리 방향과 외국인 수급을 확인하며 실적 대비 저평가 구간에서 바닥 다지기 (선물 $188~$198)</span>
+      </div>
+      <div class="scenario bear">
+        <b>약세</b>
+        <span>10/12 개장 갭하락 후 25만 원 이탈 시 24만 원대 → 7/28 저점 220,000원까지 하방 열림. 美 CPI 상회·금리 추가 급등·메모리 피크아웃 논란 확대 시 (선물 $188 하향 이탈)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 매출 구조도 -->
+  <section>
+    <h2>3. 삼성전자 매출 구조도 (2026년 2분기 사업부별)</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
+      반도체(DS)가 매출의 약 70%, 영업이익의 사실상 전부를 책임지는 "메모리 원톱" 구조입니다. (사업부 합계는 내부거래 제거 전 기준이라 연결 매출 171.5조와 차이가 있습니다.)
+    </p>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>삼성전자 연결 실적</b>
+          <div class="desc">2Q26 매출 171.5조 · 영업이익 89.5조 → 3Q26(잠정) 매출 195조 · 영업이익 107.4조</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 사업부별 매출 · 영업이익 (2Q26) ↓</div>
+      <div class="flow-split">
+        <div class="flow-box reward">
+          <b>DS (반도체) — 127.5조 · 영업익 89.2조</b>
+          <div class="desc">메모리(DRAM·HBM·NAND) + 파운드리·시스템LSI. AI 서버용 HBM·고용량 DRAM 가격 급등이 이익 견인 — 전사 이익의 약 99%</div>
+        </div>
+        <div class="flow-box burn">
+          <b>MX/네트워크 (모바일) — 33.2조 · 영업익 -0.7조</b>
+          <div class="desc">갤럭시 스마트폰·태블릿·통신장비. 메모리 등 부품가 상승으로 원가 부담 → 적자 전환</div>
+        </div>
+      </div>
+      <div class="flow-split" style="margin-top:10px;">
+        <div class="flow-box burn">
+          <b>VD/DA (TV·가전) — 14.5조 · 소폭 적자</b>
+          <div class="desc">TV·냉장고·세탁기 등. 수요 부진 + 부품가 상승으로 수익성 악화</div>
+        </div>
+        <div class="flow-box">
+          <b>SDC (디스플레이) — 7.5조 · 영업익 0.7조</b>
+          <div class="desc">스마트폰·IT용 OLED 패널. 소폭 흑자 유지</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 주가 결정 변수 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>메모리 가격 사이클 × HBM 점유율 × 외국인 수급</b>
+          <div class="desc">이익 대부분이 메모리에서 나오므로 DRAM·HBM 가격 상승률 둔화 여부가 주가의 핵심 변수, 단기적으로는 외국인 매매와 美 금리·환율이 방향 결정</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>핵심 지표 요약</h3>
+    <table>
+      <thead>
+        <tr><th>항목</th><th>수치/내용</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>💰 시가총액</td><td>약 1,660조 원</td><td>코스피 시총 1위</td></tr>
+        <tr><td>📊 밸류에이션</td><td>PER(TTM) 약 13배 · 선행 PER 약 4.3배</td><td>이익 급증으로 선행 기준 저평가</td></tr>
+        <tr><td>📈 52주 범위</td><td>83,400원 ~ 374,500원</td><td>사상 최고가 6/19 374,500원</td></tr>
+        <tr><td>🧠 HBM 점유율</td><td>약 33% (2Q26)</td><td>SK하이닉스 약 50%</td></tr>
+        <tr><td>🏭 파운드리</td><td>점유율 약 7% · 테슬라 165억 달러 계약</td><td>테일러 공장 2027년 양산</td></tr>
+        <tr><td>💵 주주환원</td><td>2026년 90~110조 · 3Q 배당 약 30조</td><td>10월 이사회 확정 예정</td></tr>
+        <tr><td>🎯 증권가 목표가</td><td>평균 약 478,600원 (36곳 '강력 매수')</td><td>현재가 대비 약 +80%</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 주요 일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%;">일정 (KST)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:16%;">중요도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>10월 12일 (월) 오전 9:00</b></td>
+          <td>한글날 연휴 후 KRX 개장 — 휴장 중 선물 하락분(원화 환산 약 -1.6%) 반영 갭 여부</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>지속</b></td>
+          <td>외국인 순매매 동향 — 5거래일 연속 순매도 중단 여부가 반등의 핵심 조건</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 14일 (수) 밤 9:30</b></td>
+          <td>미국 9월 CPI — 美 국채금리·12월 FOMC 인상 확률 → 외국인 위험선호 직결</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) (예정)</b></td>
+          <td><b>3분기 확정실적 발표 · 컨퍼런스콜 · 이사회</b> — 사업부별 실적, HBM4 공급 현황, 3Q 배당(약 30조) 확정</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td>FOMC 금리결정 — 동결 우세(~81%), 12월 인상 시그널 강도</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>11월 1일 (일)</b></td>
+          <td>한국 10월 수출입 동향 — 반도체 수출 증가세 지속 여부</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>수시</b></td>
+          <td>엔비디아 HBM4 공급 비중 관련 소식, 메모리 고정거래가격(월말 발표), 테슬라·파운드리 수주</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>2027년 1월 (이사회)</b></td>
+          <td>잔여 주주환원(추가 배당·자사주 매입·소각) 결정</td>
+          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.08 KRX 종가 (10/9 한글날 휴장, KST 2026.10.10 작성).
+    상단 차트는 OKX SAMSUNGUSDT.P 무기한선물(TradingView 위젯)로, KRX 본주와 별개로 24시간 거래되며 환율·장외 수급에 따라 괴리가 발생할 수 있습니다.
+    사업부별 수치·메모리 가격 전망·목표가는 회사 공시 및 증권사·리서치 보도 기준이며 변경될 수 있습니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_sam_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:SAMSUNGUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_sam_1d",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:SAMSUNGUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+<script type="text/javascript">
+  (function(){
+    const changeEl = document.getElementById('samPriceChange');
+    const timeEl = document.getElementById('samLiveTime');
+    const dot = document.getElementById('samLiveDot');
+
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateSamPrice(){
+      try{
+        const res = await fetch('https://www.okx.com/api/v5/market/ticker?instId=SAMSUNG-USDT-SWAP');
+        const json = await res.json();
+        const t = json && json.data && json.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const pct = open24h ? ((last - open24h) / open24h) * 100 : null;
+        if(changeEl){
+          const sign = pct !== null && pct >= 0 ? '+' : '';
+          changeEl.textContent = `KRX 10/8 종가 ▼ -2.42% · 선물 $${last.toFixed(2)}` + (pct !== null ? ` (24H ${sign}${pct.toFixed(2)}%)` : '');
+          changeEl.className = (pct !== null && pct >= 0) ? 'chg-up' : 'chg-down';
+        }
+        if(dot){ dot.style.background = '#5fd188'; }
+        if(timeEl){ timeEl.textContent = '선물 실시간 반영 · ' + fmtTimeKST(); }
+      }catch(err){
+        if(timeEl){ timeEl.textContent = '실시간 선물 가격 갱신 실패 · 마지막 표시값 유지'; }
+        if(dot){ dot.style.background = '#c53030'; }
+      }
+    }
+
+    updateSamPrice();
+    setInterval(updateSamPrice, 30000);
+  })();
+</script>
+</body>
+</html>
