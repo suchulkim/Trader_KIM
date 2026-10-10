@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LG전자 주가 분석 리포트</title>
+<style>
+  :root{
+    --bg:#0e1015;
+    --card:#161a21;
+    --text:#eef0f4;
+    --text-soft:#9aa2b1;
+    --border:#262b35;
+    --accent:#4ea1ff;
+    --up:#ff6b6b;
+    --down:#5fd188;
+    --pos-bg:#13291c;
+    --pos-text:#5fd188;
+    --neg-bg:#2c1717;
+    --neg-text:#ff8080;
+    --chip-bg:#1c2028;
+    --table-head:#1a1e26;
+    --shadow: 0 1px 3px rgba(0,0,0,0.4);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height:1.6;
+  }
+  .wrap{
+    max-width:900px;
+    margin:0 auto;
+    padding:28px 18px 60px;
+  }
+  header.title-block{
+    margin-bottom:22px;
+  }
+  .eyebrow{
+    font-size:13px;
+    color:var(--text-soft);
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px 10px;
+    align-items:center;
+  }
+  h1{
+    font-size:26px;
+    margin:6px 0 4px;
+    letter-spacing:-0.3px;
+  }
+  h1 .ticker{
+    color:var(--text-soft);
+    font-weight:500;
+    font-size:18px;
+    margin-left:6px;
+  }
+  .price-card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:18px 20px;
+    box-shadow:var(--shadow);
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px 28px;
+    align-items:center;
+    margin-top:14px;
+  }
+  .price-main{
+    font-size:30px;
+    font-weight:700;
+    letter-spacing:-0.5px;
+  }
+  .chg-up{color:var(--up); font-weight:600;}
+  .chg-down{color:var(--down); font-weight:600;}
+  .price-sub{
+    font-size:13.5px;
+    color:var(--text-soft);
+    max-width:560px;
+  }
+
+  section{
+    margin-top:36px;
+  }
+  h2{
+    font-size:18.5px;
+    margin:0 0 14px;
+    padding-bottom:8px;
+    border-bottom:2px solid var(--text);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  h3{
+    font-size:15.5px;
+    margin:20px 0 10px;
+    color:var(--text-soft);
+  }
+
+  /* 테이블 스타일 */
+  table{
+    width:100%;
+    border-collapse:collapse;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:10px;
+    overflow:hidden;
+    font-size:13.5px;
+  }
+  th, td{
+    padding:14px 16px;
+    text-align:left;
+    border-bottom:1px solid var(--border);
+    vertical-align:top;
+  }
+  th{
+    background:var(--table-head);
+    font-weight:600;
+    font-size:13px;
+    color:var(--text-soft);
+  }
+  tr:last-child td{border-bottom:none;}
+  
+  .date-col b{
+    display:block;
+    font-size:14px;
+    color:var(--text);
+  }
+  .price-val{
+    font-size:13px;
+    color:var(--text-soft);
+    margin-top:2px;
+  }
+  .chg-tag{
+    display:inline-block;
+    font-weight:600;
+    font-size:12px;
+    margin-top:4px;
+  }
+  .chg-tag.up{color:var(--up);}
+  .chg-tag.down{color:var(--down);}
+
+  /* 긍정/부정 요소 블록 (이미지 양식 호환) */
+  .factor-block{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:18px 20px;
+    margin-bottom:16px;
+    box-shadow:var(--shadow);
+  }
+  .factor-block.pos{border-left:4px solid var(--pos-text);}
+  .factor-block.neg{border-left:4px solid var(--neg-text);}
+  .factor-block h4{
+    margin:0 0 12px;
+    font-size:15px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+  .factor-block.pos h4{color:var(--pos-text);}
+  .factor-block.neg h4{color:var(--neg-text);}
+
+  ul.plain{
+    margin:0;
+    padding-left:18px;
+    font-size:13.5px;
+    color:var(--text);
+  }
+  ul.plain li{
+    margin-bottom:8px;
+    line-height:1.5;
+  }
+  ul.plain li:last-child{margin-bottom:0;}
+
+  /* 시나리오 그리드 스타일 (이미지 양식 호환) */
+  .scenario-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:10px;
+    margin-top:12px;
+  }
+  .scenario{
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    border:1px solid var(--border);
+    background:var(--card);
+    display:flex;
+    align-items:flex-start;
+  }
+  .scenario b{
+    display:inline-block;
+    padding:3px 10px;
+    border-radius:6px;
+    font-size:12px;
+    margin-right:12px;
+    flex-shrink:0;
+  }
+  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
+  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
+  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
+
+  .star{color:#e0a800;}
+  .star-dim{color:#3a3f4a;}
+
+  .callout{
+    background:var(--chip-bg);
+    border-radius:10px;
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--text-soft);
+    margin-top:16px;
+    line-height:1.6;
+  }
+  .callout b{color:var(--text);}
+
+  .chart-card{
+    margin-top:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:14px;
+    box-shadow:var(--shadow);
+  }
+  .chart-card .cap{
+    font-size:12.5px;
+    color:var(--text-soft);
+    margin-bottom:8px;
+  }
+  .tv-widget-container{
+    height:480px;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .tv-widget-container .tradingview-widget-container,
+  .tv-widget-container .tradingview-widget-container > div{
+    height:100% !important;
+    width:100% !important;
+  }
+  .charts-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:16px;
+  }
+
+  /* 매출 구조 다이어그램 */
+  .flow-diagram{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:12px;
+    padding:20px 18px;
+    box-shadow:var(--shadow);
+  }
+  .flow-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    justify-content:center;
+    align-items:stretch;
+  }
+  .flow-box{
+    flex:1 1 180px;
+    background:var(--chip-bg);
+    border:1px solid var(--border);
+    border-radius:10px;
+    padding:12px 14px;
+    font-size:13.5px;
+    text-align:center;
+  }
+  .flow-box.accent{border-color:var(--accent); background:rgba(78,161,255,0.08);}
+  .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
+  .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
+  .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
+  .flow-box .desc{color:var(--text-soft); font-size:12px;}
+  .flow-arrow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--text-soft);
+    font-size:20px;
+    padding:2px 4px;
+  }
+  .flow-arrow.down{
+    width:100%;
+    padding:6px 0;
+  }
+  .flow-split{
+    display:flex;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:4px;
+  }
+  .flow-split > div{flex:1 1 220px;}
+
+  footer{
+    margin-top:44px;
+    padding-top:14px;
+    border-top:1px solid var(--border);
+    font-size:12px;
+    color:var(--text-soft);
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="title-block">
+    <div class="eyebrow">
+      <span>2026.10.10 (토) · 신규 작성</span>
+      <span>·</span>
+      <span>KRX 10/8 종가 기준 (10/9 한글날 휴장) · 장외 시간은 OKX 무기한선물 가격 반영</span>
+    </div>
+    <h1>LG전자 (066570) 주가 분석 리포트<span class="ticker">Perpetual: LGELECTRONICSUSDT.P</span></h1>
+
+    <div class="price-card">
+      <div>
+        <div class="price-main" id="lgPriceMain">201,000원 <span id="lgLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#9aa2b1;margin-left:4px;vertical-align:middle;"></span></div>
+        <div class="chg-down" id="lgPriceChange">KRX 10/8 종가 ▼ -3.37% · 선물 $150.37 (실시간 불러오는 중…)</div>
+        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">10/6 +8.1% 급등 → 10/7 어닝미스 -10.7% 급락 · 20만 원선 공방 · 6월 고점(392,500원) 대비 약 -49% · <span id="lgLiveTime">가격 갱신 중…</span></div>
+      </div>
+      <div class="price-sub">
+        10/5 美 AIR Control Concepts와 수십억 달러 규모 AI 데이터센터 칠러 장기공급 계약(역대 최대 냉각 수주)을 발표하며 10/6 +8.1% 급등했지만,
+        다음 날 발표된 3분기 잠정 영업이익 7,818억 원이 컨센서스(1.03조)를 약 24% 밑돌면서 하루 만에 -10.7% 급락해 상승분을 모두 반납했습니다.
+        매출은 23.8조로 3분기 사상 최대였지만 LG이노텍 부진과 물류·원자재 비용이 발목을 잡았고, 10/8 코스피 급락까지 겹쳐 20만 원선까지 밀렸습니다.
+        휴장 중 OKX 선물은 $148~152(원화 환산 약 20만 원)에서 횡보 중입니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · LGELECTRONICSUSDT.P (OKX) · 15분봉 / 일봉 — KRX 휴장·야간에도 24시간 거래</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_lg_15m" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container">
+            <div class="tradingview-widget-container">
+              <div id="tv_lg_1d" style="height:100%; width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <b>선물 흐름(4시간봉 기준)</b>: 9/27~10/5 $154~160 완만한 상승 후 10/6 칠러 수주 뉴스에 대량 거래 장대양봉으로 $172까지 급등, 10/7 장중 $174.5 고점(윗꼬리) 직후 어닝미스로 장대음봉 → 10/8 $148까지 급락하며 상승분 전부 반납. 현재 20MA($152.6) 아래 $149~151 박스 횡보. (신규 상장으로 200MA는 아직 미형성)<br>
+      <b>일봉(본주)</b>: 6월 초 엔비디아 젠슨 황 방한·로봇 협력 기대로 392,500원까지 폭등 후 급락, 이후 20만 원대 초중반 박스. 현재 208,000~215,500원이 단기 저항, 20만 원·198,800원(10/8 저점)이 지지.
+    </div>
+  </header>
+
+  <!-- 1. 최근 주가 움직임의 주요 원인 -->
+  <section>
+    <h2>1. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:22%;">날짜 · 종가(원)</th>
+          <th style="width:53%;">내용</th>
+          <th style="width:25%;">비고</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="date-col">
+            <b>10/1(목)</b>
+            <div class="price-val">212,000</div>
+            <div class="chg-tag up">▲ 상승 마감</div>
+          </td>
+          <td>
+            <b>9월 수출 사상 최대 · 코스피 반등 동조</b><br>
+            9월 수출 +83.5%로 사상 최대, 코스피 +1.95% 반등에 동조. 3분기 실적 발표를 앞두고 21만 원대 회복
+          </td>
+          <td>시장 반등 동조</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/2(금)</b>
+            <div class="price-val">215,500</div>
+            <div class="chg-tag up">▲ +1.65%</div>
+          </td>
+          <td>
+            <b>연휴 앞두고 상승 이어가</b><br>
+            장중 216,500원까지 오르며 2거래일 연속 상승. 개천절 연휴(10/3~5) 앞두고 실적·수주 기대감 반영
+          </td>
+          <td>연휴 전 강세</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/6(화)</b>
+            <div class="price-val">233,000</div>
+            <div class="chg-tag up">▲ +8.12%</div>
+          </td>
+          <td>
+            <b>美 AI 데이터센터 칠러 "역대 최대" 수주</b><br>
+            10/5(현지) 美 데이터센터 인프라 기업 AIR Control Concepts와 수십억 달러 규모 칠러 장기공급 계약 발표 — LG전자 냉각 솔루션 단일 수주 역대 최대. 삼성·하이닉스 하락 속 시총 상위주 중 최대 상승률, 장중 235,000원
+          </td>
+          <td>HVAC·AI 냉각 재평가</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/7(수)</b>
+            <div class="price-val">208,000</div>
+            <div class="chg-tag down">▼ -10.73%</div>
+          </td>
+          <td>
+            <b>3분기 어닝미스 — 영업이익 컨센서스 24% 하회</b><br>
+            잠정 매출 23조 8,270억(+8.9%, 3분기 최대) · 영업이익 7,818억(+13.5%). 그러나 컨센서스(매출 24.2조·영업이익 1조 301억) 대비 영업이익 약 2,483억 미달. 자회사 LG이노텍 실적 부진, 물류·원자재·고정비 부담. 장중 238,000원 고점 후 207,000원까지 급락
+          </td>
+          <td>하루 만에 급등분 반납</td>
+        </tr>
+        <tr>
+          <td class="date-col">
+            <b>10/8(목)</b>
+            <div class="price-val">201,000</div>
+            <div class="chg-tag down">▼ -3.37%</div>
+          </td>
+          <td>
+            <b>어닝미스 후속 매도 + 코스피 -2.62%</b><br>
+            장중 198,800원으로 20만 원선 일시 이탈 후 회복. 美 10년물 5.36%·유가 $100+로 외국인 2조·기관 1.7조 동반 순매도. 전기전자 업종 -3.28% 동조, 거래대금 약 4,000억 원
+          </td>
+          <td>20만 원선 방어 시험</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout">
+      → 이번 주 LG전자는 <b>"역대 최대 수주(10/6, +8.1%) → 어닝미스(10/7, -10.7%)"</b>로 롤러코스터를 탔습니다. AI 데이터센터 냉각이라는 성장 스토리에 대한 기대가 컸던 만큼,
+      영업이익이 컨센서스를 24%나 밑돌자 실망 매물이 한꺼번에 쏟아졌습니다. 다만 매출은 3분기 사상 최대이고 1~3분기 누적 영업이익은 4.03조(+55.9%)로 사상 첫 4조를 넘겨,
+      <b>"성장은 진행 중이나 이익 속도가 기대에 못 미친 것"</b>에 가깝습니다. 휴장 중 선물은 원화 환산 약 20만 원으로 10/8 종가와 비슷해, <b>10/12(월) 20만 원 지지 여부</b>가 단기 관전 포인트입니다.
+    </div>
+  </section>
+
+  <!-- 2. 향후 전망 -->
+  <section>
+    <h2>2. 향후 전망</h2>
+
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>AI 데이터센터 냉각 사업 본격화</b> — 美 AIR Control Concepts와 수십억 달러 규모 칠러 장기공급(역대 최대 냉각 수주), 국내외 냉각 생산능력 확대 투자 중</li>
+        <li><b>외형 성장 지속</b> — 3분기 매출 23.8조(3분기 사상 최대), 1~3분기 누적 매출 71.4조·영업이익 4.03조(+55.9%)로 사상 첫 70조·4조 돌파, 올해 매 분기 전년 대비 증익</li>
+        <li><b>사업부 체질 개선</b> — 가전은 프리미엄·중저가 투트랙+구독·B2B로 회복, TV는 프리미엄 OLED·webOS로 수익성 크게 개선, 전장은 수주잔고의 매출 전환 순항</li>
+        <li><b>로보틱스 투자</b> — 양재동 국내 최대 데이터 팩토리 구축, 창원 액추에이터 양산 인프라 구축. 엔비디아와 로봇·AI 데이터센터 협력 기대(6월 급등 재료)</li>
+        <li>어닝미스로 눈높이가 낮아진 만큼 4분기 B2B·냉각 매출 확인 시 반등 여지</li>
+      </ul>
+    </div>
+
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>3분기 어닝미스</b> — 영업이익 7,818억으로 컨센서스(1.03조) 약 24% 하회, 증권사 실적 추정치·목표가 하향 가능성</li>
+        <li><b>LG이노텍 부진</b> — 연결 자회사 실적 약세가 본사 개선분을 상쇄, 애플 등 고객사 의존도 리스크</li>
+        <li><b>비용 압박</b> — 물류·원자재·고정비 상승, 중동 분쟁發 유가 $100+로 운임 부담. 냉각(ES) 부문은 신규 생산능력·인력 투자로 수익성 소폭 하락</li>
+        <li><b>테마성 변동성</b> — 6월 젠슨 황 효과로 392,500원 폭등 후 3거래일 -31% 급락 전례, 뉴스 따라 급등락 반복</li>
+        <li><b>매크로·수급</b> — 美 10년물 5.3%대, 외국인 코스피 대규모 순매도, 가전·TV 수요 둔화와 中 업체 가격 경쟁</li>
+      </ul>
+    </div>
+
+    <h3 style="margin-top:20px; font-size:15px; color:var(--text);">시나리오</h3>
+    <div class="scenario-grid">
+      <div class="scenario bull">
+        <b>강세</b>
+        <span>확정실적 발표(10월 말)에서 냉각·B2B 수주 가시성과 4분기 개선 가이던스 확인 시 208,000원 → 215,500원 회복, 추가 데이터센터 수주 시 233,000원 재도전 (선물 $155 → $160~172)</span>
+      </div>
+      <div class="scenario base">
+        <b>기본</b>
+        <span>195,000~215,000원 박스권 등락. 어닝미스 충격 소화와 증권사 목표가 조정을 거치며 20만 원 부근 바닥 다지기 (선물 $145~$160)</span>
+      </div>
+      <div class="scenario bear">
+        <b>약세</b>
+        <span>198,800원(10/8 저점) 이탈 시 19만 원대 → 18만 원 지지 테스트. 목표가 줄하향·LG이노텍 추가 부진·코스피 약세 지속 시 (선물 $148 하향 이탈)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. 매출 구조도 -->
+  <section>
+    <h2>3. LG전자 매출 구조도</h2>
+    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
+      가전(HS)·TV(MS)가 매출의 절반 이상을 차지하는 가운데, 전장(VS)·냉난방공조(ES)·B2B로 무게중심을 옮기는 중입니다. 연결 실적에는 LG이노텍이 포함됩니다. (사업부 비중은 연간 기준 대략치)
+    </p>
+    <div class="flow-diagram">
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>LG전자 연결 실적</b>
+          <div class="desc">3Q26 잠정 매출 23조 8,270억(+8.9%) · 영업이익 7,818억(+13.5%) · 1~3Q 누적 매출 71.4조 · 영업이익 4.03조(+55.9%)</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 사업 부문 ↓</div>
+      <div class="flow-split">
+        <div class="flow-box reward">
+          <b>HS 생활가전 (약 30%)</b>
+          <div class="desc">냉장고·세탁기·에어컨 — 프리미엄·중저가 투트랙, 구독·온라인·B2B 확대로 이익 회복. 전사 이익의 핵심 축</div>
+        </div>
+        <div class="flow-box reward">
+          <b>MS TV·미디어 (약 20%)</b>
+          <div class="desc">OLED TV·webOS 플랫폼 — 프리미엄 비중 확대·마케팅 효율화로 수익성 크게 개선</div>
+        </div>
+      </div>
+      <div class="flow-split" style="margin-top:10px;">
+        <div class="flow-box">
+          <b>VS 전장 (약 13%)</b>
+          <div class="desc">인포테인먼트·전기차 부품 — 수주잔고가 매출로 순조롭게 전환, 프리미엄 비중 상승</div>
+        </div>
+        <div class="flow-box accent">
+          <b>ES 냉난방공조 (약 10%)</b>
+          <div class="desc">HVAC·AI 데이터센터 칠러 — 美 역대 최대 칠러 수주, 신규 생산능력 투자로 단기 수익성은 소폭 하락</div>
+        </div>
+      </div>
+      <div class="flow-split" style="margin-top:10px;">
+        <div class="flow-box burn">
+          <b>LG이노텍 (연결, 약 25%)</b>
+          <div class="desc">카메라 모듈·기판 — 3분기 실적 부진으로 연결 영업이익을 끌어내린 주범</div>
+        </div>
+        <div class="flow-box">
+          <b>신사업: 로보틱스</b>
+          <div class="desc">양재 데이터 팩토리·창원 액추에이터 양산 — 아직 매출 기여는 미미, 기업가치 옵션</div>
+        </div>
+      </div>
+      <div class="flow-arrow down">↓ 주가 결정 변수 ↓</div>
+      <div class="flow-row">
+        <div class="flow-box accent">
+          <b>B2B 전환 속도 × AI 냉각 수주 × LG이노텍 실적</b>
+          <div class="desc">가전·TV는 안정적 현금창출원, 주가 재평가는 데이터센터 냉각·전장·로보틱스 같은 고마진 B2B가 이익으로 연결되는 속도에 달림</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>핵심 지표 요약</h3>
+    <table>
+      <thead>
+        <tr><th>항목</th><th>수치/내용</th><th>비고</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>💰 현재가</td><td>201,000원 (10/8)</td><td>6월 고점 392,500원 대비 약 -49%</td></tr>
+        <tr><td>📊 3Q 잠정</td><td>매출 23.83조 · 영업이익 7,818억</td><td>컨센서스 영업이익 1.03조 대비 -24%</td></tr>
+        <tr><td>📈 1~3Q 누적</td><td>매출 71.38조 · 영업이익 4.03조</td><td>사상 첫 70조·4조 돌파</td></tr>
+        <tr><td>❄️ AI 냉각</td><td>美 AIR Control Concepts 칠러 장기공급</td><td>수십억 달러, 냉각 단일 수주 역대 최대</td></tr>
+        <tr><td>🤖 로보틱스</td><td>양재 데이터 팩토리 · 창원 액추에이터 양산</td><td>2026년 로봇 사업 본격화 선언</td></tr>
+        <tr><td>👥 외국인 소진율</td><td>약 29.7%</td><td>10/8 기준</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- 4. 주요 일정 -->
+  <section>
+    <h2>4. 주요 일정 (KST 기준)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th style="width:28%;">일정 (KST)</th>
+          <th style="width:56%;">내용</th>
+          <th style="width:16%;">중요도</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><b>10월 12일 (월) 오전 9:00</b></td>
+          <td>한글날 연휴 후 KRX 개장 — 어닝미스 이후 증권사 목표가 조정 리포트 반영, 20만 원 지지 여부</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 14일 (수) 밤 9:30</b></td>
+          <td>미국 9월 CPI — 美 금리·환율 경로 → 외국인 수급 영향</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 말 (예정)</b></td>
+          <td><b>3분기 확정실적 발표</b> — 사업부별 실적(가전·TV·전장·냉각), 순이익, 4분기 가이던스, 데이터센터 냉각 수주잔고</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 말 (예정)</b></td>
+          <td>LG이노텍 3분기 실적 — 연결 이익 부진의 원인 확인</td>
+          <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
+        </tr>
+        <tr>
+          <td><b>10월 29일 (목) 오전 3:00</b></td>
+          <td>FOMC 금리결정 — 동결 우세, 12월 인상 시그널 강도</td>
+          <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
+        </tr>
+        <tr>
+          <td><b>수시</b></td>
+          <td>추가 AI 데이터센터 냉각 수주, 엔비디아 등 로봇·AI 협력 소식, 美 관세 정책</td>
+          <td><span class="star">★★★★★</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <footer>
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.08 KRX 종가 (10/9 한글날 휴장, KST 2026.10.10 작성).
+    상단 차트는 OKX LGELECTRONICSUSDT.P 무기한선물(TradingView 위젯)로, KRX 본주와 별개로 24시간 거래되며 환율·장외 수급에 따라 괴리가 발생할 수 있습니다.
+    10/1 등락률은 보도 수치 부재로 방향만 표기했으며, 사업부 비중은 연간 기준 대략치입니다.
+  </footer>
+
+</div>
+
+<script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+<script type="text/javascript">
+  new TradingView.widget({
+    "container_id": "tv_lg_15m",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:LGELECTRONICSUSDT.P",
+    "interval": "15",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+  new TradingView.widget({
+    "container_id": "tv_lg_1d",
+    "width": "100%", "height": 460,
+    "symbol": "OKX:LGELECTRONICSUSDT.P",
+    "interval": "D",
+    "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+    "toolbar_bg": "#161a21", "enable_publishing": false,
+    "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+    "studies": ["MASimple@tv-basicstudies"],
+    "support_host": "https://www.tradingview.com"
+  });
+</script>
+<script type="text/javascript">
+  (function(){
+    const changeEl = document.getElementById('lgPriceChange');
+    const timeEl = document.getElementById('lgLiveTime');
+    const dot = document.getElementById('lgLiveDot');
+
+    function fmtTimeKST(){
+      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
+    }
+
+    async function updateLgPrice(){
+      try{
+        const res = await fetch('https://www.okx.com/api/v5/market/ticker?instId=LGELECTRONICS-USDT-SWAP');
+        const json = await res.json();
+        const t = json && json.data && json.data[0];
+        if(!t || !t.last) throw new Error('no ticker data');
+        const last = parseFloat(t.last);
+        const open24h = parseFloat(t.open24h);
+        const pct = open24h ? ((last - open24h) / open24h) * 100 : null;
+        if(changeEl){
+          const sign = pct !== null && pct >= 0 ? '+' : '';
+          changeEl.textContent = `KRX 10/8 종가 ▼ -3.37% · 선물 $${last.toFixed(2)}` + (pct !== null ? ` (24H ${sign}${pct.toFixed(2)}%)` : '');
+          changeEl.className = (pct !== null && pct >= 0) ? 'chg-up' : 'chg-down';
+        }
+        if(dot){ dot.style.background = '#5fd188'; }
+        if(timeEl){ timeEl.textContent = '선물 실시간 반영 · ' + fmtTimeKST(); }
+      }catch(err){
+        if(timeEl){ timeEl.textContent = '실시간 선물 가격 갱신 실패 · 마지막 표시값 유지'; }
+        if(dot){ dot.style.background = '#c53030'; }
+      }
+    }
+
+    updateLgPrice();
+    setInterval(updateLgPrice, 30000);
+  })();
+</script>
+</body>
+</html>
