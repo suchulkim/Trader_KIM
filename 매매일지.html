@@ -52,6 +52,8 @@
   .top .sym a{color:var(--text);text-decoration:none;} .top .sym a:hover{color:var(--accent);}
   .sidep{font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;}
   .sidep.long{background:var(--win-bg);color:var(--win);} .sidep.short{background:var(--loss-bg);color:var(--loss);}
+  .exb{font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;letter-spacing:.3px;border:1px solid var(--border);color:var(--soft);}
+  .exb.OKX{color:#e8e8e8;} .exb.BITGET{color:#3fd0d4;border-color:rgba(63,208,212,.4);} .exb.BINANCE{color:#f0b90b;border-color:rgba(240,185,11,.4);}
   .top .m{color:var(--soft);}
   .top .pnl{font-size:15px;font-weight:900;margin-left:auto;}
   .tags{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin-top:8px;font-size:12.5px;}
@@ -97,7 +99,7 @@
 <body>
 <div class="wrap">
   <a class="back" href="index.html">← MARKET DASHBOARD</a>
-  <div class="eyebrow">OKX 무기한선물 · 숫자는 자동(okx_journal.py), 판단만 기록 · 모든 시간 KST</div>
+  <div class="eyebrow">OKX · Bitget · Binance 무기한선물 · 숫자는 자동(okx_journal.py), 판단만 기록 · 모든 시간 KST</div>
   <h1>매매일지</h1>
   <p class="sub">거래마다 <b>셋업 · 계획 준수 · 실수 태그</b> 3가지만 고르면 나머지는 자동입니다. 노란 테두리 = 아직 태그 안 한 거래.</p>
   <div id="banner"></div>
@@ -106,6 +108,7 @@
     <div class="grp" id="period">
       <button data-p="1">오늘</button><button data-p="7">7일</button><button data-p="30" class="on">30일</button><button data-p="90">90일</button><button data-p="0">전체</button>
     </div>
+    <select id="exSel"><option value="">전체 거래소</option></select>
     <select id="symSel"><option value="">전체 종목</option></select>
     <select id="sideSel"><option value="">롱+숏</option><option value="long">롱</option><option value="short">숏</option></select>
     <label style="font-size:12.5px;color:var(--soft)"><input type="checkbox" id="untaggedOnly"> 미태그만</label>
@@ -129,7 +132,7 @@
     <div class="st"><h3>실수 태그별 (그 실수가 낀 거래의 손익)</h3><div id="byMistake"></div></div>
     <div class="st"><h3>시간대별 (진입 시각 KST)</h3><div id="byHour"></div></div>
     <div class="st"><h3>종목별</h3><div id="bySym"></div></div>
-    <div class="st"><h3>롱/숏 · 계획 준수</h3><div id="bySide"></div></div>
+    <div class="st"><h3>거래소 · 롱/숏 · 계획 준수</h3><div id="bySide"></div></div>
     <div class="st"><h3>규칙 vs 내 매매 (금일 시장 대응 전략 연동)</h3><div id="vsRule"></div></div>
   </div>
   <p class="note">'규칙 적중률'은 금일 시장 대응 전략 페이지가 같은 브라우저에 저장한 판정 기록입니다. 규칙은 맞는데 내 성과가 나쁘면 <b>실행 문제</b>, 둘 다 나쁘면 <b>규칙 문제</b>입니다.</p>
@@ -177,7 +180,7 @@ function makeDemo(){
     const open = now - (i*0.7 + rnd()*0.5) * 86400e3, hold = (10 + rnd()*300) * 60e3;
     const move = (rnd() - .46) * 0.03, close = p * (1 + (side==="long"?move:-move));
     const notional = 500 + rnd()*2500, pnl = notional * move, fee = -notional*0.001;
-    out.push({id:"demo"+i, instId:s+"-USDT-SWAP", sym:s, side, lever:[5,10,20][Math.floor(rnd()*3)], openPx:p, closePx:close, size:notional/p, notional,
+    out.push({id:"demo"+i, ex:["OKX","OKX","BITGET","BINANCE"][Math.floor(rnd()*4)], instId:s+"-USDT-SWAP", sym:s, side, lever:[5,10,20][Math.floor(rnd()*3)], openPx:p, closePx:close, size:notional/p, notional,
       openTime:open, closeTime:open+hold, holdMin:+(hold/60e3).toFixed(1), pnl, fee, funding:-notional*0.0001*(rnd()>.5?1:0), realized:pnl+fee, pnlRatio:move, typeTxt:"청산",
       slAuto: rnd() > .4 ? (side==="long" ? p*(1-0.008) : p*(1+0.008)) : null});
   }
@@ -230,11 +233,11 @@ function agg(list){
 /* ===== 필터 ===== */
 let PERIOD = 30, PAGE = 40;
 function filtered(){
-  const now = Date.now(), sym = symSel.value, side = sideSel.value, un = untaggedOnly.checked;
+  const now = Date.now(), sym = symSel.value, side = sideSel.value, un = untaggedOnly.checked, ex = exSel.value;
   let start = 0;
   if (PERIOD === 1){ const d = kstDate(now); start = Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - 9*3600e3; }
   else if (PERIOD) start = now - PERIOD*86400e3;
-  return TRADES.filter(t => t.closeTime >= start && (!sym || t.sym === sym) && (!side || t.side === side) && (!un || !isTagged(t.id)));
+  return TRADES.filter(t => t.closeTime >= start && (!sym || t.sym === sym) && (!ex || (t.ex||"OKX") === ex) && (!side || t.side === side) && (!un || !isTagged(t.id)));
 }
 
 /* ===== 렌더: KPI·차트 ===== */
@@ -289,6 +292,7 @@ function tradeHTML(tr){
   return `<div class="tr ${tr.realized>0?'w':'l'} ${isTagged(tr.id)?'':'untagged'}" data-id="${tr.id}">
     <div class="top">
       <span class="sym"><a href="${encodeURI(tr.sym + "_주가분석_리포트.html")}" target="_blank" rel="noopener">${tr.sym}</a></span>
+      <span class="exb ${tr.ex||"OKX"}">${tr.ex||"OKX"}</span>
       <span class="sidep ${tr.side}">${tr.side==="long"?"롱":"숏"} ${tr.lever?tr.lever+"x":""}</span>
       <span class="m">${fmtDT(tr.openTime)} → ${fmtDT(tr.closeTime)} · ${holdTxt(tr.holdMin)}</span>
       <span class="m">${fmtPx(tr.openPx)} → ${fmtPx(tr.closePx)}</span>
@@ -355,7 +359,7 @@ function renderStats(list){
   document.getElementById("byMistake").innerHTML = table(mk, COLS);
   document.getElementById("byHour").innerHTML = table(groupBy(list, t => hourBucket(t.openTime), ["09–15:30 한국장","15:30–22:30 유럽·프리장","22:30–01 美 개장 초반","01–05 美 후반","05–09 새벽"]), COLS);
   document.getElementById("bySym").innerHTML = table(groupBy(list, t => t.sym).sort((a,b)=>b.a.sum-a.a.sum), COLS);
-  document.getElementById("bySide").innerHTML = table(groupBy(list, t => [t.side==="long"?"롱":"숏", (TAGS[t.id]||{}).ok===true?"계획 준수 ✅":(TAGS[t.id]||{}).ok===false?"계획 위반 ❌":null]), COLS);
+  document.getElementById("bySide").innerHTML = table(groupBy(list, t => [t.ex||"OKX", t.side==="long"?"롱":"숏", (TAGS[t.id]||{}).ok===true?"계획 준수 ✅":(TAGS[t.id]||{}).ok===false?"계획 위반 ❌":null]), COLS);
   // 규칙 vs 내 매매
   const cells = SETUPS.filter(s => SETUP_DIR[s[0]]);
   const rows = cells.map(([k, name]) => {
@@ -399,18 +403,19 @@ document.getElementById("importTags").onchange = e => {
   f.text().then(txt => { try { const o = JSON.parse(txt); Object.assign(TAGS, o.tags || {}); Object.assign(WEEKLY, o.weekly || {}); saveTags(); ls.set(weekKey, WEEKLY); render(); alert("태그를 불러왔습니다."); } catch(err){ alert("JSON 형식이 아닙니다."); } });
 };
 document.getElementById("exportCsv").onclick = () => {
-  const rows = [["청산시각","종목","방향","레버","진입가","청산가","보유(분)","실현손익","수수료","펀딩","R","셋업","계획준수","실수","메모"]];
+  const rows = [["청산시각","거래소","종목","방향","레버","진입가","청산가","보유(분)","실현손익","수수료","펀딩","R","셋업","계획준수","실수","메모"]];
   filtered().forEach(t => { const g = TAGS[t.id] || {}; const r = rOf(t);
-    rows.push([fmtDT(t.closeTime), t.sym, t.side, t.lever, t.openPx, t.closePx, t.holdMin, t.realized.toFixed(4), t.fee, t.funding, r!=null?r.toFixed(2):"", (SETUPS.find(s=>s[0]===g.setup)||[,""])[1], g.ok===true?"Y":g.ok===false?"N":"", (g.mistakes||[]).join("/"), g.memo||""]); });
+    rows.push([fmtDT(t.closeTime), t.ex||"OKX", t.sym, t.side, t.lever, t.openPx, t.closePx, t.holdMin, t.realized.toFixed(4), t.fee, t.funding, r!=null?r.toFixed(2):"", (SETUPS.find(s=>s[0]===g.setup)||[,""])[1], g.ok===true?"Y":g.ok===false?"N":"", (g.mistakes||[]).join("/"), g.memo||""]); });
   download("매매일지.csv", "﻿" + rows.map(r => r.map(v => `"${String(v??"").replace(/"/g,'""')}"`).join(",")).join("\n"), "text/csv");
 };
 
 /* ===== 시작 ===== */
-const symSel = document.getElementById("symSel"), sideSel = document.getElementById("sideSel"), untaggedOnly = document.getElementById("untaggedOnly");
+const exSel = document.getElementById("exSel"), symSel = document.getElementById("symSel"), sideSel = document.getElementById("sideSel"), untaggedOnly = document.getElementById("untaggedOnly");
 [...new Set(TRADES.map(t => t.sym))].sort().forEach(s => symSel.insertAdjacentHTML("beforeend", `<option>${s}</option>`));
 document.getElementById("period").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return;
   document.querySelectorAll("#period button").forEach(x => x.classList.toggle("on", x===b)); PERIOD = +b.dataset.p; PAGE = 40; render(); });
-[symSel, sideSel, untaggedOnly].forEach(el => el.onchange = () => { PAGE = 40; render(); });
+[...new Set(TRADES.map(t => t.ex||"OKX"))].sort().forEach(s => exSel.insertAdjacentHTML("beforeend", `<option>${s}</option>`));
+[exSel, symSel, sideSel, untaggedOnly].forEach(el => el.onchange = () => { PAGE = 40; render(); });
 document.getElementById("upd").textContent = DEMO ? "예시 데이터" : `데이터 ${window.TRADES_UPDATED || ""} · 총 ${TRADES.length}건`;
 if (DEMO) document.getElementById("banner").innerHTML = `<div class="banner">⚠️ 지금은 <b>예시 데이터</b>입니다. 같은 폴더에서 <code>python okx_journal.py</code> 를 실행하면 <code>trades_data.js</code> 가 생기고, 새로고침하면 실제 OKX 거래가 표시됩니다.</div>`;
 
