@@ -89,6 +89,11 @@
   .qa label{font-size:12.5px;color:var(--soft);}
   .qa textarea{width:100%;background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:8px 10px;font-family:inherit;font-size:13px;resize:vertical;min-height:44px;}
   .note{font-size:12.5px;color:var(--soft);margin-top:8px;}
+  #lock{position:fixed;inset:0;align-items:center;justify-content:center;background:var(--bg);z-index:100;padding:16px;}
+  .lockbox{width:100%;max-width:320px;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:26px 22px;text-align:center;display:flex;flex-direction:column;align-items:stretch;}
+  .lockbox input[type=password]{background:var(--card-2);color:var(--text);border:1px solid var(--border);border-radius:10px;padding:10px 12px;font-size:15px;font-family:inherit;}
+  .lockbox button{background:var(--accent);color:#0f1115;border:none;border-radius:10px;padding:10px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
+  .lockbox button:disabled{opacity:.6;}
   footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--soft);line-height:1.7;}
   @media (max-width:900px){ .kpis{grid-template-columns:repeat(3,minmax(0,1fr));} .stats,.review{grid-template-columns:1fr;} }
   @media (max-width:520px){ .kpis{grid-template-columns:repeat(2,minmax(0,1fr));} h1{font-size:23px;} .top .pnl{margin-left:0;} }
@@ -117,6 +122,7 @@
     <button class="btn" id="exportTags" title="태그·복기를 journal_tags.json 으로 저장 (스크립트 폴더에 두면 trades_data.js 에 백업으로 포함)">태그 백업</button>
     <button class="btn" id="importTagsBtn">태그 불러오기</button><input type="file" id="importTags" accept=".json" hidden>
     <button class="btn" id="exportCsv">CSV</button>
+    <button class="btn" id="lockNow" title="이 탭의 비밀번호 기억을 지우고 잠급니다">🔒 잠금</button>
   </div>
 
   <div class="kpis" id="kpis"></div>
@@ -149,11 +155,25 @@
   </div>
 
   <footer>
-    ※ 손익은 OKX 포지션 이력의 실현손익(가격 손익 + 수수료 + 펀딩비) 기준입니다. 태그·복기는 이 브라우저에만 저장되니 <b>태그 백업</b>으로 journal_tags.json 을 스크립트 폴더에 저장해 두세요(다음 수집 때 trades_data.js 에 백업으로 포함되어 다른 PC에서도 복원됩니다). R배수는 진입 직후 걸린 손절 주문(자동 감지) 또는 직접 입력한 손절가로 계산합니다. GitHub Pages 에는 trades_data.js·journal_*.json 을 올리지 마세요.
+    ※ 손익은 OKX 포지션 이력의 실현손익(가격 손익 + 수수료 + 펀딩비) 기준입니다. 태그·복기는 이 브라우저에만 저장되니 <b>태그 백업</b>으로 journal_tags.json 을 스크립트 폴더에 저장해 두세요(다음 수집 때 trades_data.js 에 백업으로 포함되어 다른 PC에서도 복원됩니다). R배수는 진입 직후 걸린 손절 주문(자동 감지) 또는 직접 입력한 손절가로 계산합니다. .env 에 JOURNAL_PASSWORD 를 넣으면 trades_data.js 가 암호화되어 비밀번호 없이는 열 수 없습니다(이때는 trades_data.js 를 GitHub Pages 에 올려도 내용이 보이지 않음). journal_trades.json·journal_trades.csv·journal_tags.json 은 암호화되지 않으니 올리지 마세요.
   </footer>
 </div>
 
-<script>
+<!-- 잠금 화면 (trades_data.js 가 암호화돼 있을 때만 표시) -->
+<div id="lock" style="display:none">
+  <form id="lockForm" class="lockbox" autocomplete="off">
+    <div style="font-size:34px">🔒</div>
+    <div style="font-size:19px;font-weight:900;margin:4px 0 2px">매매일지</div>
+    <div style="font-size:13px;color:var(--soft);margin-bottom:14px">비밀번호를 입력하세요</div>
+    <input type="password" id="lockPw" placeholder="비밀번호" autofocus>
+    <label style="display:flex;gap:6px;align-items:center;font-size:12.5px;color:var(--soft);margin:10px 0 12px"><input type="checkbox" id="lockRemember" checked> 이 탭을 닫을 때까지 기억</label>
+    <button type="submit" id="lockBtn">열기</button>
+    <div id="lockErr" style="color:var(--loss);font-size:12.5px;min-height:18px;margin-top:8px"></div>
+    <a href="index.html" style="font-size:12.5px;color:var(--soft)">← MARKET DASHBOARD</a>
+  </form>
+</div>
+
+<script type="text/plain" id="appCode">
 /* ===== 설정 ===== */
 const SETUPS = [
   ["", "셋업 선택"],
@@ -421,6 +441,59 @@ if (DEMO) document.getElementById("banner").innerHTML = `<div class="banner">⚠
 
 function render(){ const list = filtered(); renderKpis(list); renderEquity(list); renderList(list); renderStats(list); renderReview(); }
 render();
+</script>
+
+<script>
+/* ===== 잠금 해제 → 앱 실행 =====
+   trades_data.js 가 암호화(window.TRADES_ENC)돼 있으면 비밀번호로 복호화한 뒤 앱을 실행합니다.
+   암호화: AES-256-GCM, 키 = PBKDF2-SHA256(비밀번호, salt, iter) — okx_journal.py 의 JOURNAL_PASSWORD 와 같은 값 */
+(function(){
+  const PW_KEY = "journal_pw_session";
+  const startApp = () => {
+    document.getElementById("lock").style.display = "none";
+    document.querySelector(".wrap").style.display = "";
+    const s = document.createElement("script");
+    s.textContent = document.getElementById("appCode").textContent;
+    document.body.appendChild(s);
+  };
+  const enc = window.TRADES_ENC;
+  if (!enc){ startApp(); return; }                        // 암호화 안 된 데이터(또는 예시 데이터)
+  document.querySelector(".wrap").style.display = "none";
+  document.getElementById("lock").style.display = "flex";
+
+  const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  async function decrypt(pw){
+    if (!window.crypto || !crypto.subtle) throw new Error("이 브라우저는 복호화(WebCrypto)를 지원하지 않습니다");
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({name:"PBKDF2", salt:b64(enc.salt), iterations:enc.iter, hash:"SHA-256"},
+                                              base, {name:"AES-GCM", length:256}, false, ["decrypt"]);
+    const plain = await crypto.subtle.decrypt({name:"AES-GCM", iv:b64(enc.iv)}, key, b64(enc.ct));
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+  async function tryOpen(pw, remember){
+    const btn = document.getElementById("lockBtn"), err = document.getElementById("lockErr");
+    btn.disabled = true; btn.textContent = "확인 중…"; err.textContent = "";
+    try {
+      const d = await decrypt(pw);
+      window.TRADES = d.trades; window.TAGS_BACKUP = d.tags || {}; window.TRADES_UPDATED = d.updated || window.TRADES_UPDATED;
+      try { remember ? sessionStorage.setItem(PW_KEY, pw) : sessionStorage.removeItem(PW_KEY); } catch(e){}
+      startApp();
+    } catch(e){
+      try { sessionStorage.removeItem(PW_KEY); } catch(_){}
+      err.textContent = e.name === "OperationError" ? "비밀번호가 틀렸습니다" : ("열 수 없습니다: " + e.message);
+      btn.disabled = false; btn.textContent = "열기";
+      document.getElementById("lockPw").select();
+    }
+  }
+  document.getElementById("lockForm").addEventListener("submit", e => {
+    e.preventDefault();
+    tryOpen(document.getElementById("lockPw").value, document.getElementById("lockRemember").checked);
+  });
+  let saved = null; try { saved = sessionStorage.getItem(PW_KEY); } catch(e){}
+  if (saved) tryOpen(saved, true);
+})();
+// 잠금 버튼: 이 탭의 기억 지우고 다시 잠금
+document.getElementById("lockNow").onclick = () => { try { sessionStorage.removeItem("journal_pw_session"); } catch(e){} location.reload(); };
 </script>
 </body>
 </html>
