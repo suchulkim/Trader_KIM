@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>매크로 지수 결과 · 9월 FOMC 이후</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#181b22; --card-2:#1e222c; --text:#eef0f4; --soft:#9aa2b1; --muted:#6b7280;
+    --border:#2a2e38; --grid:#242833; --accent:#4ea1ff; --gold:#ffc94d;
+    --dove:#5fd188; --dove-bg:rgba(95,209,136,.12); --hawk:#ff6b6b; --hawk-bg:rgba(255,107,107,.12);
+    --mix:#c9cdd6; --mix-bg:rgba(201,205,214,.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);line-height:1.6;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;}
+  .wrap{max-width:1000px;margin:0 auto;padding:28px 16px 60px;}
+  .back{display:inline-block;font-size:13px;font-weight:700;color:var(--soft);text-decoration:none;
+    border:1px solid var(--border);border-radius:8px;padding:6px 12px;margin-bottom:18px;}
+  .back:hover{border-color:var(--accent);color:var(--text);}
+  .eyebrow{font-size:13px;color:var(--soft);}
+  h1{font-size:28px;font-weight:900;letter-spacing:-.3px;margin:4px 0 6px;}
+  .sub{color:var(--soft);font-size:14.5px;}
+  .sub b{color:var(--text);}
+  h2{font-size:19px;font-weight:800;color:var(--accent);margin:36px 0 12px;display:flex;align-items:center;gap:10px;}
+  h2 .num{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:7px;border:1.5px solid var(--gold);color:var(--gold);font-size:13px;}
+
+  .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px;}
+  .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
+  .stat .lbl{font-size:12.5px;color:var(--soft);}
+  .stat .val{font-size:28px;font-weight:900;letter-spacing:-.5px;margin:2px 0;font-variant-numeric:tabular-nums;}
+  .stat .desc{font-size:12px;color:var(--soft);}
+
+  /* chart */
+  .chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 16px 10px;position:relative;}
+  .chart-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px;align-items:baseline;margin-bottom:6px;}
+  .chart-title{font-size:15px;font-weight:800;}
+  .legend{display:flex;gap:14px;font-size:12px;color:var(--soft);flex-wrap:wrap;}
+  .legend span{display:inline-flex;align-items:center;gap:6px;}
+  .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;}
+  .lg-dot.hollow{background:var(--card);border:2px solid var(--accent);}
+  .lg-dot.dove{background:var(--dove);} .lg-dot.hawk{background:var(--hawk);}
+  svg{display:block;width:100%;height:auto;overflow:visible;}
+  .tip{position:absolute;pointer-events:none;background:#0b0d12;border:1px solid var(--border);border-radius:10px;
+    padding:9px 11px;font-size:12.5px;min-width:170px;max-width:240px;box-shadow:0 6px 20px rgba(0,0,0,.5);opacity:0;transition:opacity .12s;}
+  .tip .t-d{color:var(--soft);font-size:11.5px;}
+  .tip .t-v{font-size:18px;font-weight:900;font-variant-numeric:tabular-nums;}
+  .tip .t-e{color:var(--text);}
+  .note{font-size:12.5px;color:var(--soft);margin-top:10px;}
+
+  /* table */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px;}
+  .filters button{background:var(--card-2);color:var(--soft);border:1px solid var(--border);border-radius:999px;
+    padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;}
+  .filters button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);font-weight:700;}
+  .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px;min-width:940px;}
+  th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;}
+  th{background:#1a1e26;color:var(--soft);font-size:12.5px;font-weight:600;white-space:nowrap;}
+  tr:last-child td{border-bottom:none;}
+  td.d{white-space:nowrap;font-weight:700;font-variant-numeric:tabular-nums;}
+  td.d small{display:block;color:var(--soft);font-weight:500;font-size:11.5px;}
+  td.name{min-width:150px;} td.name b{display:block;} td.exp{min-width:190px;}
+  td.name small{color:var(--soft);font-size:11.5px;}
+  td.res{font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;}
+  td.exp{color:var(--soft);font-size:12.5px;}
+  .pill{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 9px;border-radius:999px;white-space:nowrap;}
+  .pill.dove{background:var(--dove-bg);color:var(--dove);}
+  .pill.hawk{background:var(--hawk-bg);color:var(--hawk);}
+  .pill.mix{background:var(--mix-bg);color:var(--mix);}
+  td.why{font-size:12.5px;color:var(--soft);min-width:200px;}
+  td.prob{white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .pb{display:flex;align-items:center;gap:8px;}
+  .pb .bar{width:64px;height:6px;border-radius:3px;background:var(--grid);overflow:hidden;}
+  .pb .bar i{display:block;height:100%;background:var(--accent);border-radius:3px;}
+  .pb b{font-size:14px;}
+  .pb .na{color:var(--muted);font-size:12px;}
+  .pb .arrow{font-size:11.5px;font-weight:700;}
+  .arrow.dn{color:var(--dove);} .arrow.up{color:var(--hawk);}
+  tr.key td{background:rgba(78,161,255,.05);}
+  tr.key td:first-child{box-shadow:inset 3px 0 0 var(--accent);}
+
+  /* takeaways */
+  .take{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+  .tk{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;font-size:14px;}
+  .tk h4{font-size:14.5px;margin-bottom:6px;}
+  .tk p{color:var(--soft);}
+  .tk p b{color:var(--text);}
+  .next{display:flex;flex-direction:column;gap:8px;}
+  .nx{display:grid;grid-template-columns:120px 1fr;gap:12px;background:var(--card);border:1px solid var(--border);
+    border-radius:10px;padding:11px 14px;font-size:14px;}
+  .nx .t{font-weight:900;color:var(--gold);font-variant-numeric:tabular-nums;}
+  .nx .w{color:var(--soft);font-size:12.5px;}
+  .nx.hot{border-color:rgba(255,107,107,.5);}
+  footer{margin-top:40px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--soft);line-height:1.7;}
+  footer a{color:var(--accent);}
+  @media (max-width:720px){
+    .stats{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .take{grid-template-columns:1fr;}
+    .nx{grid-template-columns:1fr;gap:2px;}
+    h1{font-size:23px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← MARKET DASHBOARD</a>
+
+  <div class="eyebrow">2026.10.11 (일) 기준 · 9/16 FOMC(25bp 인상, 3.75~4.00%) 이후 발표 지표 · 날짜는 美 현지 발표일</div>
+  <h1>매크로 지수 결과 — 9월 FOMC 이후</h1>
+  <p class="sub">한 줄 요약: <b>경기·고용은 식고, 물가는 유가 탓에 버티는 중.</b> 10월 추가 인상 확률은 9월 말 약 <b>70%</b>에서 고용 쇼크 이후 <b>20%대</b>로 내려왔습니다. 다음 분수령은 <b>10/14 9월 CPI</b>입니다.</p>
+
+  <div class="stats">
+    <div class="stat"><div class="lbl">10월 인상 확률 (현재)</div><div class="val" style="color:var(--dove)">약 20%</div><div class="desc">9월 말 고점 약 70% → 고용 쇼크 후 급락</div></div>
+    <div class="stat"><div class="lbl">근원 PCE (8월)</div><div class="val">3.0%</div><div class="desc">예상 3.3% 하회 · 전월비 0.2%</div></div>
+    <div class="stat"><div class="lbl">비농업 고용 (9월)</div><div class="val">+2.9만</div><div class="desc">예상 +9만 · 실업률 4.2%</div></div>
+    <div class="stat"><div class="lbl">ISM 서비스 가격지수</div><div class="val" style="color:var(--hawk)">74.0</div><div class="desc">2개월 연속 72↑ · 원가 압박</div></div>
+  </div>
+
+  <h2><span class="num">1</span>10월 금리 인상 확률 추이</h2>
+  <div class="chart-card" id="chartCard">
+    <div class="chart-head">
+      <div class="chart-title">10월 FOMC(10/27~28) 25bp 인상 확률</div>
+      <div class="legend">
+        <span><i class="lg-dot"></i>보도로 확인된 수치</span>
+        <span><i class="lg-dot hollow"></i>근사치 (시점·범위 추정)</span>
+      </div>
+    </div>
+    <svg id="chart" viewBox="0 0 900 320" role="img" aria-label="9월 15일부터 10월 9일까지 10월 금리 인상 확률 추이. 9월 말 약 70% 고점 후 10월 2일 고용지표 이후 약 20%대로 하락."></svg>
+    <div class="tip" id="tip"></div>
+  </div>
+  <p class="note">※ CME FedWatch 기준(9/15는 Polymarket). 범위로 보도된 값(예: 51~55%, 20~25%)은 중간값으로 표시했습니다. 아래 표에서 '별도 수치 없음'인 지표는 발표 당일 확률 보도를 찾지 못한 경우입니다.</p>
+
+  <h2><span class="num">2</span>지표별 결과 &amp; 발표 후 인상 확률</h2>
+  <div class="filters" id="filters">
+    <button data-f="all" class="on">전체</button>
+    <button data-f="price">물가</button>
+    <button data-f="job">고용</button>
+    <button data-f="biz">경기·심리</button>
+    <button data-f="fed">연준</button>
+  </div>
+  <div class="tbl-wrap">
+    <table id="tbl">
+      <thead><tr>
+        <th>발표일</th><th>지표</th><th>결과</th><th>예상 · 전월</th><th>판정</th><th>시장 해석</th><th>발표 후 10월 인상 확률</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+  <p class="note">판정: <span class="pill dove">🕊 비둘기</span> = 인상 부담을 줄이는 결과(성장주 우호) · <span class="pill hawk">🦅 매파</span> = 인상 부담을 키우는 결과 · <span class="pill mix">⚖ 혼조</span></p>
+
+  <h2><span class="num">3</span>정리하면</h2>
+  <div class="take">
+    <div class="tk"><h4>💵 물가 — 근원은 진정, 원가는 압박</h4><p>근원 PCE <b>3.0%</b>로 예상(3.3%) 크게 하회. 다만 일부는 통계 산정 방식 변경 효과(약 0.3%p). 반면 ISM 제조업·서비스 <b>가격지수는 유가 탓에 재상승</b> — 이 원가 압박이 근원 CPI로 번지는지가 관건.</p></div>
+    <div class="tk"><h4>👷 고용 — 채용은 멈췄지만 해고는 없음</h4><p>비농업 <b>+2.9만</b>(7~8월 -6만 하향), 구인 감소. 반면 실업수당 청구 <b>19.7만(57년래 최저권)</b>. '새로 안 뽑지만 있는 사람은 지킨다' — 침체보다는 둔화.</p></div>
+    <div class="tk"><h4>🛒 심리 — 역대급 비관</h4><p>컨퍼런스보드 <b>81.9(2014년 이후 최저)</b>, 미시간 <b>46.3</b>. 그런데 기대인플레는 1년 4.7%·5년 3.5%로 계속 상승 — 연준이 마음 놓기 어려운 조합.</p></div>
+    <div class="tk"><h4>🏛 연준 — 10월보다 12월</h4><p>의사록: "대부분이 <b>연내 추가 인상 적절</b>". 점도표 중간값도 연내 1회 추가. 고용 쇼크로 시장은 <b>10월 동결 · 12월 인상</b> 쪽에 무게.</p></div>
+  </div>
+
+  <h2><span class="num">4</span>다음 분수령 (KST)</h2>
+  <div class="next">
+    <div class="nx hot"><span class="t">10/14 (수) 21:30</span><div><b>🔥 美 9월 CPI</b> — 헤드라인 3.7%(전월 3.4%) · 근원 2.4%, 전월비 0.2% 안팎 예상<div class="w">근원 0.2% 이하 → 10월 동결 굳히기 · 0.3%↑ → 인상 확률 재상승</div></div></div>
+    <div class="nx"><span class="t">10/15 (목) 21:30</span><div><b>美 9월 PPI · 소매판매</b><div class="w">ISM 가격지수의 원가 상승이 생산자물가에 반영됐는지 · 비관적 심리가 실제 소비로 이어졌는지</div></div></div>
+    <div class="nx hot"><span class="t">10/29 (목) 03:00</span><div><b>🔥 FOMC 금리결정</b> (현지 10/27~28)<div class="w">9월 PCE는 결정 이후(10/29 현지) 발표 — CPI가 사실상 마지막 물가 확인</div></div></div>
+  </div>
+
+  <footer>
+    ※ 투자 조언이 아닙니다. 지표 수치는 각 기관 발표 및 보도 기준이며, 인상 확률은 보도 시점의 CME FedWatch(일부 Polymarket·Kalshi) 값으로 같은 날에도 시점에 따라 차이가 있습니다. 9/25 전후 약 70%는 "1주 전 약 70%" 보도를 근거로 한 근사치입니다.<br>
+    참고: <a href="https://macroodds.com/blog/fed-rate-hike-odds-october-2026" target="_blank" rel="noopener">MacroOdds</a> ·
+    <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262172696-fed-rate-hike-october-dot-plot-median-one-more-2026-tradingkey" target="_blank" rel="noopener">TradingKey (9/17 점도표)</a> ·
+    <a href="https://finance.yahoo.com/economy/policy/article/pce-inflation-eases-to-34--cooling-the-case-for-another-fed-rate-hike-125513195.html" target="_blank" rel="noopener">Yahoo (PCE)</a> ·
+    <a href="https://www.jec.senate.gov/public/index.cfm/republicans/2026/9/annual-pce-inflation-lower-than-expected-spending-up-and-savings-down-slightly-in-august-q2-gdp-increased" target="_blank" rel="noopener">JEC (PCE·GDP)</a> ·
+    <a href="https://www.fxstreet.com/analysis/the-october-fed-hike-just-died-heres-what-the-29k-jobs-report-really-means-for-rates-202610021806" target="_blank" rel="noopener">FXStreet (고용·FedWatch)</a> ·
+    <a href="https://www.ftportfolios.com/Commentary/EconomicResearch/2026/10/2/nonfarm-payrolls-increased-29,000-in-september" target="_blank" rel="noopener">First Trust (고용)</a> ·
+    <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/ism-manufacturing-september-2026" target="_blank" rel="noopener">ISM 제조업</a> ·
+    <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/ism-services-september-2026" target="_blank" rel="noopener">ISM 서비스</a> ·
+    <a href="https://dca-calculator.com/en/guides/jolts-august-2026" target="_blank" rel="noopener">JOLTS</a> ·
+    <a href="https://foxbusiness.com/economy/private-sector-added-90000-jobs-september-above-expectations-adp-says" target="_blank" rel="noopener">ADP</a> ·
+    <a href="https://gvwire.com/2026/09/29/us-consumer-confidence-dives-to-more-than-12-year-low-in-september/" target="_blank" rel="noopener">컨퍼런스보드</a> ·
+    <a href="https://tradingeconomics.com/united-states/consumer-confidence/news/586955" target="_blank" rel="noopener">미시간 9월 확정</a> ·
+    <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/umich-sentiment-october-2026" target="_blank" rel="noopener">미시간 10월 예비</a> ·
+    <a href="https://www.ftportfolios.com/Commentary/EconomicResearch/2026/9/25/new-orders-for-durable-goods-were-unchanged-in-august" target="_blank" rel="noopener">내구재</a> ·
+    <a href="https://investinglive.com/news/us-september-philly-fed-business-index-xx-vs-30-5-expected/" target="_blank" rel="noopener">필라델피아 연준</a> ·
+    <a href="https://www.babypips.com/news/headline-us-initial-jobless-claims-layoffs-2026-10-09" target="_blank" rel="noopener">실업수당 청구</a> ·
+    <a href="https://www.babypips.com/news/headline-sept-fomc-minutes-support-hawkish-stance-2026-10-08" target="_blank" rel="noopener">FOMC 의사록</a>
+  </footer>
+</div>
+
+<script>
+/* ---- 지표 데이터 ---- */
+const ROWS = [
+  {d:"9/15",k:"FOMC 직전",cat:"fed",name:"(기준점) FOMC 전날",sub:"Polymarket",res:"—",exp:"",j:"mix",why:"인상 결정 전 10월 추가 인상 확률",p:37.5,pTxt:"37.5%",approx:false},
+  {d:"9/17",k:"9/18 03:00",cat:"biz",name:"필라델피아 연준 제조업지수",sub:"9월",res:"+37.8",exp:"예상 +30.5 · 8월 +47.4",j:"hawk",why:"제조업 여전히 강함 · 같은 날 점도표(연내 1회 추가) 소화",p:53,pTxt:"51~55%",approx:false,key:true},
+  {d:"9/25",k:"",cat:"biz",name:"내구재 주문",sub:"8월",res:"0.0%",exp:"예상 -0.3% · 운송 제외 +0.3%",j:"hawk",why:"설비투자 견조 (전년비 +11%)",p:70,pTxt:"약 70%",approx:true},
+  {d:"9/25",k:"",cat:"biz",name:"미시간 소비자심리 확정",sub:"9월",res:"48.1",exp:"예비 47.8 · 기대인플레 1년 4.6%·5년 3.4%",j:"mix",why:"심리는 바닥권, 기대인플레는 상승",p:null},
+  {d:"9/29",k:"",cat:"job",name:"JOLTS 구인건수",sub:"8월",res:"707.9만",exp:"예상 약 723만 · 7월 733.5만",j:"dove",why:"구인 감소 — 노동 수요 둔화",p:50,pTxt:"약 50%",approx:false,group:"9/29"},
+  {d:"9/29",k:"",cat:"biz",name:"컨퍼런스보드 소비자신뢰",sub:"9월",res:"81.9",exp:"예상 89.2 · 8월 약 88.6",j:"dove",why:"2014년 이후 최저 — 소비 둔화 우려",p:null,same:"9/29"},
+  {d:"9/30",k:"",cat:"job",name:"ADP 민간고용",sub:"9월",res:"+9.0만",exp:"8월 3.6만(하향 수정)",j:"hawk",why:"민간 고용 예상 상회",p:null,same:"9/30"},
+  {d:"9/30",k:"",cat:"price",name:"PCE 물가",sub:"8월 · 연준 선호 지표",res:"3.4% / 근원 3.0%",exp:"예상 3.7% / 3.3% · 근원 전월비 0.2%",j:"dove",why:"예상 크게 하회 (산정 방식 변경 효과 약 0.3%p 포함)",p:35,pTxt:"약 35%",approx:false,key:true},
+  {d:"9/30",k:"",cat:"biz",name:"2분기 GDP 확정치",sub:"",res:"+2.2%",exp:"1분기 2.1%",j:"mix",why:"성장 견조 — 중립",p:null,same:"9/30"},
+  {d:"10/1",k:"",cat:"biz",name:"ISM 제조업 PMI",sub:"9월",res:"54.5",exp:"예상 55.0 · 가격지수 77.9 (예상 72.3, 8월 71.1)",j:"hawk",why:"가격지수 급등 — 유가발 원가 압박",p:null},
+  {d:"10/2",k:"",cat:"job",name:"비농업 고용",sub:"9월",res:"+2.9만 · 실업률 4.2%",exp:"예상 +9만 · 7~8월 -6만 하향 · 임금 +0.1%(전년비 3.0%)",j:"dove",why:"고용 쇼크 — 10월 인상론 사실상 후퇴",p:21.6,pTxt:"21.6%",approx:false,key:true},
+  {d:"10/5",k:"",cat:"biz",name:"ISM 서비스 PMI",sub:"9월",res:"54.9",exp:"예상 55.0 · 가격지수 74.0 (8월 72.6) · 고용 50.1",j:"hawk",why:"서비스 물가 재가속 신호",p:null},
+  {d:"10/7",k:"",cat:"fed",name:"9월 FOMC 의사록",sub:"",res:"연내 추가 인상 적절",exp:"\"대부분\" 위원 동의 · 시장 예상대로",j:"hawk",why:"매파적이지만 예상된 내용 — 반응 제한",p:22.5,pTxt:"20~25%",approx:false},
+  {d:"10/8",k:"",cat:"job",name:"신규 실업수당 청구",sub:"10/3 주간",res:"19.7만",exp:"예상 20만 · 57년래 최저권",j:"hawk",why:"해고는 거의 없음 — 노동시장 붕괴 아님",p:null},
+  {d:"10/9",k:"",cat:"biz",name:"미시간 소비자심리 예비",sub:"10월",res:"46.3",exp:"예상 47.6 · 기대인플레 1년 4.7%·5년 3.5%",j:"mix",why:"심리 악화 + 기대인플레 상승",p:19,pTxt:"약 19%",approx:true}
+];
+const JL = {dove:"🕊 비둘기",hawk:"🦅 매파",mix:"⚖ 혼조"};
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+/* ---- 표 ---- */
+function renderTable(f){
+  let prev = null;
+  const rows = ROWS.filter(r => f==="all" || r.cat===f);
+  document.querySelector("#tbl tbody").innerHTML = rows.map(r => {
+    let probCell;
+    if (r.p != null){
+      const dir = prev==null ? "" : (Math.abs(r.p - prev) < 2 ? "" : r.p < prev ? `<span class="arrow dn">▼ ${Math.round(prev - r.p)}%p</span>` : (r.p > prev ? `<span class="arrow up">▲ ${Math.round(r.p - prev)}%p</span>` : ""));
+      probCell = `<div class="pb"><span class="bar"><i style="width:${r.p}%"></i></span><b>${r.pTxt}</b>${r.approx?'<small style="color:var(--muted)">근사</small>':''}${f==="all"?dir:""}</div>`;
+      prev = r.p;
+    } else if (r.same){
+      probCell = `<span class="pb"><span class="na">같은 날 묶음 반영</span></span>`;
+    } else {
+      probCell = `<span class="pb"><span class="na">별도 수치 없음</span></span>`;
+    }
+    return `<tr class="${r.key?'key':''}">
+      <td class="d">${r.d}${r.k?`<small>${esc(r.k)}</small>`:''}</td>
+      <td class="name"><b>${esc(r.name)}</b>${r.sub?`<small>${esc(r.sub)}</small>`:''}</td>
+      <td class="res">${esc(r.res)}</td>
+      <td class="exp">${esc(r.exp)}</td>
+      <td><span class="pill ${r.j}">${JL[r.j]}</span></td>
+      <td class="why">${esc(r.why)}</td>
+      <td class="prob">${probCell}</td>
+    </tr>`;
+  }).join("");
+}
+renderTable("all");
+document.getElementById("filters").addEventListener("click", e => {
+  const b = e.target.closest("button"); if(!b) return;
+  document.querySelectorAll("#filters button").forEach(x => x.classList.toggle("on", x===b));
+  renderTable(b.dataset.f);
+});
+
+/* ---- 차트 ---- */
+(function(){
+  const pts = ROWS.filter(r => r.p != null).map(r => {
+    const [m, d] = r.d.split("/").map(Number);
+    const date = new Date(2026, m-1, d);
+    const sameDay = ROWS.filter(x => x.d === r.d).map(x => x.name);
+    return {...r, date, events: sameDay};
+  });
+  const W=900, H=320, L=44, R=24, T=24, B=40;
+  const x0 = new Date(2026,8,14).getTime(), x1 = new Date(2026,9,10).getTime();
+  const X = t => L + (t - x0) / (x1 - x0) * (W - L - R);
+  const Y = v => T + (1 - v/80) * (H - T - B);
+  const svg = document.getElementById("chart");
+  const NS = "http://www.w3.org/2000/svg";
+  let h = "";
+  // grid + y labels
+  [0,20,40,60,80].forEach(v => {
+    h += `<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)" stroke-width="1"/>`;
+    h += `<text x="${L-8}" y="${Y(v)+4}" fill="var(--muted)" font-size="11" text-anchor="end">${v}%</text>`;
+  });
+  // 50% reference
+  h += `<line x1="${L}" x2="${W-R}" y1="${Y(50)}" y2="${Y(50)}" stroke="var(--soft)" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>`;
+  h += `<text x="${W-R}" y="${Y(50)-6}" fill="var(--soft)" font-size="11" text-anchor="end">50% · 인상/동결 분기선</text>`;
+  // x labels (weekly)
+  [[8,15],[8,22],[8,29],[9,6]].forEach(([m,d]) => {
+    const t = new Date(2026,m,d).getTime();
+    h += `<text x="${X(t)}" y="${H-B+20}" fill="var(--muted)" font-size="11" text-anchor="middle">${m+1}/${d}</text>`;
+    h += `<line x1="${X(t)}" x2="${X(t)}" y1="${H-B}" y2="${H-B+5}" stroke="var(--grid)"/>`;
+  });
+  // FOMC marker
+  const tf = new Date(2026,8,16).getTime();
+  h += `<line x1="${X(tf)}" x2="${X(tf)}" y1="${T}" y2="${H-B}" stroke="var(--gold)" stroke-width="1" stroke-dasharray="2 4" opacity=".7"/>`;
+  h += `<text x="${X(tf)+6}" y="${T+10}" fill="var(--gold)" font-size="11">9/16 FOMC 인상</text>`;
+  // line
+  const path = pts.map((p,i) => `${i?"L":"M"}${X(p.date.getTime()).toFixed(1)},${Y(p.p).toFixed(1)}`).join(" ");
+  h += `<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
+  // direct labels (selective)
+  const labelFor = {"9/25":"고점 약 70%","9/30":"PCE 하회","10/2":"고용 쇼크"};
+  pts.forEach(p => {
+    const cx = X(p.date.getTime()), cy = Y(p.p);
+    h += `<circle cx="${cx}" cy="${cy}" r="5" fill="${p.approx?'var(--card)':'var(--accent)'}" stroke="${p.approx?'var(--accent)':'var(--card)'}" stroke-width="2"/>`;
+    if (labelFor[p.d]) h += `<text x="${cx}" y="${cy-12}" fill="var(--text)" font-size="11.5" font-weight="700" text-anchor="middle">${labelFor[p.d]}</text>`;
+    h += `<circle class="hit" data-i="${pts.indexOf(p)}" cx="${cx}" cy="${cy}" r="16" fill="transparent" style="cursor:pointer"/>`;
+  });
+  svg.innerHTML = h;
+
+  const tip = document.getElementById("tip"), card = document.getElementById("chartCard");
+  svg.querySelectorAll(".hit").forEach(el => {
+    const show = () => {
+      const p = pts[+el.dataset.i];
+      tip.innerHTML = `<div class="t-d">${p.d} 발표 후${p.approx?' · 근사치':''}</div><div class="t-v">${p.pTxt}</div><div class="t-e">${p.events.map(esc).join("<br>")}</div>`;
+      const sb = svg.getBoundingClientRect(), cb = card.getBoundingClientRect();
+      const sx = sb.width / 900;
+      let left = sb.left - cb.left + (+el.getAttribute("cx")) * sx + 12;
+      const top = sb.top - cb.top + (+el.getAttribute("cy")) * sx - 10;
+      if (left + 240 > cb.width) left -= 264;
+      tip.style.left = left + "px"; tip.style.top = top + "px"; tip.style.opacity = 1;
+    };
+    el.addEventListener("mouseenter", show);
+    el.addEventListener("click", show);
+    el.addEventListener("mouseleave", () => tip.style.opacity = 0);
+  });
+})();
+</script>
+</body>
+</html>
