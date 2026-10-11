@@ -135,7 +135,51 @@
   .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
   .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
   .key-final b{color:var(--text);}
-  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
+  /* 점수화 */
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin tr.grp td{background:var(--table-head); font-weight:700; font-size:13px; color:var(--text-soft);}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 120px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:90px;} }
 
   footer{
     margin-top:44px;
@@ -150,9 +194,9 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.04 (일) · 업데이트</span>
+      <span>2026.10.11 (일) 21:00 업데이트 — 2025회계연도 재무제표·호재/악재 점수화 추가</span>
       <span>·</span>
-      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
+      <span>시세·차트 서술은 10/2 정규장 마감(KST 10/3 05:00) 기준 · 상단 가격은 실시간 자동 갱신</span>
     </div>
     <h1>Broadcom Inc. (AVGO) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: AVGOUSDT.P</span></h1>
 
@@ -265,6 +309,42 @@
         <li>올해 상승률이 AMD·Marvell·NVDA 대비 부진 — 투자심리 약함, 美 국채금리 고공행진</li>
       </ul>
     </div>
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:44%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>AI 반도체 +221%, 4분기 AI 가이던스 $217억<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">+3.6</td></tr>
+      <tr class="pos"><td>FY27 AI 매출 전망 $1,150억 상향(Anthropic 5GW+10GW)<span class="hz">중기</span></td><td class="sc">5</td><td class="sc">0.7</td><td class="tot">+3.5</td></tr>
+      <tr class="pos"><td>3분기 매출 +86%·EPS 컨센서스 상회 (이미 주가 반영)<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td><b>FY2025 재무 체력</b> — FCF $269억(매출의 42%), 순부채/EBITDA 1.1배<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>Anthropic 자금 지원 → 2027년 최대 고객·다년 수요 고정<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">+2.8</td></tr>
+      <tr class="pos"><td>커스텀 칩 고객 다변화(Google·OpenAI·Meta·Anthropic)<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.9</td><td class="tot">+2.7</td></tr>
+      <tr class="pos"><td>애널리스트 평균 목표가 +50%, 매도 0<span class="hz">심리</span></td><td class="sc">2</td><td class="sc">0.7</td><td class="tot">+1.4</td></tr>
+      <tr class="sum pos"><td>호재 합계 (7개)</td><td></td><td></td><td class="tot">+20.0</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>고금리·상대 부진 — 10년물 5.3%대, 연준 '연내 1회 추가 인상'(10/8 의사록)<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">−3.6</td></tr>
+      <tr class="neg"><td>순환금융·부채 부담 — Anthropic 대출 최대 $420억, 부채 $651억→최대 $1,265억 가능<span class="hz">중기</span></td><td class="sc">5</td><td class="sc">0.7</td><td class="tot">−3.5</td></tr>
+      <tr class="neg"><td><b>10/8 AI·중동 쇼크</b> — OpenAI 매출 경고(브로드컴 'Jalapeño' 고객)·호르무즈 기뢰로 반도체지수 −3%대<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.8</td><td class="tot">−3.2</td></tr>
+      <tr class="neg"><td>Marvell 구글 칩 일부 수주 — 독점 파트너 지위 균열<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.9</td><td class="tot">−2.7</td></tr>
+      <tr class="neg"><td>Meta 자체 AI칩 개발 — 고객이 잠재 경쟁자<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.5</td><td class="tot">−1.5</td></tr>
+      <tr class="neg"><td>VMware EU 반독점 조사<span class="hz">중기</span></td><td class="sc">2</td><td class="sc">0.5</td><td class="tot">−1.0</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−15.5</td></tr>
+    </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
+
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:56%">호재 +20.0 (56%)</div><div class="n" style="width:44%">악재 −15.5 (44%)</div></div>
+      <div class="big">순점수 <span class="g">+4.5</span> → <span class="g">'약한 호재 우위'</span></div>
+      <div class="sub">펀더멘털(실적·AI 수주·현금창출력)은 확실히 호재 쪽이지만, <b>악재 점수의 절반 이상(−6.8)이 금리·10/8 AI 쇼크 같은 '지금 당장'의 매크로 요인</b>이라 단기 주가는 무겁습니다.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~10월 말 빅테크 실적 전)</div><div class="v y">호재 +6.6 vs 악재 −6.8 → 균형(−0.2)</div><div>박스권($343~366) 유지가 기본, 금리·CPI(10/14)에 휘둘림</div></div>
+        <div class="hz-card"><div class="t">중기 (FY27까지)</div><div class="v g">호재 +12.0 vs 악재 −8.7 → 호재 우위(+3.3)</div><div>AI 수주 가시성 + 재무 체력이 순환금융 우려를 상쇄</div></div>
+      </div>
+    </div>
+
     <h3>시나리오</h3>
     <table class="scn">
       <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
@@ -352,15 +432,89 @@
     </div>
   </section>
 
-  <!-- 4. 주요 일정 -->
+  <!-- 5. 2025 재무제표 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>5. 2025회계연도 재무제표 (FY2025, 2025.11.2 마감)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">$638.9억</div><div class="k">약 86조 2,860억원</div><div class="d">▲ +24% YoY</div></div>
+      <div class="fk"><div class="l">영업이익 (GAAP)</div><div class="v">$254.8억</div><div class="k">약 34조 4,190억원</div><div class="d">▲ +89% · 영업이익률 39.9%</div></div>
+      <div class="fk"><div class="l">순이익 (GAAP)</div><div class="v">$231.3억</div><div class="k">약 31조 2,340억원</div><div class="d">▲ +292% · EPS $4.77</div></div>
+      <div class="fk"><div class="l">잉여현금흐름</div><div class="v">$269.1억</div><div class="k">약 36조 3,500억원</div><div class="d">▲ +39% · 매출 대비 42%</div></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2024 vs FY2025 (백만 달러 기준 막대)<i style="background:var(--border)"></i>FY24<i style="background:var(--accent)"></i>FY25</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:80.7%"></div><div class="b y25" style="width:100%"></div></div><span class="v">$515.7억 → $638.9억</span></div>
+      <div class="cmp-row"><span class="nm">조정 EBITDA</span><div class="bars2"><div class="b y24" style="width:49.9%"></div><div class="b y25" style="width:67.3%"></div></div><span class="v">$319.0억 → $430.0억</span></div>
+      <div class="cmp-row"><span class="nm">영업이익</span><div class="bars2"><div class="b y24" style="width:21.1%"></div><div class="b y25" style="width:39.9%"></div></div><span class="v">$134.6억 → $254.8억</span></div>
+      <div class="cmp-row"><span class="nm">순이익</span><div class="bars2"><div class="b y24" style="width:9.2%"></div><div class="b y25" style="width:36.2%"></div></div><span class="v">$59.0억 → $231.3억</span></div>
+      <div class="cmp-row"><span class="nm">잉여현금흐름</span><div class="bars2"><div class="b y24" style="width:30.4%"></div><div class="b y25" style="width:42.1%"></div></div><span class="v">$194.1억 → $269.1억</span></div>
+    </div>
+
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>$638.9억</b><span class="krw">약 86조 2,860억원</span></td><td class="num">$515.7억<span class="krw">약 69조 6,560억원</span></td><td class="num up">+24%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 반도체 솔루션 (58%)</td><td class="num">$368.6억<span class="krw">약 49조 7,800억원</span></td><td class="num">$301.0억<span class="krw">약 40조 6,480억원</span></td><td class="num up">+22%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 인프라 소프트웨어 (42%)</td><td class="num">$270.3억<span class="krw">약 36조 5,050억원</span></td><td class="num">$214.8억<span class="krw">약 29조 80억원</span></td><td class="num up">+26%</td></tr>
+      <tr><td>매출총이익 <span class="hz">GPM 67.8%</span></td><td class="num">$432.9억<span class="krw">약 58조 4,730억원</span></td><td class="num">$325.1억<span class="krw">약 43조 9,070억원</span></td><td class="num up">+33%</td></tr>
+      <tr><td>연구개발비</td><td class="num">$109.8억<span class="krw">약 14조 8,260억원</span></td><td class="num">$93.1억<span class="krw">약 12조 5,740억원</span></td><td class="num">+18%</td></tr>
+      <tr><td><b>영업이익</b> <span class="hz">OPM 39.9%</span></td><td class="num"><b>$254.8억</b><span class="krw">약 34조 4,190억원</span></td><td class="num">$134.6억<span class="krw">약 18조 1,830억원</span></td><td class="num up">+89%</td></tr>
+      <tr><td>이자비용</td><td class="num">$32.1억<span class="krw">약 4조 3,350억원</span></td><td class="num">$39.5억<span class="krw">약 5조 3,390억원</span></td><td class="num up">−19%</td></tr>
+      <tr><td><b>순이익 (GAAP)</b> <span class="hz">순이익률 36.2%</span></td><td class="num"><b>$231.3억</b><span class="krw">약 31조 2,340억원</span></td><td class="num">$59.0억<span class="krw">약 7조 9,620억원</span></td><td class="num up">+292%</td></tr>
+      <tr><td>순이익 (Non-GAAP)</td><td class="num">$337.3억<span class="krw">약 45조 5,530억원</span></td><td class="num">$237.3억<span class="krw">약 32조 540억원</span></td><td class="num up">+42%</td></tr>
+      <tr><td>희석 EPS (GAAP / Non-GAAP)</td><td class="num">$4.77 / $6.82</td><td class="num">$1.23 / $4.87</td><td class="num up">+288% / +40%</td></tr>
+      <tr><td>조정 EBITDA <span class="hz">마진 67.3%</span></td><td class="num">$430.0억<span class="krw">약 58조 810억원</span></td><td class="num">$319.0억<span class="krw">약 43조 800억원</span></td><td class="num up">+35%</td></tr>
+    </table>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2025.11.2</th><th class="num">2024.11.3</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">$161.8억<span class="krw">약 21조 8,500억원</span></td><td class="num">$93.5억<span class="krw">약 12조 6,250억원</span></td><td class="num up">+73%</td></tr>
+      <tr><td>총자산</td><td class="num">$1,710.9억<span class="krw">약 231조 770억원</span></td><td class="num">$1,656.5억<span class="krw">약 223조 7,200억원</span></td><td class="num">+3%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 영업권+무형자산 (VMware 인수분)</td><td class="num">$1,300.7억<span class="krw">약 175조 6,780억원</span></td><td class="num">$1,384.6억<span class="krw">약 186조 9,990억원</span></td><td class="num">−6%</td></tr>
+      <tr><td>총부채</td><td class="num">$898.0억<span class="krw">약 121조 2,840억원</span></td><td class="num">$979.7억<span class="krw">약 132조 3,140억원</span></td><td class="num up">−8%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 차입금 (단기 $31.5억 + 장기 $619.8억)</td><td class="num">$651.4억<span class="krw">약 87조 9,730억원</span></td><td class="num">$675.7억<span class="krw">약 91조 2,550억원</span></td><td class="num up">−4%</td></tr>
+      <tr><td><b>자본총계</b> <span class="hz">자기자본비율 47.5%</span></td><td class="num"><b>$812.9억</b><span class="krw">약 109조 7,930억원</span></td><td class="num">$676.8억<span class="krw">약 91조 4,060억원</span></td><td class="num up">+20%</td></tr>
+      <tr><td>순차입금 · 순차입금/EBITDA</td><td class="num">$489.6억 · <b>1.1배</b><span class="krw">약 66조 1,230억원</span></td><td class="num">$582.2억 · 1.8배<span class="krw">약 78조 6,290억원</span></td><td class="num up">개선</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">$275.4억<span class="krw">약 37조 1,910억원</span></td><td class="num">$199.6억<span class="krw">약 26조 9,610억원</span></td><td class="num up">+38%</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num">$6.2억<span class="krw">약 8,410억원</span></td><td class="num">$5.5억<span class="krw">약 7,400억원</span></td><td class="num">+14%</td></tr>
+      <tr><td><b>잉여현금흐름 (FCF)</b></td><td class="num"><b>$269.1억</b><span class="krw">약 36조 3,500억원</span></td><td class="num">$194.1억<span class="krw">약 26조 2,210억원</span></td><td class="num up">+39%</td></tr>
+      <tr><td>배당 지급</td><td class="num">$111.4억<span class="krw">약 15조 480억원</span></td><td class="num">$98.1억<span class="krw">약 13조 2,550억원</span></td><td class="num">+14%</td></tr>
+      <tr><td>자사주 매입 (프로그램)</td><td class="num">$24.5억<span class="krw">약 3조 3,090억원</span></td><td class="num">$71.8억<span class="krw">약 9조 6,920억원</span></td><td class="num dn">−66%</td></tr>
+      <tr><td>순차입 상환 (차입 $156.7억 − 상환 $184.8억)</td><td class="num">$28.1억 순상환</td><td class="num">$203.5억 순차입<span class="krw">(VMware 인수 관련)</span></td><td class="num up">디레버리징</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2025는 <b>VMware 인수(2023.11) 통합이 끝난 첫 '정상 연도'</b>입니다. 매출 +24%보다 영업이익 +89%·순이익 +292%가 훨씬 크게 늘었는데,
+      인수 관련 구조조정비·무형자산 상각 감소와 <b>법인세 환입(GAAP 법인세 −$4억, 4분기 일회성 세금 혜택 약 $21억 포함)</b> 효과가 섞여 있어 <b>Non-GAAP 순이익 +42%가 실제 체력에 가깝습니다</b>.<br>
+      재무적으로는 <b>FCF $269억으로 배당($111억)을 2.4배 커버</b>하고, 차입금을 $676억 → $651억으로 줄여 <b>순차입금/EBITDA 1.1배</b>까지 낮췄습니다.
+      리포트 앞부분의 "부채 약 $665억 → $1,265억" 우려는 바로 이 <b>1.1배 레버리지가 Anthropic 자금 지원으로 다시 2배 이상으로 올라갈 수 있다</b>는 뜻이며,
+      반대로 FY25의 현금창출력이 그 부담을 감당할 근거이기도 합니다. 총자산의 76%가 영업권·무형자산이라는 점(인수형 성장 모델)도 기억해 둘 부분입니다.
+      <br><span style="font-size:12.5px;">※ 회계연도는 10월 말에 가장 가까운 일요일 마감(FY24는 53주, FY25는 52주). 원화는 리포트 공통 환율 1,350.6원 적용.</span>
+    </div>
+  </section>
+
+  <!-- 6. 주요 일정 -->
+  <section>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
       <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
       <tr><td>지속</td><td>Anthropic 자금조달 세부·신용 영향, 고객사 자체 칩·Marvell 수주, VMware EU 조사, 美 국채금리</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 8일 (목) 오전 3:00 ✅</td><td>9월 FOMC 의사록 (결과) — 다수 위원 '연말까지 1회 추가 인상 적절', 시점은 데이터 의존. 같은 날 밤 OpenAI 매출 경고·호르무즈 사태로 반도체지수 −3%대</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td>美 9월 CPI — 10월 FOMC 인상 여부를 가를 마지막 물가 지표</td><td><span class="star">★★★★★</span></td></tr>
       <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — 브로드컴 커스텀 칩 생산사, AI 수요·CoWoS 증설</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 의사록 후 10월 인상 확률 약 20%, CPI 결과에 따라 변동</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
       <tr><td>10월 29일 (목) ~ 30일 (금) 새벽</td><td>Alphabet·Meta·Microsoft·Amazon 실적 — <b>핵심 고객(구글·메타)의 AI 설비투자 계획</b></td><td><span class="star">★★★★★</span></td></tr>
       <tr><td>11월 중순 (보도)</td><td>Anthropic IPO 예상(미확정) — 최대 고객이자 대출 상대방의 재무 체력 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
       <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
@@ -370,7 +524,7 @@
 
   <!-- 6. 핵심 한눈에 -->
   <section>
-    <h2>6. 핵심 한눈에 보기 📱</h2>
+    <h2>7. 핵심 한눈에 보기 📱</h2>
 
     <div class="key-hero">
       <div class="tag">한 줄 요약</div>
@@ -383,7 +537,7 @@
         <ol>
           <li><b>AI 칩 매출 1년 새 3배</b><span>+221% · 다음 분기 AI 매출 29조원 목표</span></li>
           <li><b>내년 AI 매출 155조원 전망</b><span>Anthropic이 2027년 최대 고객 예정</span></li>
-          <li><b>애널리스트 평균 목표가 +50%</b><span>$532 · 매도 의견 0개</span></li>
+          <li><b>돈 버는 힘이 탄탄</b><span>2025년 한 해 현금 36조원 창출 · 빚 부담(순부채/EBITDA) 1.1배로 낮음</span></li>
         </ol>
       </div>
       <div class="key-card bad">
@@ -423,6 +577,7 @@
     </div>
 
     <div class="key-final">
+      ⚖️ <b>호재·악재 점수: +20.0 vs −15.5 → 약한 호재 우위(+4.5)</b> — 단, 단기는 금리·AI 쇼크로 균형(−0.2), 중기는 호재 우위(+3.3).<br>
       💡 <b>결론:</b> 실적과 AI 주문은 탄탄한데, 시장은 <b>"고객에게 돈을 빌려줘서 파는 구조"</b>를 아직 어떻게 볼지 정하지 못해 $343~366 박스에 있습니다.
       애널리스트 목표가와의 거리(+50%)는 크지만, <b>$343 근처에서 나눠서</b> 사고 <b>$366 돌파</b>를 확인한 뒤 비중을 늘리는 게 안전합니다.
       다음 방향은 <b>10/29~30 구글·메타의 AI 투자 계획</b>이 정합니다.
@@ -432,7 +587,8 @@
   <footer>
     ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시세는 Investing.com 기준.
     실적은 FY2026 Q3(2026.08.02 마감, 9/2 발표) 기준. Anthropic 자금 지원은 10/1 공시(대출 최대 $420억)와 10/2 보도($600억 조달 구조)를 바탕으로 하며, 두 금액의 중복 여부는 보도마다 해석이 다릅니다.
-    다음 실적일과 Anthropic IPO 시기는 공식 확정 전 추정·보도입니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다.
+    다음 실적일과 Anthropic IPO 시기는 공식 확정 전 추정·보도입니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률과 요인별 점수는 주관적 판단입니다.
+    FY2025 재무제표는 Broadcom 4분기·연간 실적 발표(2025.12.11, SEC 8-K) 및 FY2025 10-K 기준. 10/8 이후 매크로(FOMC 의사록·OpenAI 매출 경고·호르무즈)는 프로젝트 일정표(event_schedule.js) 기준이며, 이번 업데이트에서 AVGO 개별 시세(10/5~10/9)는 재확인하지 못해 가격 서술은 10/2 종가 기준으로 유지했습니다.
   </footer>
 </div>
 
