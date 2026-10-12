@@ -3,171 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>META 주가 분석 리포트</title>
+<title>META(메타) 주가 분석 리포트</title>
 <style>
   :root{
-    --bg:#0e1015;
-    --card:#161a21;
-    --text:#eef0f4;
-    --text-soft:#9aa2b1;
-    --border:#262b35;
-    --accent:#0866ff;
-    --up:#ff6b6b;
-    --down:#5fd188;
-    --pos-bg:#13291c;
-    --pos-text:#5fd188;
-    --neg-bg:#2c1717;
-    --neg-text:#ff8080;
-    --chip-bg:#1c2028;
-    --table-head:#1a1e26;
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#0069b4; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
     --shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+  body{margin:0; background:var(--bg); color:var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;
-  }
-  .wrap{
-    max-width:1100px;
-    margin:0 auto;
-    padding:28px 18px 60px;
-  }
-  header.title-block{
-    margin-bottom:22px;
-  }
-  .eyebrow{
-    font-size:13px;
-    color:var(--text-soft);
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 10px;
-    align-items:center;
-  }
-  h1{
-    font-size:26px;
-    margin:6px 0 4px;
-    letter-spacing:-0.3px;
-  }
-  h1 .ticker{
-    color:var(--text-soft);
-    font-weight:500;
-    font-size:18px;
-    margin-left:6px;
-  }
-  .price-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px 20px;
-    box-shadow:var(--shadow);
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px 28px;
-    align-items:center;
-    margin-top:14px;
-  }
-  .price-main{
-    font-size:30px;
-    font-weight:700;
-    letter-spacing:-0.5px;
-  }
+    line-height:1.6;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
+  header.title-block{margin-bottom:22px;}
+  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
+  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
+  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
+  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
-  .price-sub{
-    font-size:13.5px;
-    color:var(--text-soft);
-    max-width:560px;
-  }
+  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
 
-  section{
-    margin-top:36px;
-  }
-  h2{
-    font-size:18.5px;
-    margin:0 0 14px;
-    padding-bottom:8px;
-    border-bottom:2px solid var(--text);
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  h3{
-    font-size:15.5px;
-    margin:20px 0 10px;
-    color:var(--text-soft);
-  }
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:460px; width:100%; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
 
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:hidden;
-    font-size:14px;
-  }
-  th, td{
-    padding:11px 12px;
-    text-align:left;
-    border-bottom:1px solid var(--border);
-    vertical-align:top;
-  }
-  th{
-    background:var(--table-head);
-    font-weight:600;
-    font-size:13px;
-    color:var(--text-soft);
-  }
+  section{margin-top:36px;}
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
   tr:last-child td{border-bottom:none;}
   td.num{font-variant-numeric: tabular-nums;}
-
-  .factor-block{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:16px 18px;
-    margin-bottom:14px;
-    box-shadow:var(--shadow);
-  }
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
   .factor-block.pos{border-left:4px solid var(--pos-text);}
   .factor-block.neg{border-left:4px solid var(--neg-text);}
-  .factor-block h4{
-    margin:0 0 8px;
-    font-size:14.5px;
-  }
-  ul.plain{
-    margin:0;
-    padding-left:18px;
-    font-size:14px;
-  }
+  .factor-block h4{margin:0 0 8px; font-size:14.5px;}
+  ul.plain{margin:0; padding-left:18px; font-size:14px;}
   ul.plain li{margin-bottom:6px;}
-
-  .scenario-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:10px;
-  }
-  .scenario{
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:14px;
-    border:1px solid var(--border);
-    background:var(--card);
-  }
-  .scenario b{
-    display:inline-block;
-    padding:2px 8px;
-    border-radius:6px;
-    font-size:12.5px;
-    margin-right:8px;
-  }
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
-
   table.scn td{font-size:14px; line-height:1.55;}
   table.scn td:first-child{font-weight:600;}
   table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
@@ -176,144 +74,35 @@
   .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
   .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
-  .star-dim{color:#3a3f4a;}
-
+  .star-dim{color:var(--border);}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
+  .callout b{color:var(--text);}
   .rev-bar-wrap{margin:8px 0 18px;}
-  .rev-row{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    margin-bottom:9px;
-    font-size:13.5px;
-  }
-  .rev-label{width:170px; flex-shrink:0; color:var(--text-soft);}
-  .rev-track{
-    flex:1;
-    background:var(--chip-bg);
-    border-radius:6px;
-    height:16px;
-    overflow:hidden;
-    position:relative;
-  }
-  .rev-fill{
-    height:100%;
-    border-radius:6px 0 0 6px;
-  }
+  .rev-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13.5px;}
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden;}
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
   .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
 
-  .callout{
-    background:var(--chip-bg);
-    border-radius:10px;
-    padding:14px 16px;
-    font-size:14px;
-    color:var(--text-soft);
-    margin-top:16px;
-  }
-  .callout b{color:var(--text);}
-
-  .kpi-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit, minmax(130px, 1fr));
-    gap:10px;
-    margin:14px 0;
-  }
-  .kpi{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 14px;
-    box-shadow:var(--shadow);
-  }
-  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
-  .kpi .value{font-size:18px; font-weight:700;}
-  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
-
-  .chart-card{
-    margin-top:16px;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:14px;
-    box-shadow:var(--shadow);
-  }
-  .chart-card .cap{
-    font-size:12.5px;
-    color:var(--text-soft);
-    margin-bottom:8px;
-  }
-  .tv-widget-container{
-    position:relative;
-    width:100%;
-    height:600px;
-    border-radius:8px;
-    overflow:hidden;
-  }
-  .tradingview-widget-container{
-    width:100%;
-    height:100%;
-  }
-  .tradingview-widget-container > div{
-    width:100%;
-    height:100%;
-  }
-  .charts-grid{
-    display:grid;
-    grid-template-columns:1fr;
-    gap:24px;
-  }
-
-  /* 매출구조도(가치 축적 구조) 다이어그램 */
-  .flow-diagram{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:20px 18px;
-    box-shadow:var(--shadow);
-    margin-top:18px;
-  }
-  .flow-row{
-    display:flex;
-    flex-wrap:wrap;
-    gap:10px;
-    justify-content:center;
-    align-items:stretch;
-  }
-  .flow-box{
-    flex:1 1 180px;
-    background:var(--chip-bg);
-    border:1px solid var(--border);
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:13.5px;
-    text-align:center;
-  }
-  .flow-box.accent{border-color:var(--accent); background:rgba(8,102,255,0.08);}
+  /* 매출구조도 */
+  .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
+  .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
+  .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.08);}
   .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
   .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
   .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
   .flow-box .desc{color:var(--text-soft); font-size:12px;}
-  .flow-arrow{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    color:var(--text-soft);
-    font-size:20px;
-    padding:2px 4px;
-  }
-  .flow-arrow.down{
-    width:100%;
-    padding:6px 0;
-  }
-  .flow-split{
-    display:flex;
-    gap:14px;
-    flex-wrap:wrap;
-    margin-top:4px;
-  }
+  .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
+  .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
 
-  /* 6. 핵심 한눈에 */
-  .key-hero{background:linear-gradient(135deg,rgba(8,102,255,.18),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
+  .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
+  @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
+  .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+  .key-hero{background:linear-gradient(135deg,rgba(0,105,180,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
   .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
   .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
   .key-hero .line em{font-style:normal; color:var(--pos-text);}
@@ -327,7 +116,7 @@
   .key-card li{margin-bottom:8px;}
   .key-card li b{display:block; color:var(--text);}
   .key-card li span{color:var(--text-soft); font-size:13px;}
-  .key-dates{display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:14px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
   .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
   .key-date .d{font-size:18px; font-weight:800;}
   .key-date .e{font-size:13px; margin-top:2px;}
@@ -338,64 +127,91 @@
   .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
   .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
   .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
-  .rung.now{background:rgba(8,102,255,.14); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
+  .rung.now{background:rgba(0,105,180,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
   .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
   .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
   .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
   .key-final b{color:var(--text);}
-  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
-
-  footer{
-    margin-top:44px;
-    padding-top:14px;
-    border-top:1px solid var(--border);
-    font-size:12px;
-    color:var(--text-soft);
-  }
+  /* 점수화 */
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px; white-space:nowrap;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px; white-space:nowrap;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 130px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:100px;} }
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.04 (일) · 업데이트</span>
+      <span>2026.10.12 (월) 23:40 업데이트 — FY2025 재무제표·호재/악재 점수화 추가, 템플릿 개편</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준 · Meta Connect 이후 흐름 반영</span>
+      <span>시세 서술은 10/9 정규장 마감(KST 10/10 05:00) 기준 + 10/12 장 초반 반영 · 상단 가격은 실시간 자동 갱신</span>
     </div>
     <h1>Meta Platforms (META) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: METAUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main" id="metaPriceMain">$728.08 <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--text-soft);margin-left:4px;vertical-align:middle;"></span></div>
-        <div class="chg-up" id="metaPriceChange">10/2 종가 +0.30% · 9/24 52주 신고가($779.82) 대비 -6.6% · $720~740 바닥 다지기 (실시간 불러오는 중…)</div>
-        <div style="font-size:12px; color:var(--text-soft); margin-top:2px;">9월 +27%(2022년 11월 이후 최고의 달) · 시총 약 $1.85T · <span id="metaLiveTime">가격 갱신 중…</span></div>
+        <div class="price-main"><span id="live-price">$718.67</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-down" id="live-chg">10/9 정규장 ▼ −0.31% · 주간 −1.3% (10/2 $728.08 →) · 10/12 장 초반 +3.8%($745.96)</div>
+        <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX METAUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        Meta Connect(9/23~24)에서 Ray-Ban Meta 3세대($449), 카메라 없는 오디오 글래스($349), Muse 리테일 연동(Walmart·Best Buy·Gap 등)을 발표했습니다. 이 소식에 9/24 장중 <b>$779.82 52주 신고가</b>를 찍었습니다.
-        이후 재료 소멸 차익실현, 뉴멕시코 배심원 평결(4,300만 건 위반), OpenAI 경쟁 에이전트 'Dots' 출시(9/29)가 겹치며 9/28 $720.36까지 약 7.6% 밀렸습니다.
-        이번 주는 $720~740에서 등락하다 10/2 $728.08로 마감했습니다.
+        10/5 Muse 기대와 기술주 랠리로 <b>$741.90</b>까지 올랐지만, 10/6 웰스파고의 '목표가 $1,000' 상향에도 10/7 <b>10년물 5.32%</b>(2002년 이후 최고) 쇼크에 −2.38% 밀렸습니다.
+        이후 $718~721에서 사흘간 횡보하며 9/28 저점($720)대를 지켰습니다. 그사이 <b>뉴멕시코주는 $350~400억</b><span class="krw">(약 47~54조원)</span> 벌금을 요구했고(메타는 $34.5억 상한 주장), 메타는 7개국에서 <b>틱톡 광고를 금지</b>했습니다.
+        10/12(월)엔 칸토 피츠제럴드 '비중확대' 유지·Muse 리텐션 데이터에 장 초반 <b>+3.8%</b> 반등 중입니다. 시가총액 약 $1.84조, 선행 PER 약 23배.
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · METAUSDT.P (OKX) · 15분봉 / 1일봉</div>
+      <div class="cap">📊 실시간 차트 · METAUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
       <div class="charts-grid">
         <div>
-          <div class="cap" style="margin-top:4px;">15분봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_meta_15m"></div>
-            </div>
-          </div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container"><div id="tv_meta_daily" style="height:100%; width:100%;"></div></div>
         </div>
         <div>
-          <div class="cap" style="margin-top:4px;">1일봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_meta_1d"></div>
-            </div>
-          </div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container"><div id="tv_meta_15m" style="height:100%; width:100%;"></div></div>
         </div>
       </div>
     </div>
@@ -405,57 +221,57 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/21 Muse 장대양봉(+11%) 뒤 9/24 <b>$779.82</b>에서 고점을 찍었습니다. 이후 9/25·9/28 이틀간 약 -7% 조정을 받아 9/21 갭의 위쪽($720~740)까지 되돌렸습니다. 9/28 이후 5거래일 종가가 <b>$720~739</b>로 좁혀지며 갭 상단에서 지지를 확인하는 중입니다. 50일선(약 $618)·200일선(약 $614)과는 15% 이상 벌어져 있어 중기 추세는 강세지만, 단기 과열은 해소 중입니다.<br>
-      <b>15분봉</b>: <b>$720</b>(9/28 종가)이 1차 지지, 이탈 시 <b>$700</b>(심리선) → <b>$666</b>(9/18 종가, 갭 하단)이 다음 지지입니다. <b>$740</b>(9/29 고점권)이 1차 저항, <b>$755~780</b>(Connect 고점대)이 2차 저항입니다.
+      <b>일봉</b>: 9/24 고점($779.82) 뒤 3주째 <b>$718~742 박스</b>입니다. 10/5 박스 상단($741.90)을 두드렸다가 10/7 금리 쇼크로 다시 하단까지 내려왔고, 10/7~10/9 종가가 $718.67~721.31로 <b>9/28 저점($720.36)과 같은 자리</b>에서 버티고 있습니다.
+      20일선(약 $712)이 바로 아래에 붙어 있고, 50·100·200일선보다는 14~17% 위라 중기 상승 추세는 살아 있습니다. 다만 MACD가 신호선 아래로 내려와 단기 탄력은 약해진 상태입니다.<br>
+      <b>15분봉</b>: <b>$712~720</b>(20일선·박스 하단)이 1차 지지, <b>$700</b>(심리선) → <b>$666</b>(9/21 갭 하단)이 다음 지지입니다. 위로는 <b>$742~746</b>(10/5 종가·10/12 장 초반 고점) → <b>$760</b> → <b>$780</b>(52주 고점)이 저항입니다.
     </div>
   </section>
 
   <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 7거래일)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 현지 기준)</h2>
     <table>
-      <tr><th style="width:16%">날짜 · 종가</th><th>내용</th><th style="width:22%">비고</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:22%">비고</th></tr>
       <tr>
-        <td><b>9/24(목)</b><br>약 $776<br><span class="chg-up">▲ 약 +3%</span></td>
-        <td><b>Meta Connect 키노트</b>가 열렸습니다. Ray-Ban Meta 3세대($449, 즉시 출시), 카메라 없는 Ray-Ban Meta Audio($349, 10/13 출시), VR 글래스($1,299, 2027년 봄), Muse Charm 펜던트를 공개했습니다. Muse 리테일 연동(Walmart·Best Buy·Dick's·Gap)과 Mac 앱의 컴퓨터 사용 기능도 발표했습니다.</td>
-        <td>장중 <b>$779.82</b> 52주 신고가 · JPMorgan 목표가 $820 → $920</td>
+        <td><b>10/2(금)</b><br>$728.08<br><span style="color:var(--pos-text); font-weight:600;">▲ +0.30%</span></td>
+        <td>Muse 리테일 파트너십 확대(월마트·갭·세포라 등)가 이어졌지만, 네덜란드 등에서 개인정보 문제가 제기됐습니다.</td>
+        <td>$725~730 횡보</td>
       </tr>
       <tr>
-        <td><b>9/25(금)</b><br>약 $752<br><span class="chg-down">▼ -3.14%</span></td>
-        <td>Connect 이후 <b>재료 소멸 차익실현</b>이 나왔습니다(RSI 72 과매수). 뉴멕시코 배심원은 페이스북이 사용자 프라이버시 보호를 기만했다며 <b>4,300만 건 위반</b>을 인정했습니다(건당 최대 $5,000 → 이론상 $2,000억+<span class="krw">(약 270조원+)</span>). 저커버그의 2.7만주 매도 계획도 공시되었습니다.</td>
-        <td>벌금은 판사가 별도 결정(10월 중)</td>
+        <td><b>10/5(월)</b><br>$741.90<br><span style="color:var(--pos-text); font-weight:600;">▲ +1.90%</span></td>
+        <td>나스닥 사상 최고치(+1.05%) 속 빅테크 동반 강세(MSFT +1.5%·TSLA +2.2%). Muse 흥행 기대가 이어졌습니다.</td>
+        <td>박스 상단 · 1개월 +20%</td>
       </tr>
       <tr>
-        <td><b>9/28(월)</b><br>$720.36<br><span class="chg-down">▼ -4.2%</span></td>
-        <td>OpenAI가 9/29 DevDay에서 ChatGPT 앱을 닫아도 장기 작업을 수행하는 클라우드 에이전트를 공개할 것이라는 보도가 나오며 <b>Muse 선점 효과 약화</b> 우려가 커졌습니다. 기업용 AI를 파는 Enterprise Platform 부문 신설도 발표했지만, 나스닥 -1.23%와 커뮤니케이션 업종 -1.5%의 약세에 묻혔습니다.</td>
-        <td>9/24 고점 대비 -7.6% · 시총 약 $1,340억 증발</td>
+        <td><b>10/6(화)</b><br>약 $738.9<br><span style="color:var(--neg-text); font-weight:600;">▼ 약 −0.4%</span></td>
+        <td><b>웰스파고 목표가 $796 → $1,000 상향</b>, Muse 다운로드 560만 건 돌파, 월마트·스트라이프 등과 <b>AI 에이전트 상거래 표준</b> 공동 개발 보도(CNBC). 다만 재판매를 검토하던 500MW 컴퓨팅을 자체용으로 돌려 <b>2027년 매출 약 $50억이 빠진다</b>는 분석도 함께 나와 상승이 제한됐습니다. 뉴멕시코 법무부의 <b>$350~400억 벌금 요구</b>(메타는 $34.5억 상한 주장)가 부각됐습니다.</td>
+        <td>10/7 등락률로 역산</td>
       </tr>
       <tr>
-        <td><b>9/29(화)</b><br>약 $739<br><span class="chg-up">▲ 약 +2.6%</span></td>
-        <td><b>Muse for Small Business</b>를 출시해 소상공인 구독 퍼널을 열면서 수익화 경로가 구체화되었습니다. 저가 매수가 들어왔지만, 같은 날 OpenAI가 상시 개인 에이전트 <b>'Dots'</b>를 정식 공개하며 상승폭이 제한되었습니다.</td>
-        <td>$720 지지 확인</td>
+        <td><b>10/7(수)</b><br>$721.31<br><span style="color:var(--neg-text); font-weight:600;">▼ −2.38%</span></td>
+        <td><b>美 10년물 5.32%</b>(2002년 이후 최고)·유가 상승으로 대형 성장주에서 자금이 빠졌습니다. 11개 업종 중 2개만 오른 약세장에 52주 고점 근처 차익실현이 겹쳤습니다.</td>
+        <td>박스 하단 복귀</td>
       </tr>
       <tr>
-        <td><b>9/30(수)</b><br>$725.18<br><span class="chg-down">▼ 약 -1.8%</span></td>
-        <td>Nebius와 <b>$270억 AI 컴퓨팅 계약</b><span class="krw">(약 36조 4,660억원)</span>을 체결했습니다. 인프라 확보라는 긍정 평가와 함께 Capex($1,300~1,450억) 부담 우려도 다시 불거졌습니다. 이날로 9월을 마감했습니다(월간 +27%).</td>
-        <td>9월 종가 · 장중 저가 $726대</td>
+        <td><b>10/8(목)</b><br>$720.89<br><span style="color:var(--neg-text); font-weight:600;">▼ −0.06%</span></td>
+        <td>트럼프 대통령이 8월에 메타 주식을 최대 $2,500만어치 샀다는 공시 보도에도 반응은 미미했습니다. 메타는 <b>美 등 7개국에서 바이트댄스·틱톡 광고를 금지</b>했습니다("경쟁사 광고를 실을 이유 없다"). OpenAI 매출 하향 보도로 AI주 전반이 약세였습니다.</td>
+        <td>보합 · 리테일 심리 이틀 연속 '약세'</td>
       </tr>
       <tr>
-        <td><b>10/1(목)</b><br>$725.93<br><span class="chg-up">▲ +0.10%</span></td>
-        <td>Needham이 "최근 AI 혁신은 대부분 주가에 반영되었다"며 Hold를 유지했습니다(Muse 다운로드 9월 말 약 500만 건). 같은 날 뉴멕시코 벌금 심리가 열렸고, 판결은 10월 중 나올 예정입니다.</td>
-        <td>보합 · 관망</td>
+        <td><b>10/9(금)</b><br>$718.67<br><span style="color:var(--neg-text); font-weight:600;">▼ −0.31%</span></td>
+        <td>커뮤니케이션 업종이 −0.79%로 부진했습니다(통신 3사 급락). 구글과 함께 <b>$18억 '가상 생물학 이니셔티브'</b>(AI 신약 연구)를 출범했습니다.</td>
+        <td>주간 −1.3%</td>
       </tr>
       <tr>
-        <td><b>10/2(금)</b><br>$728.08<br><span class="chg-up">▲ +0.30%</span></td>
-        <td>Muse 리테일 파트너십 확대(Walmart·Gap·Sephora 등)가 이어졌습니다. 다만 네덜란드 등에서 Muse 개인정보 문제가 제기되어 일부 소매업체가 판매를 보류했습니다. 3분기 실적(10월 말)을 앞두고 $725~730에서 소폭 상승했습니다.</td>
-        <td>3거래일 연속 $725~730 횡보</td>
+        <td><b>10/12(월)</b><br>장 초반 $745.96<br><span style="color:var(--pos-text); font-weight:600;">▲ 약 +3.8%</span></td>
+        <td>칸토 피츠제럴드가 '비중확대'를 유지했습니다(목표가 $860 → $840). Muse의 <b>첫 주 리텐션 30% 이상·14일 리텐션 22%</b> 데이터가 나왔고, 틱톡 광고 금지가 '매출 보호'로 재해석됐습니다. S&amp;P500은 보합이라 <b>종목 고유 강세</b>입니다.</td>
+        <td>KST 23시 기준 · 장중 진행 중</td>
       </tr>
     </table>
-
     <div class="callout">
-      → 9월 META는 <b>Muse 흥행 + Connect 기대</b>로 한 달 +27%를 기록했고, 9/24 장중 $779.82로 고점을 찍었습니다. 이후 <b>재료 소멸, 뉴멕시코 평결, OpenAI 경쟁 에이전트(Dots)</b>가 연달아 터지며 이틀 만에 약 7% 되돌렸습니다.
-      다만 9/28 이후에는 <b>$720~739 박스에서 바닥을 다지는</b> 흐름입니다. 9/21 급등 갭의 위쪽이 지지되고 있어 추세 훼손으로 보기는 이릅니다.
-      관건은 10월 말 3분기 실적에서 <b>Muse 수익화 지표(구독·커머스 수수료)</b>와 <b>약 $100억 법적 비용·Capex가 반영된 FCF</b>가 어떻게 나오느냐입니다.
+      → 지난주 메타는 <b>"목표가는 오르는데 주가는 박스 하단"</b>이었습니다. 웰스파고 $1,000 같은 강한 상향이 나왔지만, 10년물 금리 5.3%대와 AI 투자비 부담이 눌렀습니다.
+      그래도 <b>$720(9/28 저점)을 세 번 연속 지킨 뒤</b> 10/12 Muse 리텐션 데이터와 함께 반등을 시도하고 있어, 박스 하단 지지는 확인된 모양새입니다.
+      이달 말까지 <b>뉴멕시코 벌금 판결(10월 중) → 3분기 실적(10/29 새벽)</b>이 연달아 있어, 박스를 어느 쪽으로 깰지는 이 두 이벤트가 정합니다.
     </div>
   </section>
 
@@ -466,203 +282,271 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li><b>Muse 확산</b>: 9월 말 다운로드 약 500만 건(미국 앱스토어 1위)으로 ChatGPT 초기 속도를 앞섰습니다. 9/29 소상공인용 출시로 구독 퍼널이 열렸고, Walmart·Best Buy·Gap·Sephora 등 리테일 연동으로 커머스 수수료 경로도 생겼습니다.</li>
-        <li><b>Connect 하드웨어 라인업</b>: Ray-Ban Meta 3세대($449), 오디오 글래스($349, 10/13), VR 글래스($1,299, 2027년 봄)를 내놓았고, 연말까지 AI 글래스 100종을 출시할 계획입니다.</li>
-        <li><b>3분기 매출 가이던스</b>: $610~640억<span class="krw">(약 82조 3,870억~86조 4,380억원)</span>, 중간값 기준 +22% YoY입니다. AI 광고랭킹 고도화(Advantage+ 연환산 $750억<span class="krw">(약 101조 2,950억원)</span>)로 광고 효율이 올라가고 있습니다.</li>
-        <li><b>목표가 상향</b>: JPMorgan $920(9/24), Wells Fargo $796. 평균 목표가 약 $788~794(현재가 대비 +8~9%)이고, 매수 비중이 약 88%입니다.</li>
-        <li>Nebius $270억<span class="krw">(약 36조 4,660억원)</span> 컴퓨팅 계약으로 AI 인프라를 확보했고, Enterprise Platform 부문 신설로 기업 시장에 진출했습니다.</li>
+        <li><b>광고 엔진</b> — 2분기 광고 매출 $593.6억(+27%), 광고 단가 +12%. 3분기 가이던스 $610~640억<span class="krw">(약 81조 8,320억~85조 8,560억원)</span>, 컨센서스 약 $633억</li>
+        <li><b>Muse 확산·리텐션</b> — 다운로드 560만 건+, 첫 주 리텐션 30% 이상. 월마트·스트라이프와 에이전트 상거래 표준, 소상공인용 출시(9/29)로 구독·수수료 경로 구체화</li>
+        <li><b>월가 목표가 상향</b> — 웰스파고 $1,000, JPMorgan $920, KeyBanc $900, Piper $875, BNP $885. 평균 약 $828(현재가 대비 +15%), 매수 비중 약 88%</li>
+        <li><b>상대적으로 싼 밸류</b> — 선행 PER 약 23배, 트레일링 약 27배. AI 빅테크 중 낮은 편</li>
+        <li><b>탄탄한 재무</b> — FY2025 영업이익 $832.8억, 영업현금흐름 $1,158억, 현금·유가증권 $815.9억</li>
+        <li><b>틱톡 광고 차단</b> — 경쟁사 마케팅 채널 봉쇄로 체류시간 방어(7개국)</li>
       </ul>
     </div>
-
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>Capex·FCF</b>: 2026 Capex $1,300~1,450억<span class="krw">(약 175조 5,780억~195조 8,370억원)</span>, 2027년 컨센서스 약 $1,856억입니다. 2분기 FCF가 <b>$7.84억</b><span class="krw">(약 1조 590억원)</span>으로 91% 급감해, 영업현금흐름의 약 97.5%를 설비투자에 쓰고 있습니다.</li>
-        <li><b>법적 비용</b>: 3분기에 청소년 관련 합의금 약 $100억<span class="krw">(약 13조 5,060억원)</span>을 일시 비용으로 인식할 예정입니다(10년 분할 지급). 뉴멕시코 평결(4,300만 건 위반) 벌금은 10월 중 판사가 결정하며, 이론상 최대치가 막대해 헤드라인 리스크가 큽니다.</li>
-        <li><b>AI 에이전트 경쟁 심화</b>: OpenAI 'Dots'(9/29)가 출시되었고, Amazon이 Muse 접근을 차단했습니다(미국 온라인 소매의 약 40%). Muse 수수료율도 공개되지 않아 수익 규모를 추정하기 어렵습니다.</li>
-        <li><b>규제·개인정보</b>: 네덜란드 등에서 Muse 개인정보 문제가 제기되었고, 미성년자 SNS 규제도 강화되고 있습니다.</li>
-        <li><b>밸류에이션·수급</b>: Forward PER이 18배에서 23배로 올랐고, Needham은 "AI 혁신은 대부분 주가에 반영"이라며 Hold입니다. 3개월 내부자 매도도 약 $1.02억입니다.</li>
-        <li><b>금리</b>: 9/16 FOMC 인상(3.75~4.00%), 10년물 약 5.25%, 10월 추가 인상 확률 70%대입니다.</li>
+        <li><b>Capex·FCF</b> — 2026 Capex $1,300~1,450억, 2027 컨센서스 약 $1,856억. 2분기 FCF가 $7.8억<span class="krw">(약 1조 520억원)</span>으로 급감, 장기부채 $587억 → $837억(6/30)</li>
+        <li><b>뉴멕시코 벌금</b> — 주 정부 $350~400억<span class="krw">(약 47~54조원)</span> 요구 vs 메타 $34.5억 상한 주장, 10월 중 판결. 별도 아동안전 소송 최대 $3.75억</li>
+        <li><b>3분기 GAAP 이익 급감</b> — 州 정부들과의 합의 관련 약 $100억(주당 약 $3.90) 일회성 비용. 90일간 EPS 추정치 상향 5건·하향 35건</li>
+        <li><b>금리</b> — 10년물 5.32%(10/7, 2002년 이후 최고), 10/14 CPI 3.7% 재가속 예상</li>
+        <li><b>경쟁·규제</b> — OpenAI 'Dots', 아마존의 Muse 접근 차단, 노르웨이의 AI 글래스 금지 검토, 개인정보 이슈</li>
+        <li><b>Reality Labs 적자</b> — FY2025 영업손실 $191.9억, 2026년에도 비슷한 수준 예상</li>
       </ul>
+    </div>
+
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:46%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>광고 엔진 — 광고 +27%·단가 +12%, 3분기 가이던스 $610~640억<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">1.0</td><td class="tot">+4.0</td></tr>
+      <tr class="pos"><td>월가 목표가 상향 (웰스파고 $1,000 등, 평균 $828)<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td><b>FY2025 재무 체력</b> — 영업이익 $833억, OCF $1,158억, 현금 $816억<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>Muse 확산·리텐션 → 구독·커머스 수익화<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">+2.8</td></tr>
+      <tr class="pos"><td>상대 밸류 매력 (선행 PER 약 23배)<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.8</td><td class="tot">+2.4</td></tr>
+      <tr class="pos"><td>3분기 매출 서프라이즈 기대 (컨센서스 $633억)<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.6</td><td class="tot">+1.8</td></tr>
+      <tr class="sum pos"><td>호재 합계 (6개)</td><td></td><td></td><td class="tot">+17.0</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>Capex 폭증·FCF 급감 — 2Q FCF $7.8억, 2027 Capex $1,856억 예상<span class="hz">중기</span></td><td class="sc">5</td><td class="sc">0.9</td><td class="tot">−4.5</td></tr>
+      <tr class="neg"><td>3분기 약 $100억 법적 비용 → GAAP EPS 급감, 추정치 하향 35건<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.9</td><td class="tot">−2.7</td></tr>
+      <tr class="neg"><td>뉴멕시코 벌금 ($34.5억~$400억 사이 판결)<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.6</td><td class="tot">−2.4</td></tr>
+      <tr class="neg"><td>고금리 (10년물 5.3%대)·CPI 재가속 예상<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.7</td><td class="tot">−2.1</td></tr>
+      <tr class="neg"><td>Reality Labs 연간 −$192억 적자 지속<span class="hz">중기</span></td><td class="sc">2</td><td class="sc">1.0</td><td class="tot">−2.0</td></tr>
+      <tr class="neg"><td>AI 에이전트 경쟁·규제 (OpenAI·아마존 차단·AI 글래스 규제)<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.6</td><td class="tot">−1.8</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−15.5</td></tr>
+    </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5~0.6). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
+
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:52%">호재 +17.0 (52%)</div><div class="n" style="width:48%">악재 −15.5 (48%)</div></div>
+      <div class="big">순점수 <span class="g">+1.5</span> → <span class="g">'약한 호재 우위'</span></div>
+      <div class="sub">광고 사업과 재무 체력은 확실한 호재지만, <b>10월 하순에 벌금 판결·법적 비용·금리라는 '단기 악재'가 몰려 있습니다</b>. 그래서 단기는 경계, 중기는 호재 우위로 갈립니다.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~10/29 실적)</div><div class="v r">호재 +4.8 vs 악재 −7.2 → 이벤트 경계(−2.4)</div><div>벌금 판결·$100억 비용·CPI가 연속 — 박스 유지가 기본</div></div>
+        <div class="hz-card"><div class="t">중기 (2027년까지)</div><div class="v g">호재 +12.2 vs 악재 −8.3 → 호재 우위(+3.9)</div><div>광고 엔진 + Muse 수익화가 Capex 부담을 상쇄할 여력</div></div>
+      </div>
     </div>
 
     <h3>시나리오</h3>
     <table class="scn">
-      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:22%">가격 범위</th><th>조건</th></tr>
       <tr>
-        <td>① 박스 상단 재테스트 후 횡보</td>
+        <td>① 박스권 등락</td>
         <td class="prob">약 45%</td>
         <td class="rng">700~760</td>
-        <td>Muse 지표가 무난하게 이어지고 뉴멕시코 벌금이 감내 가능한 수준에서 나오는 경우. 실적 전까지 760을 종가로 넘지 못하고 700~760 사이를 오갑니다</td>
+        <td>벌금 판결이 메타 주장($34.5억)과 州 요구($400억) 사이 중간 정도로 나오고, 실적 전까지 관망하는 경우. <b>$712~720 지지, $742~760 저항</b></td>
       </tr>
       <tr>
         <td>② 상단 돌파</td>
         <td class="prob">약 30%</td>
         <td class="rng">760 → 780, 넘으면 820~850</td>
-        <td>3분기 실적에서 매출이 가이던스 상단($640억)에 근접하고 Muse 구독·커머스 매출이 숫자로 확인되는 경우. <b>760 위 종가 마감(거래량 동반)</b>이 확인 신호이고, 52주 신고가 780을 넘으면 820(JPMorgan 이전 목표가)~850 구간이 열립니다</td>
+        <td>벌금이 메타 상한($34.5억)에 가깝게 나와 법적 불확실성이 걷히고, 3분기 매출이 가이던스 상단($640억)에 근접하며 Muse 매출이 숫자로 확인되는 경우. <b>$760 위 종가</b>가 신호, $780 고점 돌파 시 평균 목표가($828)권</td>
       </tr>
       <tr>
-        <td>③ 하방 이탈</td>
+        <td>③ 하단 이탈</td>
         <td class="prob">약 25%</td>
-        <td class="rng">720 → 700 → 666</td>
-        <td>뉴멕시코 벌금이 예상보다 크거나, Capex 상향과 FCF 적자 전환, OpenAI 등 경쟁 심화로 Muse 모멘텀이 꺾이는 경우. 720(9/28 종가)을 종가로 깨면 700, 그 아래는 9/21 갭 하단(666)까지 열립니다</td>
+        <td class="rng">700 이탈 → 666 → 630</td>
+        <td>벌금이 州 요구($350~400억)에 가깝게 나오거나, 실적에서 2027 Capex 가이던스가 $2,000억 이상으로 제시돼 FCF 우려가 커지는 경우. <b>$700이 깨지면</b> 9/21 갭 하단($666) → 200일선($629)</td>
       </tr>
     </table>
-    <div class="scn-note">※ 확률은 현재 차트 구조·이벤트 일정·매크로를 종합한 주관적 판단이며, 뉴멕시코 벌금 판결·3분기 실적(10월 말)·10/29 FOMC 이후 재조정이 필요합니다. 가격 단위: USD(나스닥 META 종가 기준). 9/21 강세 갭과 강한 중기 추세를 감안해 상단 돌파 확률을 하방보다 높게 두었습니다.</div>
+    <div class="scn-note">※ 확률은 차트·이벤트·매크로를 종합한 주관적 판단이며, 뉴멕시코 판결·10/14 CPI·10/29 실적 후 재조정이 필요합니다. 가격 단위: USD(나스닥 META 종가 기준).</div>
   </section>
 
   <!-- 4. 매출구조 -->
   <section>
-    <h2>4. 매출 구조 (2026년 2분기 기준, 10월 말 3분기 실적 발표 대기 중)</h2>
-    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,350.6원 (2026.10.02 서울 외환시장 주간 종가 기준, 10억원 단위 반올림)</p>
-    <table>
-      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>📢 광고(Family of Apps - Advertising)</td><td class="num">$59.36B<span class="krw">(약 80조 1,720억원)</span></td><td class="num" style="color:var(--pos-text)">+27%</td><td class="num">97.6%</td></tr>
-      <tr><td>💬 기타(WhatsApp 유료메시징, Meta One 등)</td><td class="num">$1.00B<span class="krw">(약 1조 3,510억원)</span></td><td class="num" style="color:var(--pos-text)">+73%</td><td class="num">1.6%</td></tr>
-      <tr><td>🥽 Reality Labs(AI글래스·Quest)</td><td class="num">$0.43B<span class="krw">(약 5,810억원)</span></td><td class="num" style="color:var(--pos-text)">+16%</td><td class="num">0.7%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$60.8B</b><span class="krw">(약 82조 1,160억원)</span></td><td class="num"><b>+28%</b></td><td class="num"><b>100%</b></td></tr>
-    </table>
+    <h2>4. 매출구조/수익구조 (2026년 2분기, 6/30 마감분)</h2>
+    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,341.5원 (2026.10.12 오후 시세 기준, 10억원 단위 반올림)</p>
 
     <div class="rev-bar-wrap">
-      <div class="rev-row">
-        <div class="rev-label">광고</div>
-        <div class="rev-track"><div class="rev-fill" style="width:97.6%; background:#0866ff;"></div></div>
-        <div class="rev-pct">97.6%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">기타(WhatsApp 등)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:1.6%; background:#34c759;"></div></div>
-        <div class="rev-pct">1.6%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">Reality Labs</div>
-        <div class="rev-track"><div class="rev-fill" style="width:0.7%; background:#8e44ad;"></div></div>
-        <div class="rev-pct">0.7%</div>
-      </div>
+      <div class="rev-row"><div class="rev-label">📢 광고</div><div class="rev-track"><div class="rev-fill" style="width:97.6%; background:#0866ff;"></div></div><div class="rev-pct">97.6%</div></div>
+      <div class="rev-row"><div class="rev-label">💬 기타(WhatsApp 등)</div><div class="rev-track"><div class="rev-fill" style="width:1.6%; background:#34c759;"></div></div><div class="rev-pct">1.6%</div></div>
+      <div class="rev-row"><div class="rev-label">🥽 Reality Labs</div><div class="rev-track"><div class="rev-fill" style="width:0.7%; background:#8e44ad;"></div></div><div class="rev-pct">0.7%</div></div>
     </div>
 
-    <div class="callout">
-      → Meta 매출의 <b>97.6%가 광고에 압도적으로 의존</b>하는 구조는 아직 변화가 없으나, 9/8 출시된
-      <b>Muse AI 에이전트</b>(구독 $20·$100 티어 + 에이전트 커머스 수수료)는 "기타" 부문(현재 1.6%)에 향후 반영될
-      신규 채널입니다. AI 광고랭킹 고도화(광고 클릭 +8.3%·전환 +15.7%, Advantage+ 연환산 $750억)는 광고 매출 자체의
-      질을 끌어올리는 효과이며, 3분기 실적(10월 말 발표 예상)에서 두 흐름(Muse 초기 매출 기여 + 기존 광고 효율 개선)이
-      숫자로 얼마나 확인되는지가 핵심 관전 포인트입니다. Reality Labs는 매출 비중 1% 미만에 영업손실은 분기당
-      $46억<span class="krw">(약 6조 2,130억원)</span>으로 손익 괴리가 여전히 큽니다. 2분기 희석 EPS는 $6.18<span class="krw">(약 8,347원)</span>(-13% YoY), 영업이익률은 31%(전년 43%)로 하락했습니다. 3분기에는 <b>약 $100억</b><span class="krw">(약 13조 5,060억원)</span> 법적 비용이 일시 반영될 예정이라 GAAP 이익은 크게 눌릴 수 있습니다.
-    </div>
+    <table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>📢 광고 (Family of Apps)</td><td class="num">$593.6억<span class="krw">(약 79조 6,310억원)</span></td><td class="num" style="color:var(--pos-text)">+27%</td><td class="num">97.6%</td></tr>
+      <tr><td>💬 기타 (WhatsApp 유료메시징, Meta One 등)</td><td class="num">$10.0억<span class="krw">(약 1조 3,420억원)</span></td><td class="num" style="color:var(--pos-text)">+73%</td><td class="num">1.6%</td></tr>
+      <tr><td>🥽 Reality Labs (AI 글래스·Quest)</td><td class="num">$4.3억<span class="krw">(약 5,770억원)</span></td><td class="num" style="color:var(--pos-text)">+16%</td><td class="num">0.7%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$608.0억</b><span class="krw">(약 81조 5,630억원)</span></td><td class="num"><b>+28%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>💰 희석 EPS · 영업이익률</td><td class="num">$6.18<span class="krw">(약 8,290원)</span></td><td class="num" style="color:var(--neg-text)">−13%</td><td class="num">31% (전년 43%)</td></tr>
+      <tr><td>🏗️ 2분기 Capex · FCF</td><td class="num">$301.2억 · $7.8억</td><td class="num" style="color:var(--neg-text)">FCF −91%</td><td class="num">법적 비용 $24억 포함</td></tr>
+      <tr><td>🎯 3분기 가이던스 · 컨센서스</td><td class="num">$610~640억 · 약 $633억</td><td class="num">약 +24%</td><td class="num">EPS 약 $6.35(GAAP 영향 큼)</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.10.29(목) 05:00 KST경</td><td class="num">-</td><td class="num">현지 10/28 장마감 후 · 컨콜 05:30</td></tr>
+    </table>
 
-    <h3>매출구조도 — 사용자 활동이 매출·재투자로 이어지는 구조</h3>
+    <h3>매출구조도 (가치 흐름 — 사용자 활동이 매출·재투자로 이어지는 구조)</h3>
     <div class="flow-diagram">
       <div class="flow-row">
         <div class="flow-box accent">
-          <b>사용자·디앱 활동</b>
-          <div class="desc">Facebook·Instagram·WhatsApp 이용, 콘텐츠 소비, Muse AI 에이전트 태스크 실행(예약·구매·메시지 처리)</div>
+          <b>사용자 활동 (일간 활성 36억 명)</b>
+          <div class="desc">Facebook·Instagram·WhatsApp·Threads 이용, 콘텐츠 소비 + Muse AI 에이전트 작업(예약·구매·메시지)</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>Family of Apps 플랫폼</b>
-          <div class="desc">참여 데이터 기반 AI 랭킹·타겟팅(Advantage+) 고도화 → 광고 경매 시스템에 반영</div>
-        </div>
-        <div class="flow-arrow">→</div>
-        <div class="flow-box accent">
-          <b>Muse 에이전트 레이어(신규)</b>
-          <div class="desc">Shopify·Walmart·Best Buy·Gap 등과 에이전틱 체크아웃 연동, 구독 티어(무료/$20/$100) + 소상공인용(9/29)으로 직접 과금</div>
-        </div>
+        <div class="flow-box accent"><b>AI 광고 시스템</b><div class="desc">참여 데이터 → AI 랭킹·타겟팅(Advantage+ 연환산 $750억) → 광고 단가 +12% · 경쟁사(틱톡) 광고 차단</div></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box accent"><b>Muse 에이전트 (신규)</b><div class="desc">구독(무료/$20/$100) + 월마트·스트라이프 등과 에이전트 결제 표준 → 커머스 수수료</div></div>
       </div>
-      <div class="flow-arrow down">↓ 광고 낙찰가 × 노출량 + 구독료·에이전트 수수료(신규) ↓</div>
+      <div class="flow-arrow down">↓ 광고 단가 × 노출량 + 구독·수수료 ↓</div>
       <div class="flow-split">
         <div class="flow-box reward">
-          <b>매출 인식 (97.6% 광고 + 신규 채널)</b>
-          <div class="desc">분기 매출의 대부분은 여전히 광고이나, Muse發 구독·커머스 수수료가 "기타" 부문에 점차 누적</div>
+          <b>매출 → 영업이익</b>
+          <div class="desc">FY2025 매출 $2,010억, 앱 부문 영업이익 $1,025억(마진 52%) — Reality Labs −$192억을 메우고도 전체 영업이익률 41%</div>
         </div>
         <div class="flow-box burn">
-          <b>AI 인프라 재투자 (CapEx)</b>
-          <div class="desc">2026년 $1,300~1,450억<span class="krw">(약 175조 5,780억~195조 8,370억원)</span>, JPMorgan 전망 기준 2027년 $2,430억<span class="krw">(약 328조 1,960억원)</span>·2028년 $2,840억<span class="krw">(약 383조 5,700억원)</span>까지 확대 + Nebius $270억 컴퓨팅 계약(9/30) — Superintelligence Lab·데이터센터·모델 학습에 투입</div>
+          <b>AI 인프라 재투자 (Capex)</b>
+          <div class="desc">2025년 $697억 → 2026년 $1,300~1,450억 → 2027년 약 $1,860억(컨센서스). 데이터센터·GPU·Nebius $270억 계약 + 회사채 차입 확대</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
         <div class="flow-box">
-          <b>향상된 랭킹·에이전트 성능 → 참여·전환율 상승</b>
-          <div class="desc">재투자로 개선된 AI 모델이 다시 광고 효율과 Muse 에이전트 품질을 높이며 순환구조 형성, 동시에 Reality Labs(약 0.7%)는 별도의 장기 손실 구간</div>
+          <b>주주환원 축소 → 더 좋은 AI 모델 → 참여·전환율 상승</b>
+          <div class="desc">FY2025 자사주 매입 $262억 → 2026년 상반기 0. 배당(분기 $0.525)은 유지. 남은 현금은 대부분 AI로</div>
         </div>
       </div>
     </div>
+    <div class="callout">
+      → 메타는 여전히 <b>매출의 97.6%가 광고</b>인 회사이고, 그 광고 엔진이 AI 덕분에 오히려 빨라지고 있습니다(광고 +27%, 단가 +12%).
+      문제는 그 돈을 <b>거의 전부 AI 설비에 다시 넣고 있다</b>는 점입니다. 2분기엔 영업현금 $319억 중 $311억이 Capex로 나가 FCF가 $7.8억까지 줄었고, 자사주 매입도 멈췄습니다.<br>
+      Muse는 이 투자를 정당화할 <b>'광고 다음의 매출원'</b> 후보입니다. 아직 '기타' 부문(1.6%)에 잡히는 수준이라, <b>3분기 실적에서 Muse 구독·커머스 숫자가 처음 공개되는지</b>가 핵심 관전 포인트입니다.
+    </div>
   </section>
 
-  <!-- 5. 주요일정 -->
+  <!-- 5. 재무제표 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>5. 2025회계연도 재무제표 (FY2025, 2025.12.31 마감)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">$2,009.7억</div><div class="k">약 269조 5,960억원</div><div class="d">▲ +22% YoY</div></div>
+      <div class="fk"><div class="l">영업이익</div><div class="v">$832.8억</div><div class="k">약 111조 7,150억원</div><div class="d">▲ +20% · 영업이익률 41.4%</div></div>
+      <div class="fk"><div class="l">순이익</div><div class="v">$604.6억</div><div class="k">약 81조 1,040억원</div><div class="d" style="color:var(--neg-text)">▼ −3% · 일회성 세금 영향</div></div>
+      <div class="fk"><div class="l">잉여현금흐름</div><div class="v">$435.9억</div><div class="k">약 58조 4,690억원</div><div class="d" style="color:var(--neg-text)">▼ −16% · Capex +87%</div></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2024 vs FY2025 (FY25 매출을 100으로 둔 막대)<i style="background:var(--border)"></i>FY24<i style="background:var(--accent)"></i>FY25</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:81.9%"></div><div class="b y25" style="width:100%"></div></div><span class="v">$1,645억 → $2,010억</span></div>
+      <div class="cmp-row"><span class="nm">영업현금흐름</span><div class="bars2"><div class="b y24" style="width:45.4%"></div><div class="b y25" style="width:57.6%"></div></div><span class="v">$913억 → $1,158억</span></div>
+      <div class="cmp-row"><span class="nm">영업이익</span><div class="bars2"><div class="b y24" style="width:34.5%"></div><div class="b y25" style="width:41.4%"></div></div><span class="v">$694억 → $833억</span></div>
+      <div class="cmp-row"><span class="nm">설비투자</span><div class="bars2"><div class="b y24" style="width:18.5%; background:var(--neg-text); opacity:.45"></div><div class="b y25" style="width:34.7%; background:var(--neg-text)"></div></div><span class="v">$373억 → $697억</span></div>
+      <div class="cmp-row"><span class="nm">순이익</span><div class="bars2"><div class="b y24" style="width:31.0%"></div><div class="b y25" style="width:30.1%"></div></div><span class="v">$624억 → $605억</span></div>
+      <div class="cmp-row"><span class="nm">FCF</span><div class="bars2"><div class="b y24" style="width:25.9%"></div><div class="b y25" style="width:21.7%"></div></div><span class="v">$521억 → $436억</span></div>
+    </div>
+
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>$2,009.66억</b><span class="krw">약 269조 5,960억원</span></td><td class="num">$1,645.01억<span class="krw">약 220조 6,780억원</span></td><td class="num up">+22%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 광고 (97.6%)</td><td class="num">$1,961.75억<span class="krw">약 263조 1,690억원</span></td><td class="num">$1,606.33억<span class="krw">약 215조 4,890억원</span></td><td class="num up">+22%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 기타 (1.3%)</td><td class="num">$25.84억<span class="krw">약 3조 4,660억원</span></td><td class="num">$17.22억<span class="krw">약 2조 3,100억원</span></td><td class="num up">+50%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ Reality Labs (1.1%)</td><td class="num">$22.07억<span class="krw">약 2조 9,610억원</span></td><td class="num">$21.46억<span class="krw">약 2조 8,790억원</span></td><td class="num">+3%</td></tr>
+      <tr><td>매출원가 <span class="hz">GPM 82.0%</span></td><td class="num">$361.75억<span class="krw">약 48조 5,290억원</span></td><td class="num">$301.61억<span class="krw">약 40조 4,610억원</span></td><td class="num">+20%</td></tr>
+      <tr><td>연구개발비</td><td class="num">$573.72억<span class="krw">약 76조 9,650억원</span></td><td class="num">$438.73억<span class="krw">약 58조 8,560억원</span></td><td class="num dn">+31%</td></tr>
+      <tr><td>마케팅·영업비</td><td class="num">$119.91억<span class="krw">약 16조 860억원</span></td><td class="num">$113.47억<span class="krw">약 15조 2,220억원</span></td><td class="num">+6%</td></tr>
+      <tr><td>일반관리비 (법적 비용 포함)</td><td class="num">$121.52억<span class="krw">약 16조 3,020억원</span></td><td class="num">$97.40억<span class="krw">약 13조 660억원</span></td><td class="num">+25%</td></tr>
+      <tr><td><b>영업이익</b> <span class="hz">OPM 41.4% (전년 42.2%)</span></td><td class="num"><b>$832.76억</b><span class="krw">약 111조 7,150억원</span></td><td class="num">$693.80억<span class="krw">약 93조 730억원</span></td><td class="num up">+20%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 앱 부문(FoA) 영업이익</td><td class="num">$1,024.69억<span class="krw">약 137조 4,620억원</span></td><td class="num">$871.09억<span class="krw">약 116조 8,570억원</span></td><td class="num up">+18%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ Reality Labs 영업손실</td><td class="num dn">−$191.93억<span class="krw">−약 25조 7,470억원</span></td><td class="num">−$177.29억<span class="krw">−약 23조 7,830억원</span></td><td class="num dn">적자 확대</td></tr>
+      <tr><td>이자·기타수익</td><td class="num">$26.56억<span class="krw">약 3조 5,630억원</span></td><td class="num">$12.83억<span class="krw">약 1조 7,210억원</span></td><td class="num up">+107%</td></tr>
+      <tr><td>법인세 <span class="hz">유효세율 30% (전년 12%)</span></td><td class="num dn">$254.74억<span class="krw">약 34조 1,730억원</span></td><td class="num">$83.03억<span class="krw">약 11조 1,380억원</span></td><td class="num dn">+207%</td></tr>
+      <tr><td><b>순이익</b> <span class="hz">순이익률 30.1%</span></td><td class="num"><b>$604.58억</b><span class="krw">약 81조 1,040억원</span></td><td class="num">$623.60억<span class="krw">약 83조 6,560억원</span></td><td class="num dn">−3%</td></tr>
+      <tr><td>희석 EPS</td><td class="num">$23.49<span class="krw">약 3만 1,510원</span></td><td class="num">$23.86</td><td class="num dn">−2%</td></tr>
+    </table>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2025.12.31</th><th class="num">2024.12.31</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">$358.7억<span class="krw">약 48조 1,240억원</span></td><td class="num">$438.9억<span class="krw">약 58조 8,770억원</span></td><td class="num dn">−18%</td></tr>
+      <tr><td>유가증권</td><td class="num">$457.2억<span class="krw">약 61조 3,320억원</span></td><td class="num">$339.3억<span class="krw">약 45조 5,120억원</span></td><td class="num up">+35%</td></tr>
+      <tr><td><b>현금+유가증권</b></td><td class="num"><b>$815.9억</b><span class="krw">약 109조 4,560억원</span></td><td class="num">$778.2억<span class="krw">약 104조 3,890억원</span></td><td class="num up">+5%</td></tr>
+      <tr><td>유동자산</td><td class="num">$1,087.2억<span class="krw">약 145조 8,510억원</span></td><td class="num">$1,000.5억<span class="krw">약 134조 2,100억원</span></td><td class="num">+9%</td></tr>
+      <tr><td>유형자산 (데이터센터·서버)</td><td class="num">$1,764.0억<span class="krw">약 236조 6,410억원</span></td><td class="num">$1,213.5억<span class="krw">약 162조 7,860억원</span></td><td class="num">+45%</td></tr>
+      <tr><td>총자산</td><td class="num">$3,660.2억<span class="krw">약 491조 170억원</span></td><td class="num">$2,760.5억<span class="krw">약 370조 3,260억원</span></td><td class="num up">+33%</td></tr>
+      <tr><td>유동부채</td><td class="num">$418.4억<span class="krw">약 56조 1,230억원</span></td><td class="num">$336.0억<span class="krw">약 45조 690억원</span></td><td class="num">+25%</td></tr>
+      <tr><td>장기부채 <span class="hz">2026.6.30 $836.6억</span></td><td class="num dn">$587.4억<span class="krw">약 78조 8,050억원</span></td><td class="num">$288.3억<span class="krw">약 38조 6,700억원</span></td><td class="num dn">+104%</td></tr>
+      <tr><td>총부채</td><td class="num">$1,487.8억<span class="krw">약 199조 5,860억원</span></td><td class="num">$934.2억<span class="krw">약 125조 3,190억원</span></td><td class="num">+59%</td></tr>
+      <tr><td><b>자본총계</b> <span class="hz">자기자본비율 59.4% (전년 66.2%)</span></td><td class="num"><b>$2,172.4억</b><span class="krw">약 291조 4,310억원</span></td><td class="num">$1,826.4억<span class="krw">약 245조 80억원</span></td><td class="num up">+19%</td></tr>
+      <tr><td>순현금 (현금+유가증권 − 장기부채)</td><td class="num">약 $228억</td><td class="num">약 $490억</td><td class="num dn">−53%</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">$1,158.0억<span class="krw">약 155조 3,460억원</span></td><td class="num">$913.3억<span class="krw">약 122조 5,170억원</span></td><td class="num up">+27%</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num dn">$696.9억<span class="krw">약 93조 4,900억원</span></td><td class="num">$372.6억<span class="krw">약 49조 9,790억원</span></td><td class="num dn">+87%</td></tr>
+      <tr><td>금융리스 원금 상환</td><td class="num">$25.2억</td><td class="num">$19.7억</td><td class="num">+28%</td></tr>
+      <tr><td><b>잉여현금흐름 (FCF)</b></td><td class="num"><b>$435.9억</b><span class="krw">약 58조 4,690억원</span></td><td class="num">$521.0억<span class="krw">약 69조 8,960억원</span></td><td class="num dn">−16%</td></tr>
+      <tr><td>자사주 매입</td><td class="num">$262.5억<span class="krw">약 35조 2,120억원</span></td><td class="num">$301.3억<span class="krw">약 40조 4,130억원</span></td><td class="num dn">−13%</td></tr>
+      <tr><td>배당 지급</td><td class="num">$53.2억<span class="krw">약 7조 1,420억원</span></td><td class="num">$50.7억<span class="krw">약 6조 8,040억원</span></td><td class="num">+5%</td></tr>
+      <tr><td>회사채 발행 (순)</td><td class="num">$299.1억<span class="krw">약 40조 1,190억원</span></td><td class="num">$104.3억<span class="krw">약 13조 9,950억원</span></td><td class="num dn">+187%</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2025는 <b>사업은 잘됐는데 주주에게 남는 몫은 줄어든 해</b>입니다. 매출 +22%, 영업이익 +20%로 광고 엔진은 튼튼했지만, 순이익은 −3%로 줄었습니다. 2025년 7월 美 세법 개정(OBBBA)에 따른 <b>일회성 세금 비용</b>으로 유효세율이 12% → 30%로 뛰었기 때문입니다(일회성 제외 시 13%).<br>
+      더 중요한 변화는 현금흐름입니다. 영업현금이 $245억 늘었지만 <b>Capex가 $324억 늘어</b> FCF가 −16% 줄었고, 그 차이를 <b>회사채 $299억</b>으로 메웠습니다. 장기부채가 1년 새 2배($288억 → $587억), 2026년 6월엔 $837억까지 늘었습니다.<br>
+      그래도 현금·유가증권 $816억에 영업현금 $1,158억이라 재무 위험은 낮습니다. 다만 2026년 Capex 가이던스($1,300~1,450억)가 FY25 영업현금을 이미 넘어서므로, <b>"차입으로 AI를 짓는 회사"로 바뀌는 중</b>이라는 점은 밸류에이션에 계속 부담입니다.
+      <br><span style="font-size:12.5px;">※ 회계연도 = 역년. 출처: Meta 4분기·연간 실적 발표(2026.1.28, Exhibit 99.1). 순현금은 단기 부채·리스부채를 제외한 단순 계산입니다. 원화는 리포트 공통 환율 1,341.5원 적용.</span>
+    </div>
+  </section>
+
+  <!-- 6. 주요 일정 -->
+  <section>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>10월 중 (미정)</td>
-        <td><b>뉴멕시코 소비자보호법 벌금 판결</b> — 9/25 배심원 평결(4,300만 건 위반) 이후 10/1 심리 진행, 판사가 벌금 규모·금지명령 결정. 건당 최대 $5,000이라 판결 규모에 따라 헤드라인 충격 가능</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 초 (예상)</td>
-        <td>3분기 실적 발표일 공식 공지 (작년 10/1 공지 선례)</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 13일 (화)</td>
-        <td>Ray-Ban Meta Audio(카메라 없는 오디오 글래스, $349) 출시</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
-      <tr>
-        <td>지속</td>
-        <td>Muse 다운로드·구독 전환, OpenAI Dots 등 경쟁 에이전트 동향, Amazon 차단·네덜란드 개인정보 이슈 등 AI 에이전트 생태계 뉴스플로우</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 17일 (토) 오전 5:00 (현지 10/16 금 정규장 마감)</td>
-        <td>10월 월간 옵션만기 — 실적 직전 변동성 확대 구간</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 발표 (10/27~28 회의) — 9월 인상에 이은 추가 인상 여부(시장 확률 70%대), 빅테크 공통 매크로 변수</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 5:00경 (예상·미확정)</td>
-        <td><b>FY2026 3분기 실적 발표</b> (미국 현지 10/28(수) 장마감 후 예상, 회사 공식 공지 전) — 매출 가이던스($610~640억) 달성, Muse 초기 매출, 약 $100억 법적 비용 반영 후 이익, Capex·2027 투자 가이던스가 핵심</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>12월 10일 (목) 오전 4:00</td>
-        <td>FOMC 금리결정 발표 (12/8~9 회의, 2026년 마지막 FOMC, EST 전환으로 발표시각 04:00 KST)</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
+      <tr><th style="width:28%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>10월 중 (미정)</td><td><b>뉴멕시코 개인정보 소송 벌금 판결</b>(산타페 주법원) — 州 $350~400억 vs 메타 $34.5억 상한 주장, 항소 가능</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 13일 (화)</td><td>Ray-Ban Meta Audio(카메라 없는 오디오 글래스, $349) 출시</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td><b>美 9월 CPI</b> — 예상 3.7%(8월 3.4%), 빅테크 공통 금리 변수</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 17일 (토) 오전 5:00</td><td>10월 월간 옵션만기 (현지 10/16 금 장마감) — 실적 전 변동성</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>지속</td><td>Muse 다운로드·리텐션·유료 전환, 에이전트 상거래 표준(월마트·스트라이프), OpenAI·아마존 경쟁, AI 글래스 규제(노르웨이)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 10월 인상 확률 약 20%대</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 5:00경 (컨콜 05:30)</td><td><b>3분기 실적</b> (현지 10/28 장마감 후, FOMC 2시간 뒤) — 매출 가이던스 $610~640억 달성, 약 $100억 법적 비용 반영 후 GAAP EPS, <b>Muse 첫 매출 지표</b>, 2026 비용·2027 Capex 가이던스</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) ~ 30일 (금) 새벽</td><td>알파벳·마이크로소프트·아마존 실적 — AI 설비투자 비교, 광고 시장 동향</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
-  <!-- 6. 핵심 한눈에 -->
+  <!-- 7. 핵심 한눈에 -->
   <section>
-    <h2>6. 핵심 한눈에 보기 📱</h2>
+    <h2>7. 핵심 한눈에 보기 📱</h2>
 
     <div class="key-hero">
       <div class="tag">한 줄 요약</div>
-      <div class="line"><em>새로 낸 AI 비서가 대박 났는데,</em><br><strong>돈을 너무 많이 쓰고 벌금 폭탄이 기다린다.</strong></div>
+      <div class="line"><em>광고는 더 잘 팔리고 AI 비서도 인기인데,</em><br><strong>번 돈을 다 AI에 쓰고 벌금 판결까지 남았다.</strong></div>
     </div>
 
     <div class="key-two">
       <div class="key-card good">
         <h4>👍 좋은 점 3가지</h4>
         <ol>
-          <li><b>AI 비서 'Muse'가 인기</b><span>쇼핑·예약을 대신 해줌 · 한 달 만에 500만 다운로드</span></li>
-          <li><b>광고로 여전히 돈을 잘 벎</b><span>매출 1년 새 +28%</span></li>
-          <li><b>스마트안경 신제품 출시</b><span>레이밴 3세대, 오디오 안경(10/13 출시)</span></li>
+          <li><b>광고가 더 비싸게 팔림</b><span>광고 매출 +27%, 광고 단가 +12%</span></li>
+          <li><b>AI 비서 'Muse'가 자리 잡는 중</b><span>560만 다운로드 · 첫 주 30% 이상이 계속 사용</span></li>
+          <li><b>월가 목표가가 높음</b><span>웰스파고 $1,000 · 평균 $828 (지금보다 약 +15%)</span></li>
         </ol>
       </div>
       <div class="key-card bad">
         <h4>👎 나쁜 점 3가지</h4>
         <ol>
-          <li><b>돈을 너무 많이 씀</b><span>번 돈의 97%를 AI에 투자 → 남는 돈이 거의 없음</span></li>
-          <li><b>벌금 폭탄 대기</b><span>뉴멕시코 판결(10월 중) + 합의금 13조원이 3분기 비용으로</span></li>
-          <li><b>경쟁자 등장</b><span>OpenAI 'Dots' 출시, 아마존은 Muse 차단</span></li>
+          <li><b>번 돈을 다 AI에 씀</b><span>2분기 남은 현금 1조원뿐 · 빚도 1년 새 2배 이상</span></li>
+          <li><b>벌금 판결 대기</b><span>주 정부는 최대 54조원 요구 · 3분기에 13조원 비용 반영</span></li>
+          <li><b>금리가 높음</b><span>10년물 금리 2002년 이후 최고 수준</span></li>
         </ol>
       </div>
     </div>
@@ -671,124 +555,111 @@
       <div class="key-date">
         <div class="d">10월 중</div>
         <div class="e">뉴멕시코 벌금 판결</div>
-        <div class="w">금액 크면 급락 주의</div>
+        <div class="w">작게 나오면 호재, 크면 급락 주의</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10/14 밤 9:30</div>
+        <div class="e">美 9월 물가(CPI)</div>
+        <div class="w">높으면 빅테크 부담</div>
       </div>
       <div class="key-date hot">
-        <div class="d">10/29 새벽</div>
-        <div class="e">3분기 실적 (예상)</div>
-        <div class="w">🔥 제일 큰 고비</div>
+        <div class="d">10/29 새벽 5시</div>
+        <div class="e">3분기 실적</div>
+        <div class="w">🔥 제일 큰 고비 (FOMC 2시간 뒤)</div>
       </div>
     </div>
 
     <div class="key-ladder">
       <h4>📍 가격 기준선</h4>
-      <div class="rung ok"><span class="px">$760 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $780~820)</span></div>
-      <div class="rung now"><span class="px">$728</span><span>지금 (10/2 종가)</span></div>
-      <div class="rung warn"><span class="px">$720</span><span>이 아래면 → 조심 ⚠️</span></div>
-      <div class="rung bad"><span class="px">$700</span><span>최후 방어선 🛑</span></div>
+      <div class="rung ok"><span class="px">$760 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $780 → $820대)</span></div>
+      <div class="rung now"><span class="px">$719</span><span>지금 (10/9 종가 · 10/12 장 초반 $746)</span></div>
+      <div class="rung warn"><span class="px">$712</span><span>이 아래면 → 조심 ⚠️ (20일선·박스 하단)</span></div>
+      <div class="rung bad"><span class="px">$700</span><span>최후 방어선 🛑 (깨지면 $666까지)</span></div>
     </div>
 
     <div class="key-final">
-      💡 <b>결론:</b> AI 비서 덕분에 9월에만 +27% 올랐고, 지금은 <b>숨 고르는 중</b>입니다.
-      방향을 정할 건 <b>벌금 판결과 10/29 실적</b>이니, 사고 싶다면 <b>그 전후로 나눠서</b> 사는 게 안전합니다.
+      ⚖️ <b>호재·악재 점수: +17.0 vs −15.5 → 약한 호재 우위(+1.5)</b> — 단, 단기는 이벤트 경계(−2.4), 중기는 호재 우위(+3.9).<br>
+      💡 <b>결론:</b> 광고 사업은 튼튼하고 Muse도 기대 이상이라 <b>$712~720 박스 하단은 매수 관점에서 볼 만한 자리</b>입니다.
+      다만 <b>벌금 판결과 10/29 실적</b>이 연달아 있으니 한 번에 사지 말고, <b>판결 후·실적 후로 나눠서</b> 접근하는 게 안전합니다. $700이 깨지면 비중을 줄이세요.
     </div>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 실적은 META FY2026 Q2(발표일 2026.07.29) 기준이며, 3분기 실적은 2026.10.28(현지) 발표가 예상되나 회사 공식 공지 전입니다. 9/24·9/25·9/29 종가는 보도된 등락률을 이용한 추정치. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용. 시나리오 확률은 주관적 판단입니다. 가격은 OKX 퍼블릭 API(METAUSDT.P)를 통해 30초마다 자동 갱신됩니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스·공시 기반 분석이며 투자 조언이 아닙니다. 시세 기준: 2026.10.09 16:00 ET 정규장 마감(KST 10/10 05:00), 10/12 장 초반 시세는 Investing.com(KST 23:00 게재) 기준.
+    10/6 종가는 10/7 등락률(−2.38%)로 역산했습니다. 2분기 실적은 2026.7.29 발표, FY2025 재무제표는 2026.1.28 발표 실적자료(Exhibit 99.1) 기준입니다. 3분기 실적일(10/28 현지)은 보도 기준이며 회사 공지 여부를 확인하세요.
+    원화 환산은 10/12 오후 시세 1,341.5원 적용(10억원 단위 반올림). 시나리오 확률과 요인별 점수는 주관적 판단입니다.
+    상단 차트는 TradingView 실시간 위젯(OKX METAUSDT.P)으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
-
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
-  function initWidgets() {
-    if (typeof TradingView === 'undefined') { setTimeout(initWidgets, 300); return; }
+  function mkWidget(interval, id){
     new TradingView.widget({
-      "width": "100%",
-      "height": "100%",
+      "container_id": id,
+      "width": "100%", "height": 440,
       "symbol": "OKX:METAUSDT.P",
-      "interval": "15",
-      "timezone": "Asia/Seoul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "kr",
-      "toolbar_bg": "#161a21",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tv_meta_15m"
-    });
-    new TradingView.widget({
-      "width": "100%",
-      "height": "100%",
-      "symbol": "OKX:METAUSDT.P",
-      "interval": "D",
-      "timezone": "Asia/Seoul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "kr",
-      "toolbar_bg": "#161a21",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": "tv_meta_1d"
+      "interval": interval,
+      "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+      "toolbar_bg": "#1a1d24", "enable_publishing": false,
+      "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+      "studies": ["MASimple@tv-basicstudies"],
+      "support_host": "https://www.tradingview.com"
     });
   }
-  initWidgets();
+  mkWidget("D", "tv_meta_daily");
+  mkWidget("15", "tv_meta_15m");
 </script>
 <script type="text/javascript">
-  // 실시간 META 가격 업데이트 (OKX 퍼블릭 API, 30초 주기)
-  (function(){
-    const priceEl = document.getElementById('metaPriceMain');
-    const changeEl = document.getElementById('metaPriceChange');
-    const timeEl = document.getElementById('metaLiveTime');
+  // 실시간 시세 갱신 (OKX 공개 API · META-USDT-SWAP · 30초 주기)
+  const LIVE_INST_ID = "META-USDT-SWAP";
+  const priceEl = document.getElementById("live-price");
+  const chgEl = document.getElementById("live-chg");
+  const updatedEl = document.getElementById("live-updated");
+  const badgeEl = document.getElementById("live-badge");
 
-    function fmtUSD(n){
-      return '$' + Number(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    }
-    function fmtTimeKST(){
-      return new Date().toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false, timeZone:'Asia/Seoul' }) + ' KST';
-    }
+  function fmtUSD(n){
+    return "$" + n.toLocaleString("en-US", {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  }
+  function fmtTimeKST(){
+    return new Date().toLocaleTimeString("ko-KR", {hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: false, timeZone: "Asia/Seoul"}) + " KST";
+  }
 
-    async function updateMetaPrice(){
-      try{
-        const tickerRes = await fetch('https://www.okx.com/api/v5/market/ticker?instId=META-USDT-SWAP');
-        const tickerJson = await tickerRes.json();
-        const t = tickerJson && tickerJson.data && tickerJson.data[0];
-        if(!t || !t.last) throw new Error('no ticker data');
+  async function updateLivePrice(){
+    try{
+      const [tickerRes, candleRes] = await Promise.all([
+        fetch(`https://www.okx.com/api/v5/market/ticker?instId=${LIVE_INST_ID}`),
+        fetch(`https://www.okx.com/api/v5/market/candles?instId=${LIVE_INST_ID}&bar=1D&limit=2`)
+      ]);
+      const tickerJson = await tickerRes.json();
+      const candleJson = await candleRes.json();
+      if(!tickerJson.data || !tickerJson.data[0]) throw new Error("no ticker data");
 
-        const last = parseFloat(t.last);
-        const open24h = parseFloat(t.open24h);
-        const changePct = open24h ? ((last - open24h) / open24h) * 100 : null;
+      const last = parseFloat(tickerJson.data[0].last);
+      const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
 
-        if(priceEl){
-          priceEl.innerHTML = fmtUSD(last) + ' <span id="metaLiveDot" style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#5fd188;margin-left:4px;vertical-align:middle;" title="실시간 연결됨"></span>';
-        }
-        if(changeEl && changePct !== null){
-          const sign = changePct >= 0 ? '+' : '';
-          changeEl.textContent = `전일比 ${sign}${changePct.toFixed(2)}%`;
-          changeEl.className = changePct >= 0 ? 'chg-up' : 'chg-down';
-        }
-        if(timeEl){
-          timeEl.textContent = '실시간 반영 · ' + fmtTimeKST();
-        }
-      }catch(err){
-        if(timeEl){
-          timeEl.textContent = '실시간 가격 갱신 실패 (네트워크 확인 필요, 미장 마감 시간에는 갱신이 제한될 수 있음) · 마지막 표시값 유지';
-        }
-        const dot = document.getElementById('metaLiveDot');
-        if(dot){ dot.style.background = '#c53030'; }
-        console.error('META live price fetch error:', err);
+      priceEl.textContent = fmtUSD(last);
+
+      if(prevClose){
+        const diff = last - prevClose;
+        const pct = (diff / prevClose) * 100;
+        const arrow = diff >= 0 ? "▲" : "▼";
+        chgEl.className = diff >= 0 ? "chg-up" : "chg-down";
+        chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
+      } else {
+        chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
       }
+      updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX METAUSDT.P 무기한선물 기준`;
+      badgeEl.style.opacity = "1";
+    } catch(err){
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/9 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      badgeEl.style.opacity = "0.4";
+      console.error("Live price fetch failed:", err);
     }
+  }
 
-    updateMetaPrice();
-    setInterval(updateMetaPrice, 30000);
-  })();
+  updateLivePrice();
+  setInterval(updateLivePrice, 30000);
 </script>
-
 </body>
 </html>
