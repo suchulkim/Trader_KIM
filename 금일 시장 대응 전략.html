@@ -41,6 +41,29 @@
   .cell.wait .lab{color:var(--wait);}
   .cell.cond.long{background:rgba(95,209,136,.06);} .cell.cond.short{background:rgba(255,107,107,.06);}
 
+  .cell{cursor:pointer;transition:border-color .15s,transform .15s;}
+  .cell:hover{border-color:var(--accent);}
+  .cell.sel{outline:2px solid var(--accent);outline-offset:1px;}
+  .cell .lab::after{content:"  📈 15분봉";font-size:11px;font-weight:700;color:var(--muted);}
+  .cp{margin-top:12px;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px;}
+  .cp-h{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-bottom:10px;}
+  .cp-h .t{font-weight:900;font-size:15px;}
+  .cp-h .sub2{font-size:12px;color:var(--soft);}
+  .cp-h button{margin-left:auto;background:var(--card-2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-family:inherit;font-size:12.5px;cursor:pointer;}
+  .cp-tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+  .cp-tabs button{background:var(--card-2);color:var(--soft);border:1px solid var(--border);border-radius:999px;padding:4px 11px;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .cp-tabs button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);}
+  .cp-grid{display:grid;grid-template-columns:1fr;gap:12px;}
+  .cp-grid.one{grid-template-columns:1fr;}
+  .tvbox{background:var(--card-2);border:1px solid var(--border);border-radius:10px;overflow:hidden;min-width:0;}
+  .tvbox .bh{display:flex;align-items:center;gap:8px;padding:6px 10px;font-size:13px;border-bottom:1px solid var(--border);}
+  .tvbox .bh b{font-weight:900;}
+  .tvbox .bh a{color:var(--soft);text-decoration:none;font-size:12px;margin-left:auto;}
+  .tvbox .bh a + a{margin-left:10px;}
+  .tvbox .bh a:hover{color:var(--accent);}
+  .tvwrap{width:100%;height:600px;} .tvwrap > div{width:100%;height:100%;}
+  .cp-grid.one .tvwrap{height:600px;}
+  @media (max-width:900px){ .tvwrap,.cp-grid.one .tvwrap{height:480px;} }
   .filters{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 10px;}
   .filters button{background:var(--card-2);color:var(--soft);border:1px solid var(--border);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer;font-family:inherit;}
   .filters button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);font-weight:800;}
@@ -100,6 +123,7 @@
   }
   @media (max-width:560px){ .mx{grid-template-columns:62px repeat(3,minmax(0,1fr));gap:4px;} .cell{padding:7px;} .cell .tks{font-size:11.5px;} h1{font-size:23px;} }
 </style>
+<script src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -111,7 +135,8 @@
 
   <h2>① 오늘의 분류표</h2>
   <div class="mx" id="matrix"></div>
-  <p class="note">진한 칸 = 바로 매매 대상 · 옅은 칸 = 조건부(돌파/이탈 확인 시만) · 회색 = 관망. ⚡ = 24시간 내 큰 일정(비중 축소), 🔥 = 과열(추격 금지, 되돌림에서만). 종목을 누르면 아래 카드로 이동합니다.</p>
+  <p class="note">진한 칸 = 바로 매매 대상 · 옅은 칸 = 조건부(돌파/이탈 확인 시만) · 회색 = 관망. ⚡ = 24시간 내 큰 일정(비중 축소), 🔥 = 과열(추격 금지, 되돌림에서만). <b>칸을 누르면 그 분류 전체, 종목을 누르면 그 종목만</b> 15분봉 차트(OKX 무기한선물, KST)가 아래에 열립니다.</p>
+  <div class="cp" id="chartPanel" hidden></div>
 
   <h2>② 종목별 당일 전략</h2>
   <div class="filters" id="filters">
@@ -170,50 +195,51 @@
    1) 재료 점수 — 매일 이 블록만 갱신하면 됩니다.
    items: [점수, "내용"]  (+1/+2 호재, -1/-2 악재)  → 합계 ±2 cap
    ========================================================= */
-const NEWS_DATE = "2026-10-11";
+const NEWS_DATE = "2026-10-12";
 const T = [
-  {s:"SPY", n:"S&P 500 ETF", cat:"macro", items:[[1,"9월 고용 쇼크로 10월 인상 확률 70%→20%대"],[1,"3분기 긍정 가이던스 기업 역대 최다"],[-1,"10년물 금리 24년 최고(5.37%)"],[-1,"OpenAI 매출 하향 보도 — AI 투자 의구심"]]},
-  {s:"QQQ", n:"Nasdaq-100", cat:"macro", items:[[1,"10월 인상 확률 20%대로 하락"],[-1,"OpenAI 매출 하향 — 반도체 급락(SOX -3.4%)"],[-1,"10년물 금리 24년 최고"]]},
-  {s:"XAU", n:"Gold", cat:"macro", items:[[1,"중동 긴장 지속(IRGC 유조선 공격 주장)"],[1,"기대인플레 상승(1년 4.7%)"],[-1,"실질금리 고공행진"]]},
-  {s:"CL", n:"WTI 원유", cat:"macro", items:[[1,"IRGC 유조선 공격·호르무즈 피격 증가"],[1,"허리케인으로 멕시코만 생산 약 63% 중단"],[-1,"트럼프 '중간선거 전 이란 공격 없음'·협상"],[-1,"러시아 디젤 공급 합의 보도"]]},
-  {s:"PLTR", n:"Palantir", cat:"us", items:[[1,"AI 칩→소프트웨어 자금 이동 수혜"]]},
-  {s:"AMZN", n:"Amazon", cat:"us", items:[[1,"프라임 세일(10/6~7) 직후 수급 개선"]]},
-  {s:"MSFT", n:"Microsoft", cat:"us", items:[[1,"Melius 매수·웰스파고 목표가 $725"]]},
+  {s:"SPY", n:"S&P 500 ETF", cat:"macro", items:[[1,"3대 지수 주간 상승 마감(10/9 S&P 7,811)"],[1,"10월 인상 확률 20%대로 하락"],[-1,"10년물 5.24% — 24년 최고권 유지"],[-1,"9월 CPI 3.7% 재가속 예상(10/14)"]]},
+  {s:"QQQ", n:"Nasdaq-100", cat:"macro", items:[[1,"MSFT·AMZN·PLTR 반등(10/9)"],[1,"10월 인상 확률 20%대"],[-1,"반도체 약세 지속(SOXL 주간 -14.6%)"],[-1,"10년물 5.24% 고공행진"],[-1,"CPI 재가속 예상(10/14)"]]},
+  {s:"XAU", n:"Gold", cat:"macro", items:[[1,"금 +1.5% $4,220(10/9)"],[1,"호르무즈 유조선 공격·이란 '美 제안 불충분'"],[-1,"실질금리 고공행진"]]},
+  {s:"CL", n:"WTI 원유", cat:"macro", items:[[-1,"트럼프 '러·우 에너지 휴전' 발표(10/11) — 아시아장 WTI -1.7%"],[-1,"美·러 디젤 공급 합의(10/9)"],[1,"이란 '호르무즈 재개방 美 제안 불충분'·유조선 공격 지속"],[1,"골드만 12월 브렌트 전망 $85→$90 상향"]]},
+  {s:"PLTR", n:"Palantir", cat:"us", items:[[1,"10/9 +5.2% — AI 칩→소프트웨어 자금 이동"]]},
+  {s:"AMZN", n:"Amazon", cat:"us", items:[[1,"10/9 +3.3% — 빅테크 순환매 수혜"],[1,"프라임 세일(10/6~7) 효과"]]},
+  {s:"MSFT", n:"Microsoft", cat:"us", items:[[1,"Melius 매수·웰스파고 목표가 $725"],[1,"10/9 +2.4% 반등"]]},
   {s:"TSLA", n:"Tesla", cat:"us", items:[[1,"Cybercab 운행 확대(45→169대)"],[1,"10/16 로드스터 시연 기대"],[-1,"에너지 저장 부진·재고 털어 맞춘 인도량"]]},
   {s:"GOOGL", n:"Alphabet", cat:"us", items:[[1,"Constellation 원전 전력 계약 기대(10/6)"]]},
-  {s:"SPCX", n:"SpaceX", cat:"us", items:[[1,"美 저대역 주파수 인수 합의"],[1,"락업 해제 ①(3.28억주) 무난 소화"],[-1,"$400억 부채로 엔비디아 칩 구매 보도"]]},
+  {s:"SPCX", n:"SpaceX", cat:"us", items:[[1,"美 저대역 주파수 인수 — 통신주 급락(TMUS -13%)으로 위협 부각"],[1,"락업 해제 ①(3.28억주) 무난 소화"],[-1,"$400억 부채로 엔비디아 칩 구매 보도"]]},
   {s:"META", n:"Meta", cat:"us", items:[[1,"AI 비서 Muse 흥행"],[1,"트럼프 주식 매수 보도"],[-1,"뉴멕시코 벌금 판결 대기"],[-1,"합의금 13조원 3분기 비용"]]},
-  {s:"AAPL", n:"Apple", cat:"us", items:[[-2,"아이폰18 Pro 부품 주문 15~20% 감축 보도(10/9)"],[1,"중국 아이폰 판매 +12%"]]},
-  {s:"NVDA", n:"NVIDIA", cat:"semi", items:[[1,"Foxconn 호실적 · 시총 $6조 근접"],[-2,"최대 고객 OpenAI 매출 하향 보도"]]},
+  {s:"AAPL", n:"Apple", cat:"us", items:[[-2,"아이폰18 Pro 주문 감축 보도 — 10/9 -1.1%"],[1,"중국 아이폰 판매 +12%"]]},
+  {s:"NVDA", n:"NVIDIA", cat:"semi", items:[[1,"Foxconn 호실적"],[1,"오픈모델 '리플렉션 AI' 인수 협상 보도(10/11)"],[-2,"최대 고객 OpenAI 매출 하향 보도 — 10/9도 -0.5%"]]},
   {s:"AMD", n:"AMD", cat:"semi", items:[[1,"리사 수 '향후 수년 강한 수요'"],[-2,"OpenAI(핵심 파트너) 매출 하향 보도"]]},
   {s:"AVGO", n:"Broadcom", cat:"semi", items:[[-1,"OpenAI 쇼크 — 맞춤형 AI 칩 수요 의구심"]]},
   {s:"TSM", n:"TSMC ADR", cat:"semi", items:[[2,"3분기 매출 사상 최대(가이던스 상단 상회)"],[1,"머스크 Terafab 협상"],[-1,"美 관세 압박(최대 200%)"],[-1,"OpenAI 쇼크로 AI 칩 심리 위축"]]},
-  {s:"MU", n:"Micron", cat:"semi", items:[[-2,"대만 노조 파업권 확보(99% 찬성)"],[-1,"OpenAI 쇼크"],[1,"목표가 상향(DA데이비슨·로젠블랫)"]]},
+  {s:"MU", n:"Micron", cat:"semi", items:[[-2,"대만 노조 파업권 확보(99% 찬성)"],[-1,"OpenAI 쇼크 — 10/9도 -0.7%"],[1,"목표가 상향(DA데이비슨·로젠블랫)"]]},
   {s:"SNDK", n:"SanDisk", cat:"semi", items:[[-1,"OpenAI 쇼크 — 메모리 호황 지속성 의심"]]},
-  {s:"SKHY", n:"SK하이닉스", cat:"semi", items:[[1,"삼성 잠정실적으로 메모리 업황 확인"],[1,"반도체 ETF 리밸런싱 자금 유입 기대"],[-1,"외국인 8,536억 순매도(1위)"],[-1,"美 메모리주 이틀 약세"]]},
-  {s:"SOXL", n:"반도체 3x", cat:"semi", items:[[-2,"OpenAI 쇼크로 SOX -3.4%"],[1,"TSMC 3분기 매출 사상 최대"]]},
-  {s:"EWY", n:"Korea ETF", cat:"kr", items:[[-1,"외국인 2조·기관 1.7조 동반 매도"],[-1,"美 반도체 약세 미반영분(10/12 개장)"],[1,"삼성 영업익 107조 사상 최대"]]},
-  {s:"KORU", n:"Korea 3x", cat:"kr", items:[[-1,"외국인 대량 매도"],[-1,"美 반도체 약세 미반영분"],[1,"삼성 사상 최대 실적"]]},
-  {s:"SAMSUNG", n:"삼성전자", cat:"kr", items:[[2,"3분기 영업익 107.4조 사상 최대(10/8)"],[-1,"자사주 매입 종료·ETF 비중 상한 매도"],[-1,"외국인 5일 연속 순매도"]]},
+  {s:"SKHY", n:"SK하이닉스", cat:"semi", items:[[1,"삼성 잠정실적으로 메모리 업황 확인"],[-1,"외국인 1조431억 순매도 1위 — 10/12 -4.5% 저가 마감"],[-1,"자사주 매입 막바지 — 수급 공백"],[-1,"연휴 중 AI 수익성 의구심 일괄 반영"]]},
+  {s:"SOXL", n:"반도체 3x", cat:"semi", items:[[-2,"OpenAI 쇼크 — 주간 -14.6%"],[1,"TSMC 3분기 매출 사상 최대"]]},
+  {s:"EWY", n:"Korea ETF", cat:"kr", items:[[-1,"외국인 2조 순매도·코스피 -3.65% 6,384(10/12)"],[-1,"외국인 10거래일 연속 매도"],[1,"삼성 사상 최대 실적·반도체 수출 호조"]]},
+  {s:"KORU", n:"Korea 3x", cat:"kr", items:[[-1,"코스피 -3.65%·코스닥 -4.83%(10/12)"],[-1,"외국인 10거래일 연속 매도"],[1,"삼성 사상 최대 실적"]]},
+  {s:"SAMSUNG", n:"삼성전자", cat:"kr", items:[[2,"3분기 영업익 107.4조 사상 최대(10/8)"],[-1,"호실적 셀온 — 10/12 -4.4%, 외국인 5,331억 매도"],[-1,"자사주 매입 막바지·ETF 비중 상한 매도"]]},
   {s:"HYUNDAI", n:"현대차", cat:"kr", items:[[-2,"3분기 이익 추정 하향·목표가 줄하향"],[1,"美 판매 사상 최대"]]},
   {s:"LGELECTRONICS", n:"LG전자", cat:"kr", items:[[2,"AI 데이터센터 칠러 역대 최대 수주(10/5)"],[-2,"3분기 영업익 컨센서스 -24% 어닝미스(10/7)"]]},
   {s:"NAVER", n:"네이버", cat:"kr", items:[[-2,"두나무 합병 3차 연기(10/7)"]]},
-  {s:"BTC", n:"Bitcoin", cat:"crypto", items:[[1,"美 금리 인상 확률 하락"],[-1,"중동 리스크·10/8 위험회피"]]},
-  {s:"ETH", n:"Ethereum", cat:"crypto", items:[[1,"美 금리 인상 확률 하락"],[-1,"중동 리스크·위험회피"]]},
-  {s:"SOL", n:"Solana", cat:"crypto", items:[]},
-  {s:"ONDO", n:"Ondo", cat:"crypto", items:[]},
-  {s:"MSTR", n:"MicroStrategy", cat:"crypto", items:[]},
-  {s:"CRCL", n:"Circle", cat:"crypto", items:[[-1,"美 금리 고공행진(이자수익 vs 밸류 부담)"],[1,"금리 인상 확률 하락"]]}
+  {s:"BTC", n:"Bitcoin", cat:"crypto", items:[[1,"주말 반등 $84K 회복 — 러·우 에너지 휴전·유가 하락"],[1,"BTC 현물 ETF 순유입 전환(10/9)"],[-1,"美 상원 클래리티법 제동 — 규제 불확실성"],[-1,"10년물 24년 최고권 고금리 부담"],[1,"10월 인상 확률 하락"]]},
+  {s:"ETH", n:"Ethereum", cat:"crypto", items:[[1,"주말 +2%대 반등·알트 강세"],[1,"10월 인상 확률 하락"],[-1,"ETH 현물 ETF 9거래일 연속 순유출"],[-1,"美 상원 클래리티법 제동"]]},
+  {s:"SOL", n:"Solana", cat:"crypto", items:[[1,"주말 알트 동반 반등"],[-1,"美 상원 클래리티법 제동"]]},
+  {s:"ONDO", n:"Ondo", cat:"crypto", items:[[-1,"美 상원 클래리티법 제동 — 토큰화 규제 지연"]]},
+  {s:"MSTR", n:"MicroStrategy", cat:"crypto", items:[[1,"BTC $84K 회복"],[-1,"美 상원 클래리티법 제동"]]},
+  {s:"CRCL", n:"Circle", cat:"crypto", items:[[-1,"美 금리 고공행진(이자수익 vs 밸류 부담)"],[1,"금리 인상 확률 하락"],[-1,"美 상원 클래리티법 제동"]]}
 ];
 
-/* 2) 일정 (24시간 이내면 ⚡) */
+/* 2) 일정 (KST, 24시간 이내면 ⚡) */
 const EVENTS = [
-  {at:"2026-10-12T09:00", who:["kr"], what:"한국장 4일 만의 개장"},
-  {at:"2026-10-13T20:00", who:["SPY"], what:"美 대형 은행 실적"},
+  {at:"2026-10-13T19:45", who:["SPY","macro"], what:"JP모건·골드만·씨티·웰스 실적"},
   {at:"2026-10-14T02:00", who:["AAPL"], what:"스마트홈 신제품"},
-  {at:"2026-10-14T14:00", who:["semi"], what:"ASML 실적"},
+  {at:"2026-10-14T14:00", who:["semi","kr"], what:"ASML 실적"},
+  {at:"2026-10-14T19:45", who:["SPY"], what:"BofA·모건스탠리 실적"},
   {at:"2026-10-14T21:30", who:["all"], what:"9월 CPI"},
-  {at:"2026-10-15T15:00", who:["TSM","semi"], what:"TSMC 실적"},
+  {at:"2026-10-15T03:00", who:["macro"], what:"연준 베이지북"},
+  {at:"2026-10-15T15:00", who:["TSM","semi","kr"], what:"TSMC 실적"},
   {at:"2026-10-15T21:30", who:["all"], what:"PPI·소매판매"},
   {at:"2026-10-16T09:00", who:["TSLA"], what:"로드스터 시연"},
   {at:"2026-10-17T05:00", who:["us","semi","macro"], what:"월간 옵션 만기"},
@@ -355,8 +381,8 @@ function renderMatrix(){
     h += `<div class="rh">${rl}</div>`;
     cols.forEach(([ck]) => {
       const m = MATRIX[rk][ck];
-      const list = (cells[rk+"|"+ck] || []).map(t => { const r = classify(t); const ev = eventsFor(t, now).length ? "⚡" : ""; const hot = r.tr.hot && m.d!=="wait" ? "🔥" : ""; return `<a href="#r-${t.s}">${t.s}${ev}${hot}</a>`; }).join("");
-      h += `<div class="cell ${m.d} ${m.cond?'cond':''}"><div class="lab">${m.d==="long"?"🟢":m.d==="short"?"🔴":"⚪"} ${m.k}</div><div class="tks">${list || '<span style="color:var(--muted)">—</span>'}</div></div>`;
+      const list = (cells[rk+"|"+ck] || []).map(t => { const r = classify(t); const ev = eventsFor(t, now).length ? "⚡" : ""; const hot = r.tr.hot && m.d!=="wait" ? "🔥" : ""; return `<a href="#r-${t.s}" data-sym="${t.s}">${t.s}${ev}${hot}</a>`; }).join("");
+      h += `<div class="cell ${m.d} ${m.cond?'cond':''} ${SEL===rk+'|'+ck?'sel':''}" data-key="${rk}|${ck}"><div class="lab">${m.d==="long"?"🟢":m.d==="short"?"🔴":"⚪"} ${m.k}</div><div class="tks">${list || '<span style="color:var(--muted)">—</span>'}</div></div>`;
     });
   });
   document.getElementById("matrix").innerHTML = h;
@@ -373,6 +399,56 @@ function applyFilter(){
     r.style.display = (FILTER==="all" || r.dataset.d===FILTER || r.dataset.cat===FILTER) ? "" : "none";
   });
 }
+
+/* 4-1) 분류 칸 클릭 → 15분봉 TradingView 차트 */
+let SEL = null, TV_SEQ = 0;
+const tvSym = s => `OKX:${s}USDT.P`;
+function cellTickers(key){
+  return T.filter(t => { const r = classify(t); return r.tr && (r.tr.dir + "|" + r.nw.side) === key; }).map(t => t.s);
+}
+function cellLabel(key){
+  const [rk, ck] = key.split("|"); const m = MATRIX[rk][ck];
+  const rl = {up:"상승",side:"횡보",down:"하락"}[rk], cl = {good:"호재 우위",flat:"중립",bad:"악재 우위"}[ck];
+  return `${m.d==="long"?"🟢":m.d==="short"?"🔴":"⚪"} ${m.k} <span class="sub2">(${rl} × ${cl})</span>`;
+}
+function mountTV(id, sym, h){
+  if (typeof TradingView === "undefined"){ const el = document.getElementById(id); if (el) el.innerHTML = `<div class="err" style="padding:14px">TradingView 위젯을 불러오지 못했습니다 — 파일을 로컬 브라우저에서 열어 주세요.</div>`; return; }
+  new TradingView.widget({
+    container_id:id, symbol:tvSym(sym), interval:"15", timezone:"Asia/Seoul", theme:"dark", style:"1",
+    locale:"kr", width:"100%", height:h, toolbar_bg:"#181b22", enable_publishing:false,
+    hide_side_toolbar:false, allow_symbol_change:true, save_image:false,
+    studies:["MAExp@tv-basicstudies"]
+  });
+}
+function openCharts(key, only){
+  const list = cellTickers(key);
+  if (!list.length) return;
+  SEL = key; renderMatrix();
+  const show = only ? [only] : list;
+  const one = show.length === 1;
+  const h = window.innerWidth <= 900 ? 480 : 600;
+  const p = document.getElementById("chartPanel");
+  const tabs = list.length > 1 ? `<div class="cp-tabs"><button data-all class="${only?'':'on'}">전체 ${list.length}</button>${list.map(s=>`<button data-one="${s}" class="${only===s?'on':''}">${s}</button>`).join("")}</div>` : "";
+  const ids = show.map(() => "tv_" + (++TV_SEQ));
+  p.innerHTML = `<div class="cp-h"><span class="t">${cellLabel(key)}</span><span class="sub2">15분봉 · OKX 무기한선물 · KST</span><button data-close>닫기 ✕</button></div>${tabs}
+    <div class="cp-grid ${one?'one':''}">${show.map((s,i) => { const t = T.find(x=>x.s===s);
+      return `<div class="tvbox"><div class="bh"><b>${s}</b><span style="color:var(--soft)">${t?t.n:""}</span><a href="#r-${s}">전략 카드 ↓</a><a href="${encodeURI(s + '_주가분석_리포트.html')}" target="_blank" rel="noopener">리포트 ↗</a></div><div class="tvwrap"><div id="${ids[i]}"></div></div></div>`; }).join("")}</div>`;
+  p.hidden = false; p.dataset.key = key;
+  show.forEach((s,i) => mountTV(ids[i], s, h));
+  p.scrollIntoView({behavior:"smooth", block:"start"});
+}
+document.getElementById("matrix").addEventListener("click", e => {
+  const cell = e.target.closest(".cell"); if (!cell) return;
+  e.preventDefault();
+  const a = e.target.closest("a[data-sym]");
+  openCharts(cell.dataset.key, a ? a.dataset.sym : null);
+});
+document.getElementById("chartPanel").addEventListener("click", e => {
+  const p = e.currentTarget;
+  if (e.target.closest("[data-close]")){ p.hidden = true; p.innerHTML = ""; SEL = null; renderMatrix(); return; }
+  const one = e.target.closest("[data-one]"); if (one){ openCharts(p.dataset.key, one.dataset.one); return; }
+  if (e.target.closest("[data-all]")) openCharts(p.dataset.key, null);
+});
 
 /* 5) 성과 기록 (localStorage) */
 const LS_KEY = "trend_news_log_v1";
