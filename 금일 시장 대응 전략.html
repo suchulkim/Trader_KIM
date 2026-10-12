@@ -88,42 +88,54 @@
   .filters button{background:var(--card-2);color:var(--soft);border:1px solid var(--border);border-radius:999px;padding:6px 14px;font-size:14.5px;cursor:pointer;font-family:inherit;}
   .filters button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);font-weight:800;}
 
-  .board{display:flex;flex-direction:column;gap:8px;}
-  .row{display:grid;grid-template-columns:170px 170px 1fr 1.1fr;gap:14px;background:var(--card);border:1px solid var(--border);border-left:4px solid #3a3f4b;border-radius:12px;padding:12px 14px;scroll-margin-top:10px;}
+  /* 종목 카드 — 상단(종목·추세·판정) + 하단(재료 | 전략) */
+  .board{display:grid;grid-template-columns:repeat(auto-fill,minmax(640px,1fr));gap:14px;}
+  .row{display:flex;flex-direction:column;gap:12px;background:var(--card);border:1px solid var(--border);border-left:5px solid #3a3f4b;border-radius:14px;padding:16px 18px;scroll-margin-top:10px;min-width:0;}
   .row.long{border-left-color:var(--long);} .row.short{border-left-color:var(--short);}
-  .tk .s{font-size:20px;font-weight:900;}
-  .tk a.rep{color:var(--text);text-decoration:none;display:block;}
+  .rtop{display:flex;align-items:center;gap:18px;flex-wrap:nowrap;padding-bottom:12px;border-bottom:1px solid var(--border);}
+  .tk{flex:0 1 230px;min-width:150px;}
+  .tk a.rep{color:var(--text);text-decoration:none;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap;}
   .tk a.rep:hover .s,.tk a.rep:hover .n{color:var(--accent);}
-  .tk a.rep .s::after{content:" ↗";font-size:12px;color:var(--muted);font-weight:700;}
-  .tk .n{font-size:12px;color:var(--soft);}
-  .tk .px{font-size:13px;margin-top:2px;font-variant-numeric:tabular-nums;}
+  .tk .s{font-size:23px;font-weight:900;letter-spacing:-.2px;}
+  .tk .s::after{content:" ↗";font-size:13px;color:var(--muted);font-weight:700;}
+  .tk .n{font-size:14px;color:var(--soft);}
+  .tk .px{font-size:17px;font-weight:700;margin-top:3px;font-variant-numeric:tabular-nums;}
+  .tk .px small{font-size:12.5px;color:var(--muted);font-weight:500;}
   .up{color:var(--long);} .dn{color:var(--short);}
-  .vpill{display:inline-block;font-size:13.5px;font-weight:900;padding:4px 11px;border-radius:999px;white-space:nowrap;}
+  .tr{display:flex;align-items:center;gap:14px;flex:1 1 auto;min-width:0;}
+  .tr .meta{min-width:0;}
+  .tr .meta{display:flex;flex-direction:column;gap:3px;}
+  .tr .lbl{font-size:14px;color:var(--soft);}
+  .tr .lbl b{font-size:15px;}
+  .chk{font-size:13px;color:var(--soft);line-height:1.6;}
+  .chk span{display:inline-block;margin-right:10px;}
+  .vd{display:flex;flex-direction:column;align-items:flex-end;gap:6px;margin-left:auto;flex:0 0 auto;max-width:260px;}
+  .vpill{display:inline-block;font-size:16px;font-weight:900;padding:6px 16px;border-radius:999px;white-space:nowrap;}
   .vpill.long{background:var(--long-bg);color:var(--long);} .vpill.short{background:var(--short-bg);color:var(--short);} .vpill.wait{background:var(--wait-bg);color:var(--wait);}
-  .tag{display:inline-block;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:6px;margin-top:5px;margin-right:4px;}
+  .tags{display:flex;flex-wrap:wrap;gap:5px;justify-content:flex-end;}
+  .tag{display:inline-block;font-size:12.5px;font-weight:800;padding:3px 9px;border-radius:7px;}
   .tag.ev{background:var(--warn-bg);color:var(--warn);} .tag.hot{background:rgba(255,201,77,.13);color:var(--gold);}
-  .scores{font-size:12.5px;color:var(--soft);margin-top:6px;line-height:1.7;}
-  .scores b{color:var(--text);}
   /* 미니 캔들 */
-  .candles{display:flex;align-items:flex-end;gap:6px;height:56px;margin:2px 0 6px;}
-  .cdl{position:relative;width:14px;height:100%;}
-  .cdl i{position:absolute;left:6px;width:2px;background:var(--muted);}
-  .cdl b{position:absolute;left:2px;width:10px;border-radius:2px;}
+  .candles{display:flex;align-items:flex-end;gap:7px;height:62px;}
+  .cdl{position:relative;width:16px;height:100%;}
+  .cdl i{position:absolute;left:7px;width:2px;background:var(--muted);}
+  .cdl b{position:absolute;left:2px;width:12px;border-radius:2px;}
   .cdl.u b{background:var(--long);} .cdl.d b{background:var(--short);}
   .cdl.live b{opacity:.55;outline:1px dashed var(--soft);}
-  .tr .lbl{font-size:12px;color:var(--soft);}
-  .chk{font-size:12px;line-height:1.7;}
-  .chk span{display:inline-block;margin-right:8px;}
-  .news{font-size:14.5px;}
-  .news li{list-style:none;margin-bottom:2px;}
-  .news .p{color:var(--long);font-weight:800;margin-right:4px;} .news .m{color:var(--short);font-weight:800;margin-right:4px;}
-  .plan{margin-top:8px;font-size:15px;background:var(--card-2);border-radius:10px;padding:8px 10px;}
-  .plan .t{font-weight:800;margin-bottom:3px;}
-  .plan .ln{display:flex;gap:8px;margin-bottom:2px;}
-  .plan .ln span:first-child{flex:none;width:34px;color:var(--soft);font-size:12px;padding-top:1px;}
+  .rbody{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px;}
+  .sec{font-size:13px;color:var(--soft);font-weight:700;margin-bottom:6px;letter-spacing:.2px;}
+  .sec b{font-size:14px;}
+  .news{font-size:15px;line-height:1.55;margin:0;padding:0;}
+  .news li{list-style:none;margin-bottom:5px;display:flex;gap:8px;}
+  .news .p,.news .m{flex:none;min-width:24px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .news .p{color:var(--long);} .news .m{color:var(--short);}
+  .plan{font-size:15px;background:var(--card-2);border-radius:10px;padding:12px 14px;line-height:1.55;}
+  .plan .t{font-weight:900;font-size:16px;margin-bottom:6px;}
+  .plan .ln{display:flex;gap:10px;margin-bottom:4px;}
+  .plan .ln span:first-child{flex:none;width:36px;color:var(--soft);font-size:13px;padding-top:2px;}
   .plan .ln b{font-variant-numeric:tabular-nums;}
-  .plan .warn{color:var(--warn);font-size:12.5px;font-weight:700;margin-top:3px;}
-  .err{color:var(--warn);font-size:12px;}
+  .plan .warn{color:var(--warn);font-size:13.5px;font-weight:700;margin-top:6px;}
+  .err{color:var(--warn);font-size:13px;}
 
   .rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;}
   .rule{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:12px 14px;font-size:13px;}
@@ -138,7 +150,8 @@
   .note{font-size:14px;color:var(--soft);margin-top:8px;}
   footer{margin-top:36px;padding-top:14px;border-top:1px solid var(--border);font-size:12px;color:var(--soft);line-height:1.7;}
   @media (max-width:900px){
-    .row{grid-template-columns:1fr 1fr;} .row .c3,.row .c4{grid-column:1 / -1;}
+    .board{grid-template-columns:1fr;} .rbody{grid-template-columns:1fr;} .rtop{flex-wrap:wrap;}
+    .vd{align-items:flex-start;margin-left:0;} .tags{justify-content:flex-start;}
     .rules{grid-template-columns:1fr;}
   }
   @media (max-width:560px){ .mx{grid-template-columns:62px repeat(3,minmax(0,1fr));gap:4px;} .cell{padding:7px;} .cell .tks{font-size:11.5px;} h1{font-size:23px;} }
@@ -368,7 +381,7 @@ function rowHTML(t, now){
   const r = classify(t);
   const evs = eventsFor(t, now);
   const evTag = evs.map(e => `<span class="tag ev">⚡ ${e.what} ${e.at.slice(5,10).replace("-","/")} ${e.at.slice(11)}</span>`).join("");
-  const news = t.items.length ? `<ul class="news">${t.items.map(([v,txt]) => `<li><span class="${v>0?'p':'m'}">${v>0?'+':''}${v}</span>${txt}</li>`).join("")}</ul>` : `<div class="news" style="color:var(--soft)">최근 5일 뚜렷한 개별 재료 없음 (0)</div>`;
+  const news = t.items.length ? `<ul class="news">${t.items.map(([v,txt]) => `<li><span class="${v>0?'p':'m'}">${v>0?'+':''}${v}</span><span>${txt}</span></li>`).join("")}</ul>` : `<div class="news" style="color:var(--soft)">최근 5일 뚜렷한 개별 재료 없음 (0)</div>`;
   const nwTxt = r.nw.side==="good"?"호재 우위":r.nw.side==="bad"?"악재 우위":"중립";
   const d = r.m ? r.m.d : "wait";
   let trHTML;
@@ -376,20 +389,25 @@ function rowHTML(t, now){
     const tr = r.tr, last = st.c5[4];
     const liveIdx = last.done ? -1 : 4;
     const dTxt = tr.dir==="up"?"상승":tr.dir==="down"?"하락":"횡보";
-    trHTML = `<div class="tr">${candlesSVG(st.c5, liveIdx)}
-      <div class="lbl">추세 <b class="${tr.dir==='up'?'up':tr.dir==='down'?'dn':''}">${dTxt} (${tr.sc>0?'+':''}${tr.sc})</b>${liveIdx===4?' · 마지막 캔들 진행 중':''}</div>
-      <div class="chk"><span>5개 전 대비 ${tr.p1>0?'▲':'▼'} ${(tr.move*100).toFixed(1)}%</span><span>고·저 ${tr.p2>0?'높아짐':tr.p2<0?'낮아짐':'섞임'}</span><span>양봉 ${tr.ups}/5</span></div></div>`;
+    trHTML = `<div class="tr">${candlesSVG(st.c5, liveIdx)}<div class="meta">
+      <div class="lbl">추세 <b class="${tr.dir==='up'?'up':tr.dir==='down'?'dn':''}">${dTxt} (${tr.sc>0?'+':''}${tr.sc})</b></div>
+      <div class="chk"><span>5개 전 대비 ${tr.p1>0?'▲':'▼'} ${(tr.move*100).toFixed(1)}%</span><span>고·저 ${tr.p2>0?'높아짐':tr.p2<0?'낮아짐':'섞임'}</span><span>양봉 ${tr.ups}/5</span>${liveIdx===4?'<span>· 마지막 캔들 진행 중</span>':''}</div></div></div>`;
   } else {
-    trHTML = st.err ? `<div class="err">일봉 불러오기 실패 — 재료 점수만 표시</div>` : `<div class="err" style="color:var(--soft)">일봉 불러오는 중…</div>`;
+    trHTML = `<div class="tr">${st.err ? `<div class="err">일봉 불러오기 실패 — 재료 점수만 표시</div>` : `<div class="err" style="color:var(--soft)">일봉 불러오는 중…</div>`}</div>`;
   }
-  const chg = r.tr ? `<span class="${r.tr.move>=0?'up':'dn'}">${r.tr.move>=0?'+':''}${(r.tr.move*100).toFixed(1)}%</span> <small style="color:var(--muted)">5일</small>` : "";
+  const chg = r.tr ? ` <span class="${r.tr.move>=0?'up':'dn'}">${r.tr.move>=0?'+':''}${(r.tr.move*100).toFixed(1)}%</span> <small>5일</small>` : "";
+  const hot = r.tr && r.tr.hot && d!=="wait" ? '<span class="tag hot">🔥 과열</span>' : '';
   return `<div class="row ${d}" id="r-${t.s}" data-d="${d}" data-cat="${t.cat}">
-    <div class="tk"><a class="rep" href="${encodeURI(t.s + '_주가분석_리포트.html')}" target="_blank" rel="noopener" title="${t.s} 리포트 새 창으로 열기"><div class="s">${t.s}</div><div class="n">${t.n}</div></a><div class="px">${st.c5?'$'+fmt(st.c5[4].c):''} ${chg}</div>
-      <div style="margin-top:6px"><span class="vpill ${d}">${d==="long"?"🟢 롱":d==="short"?"🔴 숏":"⚪ 관망"}</span></div>
-      ${r.tr && r.tr.hot && d!=="wait" ? '<span class="tag hot">🔥 과열</span>' : ''}${evTag}</div>
-    <div class="c2">${trHTML}</div>
-    <div class="c3"><div class="lbl" style="font-size:12px;color:var(--soft)">재료 <b class="${r.nw.side==='good'?'up':r.nw.side==='bad'?'dn':''}">${nwTxt} (${r.nw.sc>0?'+':''}${r.nw.sc})</b></div>${news}</div>
-    <div class="c4">${r.m ? planHTML(t, r, st) : `<div class="plan"><div class="t">추세 데이터 대기</div><div class="ln"><span>재료</span><span>${nwTxt} — 일봉 확인 후 판정</span></div></div>`}</div>
+    <div class="rtop">
+      <div class="tk"><a class="rep" href="${encodeURI(t.s + '_주가분석_리포트.html')}" target="_blank" rel="noopener" title="${t.s} 리포트 새 창으로 열기"><span class="s">${t.s}</span><span class="n">${t.n}</span></a>
+        <div class="px">${st.c5?'$'+fmt(st.c5[4].c):''}${chg}</div></div>
+      ${trHTML}
+      <div class="vd"><span class="vpill ${d}">${d==="long"?"🟢 롱":d==="short"?"🔴 숏":"⚪ 관망"}</span>${hot||evTag?`<div class="tags">${hot}${evTag}</div>`:''}</div>
+    </div>
+    <div class="rbody">
+      <div class="c3"><div class="sec">재료 <b class="${r.nw.side==='good'?'up':r.nw.side==='bad'?'dn':''}">${nwTxt} (${r.nw.sc>0?'+':''}${r.nw.sc})</b></div>${news}</div>
+      <div class="c4"><div class="sec">당일 전략</div>${r.m ? planHTML(t, r, st) : `<div class="plan"><div class="t">추세 데이터 대기</div><div class="ln"><span>재료</span><span>${nwTxt} — 일봉 확인 후 판정</span></div></div>`}</div>
+    </div>
   </div>`;
 }
 function renderMatrix(){
