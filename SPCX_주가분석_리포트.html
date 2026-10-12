@@ -3,140 +3,106 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SPCX 주가 분석 리포트</title>
+<title>SPCX(스페이스X) 주가 분석 리포트</title>
 <style>
   :root{
-    --bg:#0e1015;
-    --card:#161a21;
-    --text:#eef0f4;
-    --text-soft:#9aa2b1;
-    --border:#262b35;
-    --accent:#8a92ff;
-    --up:#ff6b6b;
-    --down:#5fd188;
-    --pos-bg:#13291c;
-    --pos-text:#5fd188;
-    --neg-bg:#2c1717;
-    --neg-text:#ff8080;
-    --chip-bg:#1c2028;
-    --table-head:#1a1e26;
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#0069b4; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
+    --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
     --shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+  body{margin:0; background:var(--bg); color:var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;
-  }
+    line-height:1.6;}
   .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
   header.title-block{margin-bottom:22px;}
   .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
   h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
   h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
-  .price-card{
-    background:var(--card); border:1px solid var(--border); border-radius:14px; padding:18px 20px;
-    box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;
-  }
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
   .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
   .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
 
-  section{margin-top:36px;}
-  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text); display:flex; align-items:center; gap:8px;}
-  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:460px; width:100%; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
 
-  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:10px; overflow:hidden; font-size:14px;}
+  section{margin-top:36px;}
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
   th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
   th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
   tr:last-child td{border-bottom:none;}
   td.num{font-variant-numeric: tabular-nums;}
-
-  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
   .factor-block.pos{border-left:4px solid var(--pos-text);}
   .factor-block.neg{border-left:4px solid var(--neg-text);}
   .factor-block h4{margin:0 0 8px; font-size:14.5px;}
   ul.plain{margin:0; padding-left:18px; font-size:14px;}
   ul.plain li{margin-bottom:6px;}
-
-  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
-  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
-  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
-
   table.scn td{font-size:14px; line-height:1.55;}
   table.scn td:first-child{font-weight:600;}
   table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
   table.scn td.rng{font-variant-numeric:tabular-nums;}
   table.scn td b{color:var(--text);}
   .scn-note{font-size:12.5px; color:var(--text-soft); margin-top:8px;}
+  .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
-  .star-dim{color:#3a3f4a;}
-
+  .star-dim{color:var(--border);}
   .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
-  .callout.warn{border-left:4px solid var(--neg-text);}
-
-  .kpi-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(130px, 1fr)); gap:10px; margin:14px 0;}
-  .kpi{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
-  .kpi .label{font-size:12px; color:var(--text-soft); margin-bottom:4px;}
-  .kpi .value{font-size:18px; font-weight:700;}
-  .kpi .sub{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
-
-  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
-  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
-  .tv-widget-container{height:480px; border-radius:8px; overflow:hidden;}
-  .tv-widget-container .tradingview-widget-container,
-  .tv-widget-container .tradingview-widget-container > div{height:100% !important; width:100% !important;}
-  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13.5px;}
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden;}
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
 
   /* 매출구조도 */
   .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
   .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
   .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
-  .flow-box.accent{border-color:var(--accent); background:rgba(138,146,255,0.08);}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.08);}
   .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
   .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
   .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
   .flow-box .desc{color:var(--text-soft); font-size:12px;}
   .flow-arrow{display:flex; align-items:center; justify-content:center; color:var(--text-soft); font-size:20px; padding:2px 4px;}
-  .flow-arrow.down{width:100%; padding:6px 0; font-size:14px;}
+  .flow-arrow.down{width:100%; padding:6px 0;}
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
-
-  /* 세그먼트 매출 비중 바 차트 */
-  .seg-bar-wrap{margin-top:16px;}
-  .seg-bar-row{display:flex; align-items:center; gap:10px; margin-bottom:10px; font-size:13px;}
-  .seg-bar-label{flex:0 0 150px; color:var(--text-soft);}
-  .seg-bar-track{flex:1; background:var(--chip-bg); border-radius:6px; height:22px; overflow:hidden; position:relative;}
-  .seg-bar-fill{height:100%; border-radius:6px; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:11.5px; font-weight:700; color:#0e1015; white-space:nowrap;}
-  .seg-bar-fill.conn{background:var(--pos-text);}
-  .seg-bar-fill.ai{background:var(--accent); color:#eef0f4;}
-  .seg-bar-fill.space{background:#e0b84d;}
-  .seg-bar-val{flex:0 0 150px; font-size:12.5px; font-weight:700; text-align:right; font-variant-numeric:tabular-nums;}
-  .seg-bar-val .krw{display:block; font-size:11.5px; font-weight:500; color:var(--text-soft);}
-  .krw-inline{color:var(--text-soft); font-weight:500;}
-  @media (max-width:560px){ .seg-bar-label{flex-basis:100px;} .seg-bar-val{flex-basis:100px;} }
 
   .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
   .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
   @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
   .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
-
-  .reason-table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; font-size:13.5px; margin-bottom:16px;}
-  .reason-table th{background:var(--table-head); padding:12px 14px; font-weight:600; color:var(--text-soft); text-align:left;}
-  .reason-table td{padding:12px 14px; border-bottom:1px solid var(--border); vertical-align:top;}
-  .reason-table tr:last-child td{border-bottom:none;}
-  .reason-table .col-cause{width:20%; font-weight:600;}
-  .reason-table .col-content{width:52%;}
-  .reason-table .col-impact{width:28%; color:var(--text-soft);}
-
-  /* 6. 핵심 한눈에 */
-  .key-hero{background:linear-gradient(135deg,rgba(138,146,255,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero{background:linear-gradient(135deg,rgba(0,105,180,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
   .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
   .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
   .key-hero .line em{font-style:normal; color:var(--pos-text);}
@@ -161,368 +127,440 @@
   .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
   .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
   .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
-  .rung.now{background:rgba(138,146,255,.14); border:1px dashed var(--accent);} .rung.now .px{color:var(--accent);}
+  .rung.now{background:rgba(0,105,180,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
   .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
   .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
   .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
   .key-final b{color:var(--text);}
-  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
-
+  /* 점수화 */
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px; white-space:nowrap;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px; white-space:nowrap;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 130px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:100px;} }
+  .callout.warn{border-left:4px solid var(--neg-text);}
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.04 (일) · 업데이트</span>
+      <span>2026.10.12 (월) 22:30 업데이트 — FY2025 재무제표·호재/악재 점수화 추가, 템플릿 개편</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준 · Starship Flight 14 궤도 진입 성공 이후 흐름 반영</span>
+      <span>시세 서술은 10/9 정규장 마감(KST 10/10 05:00) 기준 · 상단 가격은 실시간 자동 갱신</span>
     </div>
-    <h1>SpaceX (SPCX) 주가 분석 리포트<span class="ticker">Perpetual: SPCXUSDT.P</span></h1>
+    <h1>SpaceX (SPCX) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: SPCXUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$158.96</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">10/2 정규장 +7.35% (+$10.89) · 거래량 1.19억주 · $158 저항 돌파, 7월 이후 최고가</div>
+        <div class="price-main"><span id="live-price">$162.57</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/9 정규장 ▲ +1.25% (+$2.00) · 주간 +2.3% (10/2 $158.96 →) · 주중 고가 $176.42</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SPCXUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/28 <b>Starship Flight 14가 첫 궤도 진입</b>에 성공하고 Starlink V3 26기를 배치했습니다. 하지만 엔진 1기 정지 이슈와 성장주 매도세에 당일 -2.16%($145.47) '뉴스에 팔기'가 나왔습니다.
-        이후 9/29~30 반등, 10/1 <b>13시간 내 3회 발사</b>(Crew-13·Transporter-18·NROL-97) 후 차익실현을 거쳤습니다. 10/2 구글 Suncatcher 위성 궤도 안착과 머스크의 Nvidia 시스템 운용 발언에 <b>+7.35%</b> 급등했습니다.
-        IPO가($135) 대비 +17.7%, 52주 고점($225.64) 대비 -29.6%. 10/9·10/24 락업 해제가 다가옵니다.
+        10/5 모건스탠리의 '저평가·목표가 $300' 리포트에 <b>+7.63%($171.09)</b> 급등해 6월 이후 처음 $170을 넘었습니다.
+        이후 10/7 <b>엔비디아 칩 구매용 $400억<span class="krw">(약 53조 6,600억원)</span> 차입 추진</b> 보도로 −2.5% 밀리며 $160대로 되돌아왔습니다.
+        10/9엔 <b>美 전역 800MHz 주파수 인수</b>와 바클레이즈 '비중확대·$254' 신규 커버리지로 다시 올랐고, 같은 날 통신 3사가 −9~−13% 급락했습니다(스타링크 모바일 위협).
+        시가총액 약 $2.2조<span class="krw">(약 2,924조원)</span>, PSR 약 170배. 10월 하순 락업 해제와 3분기 실적이 다가옵니다.
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · SPCXUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container"><div id="tv_spcx_daily" style="height:100%; width:100%;"></div></div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container"><div id="tv_spcx_15m" style="height:100%; width:100%;"></div></div>
+        </div>
       </div>
     </div>
   </header>
 
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div class="chart-card">
-      <div class="cap">📊 실시간 차트 · SPCXUSDT.P (OKX) · 15분봉 / 일봉</div>
-      <div class="charts-grid">
-        <div>
-          <div class="cap" style="margin-top:4px;">15분봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_spcx_15m" style="height:100%; width:100%;"></div>
-            </div>
-          </div>
-        </div>
-        <div>
-          <div class="cap" style="margin-top:4px;">일봉</div>
-          <div class="tv-widget-container">
-            <div class="tradingview-widget-container">
-              <div id="tv_spcx_1d" style="height:100%; width:100%;"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;">
-      <b>일봉</b>: 9월 하순 $145~155 박스(9/28 종가 $145.47이 저점)에서 10/2 장대양봉으로 <b>$158 저항을 돌파</b>했습니다. 7월 이후 최고 종가이고, 연저점($104.83) 대비 약 +52%입니다. 거래량 1.19억주로 돌파의 신뢰도는 높지만, 하루 +7%의 급등이라 단기 과열 부담도 있습니다. 50일선은 약 $137입니다.<br>
-      <b>지지</b>: $155(이전 박스 상단) → $148(10/1 종가) → $145(9/28 저점) → $135(IPO가). <b>저항</b>: $165 → $175 → $200(TD Cowen 목표가). 15분봉은 갭 상승 후 고점권 마감이라, 다음 거래일 $155~158 되돌림 지지 여부가 단기 관전 포인트입니다.
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/28 저점($145.47)에서 10/2(+7.35%)·10/5(+7.63%) 이틀 장대양봉으로 $171까지 올라, 6월 이후 처음 <b>$170을 회복</b>했습니다. 주중 고가는 $176.42였습니다.
+      그 뒤 10/6~10/8 사흘간 −6% 되돌림으로 <b>돌파 구간 $155~160을 다시 확인</b>했고, 10/9 소폭 반등했습니다. 2주간 고점·저점이 모두 높아지는 상승 구조는 유지되고 있지만, 위로는 $171~176에 매물대가 생겼습니다.
+      사상 최고 종가는 6/15 $201.80, 장중 최고는 $225.64입니다.<br>
+      <b>15분봉</b>: <b>$160.6</b>(10/8 종가)이 1차 지지, <b>$155~158</b>(10/2 돌파 구간)이 2차 지지입니다. 저항은 <b>$171</b>(10/5 종가) → <b>$176.4</b>(주중 고가) → $185(6/18 종가)입니다.
     </div>
     <div class="callout warn">
-      <b>⚠ 락업 해제 공급 리스크</b>: <b>10/9(금)·10/24(토) 각 약 3.28억주</b>가 해제됩니다. 9/9·9/24 해제 때는 해제일이나 그 전날 약 -4% 하락이 반복되었습니다.
-      3분기 실적(11월 초) 2거래일 뒤에는 <b>약 13억주</b>(연중 최대)가 풀립니다. 급등 직후라 차익실현과 해제 물량이 겹칠 수 있어, 고배율 무기한선물 포지션은 해제 전일 갭에 유의하세요.
+      <b>⚠ 락업 공급</b>: 10/9~10 롤링 물량(약 3.28억주)은 10/9 +1.25%로 <b>무난히 소화</b>했습니다(9월엔 해제 전후 −4% 반복).
+      남은 일정은 <b>10/24~25 롤링 물량(약 3.28억주)</b> → <b>3분기 실적 2거래일 후 약 13억주</b>(연중 최대) → 12/8~9 180일 전체 만료입니다. 일정·수량은 출처마다 1~2일 차이가 있습니다.
     </div>
   </section>
 
   <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일)</h2>
-    <table class="reason-table">
-      <thead>
-        <tr><th class="col-cause">날짜(현지) · 종가</th><th class="col-content">내용</th><th class="col-impact">비고</th></tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="col-cause">9/28(월)<br>$145.47<br><span style="color:var(--down); font-weight:600;">▼ -2.16%</span></td>
-          <td class="col-content"><b>Starship Flight 14 첫 궤도 진입 성공</b>(KST 21:48 발사). 랩터 엔진 1기가 조기 정지했지만 Starlink V3 26기를 모두 배치해 첫 매출 미션을 완수했고, 북태평양에 제어 착수했습니다. 그러나 '뉴스에 팔기'와 성장주 전반 매도에 주가는 하락했습니다.</td>
-          <td class="col-impact">진 먼스터 "시장이 의미를 과소평가" · 모건스탠리 '추진계 반복 문제' 경계</td>
-        </tr>
-        <tr>
-          <td class="col-cause">9/29(화)<br>$149.24<br><span style="color:var(--up); font-weight:600;">▲ +2.6%</span></td>
-          <td class="col-content">Flight 14 성과가 재평가되었습니다. 모건스탠리는 비중확대·목표가 $300을 유지하고 다음 촉매로 '부스터 캐치'를 꼽았습니다. UBS($210)·TD Cowen($200, 신규 Buy)도 매수 의견을 냈고, 로켓랩·AST(-3%) 등 우주주 약세 속에 단독 상승했습니다.</td>
-          <td class="col-impact">$145 저점 확인</td>
-        </tr>
-        <tr>
-          <td class="col-cause">9/30(수)<br>약 $151<br><span style="color:var(--up); font-weight:600;">▲ 약 +1.2%</span></td>
-          <td class="col-content">Anthropic의 대규모 컴퓨트 약정(월 약 $12.5억<span class="krw-inline">(약 1조 6,880억원)</span> 보도)으로 AI 세그먼트 기대가 커졌습니다. Citi는 장기 $900 시나리오를 제시했습니다. 이날로 3분기를 마감했고, 구글 컴퓨트 계약(월 $9.2억)은 10월부터 매출로 반영됩니다.</td>
-          <td class="col-impact">3분기 말 종가 · 10/1 등락률 기준 추정</td>
-        </tr>
-        <tr>
-          <td class="col-cause">10/1(목)<br>$148.07<br><span style="color:var(--down); font-weight:600;">▼ 약 -2%</span></td>
-          <td class="col-content"><b>13시간 내 3회 발사</b>를 했습니다: NASA Crew-13(유인, 재사용 부스터), Transporter-18(탑재체 130개, 구글 Suncatcher TPU 위성), NROL-97(정찰위성). Filtronic에서 SpaceX 사상 최대 규모인 $6,810만<span class="krw-inline">(약 920억원)</span> 부품 수주도 나왔습니다. 장중 +1.2%($152.69)까지 올랐지만 이벤트 소화 후 차익실현으로 하락 마감했습니다.</td>
-          <td class="col-impact">장중 고점 $152.69 → 반락</td>
-        </tr>
-        <tr>
-          <td class="col-cause">10/2(금)<br>$158.96<br><span style="color:var(--up); font-weight:600;">▲ +7.35%</span></td>
-          <td class="col-content">구글·Planet의 <b>궤도 AI 위성(Suncatcher) 정상 가동</b>이 확인되고 Crew-13이 ISS에 도킹했습니다. 머스크는 "Nvidia VR72 시스템을 약 250kW로 운용하는 것에 신중히 낙관"하며 '빅딜'이라고 언급했습니다. 나스닥100(+1%)을 크게 웃돌며 <b>$158 저항을 돌파</b>했습니다.</td>
-          <td class="col-impact">거래량 1.19억주 · 7월 이후 최고가</td>
-        </tr>
-      </tbody>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 현지 기준)</h2>
+    <table>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:22%">비고</th></tr>
+      <tr>
+        <td><b>10/2(금)</b><br>$158.96<br><span style="color:var(--pos-text); font-weight:600;">▲ +7.35%</span></td>
+        <td>구글 궤도 AI 위성(Suncatcher) 정상 가동이 확인되고, 머스크가 "Nvidia VR72 시스템 운용에 신중히 낙관"이라고 언급했습니다. $158 저항을 거래량(1.19억주)과 함께 돌파했습니다.</td>
+        <td>박스($145~155) 상단 돌파</td>
+      </tr>
+      <tr>
+        <td><b>10/5(월)</b><br>$171.09<br><span style="color:var(--pos-text); font-weight:600;">▲ +7.63%</span></td>
+        <td><b>모건스탠리 '비중확대·목표가 $300', "저평가" 리포트</b>가 나왔습니다. $160 기준 AI 사업 가치가 주당 $32(주가의 20%)만 반영됐고, 기업용 AI가 본격화하면 주당 $165까지 커질 수 있다고 봤습니다. 컴퓨트 임대 가격이 시장 예상보다 최대 2.8배 높을 수 있다는 분석도 냈습니다. 머스크 재산이 다시 $1조를 넘었고, AI 부문 이름을 SpaceXAI → <b>SpaceXSI</b>로 바꾼다고 발표했습니다.</td>
+        <td>6/18 이후 최고 종가 · 9/28 이후 5거래일 +17%</td>
+      </tr>
+      <tr>
+        <td><b>10/6(화)~10/8(목)</b><br>$160.57<br><span style="color:var(--neg-text); font-weight:600;">▼ 3일 −6.1%</span></td>
+        <td>장중 $176.42까지 오른 뒤 차익실현이 나왔습니다. 10/7엔 <b>엔비디아 칩 구매를 위한 약 $400억 자금조달 추진</b>(은행 대출 약 $100억 + 아폴로 주도 투자등급 채권 약 $300억) 보도에 <b>−2.51%</b> 밀렸습니다. 10/8엔 OpenAI 매출 하향 보도로 AI 인프라주가 약세였습니다.</td>
+        <td>10/6·10/8 개별 등락률은 미확인</td>
+      </tr>
+      <tr>
+        <td><b>10/9(금)</b><br>$162.57<br><span style="color:var(--pos-text); font-weight:600;">▲ +1.25%</span></td>
+        <td><b>Grain Management로부터 美 전역 800MHz 저대역 주파수(최대 14MHz) 인수</b> 합의(금액 비공개, 규제 승인 필요). 머스크는 "美 전역 휴대폰 커버리지의 마지막 퍼즐"이라고 했고, 통신 3사가 급락했습니다(T-Mobile −13.3%, AT&amp;T −9.8%, Verizon −8.8%). <b>바클레이즈가 '비중확대·$254'로 커버리지 시작</b>, TD Cowen($200)·Needham($250)·Bernstein($248)도 매수 의견을 유지했습니다.</td>
+        <td>프리마켓 +3.9%에서 상승폭 축소 · 락업 물량 소화</td>
+      </tr>
+      <tr>
+        <td><b>10/11(일)~12(월)</b><br>뉴스</td>
+        <td>베네수엘라 정부가 스타링크 서비스를 전국적으로 승인했습니다. 머스크는 인도 시장에서 통신 대기업(릴라이언스)과의 경쟁 부담을 언급했습니다.</td>
+        <td>美 정규장 KST 22:30 개장</td>
+      </tr>
     </table>
     <div class="callout">
-      → 이번 주는 <b>"이벤트 당일 매도 → 다음 날부터 재평가"</b> 흐름이었습니다. Flight 14 당일(9/28)은 엔진 이슈와 '뉴스에 팔기'로 -2.2% 밀렸지만, $145 저점을 지킨 뒤 월가 매수 의견과 AI 컴퓨트 기대로 반등했습니다.
-      10/1 3회 연속 발사 직후 한 차례 차익실현을 거쳤고, 10/2 <b>궤도 AI 컴퓨트 실증과 Nvidia 시스템 운용 언급</b>으로 거래량을 동반해 $158을 뚫었습니다.
-      다만 <b>10/9 락업 해제(약 3.28억주)</b>가 1주일 앞이라, 9월처럼 해제 전일 매도 패턴이 반복될지가 단기 변수입니다.
+      → 이번 주는 <b>"AI 가치 재평가 → 자금 부담 → 통신사로의 확장"</b> 순서로 뉴스가 이어졌습니다.
+      모건스탠리가 AI 사업의 숨은 가치를 짚으며 $171까지 올랐지만, 그 AI 사업을 키우려면 <b>$400억을 더 빌려 칩을 사야 한다</b>는 보도가 나오자 곧바로 되돌렸습니다.
+      주말 직전 주파수 인수로 <b>"스타링크가 4번째 이동통신사가 될 수 있다"</b>는 그림이 생기면서 통신주가 급락한 것이 시장 평가를 잘 보여줍니다.
+      다만 주가는 $171을 다시 넘지 못했고, 10월 하순 락업과 실적이 겹치는 구간이라 <b>위아래로 모두 열려 있는 상태</b>입니다.
     </div>
   </section>
 
-  <!-- 3. 매출 구조 -->
+  <!-- 3. 향후 전망 -->
   <section>
-    <h2>3. SpaceX 매출 구조 (세그먼트별 가치 축적 구조 · 매출구조도)</h2>
-    <p style="font-size:13.5px; color:var(--text-soft); margin-top:-6px;">
-      SpaceX는 성격이 전혀 다른 3개 세그먼트(Space·Connectivity·AI)로 구성된 지주회사에 가깝습니다.
-      2026년 2분기(4~6월) 기준 세그먼트별 매출 비중과 손익구조는 아래와 같습니다(다음 실적은 11월 초 3분기 발표).
-      원화 환산은 <b>10/2 서울외환시장 주간 종가 1,350.6원/달러</b> 기준입니다(10억원 단위 반올림).
-    </p>
+    <h2>3. 향후 전망</h2>
 
-    <div class="seg-bar-wrap">
-      <div class="seg-bar-row">
-        <div class="seg-bar-label">Connectivity (Starlink)</div>
-        <div class="seg-bar-track"><div class="seg-bar-fill conn" style="width:55%">55%</div></div>
-        <div class="seg-bar-val">$4.29B<span class="krw">약 5조 7,940억원</span></div>
-      </div>
-      <div class="seg-bar-row">
-        <div class="seg-bar-label">AI (SpaceXAI·Grok·X·클라우드)</div>
-        <div class="seg-bar-track"><div class="seg-bar-fill ai" style="width:33%">33%</div></div>
-        <div class="seg-bar-val">$2.56B<span class="krw">약 3조 4,580억원</span></div>
-      </div>
-      <div class="seg-bar-row">
-        <div class="seg-bar-label">Space (발사·Starship)</div>
-        <div class="seg-bar-track"><div class="seg-bar-fill space" style="width:12%">12%</div></div>
-        <div class="seg-bar-val">$0.96B<span class="krw">약 1조 2,990억원</span></div>
+    <div class="factor-block pos">
+      <h4>🟢 긍정적 요인</h4>
+      <ul class="plain">
+        <li><b>스타링크 현금창출</b> — FY2025 Connectivity 매출 $113.9억(+50%), 영업이익 $44.2억, EBITDA 마진 63%. 2분기 매출 $42.9억, 영업마진 38.6%. 그룹 전체의 유일한 흑자 엔진</li>
+        <li><b>AI 컴퓨트 매출 본격화</b> — 구글 월 $9.2억<span class="krw">(약 1조 2,340억원)</span>은 10월부터, Anthropic 월 약 $12.5억(보도)도 반영 예정. 모건스탠리는 와트당 임대가격이 시장 예상의 최대 2.8배라고 분석</li>
+        <li><b>통신사로의 확장</b> — 美 800MHz 주파수 인수로 위성+지상 결합 이동통신 가능성. 베네수엘라 승인 등 해외 확장도 지속</li>
+        <li><b>월가 매수 의견 확대</b> — 모건스탠리 $300, 바클레이즈 $254(신규), Needham $250, Bernstein $248, TD Cowen $200. 매수 비율 76%, 평균 목표가 약 $227(현재가 대비 약 +40%)</li>
+        <li><b>2분기 매출 $78.1억</b><span class="krw">(약 10조 4,770억원)</span>(+92%), 조정 EBITDA $35억(+191%). 3분기는 AI 계약이 처음 반영되는 분기</li>
+        <li><b>Starship 촉매</b> — Flight 14 첫 궤도 진입(9/28), 10월 말~11월 초 Flight 15에서 '십 캐치'(발사탑 회수) 시도 예정</li>
+      </ul>
+    </div>
+    <div class="factor-block neg">
+      <h4>🔴 부정·주의 요인</h4>
+      <ul class="plain">
+        <li><b>밸류에이션</b> — PSR 약 170배(상장 후 중앙값 약 104배), 시가총액 약 $2.2조. FY2025 매출 $186.7억 대비 100배 이상</li>
+        <li><b>현금 소진·차입 확대</b> — FY2025 잉여현금흐름 −$141억, 2분기에만 Capex $184억(그중 AI $158억). 여기에 <b>칩 구매용 $400억 추가 차입</b> 추진 보도</li>
+        <li><b>AI 세그먼트 적자</b> — FY2025 AI 영업손실 $63.6억(매출 $32억), 2분기도 −$12.6억. 회사 전체 순손실 지속(FY25 −$49.4억, 2분기 −$5.4억)</li>
+        <li><b>락업 공급</b> — 10/24~25 약 3.28억주, 3분기 실적 직후 약 13억주, 12/8~9 전체 만료</li>
+        <li><b>금리·매크로</b> — 10년물 5.2%대, 10/14 CPI 3.7% 재가속 예상. 고밸류 성장주에 가장 큰 부담</li>
+        <li><b>Starship 기술 리스크·내부자 매도</b> — Flight 14 엔진 조기 정지, 1년 내부자 매도 $5,370만(매수 0건)</li>
+      </ul>
+    </div>
+
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:46%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>스타링크 현금창출 — FY25 영업이익 $44억, EBITDA 마진 63%<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">1.0</td><td class="tot">+4.0</td></tr>
+      <tr class="pos"><td>AI 컴퓨트 매출 본격화 (구글·Anthropic, 10월~)<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.8</td><td class="tot">+3.2</td></tr>
+      <tr class="pos"><td>월가 매수 의견 확대 (MS $300·바클레이즈 $254 등)<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>2분기 매출 +92% · 3분기 AI 계약 첫 반영<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">+2.8</td></tr>
+      <tr class="pos"><td>美 800MHz 주파수 인수 → 이동통신 진출 (승인 필요)<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.6</td><td class="tot">+2.4</td></tr>
+      <tr class="pos"><td>Starship Flight 15 '십 캐치' 촉매<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.6</td><td class="tot">+1.8</td></tr>
+      <tr class="sum pos"><td>호재 합계 (6개)</td><td></td><td></td><td class="tot">+17.2</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>밸류에이션 — PSR 약 170배, 시총 $2.2조<span class="hz">중기</span></td><td class="sc">5</td><td class="sc">0.9</td><td class="tot">−4.5</td></tr>
+      <tr class="neg"><td>현금 소진·차입 확대 — FCF −$141억, 칩 구매용 $400억 차입 추진<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.8</td><td class="tot">−3.2</td></tr>
+      <tr class="neg"><td>락업 공급 — 10/24~25, 실적 후 13억주, 12월 전체 만료<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.8</td><td class="tot">−3.2</td></tr>
+      <tr class="neg"><td>AI 세그먼트 적자(FY25 −$63.6억)·순손실 지속<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.9</td><td class="tot">−2.7</td></tr>
+      <tr class="neg"><td>고금리·10/14 CPI 재가속 예상<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.7</td><td class="tot">−2.1</td></tr>
+      <tr class="neg"><td>Starship 기술 리스크·내부자 매도<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.6</td><td class="tot">−1.2</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−16.9</td></tr>
+    </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5~0.6). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
+
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:50%">호재 +17.2 (50%)</div><div class="n" style="width:50%">악재 −16.9 (50%)</div></div>
+      <div class="big">순점수 <span class="g">+0.3</span> → <span style="color:#e0a800">'균형 (방향 미정)'</span></div>
+      <div class="sub">사업 확장 뉴스(AI 컴퓨트·주파수·월가 매수)는 넘치지만, 그만큼 <b>돈이 많이 들고(−$141억 FCF·$400억 차입) 이미 비싸다(PSR 170배)</b>는 점이 정확히 상쇄합니다. 단기는 이벤트가 많아 약간 우호적이고, 중기는 현금 소진 부담이 약간 더 큽니다.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~3분기 실적)</div><div class="v g">호재 +7.6 vs 악재 −6.5 → 약한 호재(+1.1)</div><div>실적·Flight 15·AI 매출 첫 반영 기대가 락업 부담보다 근소 우위</div></div>
+        <div class="hz-card"><div class="t">중기 (2027년까지)</div><div class="v y">호재 +9.6 vs 악재 −10.4 → 균형~약한 악재(−0.8)</div><div>AI 투자가 매출로 회수되는 속도가 관건</div></div>
       </div>
     </div>
 
-    <table style="margin-top:14px; font-size:13px;">
-      <tr><th>2026년 2분기</th><th style="text-align:right;">달러</th><th style="text-align:right;">원화 환산</th><th>비고</th></tr>
-      <tr><td><b>합계 매출</b></td><td class="num" style="text-align:right;"><b>$7.81B</b></td><td class="num" style="text-align:right;"><b>약 10조 5,480억원</b></td><td>YoY +92%, 컨센서스 $6.81B(약 9조 1,980억원) 상회</td></tr>
-      <tr><td>Connectivity 영업이익</td><td class="num" style="text-align:right;">+$1.66B</td><td class="num" style="text-align:right;">약 +2조 2,420억원</td><td>영업마진 38.6% · 유일한 흑자</td></tr>
-      <tr><td>AI 영업손실</td><td class="num" style="text-align:right;">-$1.26B</td><td class="num" style="text-align:right;">약 -1조 7,020억원</td><td>매출 YoY +247%</td></tr>
-      <tr><td>Space 영업손실</td><td class="num" style="text-align:right;">-$0.54B</td><td class="num" style="text-align:right;">약 -7,320억원</td><td>Starship R&amp;D 비용</td></tr>
-      <tr><td>조정 EBITDA</td><td class="num" style="text-align:right;">$3.5B</td><td class="num" style="text-align:right;">약 4조 7,270억원</td><td>YoY +191%</td></tr>
-      <tr><td>순손실</td><td class="num" style="text-align:right;">-$0.54B</td><td class="num" style="text-align:right;">약 -7,310억원</td><td>전년 동기 -$1B에서 개선</td></tr>
-      <tr><td>2분기 말 현금성자산</td><td class="num" style="text-align:right;">$93.5B</td><td class="num" style="text-align:right;">약 126조 2,810억원</td><td></td></tr>
+    <h3>시나리오</h3>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:22%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 박스권 등락</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">155~176</td>
+        <td>주파수·월가 호재와 차입·락업 부담이 맞서며 실적 전까지 오가는 경우. <b>$155~160 지지, $171~176 저항</b></td>
+      </tr>
+      <tr>
+        <td>② 상단 돌파</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">176 → 185, 넘으면 200~227</td>
+        <td>CPI 둔화, Flight 15 십 캐치 성공, 3분기 실적에서 AI 컴퓨트 매출이 기대 이상으로 확인되는 경우. <b>$176.4 위 종가</b>가 신호, 이후 6/18 종가 $185 → 평균 목표가 $227</td>
+      </tr>
+      <tr>
+        <td>③ 하단 이탈</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">155 이탈 → 148 → 135</td>
+        <td>$400억 차입 확정·신용 부담, 10/24~25 락업 매물, CPI 쇼크가 겹치는 경우. <b>$155가 깨지면</b> $148(10/1 종가) → IPO가 $135</td>
+      </tr>
+    </table>
+    <div class="scn-note">※ 확률은 차트·락업 일정·이벤트를 종합한 주관적 판단입니다. 가격 단위: USD(나스닥 SPCX 종가 기준).</div>
+  </section>
+
+  <!-- 4. 매출구조 -->
+  <section>
+    <h2>4. 매출구조/수익구조 (2026년 2분기, 6/30 마감분)</h2>
+    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,341.5원 (2026.10.12 오후 시세 기준, 10억원 단위 반올림)</p>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row"><div class="rev-label">📡 Connectivity (Starlink)</div><div class="rev-track"><div class="rev-fill" style="width:55%; background:#1f9d55;"></div></div><div class="rev-pct">55%</div></div>
+      <div class="rev-row"><div class="rev-label">🧠 AI (SpaceXSI·Grok·X)</div><div class="rev-track"><div class="rev-fill" style="width:33%; background:#7a6cf0;"></div></div><div class="rev-pct">33%</div></div>
+      <div class="rev-row"><div class="rev-label">🚀 Space (발사·Starship)</div><div class="rev-track"><div class="rev-fill" style="width:12%; background:#e0a800;"></div></div><div class="rev-pct">12%</div></div>
+    </div>
+
+    <table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">영업이익</th><th class="num">비중</th></tr>
+      <tr><td>📡 Connectivity (Starlink·Starshield)</td><td class="num">$42.9억<span class="krw">(약 5조 7,550억원)</span></td><td class="num" style="color:var(--pos-text)">+$16.6억 · 마진 38.6%</td><td class="num">55%</td></tr>
+      <tr><td>🧠 AI (SpaceXSI·Grok·X·컴퓨트 임대)</td><td class="num">$25.6억<span class="krw">(약 3조 4,340억원)</span></td><td class="num" style="color:var(--neg-text)">−$12.6억 · 매출 +247%</td><td class="num">33%</td></tr>
+      <tr><td>🚀 Space (Falcon·Dragon·Starship)</td><td class="num">$9.6억<span class="krw">(약 1조 2,880억원)</span></td><td class="num" style="color:var(--neg-text)">−$5.4억 · Starship R&amp;D</td><td class="num">12%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$78.1억</b><span class="krw">(약 10조 4,770억원)</span></td><td class="num"><b>순손실 −$5.4억</b></td><td class="num"><b>+92% YoY</b></td></tr>
+      <tr><td>💰 조정 EBITDA · 현금성자산</td><td class="num">$35억<span class="krw">(약 4조 6,950억원)</span></td><td class="num">+191%</td><td class="num">현금 $935억(IPO 후)</td></tr>
+      <tr><td>🏗️ 2분기 Capex</td><td class="num">$184억<span class="krw">(약 24조 6,840억원)</span></td><td class="num">AI $158억</td><td class="num">연환산 약 $735억</td></tr>
+      <tr><td>📊 3분기 컨센서스</td><td class="num">매출 $120억+<span class="krw">(약 16조 980억원)</span></td><td class="num">-</td><td class="num">AI 계약 첫 반영</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">10월 말~11월 초 (미확정)</td><td class="num">-</td><td class="num">발표 2거래일 후 약 13억주 락업 해제</td></tr>
     </table>
 
-    <div class="flow-diagram" style="margin-top:20px;">
+    <h3>매출구조도 (가치 흐름 — 세 사업이 Starship으로 연결되는 구조)</h3>
+    <div class="flow-diagram">
       <div class="flow-row">
         <div class="flow-box accent">
-          <b>Space 세그먼트</b>
-          <div class="desc">Falcon 9/Heavy·Dragon 발사 (NASA ISS 유인비행 3회 추가 $9.5억·약 1조 2,830억원, Starburst 미션, 구글 Suncatcher 라이드셰어) + Starship 개발 — <b>Flight 14(9/28)로 첫 매출 미션 성공</b>(궤도 진입 + V3 26기 배치)</div>
-        </div>
-        <div class="flow-box reward">
-          <b>Connectivity 세그먼트 (Starlink)</b>
-          <div class="desc">분기 매출 $4.29B(약 5조 7,940억원) · 가입자 1,200만 명(YoY 2배), ARPU $66(약 8만 9천원) — 소비자·기업·정부(Starshield) 구독료가 유일한 안정적 흑자원. V3 위성(Starship 전용) 투입 시 용량 대폭 확대</div>
-        </div>
-        <div class="flow-box burn">
-          <b>AI 세그먼트 (SpaceXAI)</b>
-          <div class="desc">Grok·X·Cursor(8월 인수 완료) + Colossus 컴퓨트 임대(구글 월 $9.2억·약 1조 2,430억원 계약 등) — 분기 매출 $2.56B(약 3조 4,580억원), YoY +247% 고성장이나 GPU·데이터센터 투자로 영업적자</div>
+          <b>고객</b>
+          <div class="desc">개인·기업 인터넷 가입자(1,200만+) / 美 국방부·NASA(국방부 누적 매출 $127억+) / AI 기업(구글·Anthropic 컴퓨트 임대) / 위성 발사 고객</div>
         </div>
       </div>
-      <div class="flow-arrow down">↓ Starship이 세 세그먼트를 잇는 '비용 절감 엔진' ↓</div>
+      <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>Starship 궤도 진입·재사용 성공 시</b>
-          <div class="desc">kg당 발사비용 급락 → Starlink V3 대량 배치(Connectivity 용량↑) + 궤도 데이터센터(Gigasat, 2027년 말 1GW 목표)의 경제성 확보(AI 원가↓) + 외부 발사 매출↑</div>
-        </div>
+        <div class="flow-box reward"><b>Connectivity (Starlink)</b><div class="desc">월 구독료(ARPU 약 $66) + 정부(Starshield) — <b>유일한 흑자원</b>. 800MHz 주파수로 휴대폰 직접 통신(이동통신) 확장 준비</div></div>
+        <div class="flow-box burn"><b>AI (SpaceXSI)</b><div class="desc">Grok·X 광고 + Colossus 컴퓨트 임대(구글 월 $9.2억 등) — 고성장이지만 GPU 투자로 대규모 적자. 엔비디아 칩 42만 개 구축 계획</div></div>
+        <div class="flow-box accent"><b>Space (발사)</b><div class="desc">Falcon 9 발사·Dragon 유인비행 매출 + Starship 개발(FY25 R&amp;D $30억)</div></div>
       </div>
-      <div class="flow-arrow down">↓ 세그먼트 현금흐름 통합 ↓</div>
+      <div class="flow-arrow down">↓ Starship = 발사 원가를 낮추는 공통 엔진 (V3 위성 대량 배치 · 궤도 데이터센터) ↓</div>
       <div class="flow-split">
         <div class="flow-box reward">
-          <b>Connectivity 흑자 현금 + IPO/회사채 조달</b>
-          <div class="desc">IPO 순조달 $857억(약 115.7조원) + 2056년 만기 회사채 $250억(약 33.8조원) → 현금·유가증권 약 $1,000억(약 135.1조원) 확보</div>
+          <b>자금 조달</b>
+          <div class="desc">스타링크 영업현금 + IPO 순조달 약 $857억 + 회사채 $250억 → 2분기 말 현금 약 $935억. 추가로 칩 구매용 약 $400억(대출 $100억 + 채권 $300억) 추진</div>
         </div>
         <div class="flow-box burn">
-          <b>AI·Starship 재투자 (Capex)</b>
-          <div class="desc">분기 capex $184억(약 24.9조원, 연환산 약 $735억·99.3조원), 이 중 $158억(약 21.3조원)이 AI 컴퓨트 — Colossus 확장·Starship V3 개발에 집중</div>
+          <b>재투자 (Capex)</b>
+          <div class="desc">FY25 Capex $209억 → 2분기에만 $184억. 이 중 AI가 약 86%(데이터센터·GPU), 나머지는 위성·발사 인프라</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
         <div class="flow-box">
-          <b>목표: 2026년 말 ARR $1,000억(약 135.1조원) → 2030년 매출 $1조(약 1,351조원)</b>
-          <div class="desc">2027년 매출 컨센서스 약 $1,083억(약 146.3조원, 주가는 2027E 매출의 약 19배) · 신규 클라우드 계약 $141억(약 19.0조원, 10월부터 매출 반영), 백로그 $475억(약 64.2조원)</div>
+          <b>목표: 2026년 말 연환산 매출(ARR) $1,000억 → 2030년 매출 $1조</b>
+          <div class="desc">백로그 $475억, 신규 클라우드 계약 $141억(10월부터 매출). 주주환원 없음 — 현금은 전부 성장 투자로</div>
         </div>
       </div>
     </div>
     <div class="callout">
-      → Starlink의 <b>안정적 현금흐름</b>과 약 <b>$1,000억 실탄</b>이 적자인 AI·Starship 재투자를 떠받치는 구조는 그대로입니다.
-      이번 주 새로 부각된 포인트는 <b>Starship이 세 세그먼트 모두의 원가 구조를 바꾸는 연결고리</b>라는 점 —
-      9/28 Flight 14에서 V3 위성 26기 배치에 성공하며 Starship이 처음으로 '비용'이 아닌 <b>'매출을 만드는 자산'</b>으로 전환되는 첫 증거를 남겼습니다.
-      3분기 실적(11월 초)은 Anthropic·구글 컴퓨트 계약이 처음 온전히 반영되는 분기입니다. <b>클라우드 매출 $37.5억+</b>(약 5조 650억원), <b>Starlink ARPU $66 유지</b>, <b>Falcon 발사 41회+</b>가 핵심 3대 지표입니다(매출 컨센서스 $120억+, 약 16조 2,070억원).
+      → 스페이스X는 사실상 <b>스타링크가 번 돈 + 상장·채권으로 모은 돈을 AI에 쏟아붓는 구조</b>입니다. 2분기 기준 스타링크 영업이익(+$16.6억)보다 AI 적자(−$12.6억)와 AI 설비투자($158억)가 훨씬 큽니다.<br>
+      따라서 주가의 핵심 질문은 <b>"AI 컴퓨트 임대가 얼마나 빨리 돈이 되느냐"</b>입니다. 10월부터 구글·Anthropic 계약이 매출로 잡히므로 <b>3분기 실적의 AI 매출과 적자 폭</b>이 첫 시험대입니다.
+      이번 주 주파수 인수로 스타링크에 <b>'이동통신사'라는 두 번째 성장축</b>이 붙은 점은 흑자 엔진을 키운다는 면에서 의미가 큽니다.
     </div>
   </section>
 
-  <!-- 4. 향후 전망 -->
+  <!-- 5. 재무제표 -->
   <section>
-    <h2>4. 향후 전망</h2>
-
-    <div class="kpi-grid">
-      <div class="kpi">
-        <div class="label">돌파 레벨 (신규 지지)</div>
-        <div class="value">$155~158</div>
-        <div class="sub">10/2 돌파한 이전 박스 상단 / 다음 저항 $165·$175</div>
-      </div>
-      <div class="kpi">
-        <div class="label">IPO가 (심리적 지지)</div>
-        <div class="value">$135</div>
-        <div class="sub">현재가 +17.7% · 50일선 약 $137과 겹침</div>
-      </div>
-      <div class="kpi">
-        <div class="label">52주 범위</div>
-        <div class="value">$104.83~225.64</div>
-        <div class="sub">현재가는 고점 대비 -29.6%</div>
-      </div>
-      <div class="kpi">
-        <div class="label">애널리스트 평균 목표가</div>
-        <div class="value">$219~235</div>
-        <div class="sub">매수 27 : 보유 4 : 매도 2 · MS $300, UBS $210, TD Cowen $200</div>
-      </div>
+    <h2>5. 2025회계연도 재무제표 (FY2025, 2025.12.31 마감)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">$186.7억</div><div class="k">약 25조 510억원</div><div class="d">▲ +33% YoY</div></div>
+      <div class="fk"><div class="l">조정 EBITDA</div><div class="v">$65.8억</div><div class="k">약 8조 8,320억원</div><div class="d">마진 35%</div></div>
+      <div class="fk"><div class="l">순손익 (GAAP)</div><div class="v" style="color:var(--neg-text)">−$49.4억</div><div class="k">약 −6조 6,230억원</div><div class="d" style="color:var(--neg-text)">▼ 전년 +$0.2억 → 적자 전환</div></div>
+      <div class="fk"><div class="l">잉여현금흐름</div><div class="v" style="color:var(--neg-text)">−$141.2억</div><div class="k">약 −18조 9,430억원</div><div class="d" style="color:var(--neg-text)">▼ 전년 −$53.9억</div></div>
     </div>
 
-    <div class="factor-block pos">
-      <h4>🟢 긍정적 요인</h4>
-      <ul class="plain">
-        <li><b>Starship 첫 궤도 진입 성공(9/28)</b>: Starlink V3 26기 배치로 첫 매출 미션을 완수했습니다. 진 먼스터는 V3 망으로 다운로드 속도가 약 150Mbps에서 600Mbps로, 성숙 시 1회 60기(Falcon 9의 20배 용량)까지 늘 수 있다고 봅니다.</li>
-        <li><b>발사 운영력</b>: 13시간 내 3회 발사(Crew-13·Transporter-18·NROL-97)로 정부·상업·국방을 아우르는 독점적 발사 지위를 재확인했습니다.</li>
-        <li><b>AI 컴퓨트 매출 본격화</b>: 구글 월 $9.2억<span class="krw-inline">(약 1조 2,430억원)</span>이 10월부터, Anthropic 월 약 $12.5억<span class="krw-inline">(약 1조 6,880억원)</span>(보도)이 반영됩니다. 구글 Suncatcher 궤도 TPU 실증과 머스크의 Nvidia VR72 운용 언급으로 '궤도 데이터센터' 테마도 부각되었습니다.</li>
-        <li><b>월가 커버리지 확대</b>: TD Cowen이 신규 Buy($200)를 냈고, 모건스탠리 $300, UBS $210, Citi 장기 $900 시나리오가 나왔습니다. 평균 목표가 $219~235(+38~48%)입니다.</li>
-        <li>2분기 매출 $7.81B<span class="krw-inline">(약 10조 5,480억원)</span>(+92%), 조정 EBITDA $3.5B(+191%), Starlink 영업마진 38.6%입니다. "2027년 흑자 전환 가능"이라는 분석도 나왔습니다.</li>
-        <li>나스닥100 비중이 1.28%에서 2.82%로 늘어 패시브 매수 수요가 생겼고, Filtronic 사상 최대 수주($6,810만)로 공급망 확장도 확인되었습니다.</li>
-      </ul>
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2024 vs FY2025 (FY25 Capex를 100으로 둔 막대)<i style="background:var(--border)"></i>FY24<i style="background:var(--accent)"></i>FY25</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:67.0%"></div><div class="b y25" style="width:89.3%"></div></div><span class="v">$140.2억 → $186.7억</span></div>
+      <div class="cmp-row"><span class="nm">매출총이익</span><div class="bars2"><div class="b y24" style="width:28.8%"></div><div class="b y25" style="width:44.1%"></div></div><span class="v">$60.2억 → $92.2억</span></div>
+      <div class="cmp-row"><span class="nm">영업현금흐름</span><div class="bars2"><div class="b y24" style="width:27.6%"></div><div class="b y25" style="width:32.5%"></div></div><span class="v">$57.8억 → $67.9억</span></div>
+      <div class="cmp-row"><span class="nm">설비투자</span><div class="bars2"><div class="b y24" style="width:53.4%; background:var(--neg-text); opacity:.45"></div><div class="b y25" style="width:100%; background:var(--neg-text)"></div></div><span class="v">$111.6억 → $209.1억</span></div>
     </div>
 
-    <div class="factor-block neg">
-      <h4>🔴 부정·주의 요인</h4>
-      <ul class="plain">
-        <li><b>락업 공급 폭탄</b>: <b>10/9·10/24 각 약 3.28억주</b>, 3분기 실적 2거래일 후 <b>약 13억주</b>(연중 최대), 12/8~9 180일 전체 만료가 이어집니다. 해제일 전후 -4% 패턴이 반복되었습니다.</li>
-        <li><b>급등 직후 과열</b>: 10/2 하루 +7.35%입니다. P/S 약 167배(과거 중앙값 약 104배)로 2조 달러 시총이 몇 년치 성공을 선반영했다는 비판도 있습니다.</li>
-        <li><b>내부자 매도</b>: 쇼트웰 COO가 9/22에 34.2만주(평균 $153.57, 보유분의 12%)를 매도했고, 1년간 내부자 매도 약 $5,370만, 매수는 0건입니다.</li>
-        <li><b>Starship 기술 리스크</b>: Flight 14에서 랩터 엔진 조기 정지가 있었고(모건스탠리 '추진계 반복 문제' 지적), 다음 관문인 부스터 캐치는 미시도 상태입니다.</li>
-        <li><b>수익성·자금</b>: 2분기 순손실 -$5.41억<span class="krw-inline">(약 7,310억원)</span>입니다. 분기 Capex $184억<span class="krw-inline">(약 24조 8,510억원)</span>, 상반기 AI Capex $236억<span class="krw-inline">(약 31조 8,740억원)</span>으로 FCF 소진이 빠릅니다. AI 계약 규모 일부는 독립 검증 전입니다.</li>
-        <li>금리: 9/16 FOMC 인상, 10년물 5%대로 고밸류 성장주에 부담입니다. 다만 9월 고용 부진으로 10월 추가 인상 기대는 약해졌습니다.</li>
-      </ul>
-    </div>
-
-    <h3>시나리오</h3>
-    <table class="scn">
-      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
-      <tr>
-        <td>① 박스 상단 재테스트 후 횡보</td>
-        <td class="prob">약 40%</td>
-        <td class="rng">148~165</td>
-        <td>10/2 돌파 후 과열을 식히며 10/9 락업 해제 물량을 소화하는 경우. 155~158을 지지로 확인하되, 165를 종가로 넘지 못하고 148~165 사이를 오갑니다</td>
-      </tr>
-      <tr>
-        <td>② 상단 돌파</td>
-        <td class="prob">약 25%</td>
-        <td class="rng">165 → 175, 넘으면 200</td>
-        <td>락업 해제를 추가 급락 없이 소화하고, 부스터 캐치 일정·AI 컴퓨트 신규 계약 등 후속 호재가 이어지는 경우. <b>165 위 종가 마감(거래량 동반)</b>이 확인 신호이고, 175를 넘으면 TD Cowen 목표가 200 구간이 열립니다</td>
-      </tr>
-      <tr>
-        <td>③ 하방 이탈</td>
-        <td class="prob">약 35%</td>
-        <td class="rng">148 → 145 → 135</td>
-        <td>10/9·10/24 해제 전일 매도 패턴이 반복되고, 급등분 차익실현이나 성장주 약세가 겹치는 경우. 148(10/1 종가)을 종가로 깨면 145(9/28 저점), 그 아래는 IPO가 135·50일선 구간까지 열립니다</td>
-      </tr>
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>$186.74억</b><span class="krw">약 25조 510억원</span></td><td class="num">$140.15억<span class="krw">약 18조 8,010억원</span></td><td class="num up">+33%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ Connectivity (61%)</td><td class="num">$113.87억<span class="krw">약 15조 2,760억원</span></td><td class="num">약 $76억</td><td class="num up">+50%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ Space (22%)</td><td class="num">$40.86억<span class="krw">약 5조 4,810억원</span></td><td class="num">약 $38억</td><td class="num up">+8%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ AI (17%)</td><td class="num">$32.01억<span class="krw">약 4조 2,940억원</span></td><td class="num">약 $26억</td><td class="num up">+22%</td></tr>
+      <tr><td>매출총이익 <span class="hz">GPM 49.4% (전년 42.9%)</span></td><td class="num">$92.23억<span class="krw">약 12조 3,730억원</span></td><td class="num">$60.19억<span class="krw">약 8조 740억원</span></td><td class="num up">+53%</td></tr>
+      <tr><td>연구개발비 <span class="hz">매출의 46%</span></td><td class="num">약 $86억<span class="krw">약 11조 5,370억원</span></td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td>판매관리비</td><td class="num">약 $26억<span class="krw">약 3조 4,880억원</span></td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td><b>영업손익 (GAAP)</b></td><td class="num dn"><b>−$25.89억</b><span class="krw">약 −3조 4,730억원</span></td><td class="num">+$7.4억<span class="krw">집계 기준</span></td><td class="num dn">적자 전환</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 부문별 영업손익: Connectivity / Space / AI</td><td class="num">+$44.2억 / −$6.6억 / −$63.6억</td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td>이자비용</td><td class="num">약 $19억<span class="krw">약 2조 5,490억원</span></td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td><b>순손익 (GAAP)</b></td><td class="num dn"><b>−$49.37억</b><span class="krw">약 −6조 6,230억원</span></td><td class="num">+$0.18억<span class="krw">약 240억원</span></td><td class="num dn">적자 전환</td></tr>
+      <tr><td>주당순손익</td><td class="num dn">−$1.69</td><td class="num">$0.01</td><td class="num">-</td></tr>
+      <tr><td>조정 EBITDA <span class="hz">마진 35.3%</span></td><td class="num">$65.84억<span class="krw">약 8조 8,320억원</span></td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td>감가상각비</td><td class="num">$70.31억<span class="krw">약 9조 4,320억원</span></td><td class="num">$38.24억<span class="krw">약 5조 1,300억원</span></td><td class="num">+84%</td></tr>
+      <tr><td>주식보상비용</td><td class="num">$19.47억<span class="krw">약 2조 6,120억원</span></td><td class="num">$7.84억<span class="krw">약 1조 520억원</span></td><td class="num dn">+148%</td></tr>
     </table>
-    <div class="scn-note">※ 확률은 현재 차트 구조·락업 일정·이벤트를 종합한 주관적 판단입니다. 10월 두 차례 락업 해제와 11월 초 실적(약 13억주 해제 동반)이 몰려 있어 하방 확률을 상단 돌파보다 높게 두었습니다. 가격 단위: USD(나스닥 SPCX 종가 기준).</div>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2025.12.31</th><th class="num">2024.12.31</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">$247.5억<span class="krw">약 33조 1,980억원</span></td><td class="num">$113.9억<span class="krw">약 15조 2,730억원</span></td><td class="num up">+117%</td></tr>
+      <tr><td>유동자산</td><td class="num">$309.5억<span class="krw">약 41조 5,220억원</span></td><td class="num">$161.1억<span class="krw">약 21조 6,090억원</span></td><td class="num up">+92%</td></tr>
+      <tr><td>유형자산 (위성·데이터센터·발사시설)</td><td class="num">$452.0억<span class="krw">약 60조 6,360억원</span></td><td class="num">$242.0억<span class="krw">약 32조 4,640억원</span></td><td class="num">+87%</td></tr>
+      <tr><td>영업권+무형자산 (xAI·X 통합분)</td><td class="num">$133.6억<span class="krw">약 17조 9,180억원</span></td><td class="num">$133.4억<span class="krw">약 17조 8,960억원</span></td><td class="num">0%</td></tr>
+      <tr><td>총자산</td><td class="num">$920.8억<span class="krw">약 123조 5,240억원</span></td><td class="num">$570.6억<span class="krw">약 76조 5,490억원</span></td><td class="num up">+61%</td></tr>
+      <tr><td>유동부채</td><td class="num">$214.0억<span class="krw">약 28조 7,080억원</span></td><td class="num">$117.9억<span class="krw">약 15조 8,180억원</span></td><td class="num">+81%</td></tr>
+      <tr><td>총차입금</td><td class="num">$244.5억<span class="krw">약 32조 8,050억원</span></td><td class="num">$154.3억<span class="krw">약 20조 7,050억원</span></td><td class="num dn">+58%</td></tr>
+      <tr><td>총부채</td><td class="num">$507.5억<span class="krw">약 68조 860억원</span></td><td class="num">$312.6억<span class="krw">약 41조 9,330억원</span></td><td class="num">+62%</td></tr>
+      <tr><td><b>자본총계</b> <span class="hz">자기자본비율 44.9%</span></td><td class="num"><b>$413.3억</b><span class="krw">약 55조 4,370억원</span></td><td class="num">$258.0억<span class="krw">약 34조 6,160억원</span></td><td class="num up">+60%</td></tr>
+      <tr><td>순차입금 (차입금 − 현금)</td><td class="num">약 −$3억 (사실상 0)</td><td class="num">약 $32억</td><td class="num up">개선</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">$67.9억<span class="krw">약 9조 1,020억원</span></td><td class="num">$57.8억<span class="krw">약 7조 7,490억원</span></td><td class="num up">+17%</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num dn">$209.1억<span class="krw">약 28조 450억원</span></td><td class="num">$111.6억<span class="krw">약 14조 9,750억원</span></td><td class="num dn">+87%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 부문별: AI / Connectivity / Space</td><td class="num">$127.3억 / $41.8억 / $38.3억</td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td><b>잉여현금흐름 (FCF)</b></td><td class="num dn"><b>−$141.2억</b><span class="krw">약 −18조 9,430억원</span></td><td class="num dn">−$53.9억<span class="krw">약 −7조 2,270억원</span></td><td class="num dn">적자 확대</td></tr>
+      <tr><td>차입 (신규 − 상환)</td><td class="num">$160.6억 − $71.5억 = <b>+$89.0억</b></td><td class="num">− $2.3억</td><td class="num">-</td></tr>
+      <tr><td>주식 발행</td><td class="num">$191.4억<span class="krw">약 25조 6,700억원</span></td><td class="num">$133.3억<span class="krw">약 17조 8,750억원</span></td><td class="num">+44%</td></tr>
+      <tr><td>재무활동현금흐름 합계</td><td class="num">+$263.5억<span class="krw">약 35조 3,490억원</span></td><td class="num">+$118.3억<span class="krw">약 15조 8,700억원</span></td><td class="num">+123%</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2025는 <b>"스타링크로 벌고, 주식·빚으로 모아서, AI에 쓴" 해</b>입니다. 영업현금 $68억으로는 Capex $209억을 감당하지 못해 FCF가 −$141억이었고, 그 차이를 <b>주식 발행 $191억 + 순차입 $89억</b>으로 메웠습니다.<br>
+      손익도 같은 구조입니다. 스타링크가 영업이익 $44억을 냈지만 AI가 −$64억을 내면서 <b>회사 전체가 적자로 돌아섰고</b>(전년 소폭 흑자), 감가상각비(+84%)와 주식보상(+148%)도 빠르게 늘었습니다.<br>
+      다만 2026년 6월 IPO로 약 $857억을 조달해 2분기 말 현금이 $935억까지 늘어 <b>당장의 유동성 걱정은 없습니다</b>. 문제는 속도입니다. 2분기 Capex가 한 분기에만 FY25 전체의 88%였고, 여기에 $400억 차입까지 더해지면 <b>AI 매출이 얼마나 빨리 따라오느냐</b>가 재무 건전성을 좌우합니다.
+      <br><span style="font-size:12.5px;">※ FY2025 수치는 SpaceX·xAI·X를 처음부터 한 회사였던 것처럼 합친 S-1 재작성 기준입니다. 매출·영업손실·EBITDA·부문 수치는 S-1, 나머지 손익·재무상태·현금흐름은 StockAnalysis 집계, R&amp;D·판관비·이자비용은 S-1 분석 기사의 반올림치입니다. FY2024 부문 매출은 성장률로 역산한 추정치입니다.</span>
+    </div>
   </section>
 
-  <!-- 5. 주요일정 -->
+  <!-- 6. 주요 일정 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr>
-        <td>10월 9일 (금) 오후 10:30 (美 개장)</td>
-        <td><b>락업 해제 — 약 3.28억주</b> (424B4 기준 10월 1차, 7% 단계 해제). 9/9·9/24 해제 때는 해제일이나 전일 약 -4% 하락 — <b>10/8 선제 매도 여부</b> 주목. 일부 보도는 10/7로 표기해 공시 재확인 필요</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 14일 (수) 오후 9:30</td>
-        <td>美 9월 CPI — 10월 FOMC 직전 마지막 물가지표, 고밸류 성장주 금리 민감도</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>10월 24일 (토) → 실반영 10월 26일 (월) 오후 10:30</td>
-        <td>락업 해제 — 약 3.28억주 (10월 2차, 美 주말이라 월요일 개장 반영). 일부 보도는 10/26로 표기</td>
-        <td><span class="star">★★★</span><span class="star-dim">★★</span></td>
-      </tr>
-      <tr>
-        <td>10월 29일 (목) 오전 3:00</td>
-        <td>FOMC 금리결정 (현지 10/27~28 회의) — 9월 인상 후 두 번째 결정, 고용 부진으로 동결 기대 강화</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>11월 초 (미확정)</td>
-        <td><b>3분기 실적 발표</b> — Anthropic·구글 컴퓨트 계약 첫 반영 분기(클라우드 매출 $37.5억+·Starlink ARPU·발사 41회+), 매출 컨센서스 $120억+. <b>발표 2거래일 후 약 13억주 락업 해제</b>(연중 최대 공급)</td>
-        <td><span class="star">★★★★★</span></td>
-      </tr>
-      <tr>
-        <td>미정 (Flight 15)</td>
-        <td>Starship Flight 15 — 부스터 '발사탑 캐치' 시도 여부, 모건스탠리가 꼽은 다음 핵심 촉매</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>12월 8일 (화) ~ 9일 (수)</td>
-        <td>180일 락업 전체 만료 — 성과연동 물량 포함 잔여분 해제 (IPO일 기준 6/11~12에 따라 하루 차이, 공시 재확인 필요)</td>
-        <td><span class="star">★★★★</span><span class="star-dim">★</span></td>
-      </tr>
-      <tr>
-        <td>2027년 6월 12~13일</td>
-        <td>머스크·내부자 366일 락업 만료 — 머스크 약 64억주, 구조적으로 가장 큰 잠재 공급 이벤트(장기 변수)</td>
-        <td><span class="star">★★</span><span class="star-dim">★★★</span></td>
-      </tr>
+      <tr><th style="width:28%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>지속</td><td>$400억 칩 구매 자금조달 확정 여부·신용등급 영향, 800MHz 주파수 인수 FCC 승인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td><b>美 9월 CPI</b> — 예상 3.7%(8월 3.4%), 고밸류 성장주 금리 민감도</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — AI 칩 공급·테라팹 협의 관련 언급 여부</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 17일 (토) 오전 5:00</td><td>10월 월간 옵션만기 (현지 10/16 금 장마감)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 24일 (토) ~ 25일 (일) → 실반영 10월 26일 (월) 오후 10:30</td><td><b>락업 해제 — 약 3.28억주</b> (10월 2차 롤링, 美 주말이라 월요일 개장 반영)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 10월 인상 확률 약 20%대</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 말 ~ 11월 초 (미정)</td><td><b>Starship Flight 15</b> — 발사탑 '십 캐치'(상단 회수) 시도, 모건스탠리가 꼽은 핵심 촉매</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 말 ~ 11월 초 (미확정)</td><td><b>3분기 실적</b> — 구글·Anthropic 컴퓨트 계약 첫 반영(AI 매출·적자 폭), Starlink 가입자·ARPU, 매출 컨센서스 $120억+. <b>발표 2거래일 후 약 13억주 락업 해제</b></td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>12월 8일 (화) ~ 9일 (수)</td><td>180일 락업 전체 만료</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>2027년 6월 12~13일</td><td>머스크·주요 주주 366일 락업 만료 (머스크 약 64억주) — 장기 최대 공급 변수</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
     </table>
   </section>
 
-  <!-- 6. 핵심 한눈에 -->
+  <!-- 7. 핵심 한눈에 -->
   <section>
-    <h2>6. 핵심 한눈에 보기 🚀</h2>
+    <h2>7. 핵심 한눈에 보기 🚀</h2>
 
     <div class="key-hero">
       <div class="tag">한 줄 요약</div>
-      <div class="line"><em>가게 장사(사업)는 잘 되는데,</em><br><strong>곧 창고에서 물건(주식)이 대량으로 풀린다.</strong></div>
+      <div class="line"><em>인터넷·AI·휴대폰까지 사업은 계속 커지는데,</em><br><strong>그 확장에 드는 돈(빚)과 풀리는 주식이 부담.</strong></div>
     </div>
 
     <div class="key-two">
       <div class="key-card good">
         <h4>👍 좋은 점 3가지</h4>
         <ol>
-          <li><b>큰 로켓이 드디어 성공</b><span>9/28 Starship이 처음으로 위성을 싣고 궤도에 올라감</span></li>
-          <li><b>AI 컴퓨터 임대 사업이 커짐</b><span>구글·Anthropic이 매달 1조원 넘게 지불 (10월부터)</span></li>
-          <li><b>매출이 1년 새 2배 가까이</b><span>2분기 약 10.5조원, +92%</span></li>
+          <li><b>스타링크가 돈을 잘 범</b><span>2025년 영업이익 약 5.9조원 · 회사의 유일한 흑자 사업</span></li>
+          <li><b>휴대폰 통신사까지 노림</b><span>美 전역 주파수 인수 → 통신 3사 주가 급락</span></li>
+          <li><b>월가가 '사라'고 함</b><span>모건스탠리 $300, 바클레이즈 $254 · 평균 목표가 약 $227</span></li>
         </ol>
       </div>
       <div class="key-card bad">
         <h4>👎 나쁜 점 3가지</h4>
         <ol>
-          <li><b>팔 수 있는 주식이 곧 쏟아짐</b><span>10월 두 번 + 11월 대량 · 지난번엔 풀릴 때마다 약 -4%</span></li>
-          <li><b>최근 너무 빨리 올랐음</b><span>10/2 하루에만 +7%</span></li>
-          <li><b>아직 적자</b><span>버는 돈보다 투자에 쓰는 돈이 더 많음</span></li>
+          <li><b>AI에 돈을 너무 많이 씀</b><span>2025년 현금 19조원 적자 · 칩 사려고 54조원 더 빌릴 계획</span></li>
+          <li><b>아직 적자 회사인데 비쌈</b><span>매출의 170배 가격 · 2025년 순손실 6.6조원</span></li>
+          <li><b>주식이 계속 풀림</b><span>10월 말 3.3억주 · 실적 직후 13억주</span></li>
         </ol>
       </div>
     </div>
 
     <div class="key-dates">
       <div class="key-date">
-        <div class="d">10/8~9</div>
-        <div class="e">주식 풀림 ① (3.3억주)</div>
-        <div class="w">전날부터 하락 조심</div>
+        <div class="d">10/14 밤 9:30</div>
+        <div class="e">美 9월 물가(CPI)</div>
+        <div class="w">높으면 성장주 먼저 하락</div>
       </div>
       <div class="key-date">
-        <div class="d">10/24~26</div>
-        <div class="e">주식 풀림 ② (3.3억주)</div>
+        <div class="d">10/26 밤</div>
+        <div class="e">주식 풀림 (3.3억주)</div>
         <div class="w">전날부터 하락 조심</div>
       </div>
       <div class="key-date hot">
-        <div class="d">11월 초</div>
+        <div class="d">10월 말~11월 초</div>
         <div class="e">실적 + 대량 풀림 (13억주)</div>
         <div class="w">🔥 제일 큰 고비</div>
       </div>
@@ -530,49 +568,45 @@
 
     <div class="key-ladder">
       <h4>📍 가격 기준선</h4>
-      <div class="rung ok"><span class="px">$165 ↑</span><span>여기를 넘으면 → 다음 목표 $175~200 🚀</span></div>
-      <div class="rung now"><span class="px">$159</span><span>지금 (10/2 종가)</span></div>
-      <div class="rung ok"><span class="px">$155</span><span>이 위면 → 괜찮음 👌</span></div>
-      <div class="rung warn"><span class="px">$148</span><span>이 아래면 → 조심 ⚠️</span></div>
+      <div class="rung ok"><span class="px">$176 ↑</span><span>여기를 넘으면 → 상승 🚀 (다음 $185 → $200대)</span></div>
+      <div class="rung now"><span class="px">$163</span><span>지금 (10/9 종가 $162.57)</span></div>
+      <div class="rung warn"><span class="px">$155</span><span>이 아래면 → 조심 ⚠️ (10/2 돌파 구간)</span></div>
       <div class="rung bad"><span class="px">$135</span><span>상장 가격 → 최후 방어선 🛑</span></div>
     </div>
 
     <div class="key-final">
-      💡 <b>결론:</b> 회사는 좋지만 <b>10월~11월은 주식이 풀리는 기간</b>이라 흔들릴 수 있습니다.
-      사고 싶다면 <b>한 번에 사지 말고, 주식 풀리는 날 전후로 나눠서</b> 사는 게 안전합니다.
+      ⚖️ <b>호재·악재 점수: +17.2 vs −16.9 → 균형(+0.3)</b> — 단기는 이벤트 기대로 약한 호재(+1.1), 중기는 현금 소진 부담으로 균형~약한 악재(−0.8).<br>
+      💡 <b>결론:</b> 사업 확장 뉴스는 좋지만, 그만큼 돈이 많이 들고 주식도 계속 풀리는 시기입니다.
+      <b>$155~160 근처에서 나눠서</b> 접근하고, <b>$176 돌파를 확인한 뒤</b> 늘리는 게 안전합니다.
+      방향은 <b>3분기 실적에서 AI 컴퓨트 매출이 얼마나 찍히는지</b>가 정합니다.
     </div>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스·공시(SEC Form 4·144, 424B4, 실적발표) 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감(KST 10/3 05:00). 9/30 종가는 10/1 등락률 기준 역산치입니다. 원화 환산은 2026.10.02 서울외환시장 주간 종가(1,350.6원/달러) 기준 근사치입니다.
-    상단 차트는 TradingView 실시간 위젯(OKX SPCXUSDT.P 무기한선물)으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다. 락업 해제 일정·수량은 공개 보도와 424B4 요약 기준이며 출처마다 1~2일 차이가 있어 공식 공시로 재확인이 필요합니다. 시나리오 확률은 주관적 판단입니다.
+    ※ 본 자료는 공개된 차트·뉴스·공시(S-1, SEC Form 4·144) 기반 분석이며 투자 조언이 아닙니다. 시세 기준: 2026.10.09 16:00 ET 정규장 마감(KST 10/10 05:00).
+    10/6·10/8 개별 등락률은 확인하지 못해 10/5~10/8 구간을 묶어 표기했습니다. 2분기 실적은 2026.8.4 발표, FY2025 재무제표는 S-1(SpaceX·xAI·X 합산 재작성 기준)과 StockAnalysis 집계를 사용했고 일부 항목은 반올림치입니다.
+    락업 일정·수량, 다음 실적일, Flight 15 일정은 공식 확정 전 보도 기준입니다. 원화 환산은 10/12 오후 시세 1,341.5원 적용(10억원 단위 반올림). 시나리오 확률과 요인별 점수는 주관적 판단입니다.
+    상단 차트는 TradingView 실시간 위젯(OKX SPCXUSDT.P)으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
-
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
   function mkWidget(interval, id){
     new TradingView.widget({
-      "autosize": false,
-      "width": "100%",
-      "height": 480,
+      "container_id": id,
+      "width": "100%", "height": 440,
       "symbol": "OKX:SPCXUSDT.P",
       "interval": interval,
-      "timezone": "Asia/Seoul",
-      "theme": "dark",
-      "style": "1",
-      "locale": "kr",
-      "toolbar_bg": "#161a21",
-      "enable_publishing": false,
-      "hide_top_toolbar": false,
-      "hide_legend": false,
-      "save_image": false,
-      "container_id": id
+      "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+      "toolbar_bg": "#1a1d24", "enable_publishing": false,
+      "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+      "studies": ["MASimple@tv-basicstudies"],
+      "support_host": "https://www.tradingview.com"
     });
   }
+  mkWidget("D", "tv_spcx_daily");
   mkWidget("15", "tv_spcx_15m");
-  mkWidget("D", "tv_spcx_1d");
 </script>
 <script type="text/javascript">
   // 실시간 시세 갱신 (OKX 공개 API · SPCX-USDT-SWAP · 30초 주기)
@@ -616,7 +650,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SPCXUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/9 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }
