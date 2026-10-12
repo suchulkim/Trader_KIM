@@ -43,6 +43,12 @@
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
   .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
+
+  .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
+  .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
+  .tv-widget-container{height:460px; width:100%; border-radius:8px; overflow:hidden;}
+  .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
+
   section{margin-top:36px;}
   h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
     display:flex; align-items:center; gap:8px;}
@@ -60,14 +66,8 @@
   .factor-block h4{margin:0 0 8px; font-size:14.5px;}
   ul.plain{margin:0; padding-left:18px; font-size:14px;}
   ul.plain li{margin-bottom:6px;}
-  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
-  .scenario{border-radius:10px; padding:12px 14px; font-size:14px; border:1px solid var(--border); background:var(--card);}
-  .scenario b{display:inline-block; padding:2px 8px; border-radius:6px; font-size:12.5px; margin-right:8px;}
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
   table.scn td{font-size:14px; line-height:1.55;}
-  table.scn td:first-child{font-weight:600; white-space:normal;}
+  table.scn td:first-child{font-weight:600;}
   table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
   table.scn td.rng{font-variant-numeric:tabular-nums;}
   table.scn td b{color:var(--text);}
@@ -75,21 +75,20 @@
   .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
+  .callout b{color:var(--text);}
   .rev-bar-wrap{margin:8px 0 18px;}
   .rev-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13.5px;}
   .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
-  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden; position:relative;}
+  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden;}
   .rev-fill{height:100%; border-radius:6px 0 0 6px;}
   .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
-  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
-  .callout b{color:var(--text);}
-  .countdown-banner{margin-top:14px; background:#fff6e0; color:#8a6100; border-radius:12px; padding:12px 16px; font-size:14px; font-weight:600;}
-  @media (prefers-color-scheme: dark){.countdown-banner{background:#2c2510; color:#e0b84d;}}
-  /* 매출구조도(가치 흐름) 다이어그램 */
+
+  /* 매출구조도 */
   .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
   .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
   .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
-  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.06);}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.08);}
   .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
   .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
   .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
@@ -98,10 +97,85 @@
   .flow-arrow.down{width:100%; padding:6px 0;}
   .flow-split{display:flex; gap:14px; flex-wrap:wrap; margin-top:4px;}
   .flow-split > div{flex:1 1 220px;}
+
   .live-badge{display:inline-flex; align-items:center; gap:5px; font-size:11.5px; font-weight:700; color:var(--down); background:var(--pos-bg); padding:2px 8px 2px 6px; border-radius:20px; vertical-align:middle; margin-left:8px;}
   .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
   @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
   .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
+  .key-hero{background:linear-gradient(135deg,rgba(0,105,180,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
+  .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
+  .key-hero .line em{font-style:normal; color:var(--pos-text);}
+  .key-hero .line strong{color:var(--neg-text);}
+  .key-two{display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:14px;}
+  .key-card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-card.good{border-top:4px solid var(--pos-text);}
+  .key-card.bad{border-top:4px solid var(--neg-text);}
+  .key-card h4{margin:0 0 10px; font-size:15px;}
+  .key-card ol{margin:0; padding-left:20px; font-size:14px;}
+  .key-card li{margin-bottom:8px;}
+  .key-card li b{display:block; color:var(--text);}
+  .key-card li span{color:var(--text-soft); font-size:13px;}
+  .key-dates{display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px;}
+  .key-date{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:12px 14px; text-align:center;}
+  .key-date .d{font-size:18px; font-weight:800;}
+  .key-date .e{font-size:13px; margin-top:2px;}
+  .key-date .w{font-size:12px; color:var(--text-soft); margin-top:4px;}
+  .key-date.hot{border-color:var(--neg-text); background:var(--neg-bg);}
+  .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
+  .key-ladder h4{margin:0 0 10px; font-size:15px;}
+  .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
+  .rung.now{background:rgba(0,105,180,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
+  .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
+  .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
+  .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
+  .key-final b{color:var(--text);}
+  /* 점수화 */
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px; white-space:nowrap;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px; white-space:nowrap;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 130px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:100px;} }
   footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
@@ -109,237 +183,413 @@
 <div class="wrap">
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.03 (토) · 업데이트</span>
+      <span>2026.10.12 (월) 21:30 업데이트 — 사상 최고가 경신·FY2025 재무제표·호재/악재 점수화 반영</span>
       <span>·</span>
-      <span>기준시각 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET, 실시간 변동 반영) 기준</span>
+      <span>시세 서술은 10/9 정규장 마감(KST 10/10 05:00) 기준 · 상단 가격은 실시간 자동 갱신</span>
     </div>
     <h1>Palantir Technologies (PLTR) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: PLTRUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$188.75</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-down" id="live-chg">일봉 -0.68% (-$1.29) · 장중 $193.5(+1.8%)까지 올랐다 반락 · 3분기 +60.3% 마감 후 $185~195 박스</div>
+        <div class="price-main"><span id="live-price">$209.05</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-up" id="live-chg">10/9 정규장 ▲ +5.17% (+$10.27) · 사상 최고 종가 · 주간 +10.8% ($188.75 → $209.05)</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX PLTRUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
-      <div class="price-sub">9/23 Rosenblatt 'Buy·$225' 재확인과 美 육군 탄약관리 계약($4,810만)으로 $191.79까지 오르며 약 1년 만의 고점권에 들어섰으나, 이후 $185~195 박스에서 등락 중입니다. 10/2(금)에는 Armada를 첫 '인증 모듈형 데이터센터 파트너'로 지정했다는 소식에 장중 $193.5까지 올랐지만, 계약 금액이 공개되지 않아 상승분을 반납하고 $188.75로 마감했습니다. 9/16 FOMC 금리 인상(3.75~4.00%)과 10년물 5%대 금리가 고밸류 성장주에 부담입니다. 52주 범위 $106.37~$207.52.</div>
+      <div class="price-sub">
+        지난 리포트(10/2, $188.75)의 <b>$185~195 박스를 위로 뚫었습니다.</b>
+        10/8 골드만삭스가 '중립 → <b>매수</b>, 목표가 $230'으로 올리자 나스닥이 −1.25% 빠진 날에도 +2.4% 올랐습니다.
+        10/9에는 바클레이즈가 '<b>비중확대·목표가 $265</b>'로 커버리지를 시작해 +5.17% 급등했습니다.
+        종가 $209.05는 2025년 11/3의 종전 최고 종가($207.18)를 넘은 <b>사상 최고치</b>입니다(장중 $209.58).
+        시가총액 약 $5,020억<span class="krw">(약 673조원)</span>, 선행 PER 약 110배로 부담도 커졌습니다. 10/12(월) 프리마켓은 −0.5% 안팎입니다.
       </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="cap">📊 실시간 차트 · PLTRUSDT.P (OKX) · 1D / 15분봉 — 브라우저에서 열면 실시간 갱신</div>
+      <div class="charts-grid">
+        <div>
+          <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
+          <div class="tv-widget-container"><div id="tv_pltr_daily" style="height:100%; width:100%;"></div></div>
+        </div>
+        <div>
+          <div class="cap" style="margin-top:4px;">15분봉</div>
+          <div class="tv-widget-container"><div id="tv_pltr_15m" style="height:100%; width:100%;"></div></div>
+        </div>
+      </div>
+    </div>
   </header>
 
+  <!-- 1. 차트 현황 -->
   <section>
-    <h2>1. 차트 현황 (TradingView 실시간)</h2>
-    <div style="margin-top:12px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">일봉 차트 · PLTRUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:650px; width:100%;">
-        <div id="tv_pltr_daily" style="height:100%; width:100%;"></div>
-      </div>
+    <h2>1. 차트 현황</h2>
+    <div class="callout" style="margin-top:0;">
+      <b>일봉</b>: 9/25~10/2에는 종가 $187~190의 좁은 박스였습니다. 10/5~7 나스닥 신고가 흐름을 타고 $194선으로 올라선 뒤, 10/8(+2.4%)과 10/9(+5.17%) 이틀 연속 장대양봉으로 <b>박스 상단 $194.5와 52주 고점($207.5)을 한꺼번에 돌파</b>했습니다.
+      10/9는 고가($209.58) 근처에서 마감해 매수세가 강했지만, 10/8 기준 RSI가 이미 78로 <b>과매수 구간</b>입니다. 20·50·100·200일선 모두 크게 위에 있어, 이격을 줄이는 숨고르기가 나와도 이상하지 않은 위치입니다.<br>
+      <b>15분봉</b>: 10/9 장중 범위는 $198.30~$209.58이었고 고가 근처에서 마감했습니다. <b>$207.5</b>(돌파한 직전 고점)가 1차 지지, <b>$198.3~198.8</b>(10/9 저가·10/8 종가)이 2차 지지입니다. 위로는 가격 이력이 없는 <b>신고가 영역</b>이라 $209.6(장중 최고)을 넘으면 저항은 애널리스트 목표가 중간값($215)·골드만($230) 정도입니다.
     </div>
-    <div style="margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);">
-      <div style="font-size:12.5px; color:var(--text-soft); margin-bottom:8px;">15분봉 차트 · PLTRUSDT.P (OKX) · 실시간</div>
-      <div class="tradingview-widget-container" style="height:650px; width:100%;">
-        <div id="tv_pltr_15m" style="height:100%; width:100%;"></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:16px;"><b>일봉</b>: 9/14 전후 $165~167 저점에서 반등을 시작해 9/23 $191.79로 마감, 9월 초 고점($188)을 넘어섰습니다. 이후 9/25~10/2 6거래일 동안 종가 기준 $187~190에 머무는 <b>좁은 박스</b>입니다. 10/2에는 장중 $193.5 고점 뒤 반락해 윗꼬리를 남겼습니다. <b>저항</b>: $191.8(9/23 종가) → $194.5 → 52주 최고가 $207.52. <b>지지</b>: $184.8 → $183(단기 손절 기준선) → $172(8/7 실적 갭 종가) → $164.5. 50일선 약 $164, 200일선 약 $147로 중기 추세는 상승이지만 단기 모멘텀은 둔화되었습니다.</div>
   </section>
 
+  <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 2주 주요 거래일, 현지 기준)</h2>
-    <p style="font-size:13px; color:var(--text-soft); margin-top:-6px;">美 정규장 마감가 기준 · KST 환산 시 익일 오전 5시(써머타임 EDT 기준)</p>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 현지 기준)</h2>
     <table>
-      <tr><th style="width:15%">날짜</th><th style="width:16%">종가 · 등락</th><th>주요 사유</th></tr>
+      <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:22%">비고</th></tr>
       <tr>
-        <td><b>9/21 (월)</b></td>
-        <td class="num">약 $183<br><span style="color:var(--pos-text); font-weight:600;">▲ +3.06%</span></td>
-        <td>나스닥 기술주 강세 속에 카프 CEO의 기업용 AI 규제·법적 프레임워크 발언, 육군 TITAN 등 다년 국방계약이 다시 부각되었습니다. 소프트웨어 업종(+2.61%)보다 많이 올랐습니다.</td>
+        <td><b>10/2(금)</b><br>$188.75<br><span style="color:var(--neg-text); font-weight:600;">▼ −0.68%</span></td>
+        <td>Armada를 첫 '인증 모듈형 데이터센터 파트너'로 지정해 장중 $193.5까지 올랐지만, 계약 금액이 공개되지 않아 상승분을 반납했습니다.</td>
+        <td>박스($185~195) 안</td>
       </tr>
       <tr>
-        <td><b>9/23 (수)</b></td>
-        <td class="num">$191.79<br><span style="color:var(--pos-text); font-weight:600;">▲ +3.68%</span></td>
-        <td>Rosenblatt이 'Buy·목표가 $225'를 재확인했고, 美 육군이 레거시 9개를 통합하는 탄약관리 시스템 계약($4,810만)을 발주했습니다. Chipotle의 Foundry 시범 도입, 카프 CEO의 폴란드·리투아니아 정상 면담도 겹치며 장중 $190을 넘어 <b>약 1년 만의 최고가</b>를 기록했습니다.</td>
+        <td><b>10/5(월)~10/7(수)</b><br>약 $194.1<br><span style="color:var(--pos-text); font-weight:600;">▲ 3일 +2.8%</span></td>
+        <td>국채금리가 24년 고점에서 내려오며 나스닥이 10/5·10/6 이틀 연속 사상 최고치를 썼습니다. 팔란티어도 함께 박스 상단을 두드렸습니다. 3개월 수익률 +46%로 S&amp;P500(+3.9%)을 크게 앞섰습니다.</td>
+        <td>10/7 종가는 10/8 등락률로 역산</td>
       </tr>
       <tr>
-        <td><b>9/25 (금)</b></td>
-        <td class="num">$189.64<br><span style="color:var(--neg-text); font-weight:600;">▼ -1.53%</span></td>
-        <td>S&amp;P500(+0.51%)이 오른 날 역행 하락했습니다. 거래량이 평균보다 약 60% 적어 급등 뒤 <b>차익실현</b>으로 해석됩니다. 같은 주 뉴욕연은 윌리엄스 총재의 '연내 추가 인상' 시사도 고밸류주에 부담이었습니다.</td>
+        <td><b>10/8(목)</b><br>$198.78<br><span style="color:var(--pos-text); font-weight:600;">▲ +2.40%</span></td>
+        <td><b>골드만삭스가 '중립 → 매수', 목표가 $230으로 상향</b>했습니다. 근거는 소버린(주권) AI 수요, 맞춤형 앱, 산업별 확장이며 "2027년까지 또 한 번의 초과수익 구간"을 전망했습니다. 댄 아이브스가 2027년 기술주 톱5 3위로 꼽았고, 영국 정부의 우크라이나 난민 지원 시스템 계약도 1년(£500만) 연장됐습니다.<br>같은 날 <b>OpenAI 매출 추정 하향 보도로 나스닥은 −1.25%</b>였지만 팔란티어는 역행 상승했습니다.</td>
+        <td>장중 $204.44 · 하이퍼스케일러 투자와 무관한 정부·방산 매출이 방어</td>
       </tr>
       <tr>
-        <td><b>9/30 (수)</b></td>
-        <td class="num">$187.05<br><span style="color:var(--text-soft); font-weight:600;">3분기 +60.3%</span></td>
-        <td>9/28 Nvidia의 AI 에이전트 안전장치(OpenShell·Sentry) 발표에 협력사 100여 곳 중 하나로 이름이 올랐지만, 구체적 계약이 없어 장중 -0.9% 약세였습니다. 9/29 10년물 국채금리가 <b>약 5.25%(2007년 이후 최고)</b>까지 오른 가운데 분기를 마감했습니다.</td>
+        <td><b>10/9(금)</b><br>$209.05<br><span style="color:var(--pos-text); font-weight:600;">▲ +5.17%</span></td>
+        <td><b>바클레이즈가 '비중확대·목표가 $265'로 커버리지를 시작</b>했습니다. 방산·항공우주 커버리지를 새로 열면서 "전통 방산업체보다 국방기술 기업"을 선호한다며 팔란티어와 스페이스X를 함께 꼽았습니다. $265는 시장 평균 목표가(약 $201)보다 약 32% 높습니다.</td>
+        <td><b>사상 최고 종가</b> · 장중 $198.30~$209.58 · 기술 업종(−1.3%) 역행</td>
       </tr>
       <tr>
-        <td><b>10/1 (목)</b></td>
-        <td class="num">$190.00<br><span style="color:var(--pos-text); font-weight:600;">▲ +1.58%</span></td>
-        <td>4분기 첫 거래일에 S&amp;P500(+0.2%)보다 강했습니다. 3분기 실적 컨센서스(EPS $0.42, 매출 $21.7억)에 대한 기대가 이어지며 $190선을 되찾았습니다.</td>
-      </tr>
-      <tr>
-        <td><b>10/2 (금)</b></td>
-        <td class="num">$188.75<br><span style="color:var(--neg-text); font-weight:600;">▼ -0.68%</span></td>
-        <td>Armada를 <b>첫 인증 모듈형 데이터센터 파트너</b>로 지정하고, 폐쇄망(air-gapped) 소버린 AI 인프라 협력을 발표하며 장중 $193.5(+1.8%)까지 올랐습니다. 그러나 계약 금액·고객·매출 배분 조건이 공개되지 않아 상승분을 반납했습니다. 거래량 약 1,800만주.</td>
+        <td><b>10/12(월)</b><br>프리마켓<br><span style="color:var(--neg-text); font-weight:600;">▼ 약 −0.5%</span></td>
+        <td>최고가 직후 숨고르기입니다. 샴 산카르 CTO는 CBS 인터뷰에서 AI 규제론을 강하게 비판하며 "국방부가 Maven에서 다른 AI 모델로 교체했지만 운영 차질은 없었다"고 말했습니다. 민간인 피해 보도에 대해서는 팔란티어 AI 책임을 부인했습니다. 서울 팝업(10/22~23, 한남동)도 발표했습니다.</td>
+        <td>美 정규장 KST 22:30 개장</td>
       </tr>
     </table>
     <div class="callout">
-      → 9월 중순 반등은 9/23 <b>Rosenblatt 'Buy' 재확인과 육군 탄약관리 계약</b>으로 $191.79까지 이어지며 9월 초 고점($188)을 넘었습니다.
-      다만 그 뒤로는 <b>$187~190 종가 박스</b>에 갇혀 있고, 10/2 Armada 발표처럼 <b>금액 없는 파트너십 뉴스에는 장중 상승분을 반납</b>하는 패턴이 반복되고 있습니다.
-      9/16 FOMC 인상과 10년물 5%대 금리가 고밸류 성장주의 멀티플을 누르는 상황이라, <b>11/2 실적 전까지는 매크로(10/29 FOMC)가 방향을 정할 가능성</b>이 큽니다.
+      → 한 주 만에 분위기가 바뀐 핵심은 <b>대형 IB 두 곳의 연속 '매수' 의견</b>입니다. 10/2 리포트에서 "평균 목표가가 현재가와 붙어 있어 여력이 5% 안팎"이라고 짚었던 부담을, 골드만($230)·바클레이즈($265)가 위쪽 목표가를 새로 열어 주며 해소한 셈입니다.<br>
+      또 하나는 <b>AI 반도체 쇼크(10/8)에도 오른 차별성</b>입니다. 매출이 빅테크 설비투자에 묶여 있지 않고 정부·방산·기업 소프트웨어에서 나오기 때문에, "AI 투자 의구심 → 칩 매도 → 소프트웨어로 자금 이동"의 수혜를 받았습니다.<br>
+      다만 주가가 이제 <b>평균 목표가(약 $201)보다 위</b>에 있고 선행 PER이 6월 말 약 74배에서 약 110배로 뛰었습니다. 앞으로는 <b>뉴스가 아니라 실적(11/2 예상)이 주가를 정당화해야 하는 구간</b>입니다.
     </div>
   </section>
 
+  <!-- 3. 향후 전망 -->
   <section>
     <h2>3. 향후 전망</h2>
+
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>2분기 매출 $19.4억<span class="krw">(약 2조 6,200억원)</span>(+92.8% YoY, 사상 최고 성장률), 美 상업 매출 +149% — 3분기 컨센서스 EPS $0.42<span class="krw">(약 567원)</span>(+100%), 매출 약 $21.7억<span class="krw">(약 2조 9,310억원)</span>(+84%)</li>
-        <li>FY26 매출 가이던스 $81.5억<span class="krw">(약 11조 70억원)</span>으로 상향, 조정 FCF 가이던스 $45~47억<span class="krw">(약 6조 780억~6조 3,480억원)</span> — 2분기 $100만 이상 계약 220건(그중 $1,000만 이상 73건)</li>
-        <li>9월 하순 뉴스플로우 연속: 美 육군 탄약관리 계약($4,810만<span class="krw">(약 650억원)</span>), Chipotle Foundry 시범 도입, Armada 소버린 AI 인프라 제휴(10/2), 폴란드·리투아니아 등 NATO 동부전선 협력 논의</li>
-        <li>Zacks Rank #1(Strong Buy), Rosenblatt 'Buy·$225', 컨센서스 '매수' 우위(Benzinga 집계 매수 15·보유 5·매도 1)</li>
-        <li>3분기 +60.3% 상승에도 50일선(약 $164)·200일선(약 $147) 위 중기 상승추세 유지</li>
+        <li><b>월가 목표가 상단이 크게 열림</b> — 바클레이즈 $265(비중확대), UBS·DA데이비슨 $250, 골드만 $230(매수 상향), Rosenblatt $225. 목표가 중간값 $215</li>
+        <li>2분기 매출 $19.35억<span class="krw">(약 2조 5,960억원)</span>(+93% YoY, 사상 최고 성장률), 美 상업 +149%, 美 상업 계약총액(TCV) $21.3억(+153%)</li>
+        <li>FY26 매출 가이던스 $81.5억<span class="krw">(약 10조 9,330억원)</span>로 상향(+82%) — 연초(2월) 가이던스 $71.8~72.0억에서 크게 상향</li>
+        <li><b>실적 서프라이즈 이력</b> — 최근 5개 분기 매출이 가이던스 상단을 5.7~8.7%, 조정영업이익은 11.9~20.8% 웃돌았습니다</li>
+        <li><b>소버린 AI·국방 수요</b> — 골드만 상향의 핵심 논리. 나토·동유럽, 美 육군 계약, Armada 폐쇄망 인프라 제휴 등 정부 고객 확장</li>
+        <li><b>탄탄한 재무</b> — FY2025 조정 FCF $22.7억(매출 대비 51%), 현금·유가증권 $71.8억<span class="krw">(약 9조 6,280억원)</span>, 차입금 사실상 없음</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>금리 역풍</b>: 9/16 FOMC가 기준금리를 3.75~4.00%로 인상했고, 10월 추가 인상 확률은 70%대(9/29 CME 기준 72.5%)입니다. 10년물도 약 5.25%로 2007년 이후 최고 수준이라 PER 150배 안팎의 고밸류주가 가장 민감합니다.</li>
-        <li><b>밸류에이션</b>: 트레일링 PER 약 149배, 포워드 PER 약 116~120배입니다. 7~9월 주가가 오른 폭에 비해 FY26 EPS 추정치 상향은 약 9%에 그쳐, 상승분 대부분이 멀티플 확장입니다.</li>
-        <li><b>목표가 여력 소진</b>: 평균 목표주가 약 $195~197로 현재가 대비 상승여력이 5% 안팎에 불과합니다.</li>
-        <li><b>성장 둔화 가이던스</b>: 3분기 가이던스 중간값 $21.6억<span class="krw">(약 2조 9,170억원)</span>은 전년 대비 약 80% 성장으로, 2분기 93%보다 낮아집니다.</li>
-        <li><b>내부자 매도·헤드라인 리스크</b>: 최근 3개월 내부자 매도가 약 72만주($1.17억)에 달합니다. Maven 시스템이 2월 미사일 공격의 정보 오류에 관여했다는 보도도 있습니다(회사 측 부인).</li>
-        <li><b>'금액 없는 파트너십'에 시장 반응 둔화</b>: Nvidia(9/28)·Armada(10/2) 발표 모두 장중 상승분을 반납했습니다.</li>
+        <li><b>밸류에이션</b> — 선행 PER 약 110배(6월 말 약 74배), 주가매출비율(PSR) 약 74~81배. S&amp;P500 평균 PSR은 약 3배입니다</li>
+        <li><b>과열 신호</b> — RSI 약 78(10/8 기준), 주가가 평균 목표가(약 $201)를 이미 넘어섬. 3분기에만 +60% 오른 뒤 다시 +10%</li>
+        <li><b>'실적 발표 후 하락' 패턴</b> — 2025년 3분기 발표 후 −7.9%, 2026년 1분기 발표 후 −6.9%. 3분기 컨센서스(매출 약 $21.8억)가 가이던스 상단보다 0.6% 높을 뿐이라, <b>시장이 실제로 기대하는 숫자(위스퍼)는 훨씬 높음</b></li>
+        <li><b>금리 역풍</b> — 10년물 5.2%대(24년 최고권). 10/14 CPI는 3.7%로 재가속 예상(8월 3.4%). 고밸류주가 금리에 가장 민감</li>
+        <li><b>AI 모델사와의 경쟁</b> — 회사 스스로 "AI 모델 전환기가 왔다"고 언급. 모델사가 공급자이자 기업 고객을 직접 노리는 경쟁자. 3분기 성장률 가이던스(+80%)는 2분기(+93%)보다 낮음</li>
+        <li><b>내부자 매도·헤드라인</b> — 최근 1년 내부자 매도 약 $8.7억, 순매수 0건. 민간인 피해 관련 보도·AI 안전 논쟁 등 정치적 노출</li>
       </ul>
     </div>
-    <h3>시나리오</h3>
-    <table class="scn">
-      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
-      <tr>
-        <td>① 박스 상단 재테스트 후 횡보</td>
-        <td class="prob">약 45%</td>
-        <td class="rng">184.8~194.5</td>
-        <td>11/2 실적 전 포지셔닝 장세가 이어지고, 10/29 FOMC 결과가 시장 예상 범위에 머무는 경우. 194.5를 종가로 넘지 못하고 184.8~194.5 사이를 오갑니다</td>
-      </tr>
-      <tr>
-        <td>② 상단 돌파</td>
-        <td class="prob">약 25%</td>
-        <td class="rng">194.5 → 207.5, 넘으면 215~225</td>
-        <td>FOMC가 10월 인상을 건너뛰어 금리 부담이 완화되거나, Armada 등 파트너십이 금액 있는 계약으로 확인되는 경우. <b>194.5 위 종가 마감(거래량 동반)</b>이 확인 신호이고, 52주 최고가 207.52를 넘으면 Rosenblatt 목표가 225 구간까지 열립니다</td>
-      </tr>
-      <tr>
-        <td>③ 하방 이탈</td>
-        <td class="prob">약 30%</td>
-        <td class="rng">183 → 172 → 164.5</td>
-        <td>10월 FOMC 추가 인상과 10년물 5%대 고착으로 고밸류주 디레이팅이 나오는 경우. 183을 종가로 깨면 8/7 실적 갭 종가(172) 테스트, 거기도 깨지면 164.5(50일선 부근)까지 열립니다</td>
-      </tr>
-    </table>
-    <div class="scn-note">※ 확률은 현재 차트 구조·매크로 일정·밸류에이션을 종합한 주관적 판단이며, 10/29 FOMC와 11/2 실적 발표 후 재조정이 필요합니다. 가격 단위: USD(나스닥 PLTR 종가 기준).</div>
-  </section>
 
-  <section>
-    <h2>4. 핵심 실적·매출 구조 (2026 회계연도 2분기, 6/30 마감분)</h2>
-    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,350.6원 (2026.10.02 서울 외환시장 주간 종가 기준, 10억원 단위 반올림)</p>
-    <table>
-      <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
-      <tr><td>📊 총 매출</td><td class="num">$19.4억<span class="krw">(약 2조 6,200억원)</span></td><td class="num">+92.8% YoY</td></tr>
-      <tr><td>💰 Non-GAAP EPS</td><td class="num">$0.41<span class="krw">(약 554원)</span></td><td class="num">컨센서스 상회</td></tr>
-      <tr><td>📈 조정영업이익률</td><td class="num">62%</td><td class="num">Rule of 40 155%</td></tr>
-      <tr><td>🎯 3분기 가이던스</td><td class="num">$21.6~21.64억<span class="krw">(약 2조 9,170억~2조 9,230억원)</span></td><td class="num">조정영업이익 $12.9~13.0억<span class="krw">(약 1조 7,420억~1조 7,560억원)</span></td></tr>
-      <tr><td>🎯 FY26 매출 가이던스</td><td class="num">$81.5~81.6억<span class="krw">(약 11조 70억~11조 210억원)</span></td><td class="num">기존 $76.5~76.6억<span class="krw">(약 10조 3,320억~10조 3,460억원)</span>에서 상향</td></tr>
-      <tr><td>🤝 최근 주요 계약</td><td class="num">美 육군 탄약관리($4,810만<span class="krw">(약 650억원)</span>), Armada 제휴</td><td class="num">9/23 · 10/2 발표 (TITAN 양산·PwC 제휴 포함)</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.11.02(월) 예상</td><td class="num">FY26 Q3 · KST 11/3(화) 오전 6시 전후 · 컨센서스 EPS $0.42<span class="krw">(약 567원)</span>, 매출 $21.7억<span class="krw">(약 2조 9,310억원)</span> (회사 공식 일정 미발표)</td></tr>
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:46%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>2분기 +93%·美 상업 +149%, FY26 가이던스 $81.5억 상향<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">1.0</td><td class="tot">+4.0</td></tr>
+      <tr class="pos"><td>3분기 실적 서프라이즈 가능성 (5분기 연속 가이던스 상단 상회)<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.8</td><td class="tot">+3.2</td></tr>
+      <tr class="pos"><td>골드만 매수·$230, 바클레이즈 $265 — 목표가 상단 확대 (이미 주가 반영)<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td><b>FY2025 재무 체력</b> — 조정 FCF $22.7억(마진 51%), 순현금 $72억, 무차입<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>소버린 AI·국방 수요 확대 (나토·美 육군·Armada)<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">+2.8</td></tr>
+      <tr class="pos"><td>빅테크 설비투자와 무관한 매출 → AI 칩 쇼크 방어주 역할<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.9</td><td class="tot">+1.8</td></tr>
+      <tr class="sum pos"><td>호재 합계 (6개)</td><td></td><td></td><td class="tot">+17.8</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>밸류에이션 — 선행 PER 약 110배, PSR 약 74~81배<span class="hz">중기</span></td><td class="sc">5</td><td class="sc">0.9</td><td class="tot">−4.5</td></tr>
+      <tr class="neg"><td>고금리(10년물 5.2%대)·10/14 CPI 재가속(3.7%) 예상<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">−2.8</td></tr>
+      <tr class="neg"><td>과매수(RSI 78)·주가가 평균 목표가($201) 상회<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.8</td><td class="tot">−2.4</td></tr>
+      <tr class="neg"><td>'실적 후 하락' 패턴(−7.9%·−6.9%) — 높아진 기대치<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.6</td><td class="tot">−2.4</td></tr>
+      <tr class="neg"><td>AI 모델사 경쟁·성장률 둔화 가이던스(+93% → +80%)<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.7</td><td class="tot">−2.1</td></tr>
+      <tr class="neg"><td>내부자 매도(1년 $8.7억)·정치적 헤드라인<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.7</td><td class="tot">−1.4</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−15.6</td></tr>
     </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5~0.6). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
 
-    <div class="rev-bar-wrap" style="margin-top:16px;">
-      <div class="rev-row">
-        <div class="rev-label">🏛️ 美 정부(Government)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:41.8%; background:#0069b4;"></div></div>
-        <div class="rev-pct">41.8%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">🏢 美 상업(Commercial)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:39.5%; background:#5fa8d3;"></div></div>
-        <div class="rev-pct">39.5%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">🌍 해외(International)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:18.7%; background:#8e8e93;"></div></div>
-        <div class="rev-pct">18.7%</div>
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:53%">호재 +17.8 (53%)</div><div class="n" style="width:47%">악재 −15.6 (47%)</div></div>
+      <div class="big">순점수 <span class="g">+2.2</span> → <span class="g">'약한 호재 우위'</span></div>
+      <div class="sub">사업 자체(성장률·현금창출·국방 수요)는 분명히 호재 쪽입니다. 그러나 <b>악재의 절반 가까이가 '이미 너무 올랐다'는 가격 부담(밸류·과열·높아진 기대)</b>이라, 좋은 뉴스가 나와도 주가가 덜 오르거나 오히려 빠질 수 있는 위치입니다.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~11/2 실적 전후)</div><div class="v r">호재 +8.0 vs 악재 −9.0 → 과열 경계(−1.0)</div><div>신고가 직후·CPI·실적 이벤트 연속 — 추격보다 되돌림 대기</div></div>
+        <div class="hz-card"><div class="t">중기 (FY26~27)</div><div class="v g">호재 +9.8 vs 악재 −6.6 → 호재 우위(+3.2)</div><div>성장·재무 체력이 밸류 부담을 일부 정당화</div></div>
       </div>
     </div>
 
-    <table style="margin-top:4px;">
-      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
-      <tr><td>🏛️ 美 정부(Government)</td><td class="num">$8.09억<span class="krw">(약 1조 930억원)</span></td><td class="num" style="color:var(--pos-text)">+90%</td><td class="num">41.8%</td></tr>
-      <tr><td>🏢 美 상업(Commercial)</td><td class="num">$7.64억<span class="krw">(약 1조 320억원)</span></td><td class="num" style="color:var(--pos-text)">+149%</td><td class="num">39.5%</td></tr>
-      <tr><td>🌍 해외(International)</td><td class="num">$3.62억<span class="krw">(약 4,890억원)</span></td><td class="num" style="color:var(--pos-text)">+37%</td><td class="num">18.7%</td></tr>
-      <tr><td><b>합계</b></td><td class="num"><b>$19.35억<span class="krw">(약 2조 6,130억원)</span></b></td><td class="num"><b>+93%</b></td><td class="num"><b>100%</b></td></tr>
+    <h3>시나리오</h3>
+    <table class="scn">
+      <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:22%">가격 범위</th><th>조건</th></tr>
+      <tr>
+        <td>① 신고가권 숨고르기</td>
+        <td class="prob">약 45%</td>
+        <td class="rng">198~215</td>
+        <td>골드만·바클레이즈 효과가 소화되고, CPI(10/14)가 예상(3.7%) 수준에 머무는 경우. 과매수를 해소하며 <b>$198~207 지지</b>를 확인하고 실적 발표를 기다립니다</td>
+      </tr>
+      <tr>
+        <td>② 추가 상승</td>
+        <td class="prob">약 25%</td>
+        <td class="rng">215 → 230, 넘으면 250</td>
+        <td>CPI 둔화로 금리가 내려가고, 실적일 공지와 함께 대형 국방·소버린 AI 계약이 금액과 함께 나오는 경우. <b>$215(목표가 중간값) 위 종가</b>가 신호, 이후 골드만 $230 → UBS·DA데이비슨 $250</td>
+      </tr>
+      <tr>
+        <td>③ 되돌림</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">198 이탈 → 194 → 188</td>
+        <td>CPI가 예상보다 높아 10월 인상 확률이 다시 오르거나, 고밸류주 차익실현이 몰리는 경우. <b>$198.3(10/9 저가)가 깨지면</b> $194(10/7)를 거쳐 돌파 전 박스 상단 $188~190까지 열립니다</td>
+      </tr>
     </table>
-    <div class="callout">→ 美 상업 부문이 가장 빠르게 성장하며 정부 부문 비중에 근접했고, 정부 부문 자체도 최근 분기 79%로 오히려 가속(전년 53%)했습니다. 3분기 가이던스는 매출 <b>$21.60~21.64억<span class="krw">(약 2조 9,170억~2조 9,230억원)</span></b>, 조정영업이익 <b>$12.92~12.96억<span class="krw">(약 1조 7,450억~1조 7,500억원)</span></b>. <b>美 상업 성장률 유지 여부와 정부 AI 경쟁 심화(구글 진입) 대응, Rackspace·Nebius·PwC·Armada 등 파트너십 확장의 신규 계약(금액) 전환 속도</b>가 다음 분기까지 핵심 변수입니다.</div>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름·밸류에이션을 바탕으로 한 주관적 판단이며, 10/14 CPI·실적일 공지 후 재조정이 필요합니다. 가격 단위: USD(나스닥 PLTR 종가 기준).</div>
+  </section>
+
+  <!-- 4. 매출구조 -->
+  <section>
+    <h2>4. 매출구조/수익구조 (2026회계연도 2분기, 6/30 마감분)</h2>
+    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">원화 환산: 1달러 = 1,341.5원 (2026.10.12 오후 시세 기준, 10억원 단위 반올림)</p>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row"><div class="rev-label">🏛️ 美 정부</div><div class="rev-track"><div class="rev-fill" style="width:41.8%; background:#0069b4;"></div></div><div class="rev-pct">41.8%</div></div>
+      <div class="rev-row"><div class="rev-label">🏢 美 상업</div><div class="rev-track"><div class="rev-fill" style="width:39.5%; background:#5fa8d3;"></div></div><div class="rev-pct">39.5%</div></div>
+      <div class="rev-row"><div class="rev-label">🌍 해외</div><div class="rev-track"><div class="rev-fill" style="width:18.7%; background:#8e8e93;"></div></div><div class="rev-pct">18.7%</div></div>
+    </div>
+
+    <table>
+      <tr><th>부문</th><th class="num">매출</th><th class="num">YoY</th><th class="num">비중</th></tr>
+      <tr><td>🏛️ 美 정부(Government)</td><td class="num">$8.09억<span class="krw">(약 1조 850억원)</span></td><td class="num" style="color:var(--pos-text)">+90%</td><td class="num">41.8%</td></tr>
+      <tr><td>🏢 美 상업(Commercial)</td><td class="num">$7.64억<span class="krw">(약 1조 250억원)</span></td><td class="num" style="color:var(--pos-text)">+149%</td><td class="num">39.5%</td></tr>
+      <tr><td>🌍 해외(International)</td><td class="num">$3.62억<span class="krw">(약 4,860억원)</span></td><td class="num" style="color:var(--pos-text)">+37%</td><td class="num">18.7%</td></tr>
+      <tr><td><b>합계</b></td><td class="num"><b>$19.35억</b><span class="krw">(약 2조 5,960억원)</span></td><td class="num"><b>+93%</b></td><td class="num"><b>100%</b></td></tr>
+      <tr><td>💰 Non-GAAP EPS · 조정영업이익률</td><td class="num">$0.41<span class="krw">(약 550원)</span></td><td class="num">62%</td><td class="num">Rule of 40 155%</td></tr>
+      <tr><td>🎯 3분기 가이던스</td><td class="num">$21.60~21.64억<span class="krw">(약 2조 8,980억~2조 9,030억원)</span></td><td class="num">약 +80%</td><td class="num">조정영업이익 $12.92~12.96억</td></tr>
+      <tr><td>📊 3분기 컨센서스</td><td class="num">매출 약 $21.8억 · EPS $0.42<span class="krw">(약 563원)</span></td><td class="num">+84%</td><td class="num">가이던스 상단 대비 +0.6%</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.11.3(화) 06:00 KST 전후 (예상)</td><td class="num">-</td><td class="num">현지 11/2 장마감 후 · 회사 공지 전</td></tr>
+    </table>
 
     <h3>매출구조도 (가치 흐름 — 계약에서 잉여현금흐름까지)</h3>
     <div class="flow-diagram">
       <div class="flow-row">
         <div class="flow-box accent">
           <b>고객군</b>
-          <div class="desc">美 정부·국방기관 / 美 상업기업 / 해외 정부·기업 — 데이터·AI 플랫폼 도입계약(TCV) 체결</div>
+          <div class="desc">美 정부·국방(육군·Maven 등) / 美 상업기업(653곳, +35%) / 해외 정부·나토·기업 — 다년 계약(TCV) 체결</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>Gotham</b>
-          <div class="desc">국방·정보 의사결정 플랫폼</div>
-        </div>
-        <div class="flow-box accent">
-          <b>Foundry</b>
-          <div class="desc">기업 데이터 통합·운영체계</div>
-        </div>
-        <div class="flow-box accent">
-          <b>AIP</b>
-          <div class="desc">생성형 AI 에이전트 배포(상업 성장 핵심 동력)</div>
-        </div>
+        <div class="flow-box accent"><b>Gotham</b><div class="desc">국방·정보 의사결정 플랫폼</div></div>
+        <div class="flow-box accent"><b>Foundry</b><div class="desc">기업 데이터 통합·운영체계</div></div>
+        <div class="flow-box accent"><b>AIP</b><div class="desc">AI 에이전트 배포 — 외부 AI 모델(OpenAI·xAI·오픈모델 등)을 갈아 끼우는 구조</div></div>
       </div>
-      <div class="flow-arrow down">↓ 구독·사용량 기반 계약이 3대 부문 매출로 인식 ↓</div>
+      <div class="flow-arrow down">↓ 현장 엔지니어(FDE)가 도입 → 사용량·구독으로 확대 → 3대 부문 매출 인식 ↓</div>
       <div class="flow-row">
         <div class="flow-box">
           <b>매출 인식</b>
-          <div class="desc">정부 41.8% · 美 상업 39.5% · 해외 18.7% (2026 2분기 기준)</div>
+          <div class="desc">美 정부 41.8% · 美 상업 39.5% · 해외 18.7% (2026 2분기) — FY2025 연간 $44.8억, FY26 가이던스 $81.5억</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
-          <b>비용 구조 (R&D·영업비용 등)</b>
-          <div class="desc">매출총이익률 80%+ 유지, 영업 레버리지 지속 개선 중이나 주식보상비용 등 희석 부담 상존</div>
+          <b>비용 — 영업·R&D·주식보상</b>
+          <div class="desc">매출총이익률 82%. 영업비 중 영업·마케팅 비중이 가장 크고, 주식보상비용이 매출의 약 15%(FY25 $6.8억) — 3분기엔 계절 채용으로 비용 증가 예고</div>
         </div>
         <div class="flow-box reward">
           <b>조정영업이익 → 잉여현금흐름</b>
-          <div class="desc">조정영업이익률 62%, Rule of 40 155% — 순현금 포지션 유지, FY26 조정FCF 가이던스 $45~47억<span class="krw">(약 6조 780억~6조 3,480억원)</span></div>
+          <div class="desc">FY25 조정영업이익률 50%, 조정 FCF $22.7억(마진 51%). 2분기엔 조정영업이익률 62%까지 상승</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
         <div class="flow-box">
           <b>자본배분</b>
-          <div class="desc">신규 R&D·파트너십(Rackspace·Nebius·Armada 등) 재투자 + 자사주매입 — 순부채 없이 성장·주주환원 병행</div>
+          <div class="desc">현금·국채 $71.8억 적립(무차입), 소규모 자사주매입($0.75억) — 배당 없이 <b>재투자와 현금 축적 위주</b>. 파트너십(Armada·Rackspace·Nebius) 확장</div>
         </div>
       </div>
     </div>
-    <div class="callout" style="margin-top:14px;">→ Gotham·Foundry·AIP 세 플랫폼 모두 구독·사용량 기반 계약으로 매출이 인식되며, <b>높은 매출총이익률(80%+)</b> 구조 덕분에 매출 성장이 조정영업이익 증가로 빠르게 전이됩니다. 순현금 포지션을 유지한 채 신규 파트너십 재투자와 자사주매입을 병행하고 있어, <b>상업 부문 성장률 유지 여부가 이 가치 흐름 전체의 확장 속도를 좌우</b>하는 핵심 변수입니다.</div>
+    <div class="callout">
+      → 팔란티어의 성장 엔진은 <b>현장 엔지니어가 들어가 작게 시작한 뒤 사용량을 키우는 '도입 → 확장' 구조</b>입니다. 美 상업 고객 수(+35%)보다 美 상업 매출(+149%)이 훨씬 빠르게 느는 이유가 기존 고객의 사용량 확대입니다.<br>
+      매출총이익률 80%대라 매출이 늘면 이익이 더 빨리 늘지만, <b>주식보상비용(매출의 약 15%)</b>이 주주가치를 희석한다는 점은 계속 남습니다.
+      AIP가 특정 AI 모델에 묶이지 않는다는 점은 강점(모델 교체 자유)이자 약점(모델사가 직접 기업 고객을 공략)입니다.
+      다음 분기 핵심 변수는 <b>美 상업 성장률이 100%대를 유지하는지</b>와 <b>국방 계약이 '금액 있는 계약'으로 이어지는지</b>입니다.
+    </div>
   </section>
 
+  <!-- 5. 재무제표 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>5. 2025회계연도 재무제표 (FY2025, 2025.12.31 마감)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">$44.75억</div><div class="k">약 6조 40억원</div><div class="d">▲ +56% YoY</div></div>
+      <div class="fk"><div class="l">영업이익 (GAAP)</div><div class="v">$14.14억</div><div class="k">약 1조 8,970억원</div><div class="d">▲ +356% · 영업이익률 31.6%</div></div>
+      <div class="fk"><div class="l">순이익 (GAAP, 지배주주)</div><div class="v">$16.25억</div><div class="k">약 2조 1,800억원</div><div class="d">▲ +252% · EPS $0.63</div></div>
+      <div class="fk"><div class="l">조정 잉여현금흐름</div><div class="v">$22.70억</div><div class="k">약 3조 460억원</div><div class="d">▲ +82% · 매출 대비 51%</div></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2024 vs FY2025 (FY25 매출을 100으로 둔 막대)<i style="background:var(--border)"></i>FY24<i style="background:var(--accent)"></i>FY25</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:64.0%"></div><div class="b y25" style="width:100%"></div></div><span class="v">$28.66억 → $44.75억</span></div>
+      <div class="cmp-row"><span class="nm">조정영업이익</span><div class="bars2"><div class="b y24" style="width:25.2%"></div><div class="b y25" style="width:50.4%"></div></div><span class="v">$11.28억 → $22.54억</span></div>
+      <div class="cmp-row"><span class="nm">영업이익</span><div class="bars2"><div class="b y24" style="width:6.9%"></div><div class="b y25" style="width:31.6%"></div></div><span class="v">$3.10억 → $14.14억</span></div>
+      <div class="cmp-row"><span class="nm">순이익</span><div class="bars2"><div class="b y24" style="width:10.3%"></div><div class="b y25" style="width:36.3%"></div></div><span class="v">$4.62억 → $16.25억</span></div>
+      <div class="cmp-row"><span class="nm">조정 FCF</span><div class="bars2"><div class="b y24" style="width:27.9%"></div><div class="b y25" style="width:50.7%"></div></div><span class="v">$12.49억 → $22.70억</span></div>
+    </div>
+
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>$44.75억</b><span class="krw">약 6조 40억원</span></td><td class="num">$28.66억<span class="krw">약 3조 8,440억원</span></td><td class="num up">+56%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 美 정부</td><td class="num">$18.55억<span class="krw">약 2조 4,880억원</span></td><td class="num">-</td><td class="num up">+55%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 美 상업</td><td class="num">$14.65억<span class="krw">약 1조 9,650억원</span></td><td class="num">-</td><td class="num up">+109%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 해외 (역산)</td><td class="num">$11.55억<span class="krw">약 1조 5,500억원</span></td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td>매출원가</td><td class="num">$7.89억<span class="krw">약 1조 590억원</span></td><td class="num">$5.66억<span class="krw">약 7,590억원</span></td><td class="num">+39%</td></tr>
+      <tr><td>매출총이익 <span class="hz">GPM 82.4%</span></td><td class="num">$36.86억<span class="krw">약 4조 9,450억원</span></td><td class="num">$23.00억<span class="krw">약 3조 850억원</span></td><td class="num up">+60%</td></tr>
+      <tr><td>연구개발비</td><td class="num">$5.58억<span class="krw">약 7,480억원</span></td><td class="num">$5.08억<span class="krw">약 6,810억원</span></td><td class="num">+10%</td></tr>
+      <tr><td>영업·마케팅비</td><td class="num">$10.57억<span class="krw">약 1조 4,180억원</span></td><td class="num">$8.88억<span class="krw">약 1조 1,910억원</span></td><td class="num">+19%</td></tr>
+      <tr><td>일반관리비</td><td class="num">$6.58억<span class="krw">약 8,820억원</span></td><td class="num">$5.93억<span class="krw">약 7,960억원</span></td><td class="num">+11%</td></tr>
+      <tr><td><b>영업이익 (GAAP)</b> <span class="hz">OPM 31.6%</span></td><td class="num"><b>$14.14억</b><span class="krw">약 1조 8,970억원</span></td><td class="num">$3.10억<span class="krw">약 4,160억원</span></td><td class="num up">+356%</td></tr>
+      <tr><td>이자수익</td><td class="num">$2.29억<span class="krw">약 3,070억원</span></td><td class="num">$1.97억<span class="krw">약 2,640억원</span></td><td class="num up">+16%</td></tr>
+      <tr><td>법인세</td><td class="num">$0.23억<span class="krw">약 300억원</span></td><td class="num">$0.21억<span class="krw">약 290억원</span></td><td class="num">+7%</td></tr>
+      <tr><td><b>순이익 (GAAP, 지배주주)</b> <span class="hz">순이익률 36.3%</span></td><td class="num"><b>$16.25억</b><span class="krw">약 2조 1,800억원</span></td><td class="num">$4.62억<span class="krw">약 6,200억원</span></td><td class="num up">+252%</td></tr>
+      <tr><td>희석 EPS (GAAP / 조정)</td><td class="num">$0.63 / $0.75</td><td class="num">$0.19 / -</td><td class="num up">+232%</td></tr>
+      <tr><td>조정영업이익 <span class="hz">마진 50.4%</span></td><td class="num">$22.54억<span class="krw">약 3조 240억원</span></td><td class="num">$11.28억<span class="krw">약 1조 5,130억원</span></td><td class="num up">+100%</td></tr>
+      <tr><td>주식보상비용 <span class="hz">매출의 15.3%</span></td><td class="num">$6.84억<span class="krw">약 9,180억원</span></td><td class="num">$6.92억<span class="krw">약 9,280억원</span></td><td class="num">−1%</td></tr>
+    </table>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2025.12.31</th><th class="num">2024.12.31</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">$14.24억<span class="krw">약 1조 9,100억원</span></td><td class="num">$20.99억<span class="krw">약 2조 8,150억원</span></td><td class="num dn">−32%</td></tr>
+      <tr><td>단기 유가증권 (美 국채 등)</td><td class="num">$57.53억<span class="krw">약 7조 7,180억원</span></td><td class="num">$31.31억<span class="krw">약 4조 2,010억원</span></td><td class="num up">+84%</td></tr>
+      <tr><td><b>현금+유가증권 합계</b></td><td class="num"><b>$71.77억</b><span class="krw">약 9조 6,280억원</span></td><td class="num">$52.30억<span class="krw">약 7조 160억원</span></td><td class="num up">+37%</td></tr>
+      <tr><td>유동자산</td><td class="num">$83.58억<span class="krw">약 11조 2,120억원</span></td><td class="num">$59.34억<span class="krw">약 7조 9,610억원</span></td><td class="num up">+41%</td></tr>
+      <tr><td>총자산</td><td class="num">$89.00억<span class="krw">약 11조 9,400억원</span></td><td class="num">$63.41억<span class="krw">약 8조 5,060억원</span></td><td class="num up">+40%</td></tr>
+      <tr><td>유동부채</td><td class="num">$11.76억<span class="krw">약 1조 5,770억원</span></td><td class="num">$9.96억<span class="krw">약 1조 3,360억원</span></td><td class="num">+18%</td></tr>
+      <tr><td>총부채 <span class="hz">차입금 없음 · 리스부채 $2.3억</span></td><td class="num">$14.12억<span class="krw">약 1조 8,950억원</span></td><td class="num">$12.46억<span class="krw">약 1조 6,720억원</span></td><td class="num">+13%</td></tr>
+      <tr><td><b>자본총계 (지배주주)</b> <span class="hz">자기자본비율 83%</span></td><td class="num"><b>$73.87억</b><span class="krw">약 9조 9,100억원</span></td><td class="num">$50.03억<span class="krw">약 6조 7,120억원</span></td><td class="num up">+48%</td></tr>
+      <tr><td>유동비율</td><td class="num"><b>7.1배</b></td><td class="num">6.0배</td><td class="num up">개선</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">$21.34억<span class="krw">약 2조 8,630억원</span></td><td class="num">$11.54억<span class="krw">약 1조 5,480억원</span></td><td class="num up">+85%</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num">$0.34억<span class="krw">약 450억원</span></td><td class="num">$0.13억<span class="krw">약 170억원</span></td><td class="num">+168%</td></tr>
+      <tr><td><b>조정 잉여현금흐름 (FCF)</b></td><td class="num"><b>$22.70억</b><span class="krw">약 3조 460억원</span></td><td class="num">$12.49억<span class="krw">약 1조 6,760억원</span></td><td class="num up">+82%</td></tr>
+      <tr><td>투자활동현금흐름 (주로 국채 매입)</td><td class="num">−$27.84억<span class="krw">약 3조 7,340억원 유출</span></td><td class="num">−$3.41억<span class="krw">약 4,570억원 유출</span></td><td class="num">-</td></tr>
+      <tr><td>자사주 매입</td><td class="num">$0.75억<span class="krw">약 1,010억원</span></td><td class="num">$0.64억<span class="krw">약 860억원</span></td><td class="num">+17%</td></tr>
+      <tr><td>스톡옵션 행사 유입</td><td class="num">$1.29억<span class="krw">약 1,730억원</span></td><td class="num">$7.45억<span class="krw">약 1조원</span></td><td class="num dn">−83%</td></tr>
+      <tr><td>배당</td><td class="num">없음</td><td class="num">없음</td><td class="num">-</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2025는 <b>매출 +56%인데 영업이익 +356%</b>가 된 해입니다. 영업비용은 14% 늘어나는 데 그쳤고(R&amp;D +10%, 영업 +19%), 늘어난 매출 대부분이 이익으로 떨어졌습니다. 이것이 지금의 높은 멀티플을 지탱하는 '영업 레버리지' 논리입니다.<br>
+      재무는 매우 보수적입니다. <b>차입금이 없고 현금·국채가 $71.8억</b>으로 총자산의 81%이며, 자기자본비율 83%입니다. 다만 현금흐름의 쓰임새는 배당·대규모 자사주보다 <b>국채 매입(투자활동 −$27.8억)</b>이 대부분이라 주주환원 매력은 낮습니다.<br>
+      주의할 점은 <b>주식보상비용 $6.8억(매출의 15%)</b>으로, GAAP 순이익과 조정 이익 사이의 차이 대부분이 여기서 나옵니다. 또 FY2026 가이던스가 연초 $71.8~72.0억에서 2분기에 $81.5억으로 크게 올라간 만큼, <b>2026년 숫자는 FY2025보다 한 단계 높은 기준선</b>에서 평가받게 됩니다.
+      <br><span style="font-size:12.5px;">※ 회계연도 = 역년(1~12월). 원화는 리포트 공통 환율 1,341.5원 적용. 해외 매출은 총매출에서 美 매출($33.20억)을 뺀 역산치입니다. 조정 EPS($0.75)의 FY24 비교치는 발표자료에 없어 '-'로 표시했습니다.</span>
+    </div>
+  </section>
+
+  <!-- 6. 주요 일정 -->
+  <section>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>10월 중순 (미정)</td><td>3분기 실적 발표일 공식 공지 예상(작년 10/13 공지 선례) — 11/2 일정 확정 여부 확인</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 17일 (토) 오전 5:00 (현지 10/16 금 정규장 마감)</td><td>10월 월간 옵션만기 — 박스($185~195) 상하단 공방·변동성 확대 구간</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td><b>FOMC 금리결정 및 파월 기자회견</b>(현지 10/27~28 회의) — 9월 인상(3.75~4.00%)에 이은 <b>10월 추가 인상 여부</b>(시장 확률 70%대), 고밸류 성장주 방향성 분수령</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>11월 3일 (화) 오전 6:00 전후 (현지 11/2 월 장마감 후 · 예상·미확정)</td><td>3분기(FY26 Q3) 실적 발표 — 매출 $21.6억<span class="krw">(약 2조 9,170억원)</span> 가이던스 달성 여부, 美 상업 성장률, 파트너십(Armada·Rackspace·Nebius)의 계약 전환, 4분기 가이던스</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의, 현지 12/8~9 회의, EST 전환으로 발표시각 04:00 KST)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><th style="width:28%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>10월 12일 (월) 오후 10:30</td><td>美 정규장 개장 — 신고가($209.05) 다음 날, 차익실현 여부 확인</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 13~16일 중 (미정)</td><td>3분기 실적 발표일 공식 공지 예상(작년 10/13 공지 선례) — 11/2 확정 여부</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 13일 (화) 오후 7:45경</td><td>JP모건·골드만삭스·씨티·웰스파고 실적 — 3분기 어닝시즌 개막</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td><b>美 9월 CPI</b> — 예상 전년비 3.7%(8월 3.4%). 10월 FOMC 인상 여부를 가를 마지막 물가 지표, 고밸류주 직격</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 9:30</td><td>美 9월 PPI·소매판매</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 17일 (토) 오전 5:00</td><td>10월 월간 옵션만기 (현지 10/16 금 장마감) — 신고가 부근 변동성</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 22일 (목) ~ 23일 (금) 10:00~20:00</td><td>팔란티어 서울 팝업(한남동, 'Sovereign AI' 테마) — 국내 관심도 지표, 주가 영향은 제한적</td><td><span class="star">★</span><span class="star-dim">★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td><b>FOMC 금리결정</b> — 10월 인상 확률 약 20%대(9월 고용 쇼크 후 하락), CPI 결과에 따라 변동</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>11월 3일 (화) 오전 6:00 전후 (예상·미확정)</td><td><b>3분기(FY26 Q3) 실적</b> — 매출 가이던스 $21.6억 상단 대비 서프라이즈 폭, 美 상업 성장률, 4분기 가이던스·FY26 재상향 여부, 3분기 채용 비용</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
+  <!-- 7. 핵심 한눈에 -->
+  <section>
+    <h2>7. 핵심 한눈에 보기 📱</h2>
+
+    <div class="key-hero">
+      <div class="tag">한 줄 요약</div>
+      <div class="line"><em>월가가 줄줄이 '사라'고 해 사상 최고가를 찍었지만,</em><br><strong>이미 비싸고 과열이라 실적 전까진 숨고르기 가능성.</strong></div>
+    </div>
+
+    <div class="key-two">
+      <div class="key-card good">
+        <h4>👍 좋은 점 3가지</h4>
+        <ol>
+          <li><b>사업이 1년에 2배씩 큼</b><span>2분기 매출 +93%, 美 기업 고객 매출 +149%</span></li>
+          <li><b>월가 목표가가 쑥 올라감</b><span>바클레이즈 $265, 골드만 '매수' $230</span></li>
+          <li><b>빚 없이 현금 9.6조원</b><span>2025년 한 해 현금 3조원 창출 · AI 칩 쇼크에도 오름</span></li>
+        </ol>
+      </div>
+      <div class="key-card bad">
+        <h4>👎 나쁜 점 3가지</h4>
+        <ol>
+          <li><b>너무 비쌈</b><span>내년 이익 기준 PER 약 110배 · 평균 목표가보다 이미 위</span></li>
+          <li><b>실적 발표 뒤에 자주 빠짐</b><span>최근 두 번 −7.9%, −6.9% · 기대치가 너무 높음</span></li>
+          <li><b>금리가 오르면 제일 먼저 맞음</b><span>10/14 물가지표가 재가속 예상</span></li>
+        </ol>
+      </div>
+    </div>
+
+    <div class="key-dates">
+      <div class="key-date">
+        <div class="d">10/14 밤 9:30</div>
+        <div class="e">美 9월 물가(CPI)</div>
+        <div class="w">높게 나오면 고평가주 먼저 하락</div>
+      </div>
+      <div class="key-date">
+        <div class="d">10/29 새벽 3시</div>
+        <div class="e">美 금리 결정</div>
+        <div class="w">인상 확률 20%대</div>
+      </div>
+      <div class="key-date hot">
+        <div class="d">11/3 새벽 (예상)</div>
+        <div class="e">3분기 실적</div>
+        <div class="w">🔥 제일 큰 고비</div>
+      </div>
+    </div>
+
+    <div class="key-ladder">
+      <h4>📍 가격 기준선</h4>
+      <div class="rung ok"><span class="px">$215 ↑</span><span>여기를 넘으면 → 추가 상승 🚀 (다음 $230 → $250)</span></div>
+      <div class="rung now"><span class="px">$209</span><span>지금 (10/9 사상 최고 종가)</span></div>
+      <div class="rung warn"><span class="px">$198</span><span>이 아래면 → 조심 ⚠️ (10/9 저가·10/8 종가)</span></div>
+      <div class="rung bad"><span class="px">$188</span><span>최후 방어선 🛑 (돌파 전 박스 상단, 깨지면 $172까지)</span></div>
+    </div>
+
+    <div class="key-final">
+      ⚖️ <b>호재·악재 점수: +17.8 vs −15.6 → 약한 호재 우위(+2.2)</b> — 단, 단기는 과열 경계(−1.0), 중기는 호재 우위(+3.2).<br>
+      💡 <b>결론:</b> 회사는 잘 크고 있고 월가도 확신을 키웠지만, 주가는 이미 그 기대를 상당 부분 가격에 넣었습니다.
+      <b>신고가를 쫓아 사기보다 $198~207 되돌림에서 나눠서</b> 접근하고, <b>$198이 깨지면 비중을 줄이는</b> 게 안전합니다.
+      방향은 <b>10/14 CPI</b>가 먼저 흔들고, 결정은 <b>11/3 새벽 3분기 실적</b>이 내립니다.
+    </div>
+  </section>
+
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감(KST 2026.10.03 오전 5:00 환산) / 2026 회계연도 2분기(6/30 마감) 실적, 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용 / 3분기 가이던스 및 9월 하순~10월 초 계약·파트너십·FOMC 뉴스 반영. 9/21 종가는 등락률 기준 추정치. 시나리오 확률은 주관적 판단입니다. 상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스·공시 기반 분석이며 투자 조언이 아닙니다. 시세 기준: 2026.10.09 16:00 ET 정규장 마감(KST 10/10 05:00), 10/12 프리마켓은 Benzinga 표시치.
+    10/5~10/7 일별 종가는 확인하지 못해 10/8 등락률(+2.40%)로 10/7 종가(약 $194.1)를 역산했습니다.
+    실적은 FY2026 Q2(2026.6.30 마감) 기준, FY2025 재무제표는 2026.2.2 발표 실적자료(SEC 8-K Exhibit 99.1) 기준입니다. 다음 실적일은 회사 공지 전 추정입니다.
+    원화 환산은 10/12 오후 시세 1,341.5원 적용(10억원 단위 반올림). 시나리오 확률과 요인별 점수는 주관적 판단입니다.
+    상단 차트는 TradingView 실시간 위젯으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
 </div>
 
@@ -347,7 +597,7 @@
 <script type="text/javascript">
   new TradingView.widget({
     "container_id": "tv_pltr_daily",
-    "width": "100%", "height": 630,
+    "width": "100%", "height": 440,
     "symbol": "OKX:PLTRUSDT.P",
     "interval": "D",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
@@ -358,7 +608,7 @@
   });
   new TradingView.widget({
     "container_id": "tv_pltr_15m",
-    "width": "100%", "height": 630,
+    "width": "100%", "height": 440,
     "symbol": "OKX:PLTRUSDT.P",
     "interval": "15",
     "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
@@ -395,7 +645,6 @@
 
       const last = parseFloat(tickerJson.data[0].last);
       const prevClose = candleJson.data && candleJson.data[1] ? parseFloat(candleJson.data[1][4]) : null;
-      const todayOpen = candleJson.data && candleJson.data[0] ? parseFloat(candleJson.data[0][1]) : null;
 
       priceEl.textContent = fmtUSD(last);
 
@@ -403,8 +652,7 @@
         const diff = last - prevClose;
         const pct = (diff / prevClose) * 100;
         const arrow = diff >= 0 ? "▲" : "▼";
-        const cls = diff >= 0 ? "chg-up" : "chg-down";
-        chgEl.className = cls;
+        chgEl.className = diff >= 0 ? "chg-up" : "chg-down";
         chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
       } else {
         chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
@@ -412,7 +660,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX PLTRUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/9 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }
