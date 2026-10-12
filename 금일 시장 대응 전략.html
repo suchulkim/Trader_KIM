@@ -67,7 +67,9 @@
   .bellbtn{background:none;border:1px solid var(--border);border-radius:7px;color:var(--text);padding:3px 9px;font-size:15px;cursor:pointer;font-family:inherit;white-space:nowrap;}
   .bellbtn:hover,.bellbtn.on{border-color:var(--gold);}
   .bellbtn .cnt{font-size:11px;font-weight:800;color:var(--gold);margin-left:2px;}
-  .alm{display:none;padding:10px 14px;background:#1a1f2b;border-bottom:1px solid var(--border);font-size:14.5px;}
+  .tvbox{position:relative;}
+  .alm{display:none;position:absolute;top:48px;right:12px;z-index:60;width:min(440px,calc(100% - 24px));padding:12px 14px;background:#1a1f2b;border:1px solid var(--gold);border-radius:10px;box-shadow:0 10px 28px rgba(0,0,0,.55);font-size:14.5px;}
+  .alm .x{position:absolute;top:6px;right:8px;background:none;color:var(--soft);font-size:15px;padding:2px 6px;}
   .alm.open{display:block;}
   .alm .f{display:flex;flex-wrap:wrap;gap:6px;align-items:center;}
   .alm select,.alm input{background:var(--card);color:var(--text);border:1px solid var(--border);border-radius:6px;padding:4px 6px;font-family:inherit;font-size:12.5px;}
@@ -477,6 +479,7 @@ document.getElementById("matrix").addEventListener("click", e => {
 });
 document.getElementById("chartPanel").addEventListener("click", e => {
   const p = e.currentTarget;
+  if (e.target.closest("[data-almclose]")){ closeAlarmBoxes(); return; }
   const bell = e.target.closest("[data-bell]"); if (bell){ toggleAlarmBox(bell.dataset.bell); return; }
   const add = e.target.closest("[data-addalm]"); if (add){ addAlarmFrom(add.dataset.addalm); return; }
   const del = e.target.closest("[data-delalm]"); if (del){ delAlarm(del.dataset.delalm); return; }
@@ -502,16 +505,21 @@ function alarmListHTML(s){
 }
 function toggleAlarmBox(s){
   const box = document.getElementById("alm-" + s); if (!box) return;
-  if (box.classList.toggle("open")){
+  document.querySelectorAll(".alm.open").forEach(b => { if (b !== box){ b.classList.remove("open"); b.innerHTML = ""; } });
+  if (!box.classList.toggle("open")){ box.innerHTML = ""; return; }
+  {
     const cur = LIVE[s] || (STATE[s] && STATE[s].c5 ? STATE[s].c5[4].c : "");
-    box.innerHTML = `<div class="f"><span>현재 <b>${cur?fmt(cur):"—"}</b></span>
+    box.innerHTML = `<button class="x" data-almclose="${s}" title="닫기">✕</button><div class="f" style="padding-right:22px"><span>현재 <b>${cur?fmt(cur):"—"}</b></span>
       <select id="almop-${s}"><option value="auto">자동(현재가 기준)</option><option value=">=">이상 도달 ▲</option><option value="<=">이하 도달 ▼</option></select>
       <input id="almpx-${s}" type="number" step="any" placeholder="알람 가격" value="${cur?+(+cur).toPrecision(6):""}">
       <button data-addalm="${s}">알람 추가</button></div>
       <div class="lst" id="almlst-${s}">${alarmListHTML(s)}</div>
-      <div class="hint">OKX ${s}-USDT-SWAP 가격을 15초마다 확인합니다. 이 페이지가 열려 있을 때만 울리며, 한 번 울린 알람은 자동 삭제됩니다.</div>`;
+      <div class="hint">15초마다 OKX 시세 확인 · 페이지가 열려 있을 때만 · 울리면 자동 삭제</div>`;
   }
 }
+function closeAlarmBoxes(){ document.querySelectorAll(".alm.open").forEach(b => { b.classList.remove("open"); b.innerHTML = ""; }); }
+document.addEventListener("click", e => { if (!e.target.closest(".alm") && !e.target.closest("[data-bell]") && !e.target.closest("[data-delalm]")) closeAlarmBoxes(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape") closeAlarmBoxes(); });
 function refreshAlarmUI(s){
   const n = loadAlarms().filter(a=>a.s===s).length;
   document.querySelectorAll(`[data-cnt="${s}"]`).forEach(el => { el.textContent = n || ""; el.parentElement.classList.toggle("on", !!n); });
@@ -526,6 +534,7 @@ function addAlarmFrom(s){
   const a = loadAlarms(); a.push({id: Date.now().toString(36) + Math.random().toString(36).slice(2,6), s, op, px, at: Date.now()}); saveAlarms(a);
   if ("Notification" in window && Notification.permission === "default") { try { Notification.requestPermission(); } catch(e){} }
   refreshAlarmUI(s); toast(`🔔 ${s} ${fmt(px)} ${op===">="?"이상":"이하"} 알람 설정`);
+  closeAlarmBoxes();
   pollAlarms();
 }
 function delAlarm(id){
