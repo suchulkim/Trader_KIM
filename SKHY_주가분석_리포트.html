@@ -3,198 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SKHY 주가 분석 리포트</title>
+<title>SKHY(SK하이닉스) 주가 분석 리포트</title>
 <style>
   :root{
-    --bg:#f5f6f8;
-    --card:#ffffff;
-    --text:#1a1d24;
-    --text-soft:#565d6b;
-    --border:#e3e6ec;
-    --accent:#0071e3;
-    --up:#d92626;
-    --down:#1f7a3d;
-    --pos-bg:#eaf7ee;
-    --pos-text:#1f7a3d;
-    --neg-bg:#fdeceb;
-    --neg-text:#c53030;
-    --chip-bg:#eef2f7;
-    --table-head:#f0f2f6;
+    --bg:#f5f6f8; --card:#ffffff; --text:#1a1d24; --text-soft:#565d6b;
+    --border:#e3e6ec; --accent:#0069b4; --up:#d92626; --down:#1f7a3d;
+    --pos-bg:#eaf7ee; --pos-text:#1f7a3d; --neg-bg:#fdeceb; --neg-text:#c53030;
+    --chip-bg:#eef2f7; --table-head:#f0f2f6;
     --shadow: 0 1px 3px rgba(20,20,30,0.06), 0 1px 2px rgba(20,20,30,0.04);
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --bg:#111318;
-      --card:#181b22;
-      --text:#eef0f4;
-      --text-soft:#9aa2b1;
-      --border:#2a2e38;
-      --accent:#4ea1ff;
-      --up:#ff6b6b;
-      --down:#5fd188;
-      --pos-bg:#13291c;
-      --pos-text:#5fd188;
-      --neg-bg:#2c1717;
-      --neg-text:#ff8080;
-      --chip-bg:#20242d;
-      --table-head:#1d212a;
+      --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+      --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+      --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+      --chip-bg:#20242d; --table-head:#1d212a;
       --shadow: 0 1px 3px rgba(0,0,0,0.4);
     }
   }
   :root[data-theme="dark"]{
-    --bg:#111318;
-    --card:#181b22;
-    --text:#eef0f4;
-    --text-soft:#9aa2b1;
-    --border:#2a2e38;
-    --accent:#4ea1ff;
-    --up:#ff6b6b;
-    --down:#5fd188;
-    --pos-bg:#13291c;
-    --pos-text:#5fd188;
-    --neg-bg:#2c1717;
-    --neg-text:#ff8080;
-    --chip-bg:#20242d;
-    --table-head:#1d212a;
+    --bg:#111318; --card:#181b22; --text:#eef0f4; --text-soft:#9aa2b1;
+    --border:#2a2e38; --accent:#4ea1ff; --up:#ff6b6b; --down:#5fd188;
+    --pos-bg:#13291c; --pos-text:#5fd188; --neg-bg:#2c1717; --neg-text:#ff8080;
+    --chip-bg:#20242d; --table-head:#1d212a;
     --shadow: 0 1px 3px rgba(0,0,0,0.4);
   }
-
   *{box-sizing:border-box;}
-  body{
-    margin:0;
-    background:var(--bg);
-    color:var(--text);
+  body{margin:0; background:var(--bg); color:var(--text);
     font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
-    line-height:1.6;
-  }
-  .wrap{
-    max-width:900px;
-    margin:0 auto;
-    padding:28px 18px 60px;
-  }
+    line-height:1.6;}
+  .wrap{max-width:900px; margin:0 auto; padding:28px 18px 60px;}
   header.title-block{margin-bottom:22px;}
-  .eyebrow{
-    font-size:13px;
-    color:var(--text-soft);
-    display:flex;
-    flex-wrap:wrap;
-    gap:6px 10px;
-    align-items:center;
-  }
-  h1{
-    font-size:26px;
-    margin:6px 0 4px;
-    letter-spacing:-0.3px;
-  }
-  h1 .ticker{
-    color:var(--text-soft);
-    font-weight:500;
-    font-size:18px;
-    margin-left:6px;
-  }
-  .price-card{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:14px;
-    padding:18px 20px;
-    box-shadow:var(--shadow);
-    display:flex;
-    flex-wrap:wrap;
-    gap:14px 28px;
-    align-items:center;
-    margin-top:14px;
-  }
-  .price-main{
-    font-size:30px;
-    font-weight:700;
-    letter-spacing:-0.5px;
-  }
+  .eyebrow{font-size:13px; color:var(--text-soft); display:flex; flex-wrap:wrap; gap:6px 10px; align-items:center;}
+  h1{font-size:26px; margin:6px 0 4px; letter-spacing:-0.3px;}
+  h1 .ticker{color:var(--text-soft); font-weight:500; font-size:18px; margin-left:6px;}
+  .price-card{background:var(--card); border:1px solid var(--border); border-radius:14px;
+    padding:18px 20px; box-shadow:var(--shadow); display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; margin-top:14px;}
+  .price-main{font-size:30px; font-weight:700; letter-spacing:-0.5px;}
   .chg-up{color:var(--up); font-weight:600;}
   .chg-down{color:var(--down); font-weight:600;}
-  .price-sub{
-    font-size:13.5px;
-    color:var(--text-soft);
-    max-width:560px;
-  }
+  .price-sub{font-size:13.5px; color:var(--text-soft); max-width:560px;}
 
   .chart-card{margin-top:16px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px; box-shadow:var(--shadow);}
   .chart-card .cap{font-size:12.5px; color:var(--text-soft); margin-bottom:8px;}
-  .tv-widget-container{height:460px; border-radius:8px; overflow:hidden;}
+  .tv-widget-container{height:460px; width:100%; border-radius:8px; overflow:hidden;}
   .charts-grid{display:grid; grid-template-columns:1fr; gap:16px;}
 
   section{margin-top:36px;}
-  h2{
-    font-size:18.5px;
-    margin:0 0 14px;
-    padding-bottom:8px;
-    border-bottom:2px solid var(--text);
-    display:flex;
-    align-items:center;
-    gap:8px;
-  }
-  h3{
-    font-size:15.5px;
-    margin:20px 0 10px;
-    color:var(--text-soft);
-  }
-
-  table{
-    width:100%;
-    border-collapse:collapse;
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:10px;
-    overflow:hidden;
-    font-size:14px;
-  }
-  th, td{
-    padding:11px 12px;
-    text-align:left;
-    border-bottom:1px solid var(--border);
-    vertical-align:top;
-  }
-  th{
-    background:var(--table-head);
-    font-weight:600;
-    font-size:13px;
-    color:var(--text-soft);
-  }
+  h2{font-size:18.5px; margin:0 0 14px; padding-bottom:8px; border-bottom:2px solid var(--text);
+    display:flex; align-items:center; gap:8px;}
+  h3{font-size:15.5px; margin:20px 0 10px; color:var(--text-soft);}
+  table{width:100%; border-collapse:collapse; background:var(--card); border:1px solid var(--border);
+    border-radius:10px; overflow:hidden; font-size:14px;}
+  th, td{padding:11px 12px; text-align:left; border-bottom:1px solid var(--border); vertical-align:top;}
+  th{background:var(--table-head); font-weight:600; font-size:13px; color:var(--text-soft);}
   tr:last-child td{border-bottom:none;}
   td.num{font-variant-numeric: tabular-nums;}
-
-  .factor-block{
-    background:var(--card);
-    border:1px solid var(--border);
-    border-radius:12px;
-    padding:16px 18px;
-    margin-bottom:14px;
-    box-shadow:var(--shadow);
-  }
+  .factor-block{background:var(--card); border:1px solid var(--border); border-radius:12px;
+    padding:16px 18px; margin-bottom:14px; box-shadow:var(--shadow);}
   .factor-block.pos{border-left:4px solid var(--pos-text);}
   .factor-block.neg{border-left:4px solid var(--neg-text);}
   .factor-block h4{margin:0 0 8px; font-size:14.5px;}
   ul.plain{margin:0; padding-left:18px; font-size:14px;}
   ul.plain li{margin-bottom:6px;}
-
-  .scenario-grid{display:grid; grid-template-columns:1fr; gap:10px;}
-  .scenario{
-    border-radius:10px;
-    padding:12px 14px;
-    font-size:14px;
-    border:1px solid var(--border);
-    background:var(--card);
-  }
-  .scenario b{
-    display:inline-block;
-    padding:2px 8px;
-    border-radius:6px;
-    font-size:12.5px;
-    margin-right:8px;
-  }
-  .scenario.bull b{background:var(--pos-bg); color:var(--pos-text);}
-  .scenario.base b{background:var(--chip-bg); color:var(--text-soft);}
-  .scenario.bear b{background:var(--neg-bg); color:var(--neg-text);}
-
   table.scn td{font-size:14px; line-height:1.55;}
   table.scn td:first-child{font-weight:600;}
   table.scn td.prob{white-space:nowrap; font-variant-numeric:tabular-nums;}
@@ -204,45 +75,20 @@
   .krw{color:var(--text-soft); font-size:0.88em; font-weight:400; margin-left:2px; white-space:nowrap;}
   .star{color:#e0a800;}
   .star-dim{color:var(--border);}
-
-  .callout{
-    background:var(--chip-bg);
-    border-radius:10px;
-    padding:14px 16px;
-    font-size:14px;
-    color:var(--text-soft);
-    margin-top:16px;
-  }
+  .callout{background:var(--chip-bg); border-radius:10px; padding:14px 16px; font-size:14px; color:var(--text-soft); margin-top:16px;}
   .callout b{color:var(--text);}
-
-  .revenue-bar-wrap{margin:8px 0 4px;}
-  .revenue-bar-label{
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    color:var(--text-soft);
-    margin-bottom:4px;
-  }
-  .revenue-bar-track{
-    width:100%;
-    height:10px;
-    border-radius:6px;
-    background:var(--chip-bg);
-    overflow:hidden;
-    border:1px solid var(--border);
-  }
-  .revenue-bar-fill{
-    height:100%;
-    border-radius:6px;
-    background:var(--accent);
-  }
-  .revenue-bar-item{margin-bottom:12px;}
+  .rev-bar-wrap{margin:8px 0 18px;}
+  .rev-row{display:flex; align-items:center; gap:10px; margin-bottom:9px; font-size:13.5px;}
+  .rev-label{width:150px; flex-shrink:0; color:var(--text-soft);}
+  .rev-track{flex:1; background:var(--chip-bg); border-radius:6px; height:16px; overflow:hidden;}
+  .rev-fill{height:100%; border-radius:6px 0 0 6px;}
+  .rev-pct{width:52px; text-align:right; font-variant-numeric: tabular-nums; flex-shrink:0;}
 
   /* 매출구조도 */
   .flow-diagram{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:20px 18px; box-shadow:var(--shadow);}
   .flow-row{display:flex; flex-wrap:wrap; gap:10px; justify-content:center; align-items:stretch;}
   .flow-box{flex:1 1 180px; background:var(--chip-bg); border:1px solid var(--border); border-radius:10px; padding:12px 14px; font-size:13.5px; text-align:center;}
-  .flow-box.accent{border-color:var(--accent); background:rgba(0,113,227,0.08);}
+  .flow-box.accent{border-color:var(--accent); background:rgba(0,105,180,0.08);}
   .flow-box.burn{border-color:var(--neg-text); background:var(--neg-bg);}
   .flow-box.reward{border-color:var(--pos-text); background:var(--pos-bg);}
   .flow-box b{display:block; margin-bottom:4px; font-size:14px;}
@@ -256,15 +102,7 @@
   .live-dot{width:7px; height:7px; border-radius:50%; background:var(--down); animation:live-pulse 1.6s ease-in-out infinite;}
   @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1);} 50%{opacity:0.35;transform:scale(0.7);}}
   .live-updated{font-size:11.5px; color:var(--text-soft); margin-top:2px;}
-
-  footer{
-    margin-top:44px;
-    padding-top:14px;
-    border-top:1px solid var(--border);
-    font-size:12px;
-    color:var(--text-soft);
-  }
-  .key-hero{background:linear-gradient(135deg,rgba(234,0,44,.14),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
+  .key-hero{background:linear-gradient(135deg,rgba(0,105,180,.16),rgba(95,209,136,.08)); border:1px solid var(--accent); border-radius:14px; padding:20px 22px; text-align:center;}
   .key-hero .tag{font-size:12px; color:var(--text-soft); letter-spacing:.5px;}
   .key-hero .line{font-size:20px; font-weight:800; margin-top:6px; line-height:1.45;}
   .key-hero .line em{font-style:normal; color:var(--pos-text);}
@@ -287,45 +125,81 @@
   .key-ladder{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:14px 16px;}
   .key-ladder h4{margin:0 0 10px; font-size:15px;}
   .rung{display:flex; align-items:center; gap:12px; padding:9px 12px; border-radius:8px; margin-bottom:6px; font-size:14px;}
-  .rung .px{flex:0 0 118px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .rung .px{flex:0 0 92px; font-weight:800; font-variant-numeric:tabular-nums;}
   .rung.ok{background:var(--pos-bg);} .rung.ok .px{color:var(--pos-text);}
-  .rung.now{background:rgba(234,0,44,.10); border:1px dashed var(--accent);} .rung.now .px{color:#ea002c;}
+  .rung.now{background:rgba(0,105,180,.12); border:1px dashed var(--accent);} .rung.now .px{color:#6aa6ff;}
   .rung.warn{background:rgba(224,184,77,.12);} .rung.warn .px{color:#e0b84d;}
   .rung.bad{background:var(--neg-bg);} .rung.bad .px{color:var(--neg-text);}
   .key-final{margin-top:14px; background:var(--chip-bg); border-left:4px solid var(--accent); border-radius:10px; padding:14px 16px; font-size:14.5px;}
   .key-final b{color:var(--text);}
-  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} }
-
-  footer{
-    margin-top:44px;
-    padding-top:14px;
-    border-top:1px solid var(--border);
-    font-size:12px;
-    color:var(--text-soft);
-  }
+  /* 점수화 */
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px; white-space:nowrap;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px; white-space:nowrap;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 130px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .key-two{grid-template-columns:1fr;} .key-dates{grid-template-columns:1fr;} .key-hero .line{font-size:17px;} .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:100px;} }
+  footer{margin-top:44px; padding-top:14px; border-top:1px solid var(--border); font-size:12px; color:var(--text-soft);}
 </style>
 </head>
 <body>
 <div class="wrap">
-
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.04 (일) · 업데이트</span>
+      <span>2026.10.12 (월) 23:50 업데이트 — FY2025 재무제표·호재/악재 점수화 추가, 템플릿 개편</span>
       <span>·</span>
-      <span>본주(000660) 10/2 코스피 종가 · ADR 10/2 나스닥 종가(KST 10/3 05:00) 기준</span>
+      <span>본주(000660) 10/12 코스피 종가 · ADR 10/9 나스닥 종가 기준 · 상단 가격은 실시간 자동 갱신</span>
     </div>
     <h1>SK hynix (SKHY) 주가 분석 리포트<span class="ticker">ADR: SKHY (Nasdaq) · 본주 000660.KS (KOSPI)</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$195.13</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-up" id="live-chg">ADR 10/2 ▲ +0.84% · 본주(코스피 10/2) 1,841,000원 ▲ +0.44%</div>
+        <div class="price-main"><span id="live-price">$169.03</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-down" id="live-chg">본주 10/12 1,605,000원 ▼ −4.52% (2주 −12.8%) · ADR 10/9 $169.03 (10/2 $195.13 대비 −13.4%)</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SKHYUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        추석 연휴(9/24~25) 동안 美 국채금리·유가가 급등하고 <b>자회사 Solidigm의 美 상장 검토</b>(기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span>) 보도까지 겹쳐, 연휴 후 첫날(9/28) 본주가 <b>-5.05%</b> 급락했습니다(외국인 1.73조원 순매도).
-        이후 10/1 <b>마이크론 깜짝 실적 + 9월 반도체 수출 사상 최대</b>로 +3.21% 반등해 184만원대를 회복했습니다. ADR은 $195.13으로 52주 고점($199.87)에 근접.
-        52주 범위: ADR $124.80~$199.87, 본주 333,000원~2,987,000원.
+        지난 리포트(10/2, 184.1만원) 이후 본주는 <b>4거래일 연속 하락</b>해 160.5만원까지 밀렸습니다.
+        美 10년물 5.3%대(2002년 이후 최고), 연휴 중 <b>OpenAI 매출 하향 보도에 따른 AI 수익성 의구심</b>, 그리고 <b>40조원 자사주 매입이 90% 소진</b>되며 수급 버팀목이 사라진 것이 겹쳤습니다.
+        외국인은 10/6 1.41조원, 10/12 1.04조원을 순매도했습니다(두 날 모두 순매도 1위).
+        <b>삼성전자 3분기 잠정 영업이익 107.4조원</b>(10/8)으로 메모리 호황은 재확인됐지만, 주가는 '호재 속 매도(셀온)'로 반응했습니다. 6월 고점(300.2만원) 대비 약 −47%.
       </div>
     </div>
 
@@ -334,15 +208,11 @@
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
-          <div class="tv-widget-container">
-            <div id="tv_skhy_daily" style="height:100%; width:100%;"></div>
-          </div>
+          <div class="tv-widget-container"><div id="tv_skhy_daily" style="height:100%; width:100%;"></div></div>
         </div>
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
-          <div class="tv-widget-container">
-            <div id="tv_skhy_15m" style="height:100%; width:100%;"></div>
-          </div>
+          <div class="tv-widget-container"><div id="tv_skhy_15m" style="height:100%; width:100%;"></div></div>
         </div>
       </div>
     </div>
@@ -352,51 +222,52 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/15 저점 169만원 → 9/18 +6.42% 급반등 → 9/22 장중 193.5만원 고점 → 9/28 연휴 후 급락(176.8만원) → 9/29 장중 173.6만원 저점 → 10/1~2 184만원대 회복. 175만~190만원 박스 안에서 등락 중이며, 6월 사상 최고가(298.7만원) 대비로는 아직 약 -38%.<br>
-      <b>ADR</b>: 9/28 $181.92 저점 후 10/1 +5.08%, 10/2 $195.13으로 <b>52주 고점 $199.87</b> 바로 아래 — 본주보다 강한 흐름(미국 반도체 랠리 동조). 본주 1차 저항 <b>190만원</b>(9/22 고점대), 지지 <b>176만원</b>(9/28~30 종가대).
+      <b>본주 일봉</b>: 지난 리포트의 <b>176만~190만원 박스 하단을 10/7에 이탈</b>했고, 9월 중순 저점(169만원)도 10/8에 깨졌습니다. 10/12엔 164만원 시가에서 <b>장중 최저가 = 종가(160.5만원)</b>로 마감해 매도세가 끝까지 강했습니다.
+      다음 지지는 7/28 급락 저점대 <b>155만원</b> → 8/7 저점 <b>142만원</b>입니다. 위로는 168만원(10/8 종가) → 177만원(10/6 종가, 무너진 박스 하단) → 184만원이 저항입니다.<br>
+      <b>ADR</b>: 10/2 $195.13(52주 고점 $199.87 근접)에서 10/9 $169.03까지 −13.4%. 한국장 휴장일(10/9)에도 미국 반도체 약세를 그대로 받았습니다. 10/12 본주 급락을 반영하면 OKX 무기한선물 기준 $160대 중반이 단기 지지선입니다.
     </div>
   </section>
 
-  <!-- 2. 최근 주가 움직임의 주요 원인 -->
+  <!-- 2. 원인 -->
   <section>
-    <h2>2. 최근 주가 움직임의 주요 원인 (최근 6거래일, 본주 기준)</h2>
+    <h2>2. 최근 주가 움직임의 주요 원인 (최근 5거래일, 본주 기준)</h2>
     <table>
-      <tr><th style="width:22%">날짜 · 종가(원)</th><th>내용</th><th style="width:24%">비고 (ADR 종가)</th></tr>
+      <tr><th style="width:22%">날짜 · 종가(원)</th><th>내용</th><th style="width:22%">비고</th></tr>
       <tr>
-        <td><b>9/23(수)</b><br>1,862,000<br><span style="color:var(--up); font-weight:600;">▲ +1.20%</span></td>
-        <td>전날 장중 193.5만원 고점 후 밀렸다가 반등. 추석 연휴(9/24~25 휴장) 앞두고 관망</td>
-        <td>ADR $189.28 · 연휴 중 ADR은 9/24 $186.37 → 9/25 $191.56</td>
+        <td><b>10/2(금)</b><br>1,841,000<br><span style="color:var(--pos-text); font-weight:600;">▲ +0.44%</span></td>
+        <td>마이크론 깜짝 실적·9월 반도체 수출 사상 최대 효과로 184만원대를 지켰습니다. 개천절 대체휴일(10/5) 앞둔 마지막 거래일.</td>
+        <td>ADR $195.13</td>
       </tr>
       <tr>
-        <td><b>9/28(월)</b><br>1,768,000<br><span style="color:var(--down); font-weight:600;">▼ -5.05%</span></td>
-        <td><b>연휴 후 첫날 급락</b> — 연휴 중 美 30년물 금리 5.52%(2004년 이후 최고)·유가 $100 근접(美-이란 긴장). 여기에 <b>Solidigm 美 IPO 검토</b>(2027년, 가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span>, $15B<span class="krw">(약 20조 2,590억원)</span> 조달) 보도로 "자회사 상장 → 모회사 가치 할인" 우려. 외국인 <b>1.73조원 순매도</b>, 코스피 -2.70%(6,889.74)</td>
-        <td>ADR $181.92 (-5.03%)</td>
+        <td><b>10/6(화)</b><br>1,773,000<br><span style="color:var(--neg-text); font-weight:600;">▼ −3.69%</span></td>
+        <td>연휴 중 美 10년물이 장중 5.347%(2002년 4월 이후 최고)까지 올랐습니다. <b>외국인이 SK하이닉스만 1.41조원 순매도</b>(1위)했고, 자사주 매입 막바지로 '기타법인' 매수가 줄었습니다. 손자회사 <b>솔리다임 美 상장 논란</b>도 이어졌습니다.</td>
+        <td>박스 하단(176만원) 근접</td>
       </tr>
       <tr>
-        <td><b>9/29(화)</b><br>1,765,000<br><span style="color:var(--down); font-weight:600;">▼ -0.17%</span></td>
-        <td>장중 173.6만원까지 밀린 뒤 낙폭 만회, 보합 마감</td>
-        <td>ADR $186.68 · 저점 확인</td>
+        <td><b>10/7(수)</b><br>1,723,000<br><span style="color:var(--neg-text); font-weight:600;">▼ −2.82%</span></td>
+        <td>장중 177.9만원까지 반등했다가 <b>장중 저가로 마감</b>했습니다. 외국인 코스피 3.1조원 순매도, 코스피 −1.98%. 반도체 대형주 차익실현과 삼성 잠정실적 경계감.</td>
+        <td><b>박스 하단 이탈</b></td>
       </tr>
       <tr>
-        <td><b>9/30(수)</b><br>1,776,000<br><span style="color:var(--up); font-weight:600;">▲ +0.62%</span></td>
-        <td>마이크론 실적(10/1 새벽) 대기 속 소폭 반등. 3분기 마지막 거래일</td>
-        <td>ADR $184.15</td>
+        <td><b>10/8(목)</b><br>1,681,000<br><span style="color:var(--neg-text); font-weight:600;">▼ −2.44%</span></td>
+        <td><b>삼성전자 3분기 잠정 영업이익 107.4조원</b>(+782%, 매출 195조원)으로 메모리 업황은 확인됐지만 '셀온(호재 속 매도)'이 나왔습니다. 외국인 순매도 약 8,500억원(1위, 보도 기준).</td>
+        <td>9월 저점(169만원) 이탈 · 다음 날 한글날 휴장</td>
       </tr>
       <tr>
-        <td><b>10/1(목)</b><br>1,833,000<br><span style="color:var(--up); font-weight:600;">▲ +3.21%</span></td>
-        <td><b>마이크론 깜짝 실적</b>(분기 매출 $54.2B<span class="krw">(약 73조 2,430억원)</span>, 예상 $51.1B 상회, 다음 분기 가이던스 $61.5B) + <b>9월 반도체 수출 사상 최대 $603억</b><span class="krw">(약 81조 4,410억원)</span>(전체 수출의 49.9%). 장 초반 약세 후 오전 11시부터 급반등</td>
-        <td>ADR $193.50 (+5.08%)</td>
+        <td><b>10/9(금, 韓 휴장)</b><br>ADR $169.03<br><span style="color:var(--neg-text); font-weight:600;">▼ −0.86%</span></td>
+        <td>美 증시는 올랐지만 반도체는 약세가 이어졌습니다(필라델피아 반도체 −0.41%, SOXL 주간 −14.6%). 10/8 미국장의 <b>OpenAI 매출 하향 보도</b>(AI 칩 급락) 여파가 남았습니다.</td>
+        <td>ADR 주간 약 −13%</td>
       </tr>
       <tr>
-        <td><b>10/2(금)</b><br>1,841,000<br><span style="color:var(--up); font-weight:600;">▲ +0.44%</span></td>
-        <td>美 10년물 금리 5.34%(2002년 이후 최고) 부담 vs AI·반도체 기대의 줄다리기. 외국인은 삼성전자·SK하이닉스 순매도(차익실현). 장중 +1.48%까지 올랐다가 상승폭 축소</td>
-        <td>ADR $195.13 (+0.84%) · 52주 고점 근접</td>
+        <td><b>10/12(월)</b><br>1,605,000<br><span style="color:var(--neg-text); font-weight:600;">▼ −4.52%</span></td>
+        <td>연휴 후 개장 첫날 <b>코스피 −3.65%(6,384), 코스닥 −4.83%</b>. 외국인 코스피 2.02조원 순매도, <b>SK하이닉스 1.04조원·삼성전자 5,331억원</b>(순매도 1·2위). 자사주 매입 막바지로 매수 강도가 약해졌습니다. 외국인은 이수페타시스·삼성전기 등 반도체 부품주는 샀습니다.</td>
+        <td>장중 저가 = 종가 · 코스피 외국인 10거래일 연속 매도</td>
       </tr>
     </table>
     <div class="callout">
-      → 이번 2주는 <b>매크로(금리·유가) 악재 vs 업황(마이크론·수출) 호재</b>의 줄다리기였습니다. 연휴 중 쌓인 금리·유가 충격과 Solidigm 상장 보도로 9/28 급락했지만,
-      마이크론 실적이 "메모리 호황은 아직 진행 중"임을 확인시켜 주며 대부분 회복했습니다. 한 애널리스트의 말처럼 <b>"매크로와 반도체 사이클의 줄다리기에서 반도체 쪽이 점점 커지는"</b> 국면입니다.
-      다만 외국인이 계속 파는 점과 <b>한국장 연휴(10/5 대체공휴일, 10/9 한글날)</b> 중 美 재료가 몰려 반영되는 점은 주의가 필요합니다.
+      → 2주 동안 <b>"실적은 최고, 주가는 하락"</b>이라는 괴리가 커졌습니다. 삼성 107조원·마이크론 영업이익률 80%대로 메모리 호황은 오히려 더 강해졌는데, 주가는 −12.8% 빠졌습니다.<br>
+      원인은 세 가지가 겹친 <b>수급</b>입니다. ① 외국인이 8/20~10/1에만 SK하이닉스를 16.1조원 순매도했고 지분율이 54.6% → 49.6%로 내려왔습니다. ② 그 물량을 받아주던 <b>40조원 자사주 매입이 90% 소진</b>돼 이번 주 안에 끝날 전망입니다. ③ OpenAI 쇼크로 "AI 투자가 언제까지 이어지나"라는 의구심이 반도체 전반으로 번졌습니다.<br>
+      외국인이 대형 메모리주는 팔고 기판·부품주는 사는 '종목 교체'라는 점에서, <b>업황 자체에 대한 이탈보다는 포지션 조정</b> 성격이 강합니다. 다만 매수 주체가 비는 이번 주가 가장 약한 구간입니다.
     </div>
   </section>
 
@@ -407,189 +278,284 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li><b>3분기 사상 최대 실적 전망</b> — 컨센서스 매출 약 99.5조원(+307% YoY), 영업이익 약 78.1조원(+586%)</li>
-        <li><b>마이크론 깜짝 실적</b>(10/1) — 데이터센터 매출 11배, 연간 영업이익률 74.6%, "FY2027은 더 강하다" — 메모리 호황 지속 확인</li>
-        <li>HBM 평균판매가격 내년 <b>+121%</b> 전망, 2027년 DRAM 웨이퍼의 약 30%가 HBM으로 전환 → 범용 DRAM도 공급 부족</li>
-        <li>9월 반도체 수출 사상 최대 $603억<span class="krw">(약 81조 4,410억원)</span> — 출하량·가격 동반 상승</li>
-        <li>NVIDIA·Microsoft 장기 공급계약, HBM4가 GPU뿐 아니라 맞춤형 AI칩(ASIC)에도 채택 → 고객 다변화</li>
-        <li>Solidigm 기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span> 평가 — 보유 자회사 가치 재조명</li>
+        <li><b>3분기 사상 최대 실적 전망</b> — FnGuide 컨센서스(10/8) 매출 98.4조원(+303%), 영업이익 77.1조원(+577%), 영업이익률 약 78%(2분기 76.3%)</li>
+        <li><b>메모리 슈퍼사이클 재확인</b> — 삼성전자 3분기 영업이익 107.4조원(+782%), 마이크론 영업이익률 80.7% — 가격·물량 동반 상승</li>
+        <li><b>재무 체력 급개선</b> — FY2025 잉여현금흐름 25.9조원, 순차입 11.3조원 → 순현금 10.4조원 전환, 부채비율 46%</li>
+        <li><b>주주환원</b> — 40조원(발행주식 3.3%) 자사주 매입 후 전량 소각, FY2025 주당 배당 3,000원 + 추가 1,500원</li>
+        <li><b>HBM4 양산 확대</b> — 2분기 출하 시작, 하반기 증산. 엔비디아 외 맞춤형 AI칩(ASIC) 고객으로 다변화</li>
+        <li>주가가 6월 고점 대비 약 −47%로, 실적 대비 가격 부담은 크게 줄어듦</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>외국인 매도</b> — 9/28 하루 1.73조원, 10/2에도 차익실현 순매도</li>
-        <li><b>美 금리 고공행진</b> — 10년물 5.34%(2002년 이후 최고), 30년물 5.52% → 반도체 대형주 할인율 부담</li>
-        <li><b>삼성전자 HBM 추격</b> — 삼성 HBM 점유율 1분기 21% → 2분기 33%로 급상승(HBM4 공격적 증산)</li>
-        <li>Solidigm 美 상장 시 <b>'자회사 중복 상장' 할인</b> 우려(9/28 급락 요인) — 아직 초기 검토 단계로 변동 가능</li>
-        <li>원화 강세 시 원화 환산 이익 감소 — 시티, 3분기 영업이익 추정 76.7조 → 74조원 하향(9/1)</li>
-        <li>中 CXMT 첨단 DRAM 양산 경쟁</li>
+        <li><b>외국인 대량 매도</b> — 8/20~10/1 누적 16.1조원, 10/6 1.41조원, 10/12 1.04조원. 외국인 지분율 49.6%(연초 54.6%)</li>
+        <li><b>자사주 매입 종료</b> — 하루 1조원 이상 받쳐주던 매수 주체가 이번 주 사라질 전망(10/8 기준 90% 소진)</li>
+        <li><b>AI 수익성 의구심</b> — OpenAI 매출 하향 보도(10/8) 이후 美 반도체 약세(SOXL 주간 −14.6%)</li>
+        <li><b>美 고금리</b> — 10년물 5.3%대(2002년 이후 최고), 10/14 CPI 3.7% 재가속 예상</li>
+        <li><b>경쟁</b> — 삼성 HBM 점유율 1분기 21% → 2분기 33% 추격, 中 CXMT 첨단 DRAM</li>
+        <li><b>솔리다임 美 상장 논란</b> — 자회사 중복 상장에 따른 모회사 가치 할인 우려(초기 검토 단계)</li>
       </ul>
     </div>
+
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:46%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>3분기 사상 최대 실적 (영업이익 77.1조원·이익률 78%)<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">+3.6</td></tr>
+      <tr class="pos"><td>메모리 슈퍼사이클 재확인 (삼성 107.4조·마이크론 80.7%)<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">+3.6</td></tr>
+      <tr class="pos"><td><b>FY2025 재무 체력</b> — FCF 25.9조, 순현금 전환, 40조 자사주 소각<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>HBM4 양산 확대·ASIC 고객 다변화<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.8</td><td class="tot">+2.4</td></tr>
+      <tr class="pos"><td>고점 대비 −47% — 실적 대비 가격 부담 완화<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.7</td><td class="tot">+1.4</td></tr>
+      <tr class="sum pos"><td>호재 합계 (5개)</td><td></td><td></td><td class="tot">+14.0</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>외국인 대량 매도 (SK하이닉스 하루 1조원대, 코스피 10거래일 연속)<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">−3.6</td></tr>
+      <tr class="neg"><td>AI 수익성 의구심 (OpenAI 쇼크)·美 반도체 약세<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">−2.8</td></tr>
+      <tr class="neg"><td>40조원 자사주 매입 종료 → 수급 공백<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.9</td><td class="tot">−2.7</td></tr>
+      <tr class="neg"><td>美 고금리 (10년물 5.3%)·CPI 재가속 예상<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.7</td><td class="tot">−2.1</td></tr>
+      <tr class="neg"><td>삼성 HBM 추격·中 CXMT<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.6</td><td class="tot">−1.8</td></tr>
+      <tr class="neg"><td>솔리다임 美 상장 → 지주 할인 우려<span class="hz">중기</span></td><td class="sc">2</td><td class="sc">0.6</td><td class="tot">−1.2</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−14.2</td></tr>
+    </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5~0.6). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
+
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:50%">호재 +14.0 (50%)</div><div class="n" style="width:50%">악재 −14.2 (50%)</div></div>
+      <div class="big">순점수 <span style="color:#e0a800">−0.2</span> → <span style="color:#e0a800">'균형 — 단기 악재 vs 중기 호재의 극단적 대립'</span></div>
+      <div class="sub">합계는 비슷하지만 성격이 정반대입니다. <b>악재는 거의 전부 '지금 당장의 수급·매크로'</b>이고, <b>호재는 '실적·재무·업황'</b>입니다. 단기는 뚜렷한 약세, 중기는 뚜렷한 강세 구도입니다.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~10월 하순 실적 전)</div><div class="v r">호재 +5.0 vs 악재 −11.2 → 약세(−6.2)</div><div>자사주 매입 종료·외국인 매도·CPI가 겹치는 구간 — 바닥 확인 전 서두르지 않기</div></div>
+        <div class="hz-card"><div class="t">중기 (2027년까지)</div><div class="v g">호재 +9.0 vs 악재 −3.0 → 강세(+6.0)</div><div>이익 체력·순현금·HBM 리더십은 오히려 좋아지는 중</div></div>
+      </div>
+    </div>
+
     <h3>시나리오</h3>
     <table class="scn">
       <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:24%">가격 범위 (본주 / ADR)</th><th>조건</th></tr>
       <tr>
-        <td>① 박스권 횡보</td>
-        <td class="prob">약 45%</td>
-        <td class="rng">176만~190만원<br>/ $182~200</td>
-        <td>금리가 고점권에서 머물고 외국인 매도가 이어지는 가운데, 삼성 잠정실적·자사 실적(10월 말)을 기다리는 경우. <b>176만원 지지·190만원 저항</b></td>
+        <td>① 바닥 다지기</td>
+        <td class="prob">약 40%</td>
+        <td class="rng">155만~178만원<br>/ $160~180</td>
+        <td>자사주 매입 종료 후 외국인 매도가 점차 줄고, 3분기 실적 발표를 기다리는 경우. <b>155만원 지지, 168만~177만원 저항</b></td>
       </tr>
       <tr>
-        <td>② 상단 돌파</td>
-        <td class="prob">약 30%</td>
-        <td class="rng">190만 → 200만~210만원<br>/ $200 → $210~220</td>
-        <td>삼성 잠정실적·SK 3분기 실적이 컨센서스(영업이익 78조원)를 넘고 HBM4 가격 인상이 확인되는 경우. <b>본주 190만원·ADR $200(52주 고점) 돌파</b>가 신호</td>
-      </tr>
-      <tr>
-        <td>③ 하단 이탈</td>
+        <td>② 실적 반등</td>
         <td class="prob">약 25%</td>
-        <td class="rng">173.6만 이탈 → 165만~169만원<br>/ $175 부근</td>
-        <td>美 금리·유가 재급등, FOMC 의사록(10/8) 매파, 또는 Solidigm 상장 구체화로 할인 우려가 커지는 경우. 9/29 저점이 깨지면 9월 중순 저점(169만원)대 재시험</td>
+        <td class="rng">177만 → 184만~190만원<br>/ $180 → $195</td>
+        <td>CPI 둔화, TSMC(10/15) 호실적, 3분기 영업이익이 컨센서스(77.1조원)를 넘고 4분기 HBM4 가격 인상이 확인되는 경우. <b>177만원(무너진 박스 하단) 회복</b>이 신호</td>
+      </tr>
+      <tr>
+        <td>③ 추가 하락</td>
+        <td class="prob">약 35%</td>
+        <td class="rng">155만 이탈 → 142만원<br>/ $150 부근</td>
+        <td>자사주 매입 종료 후 수급 공백 속 외국인 매도가 계속되고, CPI 쇼크·美 반도체 추가 약세가 오는 경우. <b>155만원(7월 말 저점대)이 깨지면</b> 8/7 저점 142만원</td>
       </tr>
     </table>
-    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다. ADR과 본주는 거래시간·환율 차이로 다르게 움직일 수 있습니다.</div>
+    <div class="scn-note">※ 확률은 차트·수급·이벤트를 바탕으로 한 주관적 판단입니다. 단기 수급 공백을 반영해 지난 리포트보다 하방 확률을 높였습니다. ADR과 본주는 거래시간·환율 차이로 다르게 움직일 수 있습니다.</div>
   </section>
 
-  <!-- 4. 매출구조/수익구조 -->
+  <!-- 4. 매출구조 -->
   <section>
-    <h2>4. 매출구조/수익구조</h2>
+    <h2>4. 매출구조/수익구조 (2026년 2분기 실적 · 3분기 전망)</h2>
+    <p style="font-size:12.5px; color:var(--text-soft); margin-top:-6px;">달러 환산: 1달러 = 1,341.5원 (2026.10.12 오후 시세 기준)</p>
+
+    <div class="rev-bar-wrap">
+      <div class="rev-row"><div class="rev-label">🧠 DRAM (HBM 포함)</div><div class="rev-track"><div class="rev-fill" style="width:82%; background:#ea002c;"></div></div><div class="rev-pct">약 80%</div></div>
+      <div class="rev-row"><div class="rev-label">💾 NAND (솔리다임 등)</div><div class="rev-track"><div class="rev-fill" style="width:18%; background:#f39800;"></div></div><div class="rev-pct">약 20%</div></div>
+    </div>
+    <div class="scn-note" style="margin-top:-8px; margin-bottom:12px;">※ 제품별 비중은 개략적인 참고치입니다(회사 IR 자료의 분기별 비중을 확인하세요).</div>
+
     <table>
       <tr><th>항목</th><th class="num">수치</th><th class="num">비고</th></tr>
-      <tr><td>📊 Q2 2026 매출</td><td class="num">79.3조원</td><td class="num">+51% QoQ (컨센서스 84.1조원은 하회)</td></tr>
-      <tr><td>💰 Q2 영업이익</td><td class="num">60.5조원</td><td class="num">+61% QoQ · 영업이익률 76.3%</td></tr>
-      <tr><td>🎯 Q3 컨센서스</td><td class="num">매출 약 99.5조원 · 영업이익 약 78.1조원</td><td class="num">YoY +307% / +586% (사상 최대 전망)</td></tr>
-      <tr><td>🏆 HBM 점유율</td><td class="num">1분기 58% (글로벌 1위)</td><td class="num">삼성 2분기 33%로 추격</td></tr>
-      <tr><td>🏭 주력 제품</td><td class="num">HBM3E / HBM4 · 서버 DRAM · NAND(eSSD)</td><td class="num">AI 메모리 핵심</td></tr>
-      <tr><td>🇺🇸 Solidigm(NAND 자회사)</td><td class="num">기업가치 최대 $150B<span class="krw">(약 202조 5,900억원)</span></td><td class="num">美 IPO 검토(2027년 이후), 초기 단계</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026년 10월 말 (예상)</td><td class="num">Q3 2026 · 회사 공지 전 (Q2는 7/29 08:00 발표)</td></tr>
-      <tr><td>🇺🇸 ADR 상장</td><td class="num">SKHY (Nasdaq)</td><td class="num">2026.7.10 상장, 약 $265억<span class="krw">(약 35조 7,910억원)</span> 조달</td></tr>
+      <tr><td>📊 2분기 매출</td><td class="num">79.3조원<span class="krw">(약 $591억)</span></td><td class="num">+51% QoQ</td></tr>
+      <tr><td>💰 2분기 영업이익</td><td class="num">60.5조원<span class="krw">(약 $451억)</span></td><td class="num">영업이익률 76.3%</td></tr>
+      <tr><td>🎯 3분기 컨센서스 (FnGuide, 10/8)</td><td class="num">매출 98.4조원 · 영업이익 77.1조원</td><td class="num">+303% / +577% YoY · 이익률 약 78%</td></tr>
+      <tr><td>🔎 비교: 삼성전자 3분기 잠정 (10/8)</td><td class="num">매출 195조원 · 영업이익 107.4조원</td><td class="num">이익률 55.1% (전사)</td></tr>
+      <tr><td>🏆 HBM</td><td class="num">HBM3E → HBM4 (2분기 양산 출하)</td><td class="num">점유율 1위 · 삼성 2분기 33% 추격</td></tr>
+      <tr><td>💸 주주환원</td><td class="num">자사주 40조원 매입·소각 (8/20~11/19)</td><td class="num">10/8 기준 약 90% 진행</td></tr>
+      <tr><td>🇺🇸 솔리다임 (NAND 손자회사)</td><td class="num">美 IPO 검토 · 가치 최대 $1,500억</td><td class="num">초기 단계 · 지주 할인 논란</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">10월 하순 (미확정)</td><td class="num">2분기는 7/29 오전 발표</td></tr>
     </table>
 
-    <h3>매출구조 (개념도)</h3>
-    <div class="revenue-bar-item">
-      <div class="revenue-bar-wrap">
-        <div class="revenue-bar-label"><span>DRAM (서버·PC·모바일 DRAM + HBM 포함)</span><span>핵심 매출원</span></div>
-        <div class="revenue-bar-track"><div class="revenue-bar-fill" style="width:82%;"></div></div>
-      </div>
-    </div>
-    <div class="revenue-bar-item">
-      <div class="revenue-bar-wrap">
-        <div class="revenue-bar-label"><span>NAND (Solidigm eSSD 등 낸드플래시)</span><span>보완 매출원</span></div>
-        <div class="revenue-bar-track"><div class="revenue-bar-fill" style="width:18%;"></div></div>
-      </div>
-    </div>
-    <div class="callout" style="margin-top:4px; font-size:12.5px;">
-      ※ 위 매출구조 막대는 DRAM 중심(HBM 포함) vs NAND의 상대적 비중을 개략적으로 보여주는 개념도이며, 회사가 세그먼트별 정확한 매출 비중(%)을 공식 공시하지 않아 절대 수치가 아닌 참고용입니다.
-    </div>
-
-    <h3>매출구조도 (가치 축적 구조)</h3>
+    <h3>매출구조도 (가치 흐름 — AI 수요가 이익과 주주환원으로 이어지는 구조)</h3>
     <div class="flow-diagram">
       <div class="flow-row">
         <div class="flow-box accent">
           <b>고객 수요</b>
-          <div class="desc">Nvidia 등 AI 가속기 업체, 하이퍼스케일러, 서버·PC OEM</div>
+          <div class="desc">엔비디아 등 AI 가속기 업체, 구글·메타 등 맞춤형 AI칩(ASIC), 하이퍼스케일러 서버, PC·모바일 OEM</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
-        <div class="flow-box accent">
-          <b>DRAM·HBM (청주·이천, 국내 팹)</b>
-          <div class="desc">HBM3E→HBM4 양산, Nvidia向 물량의 약 2/3 공급</div>
-        </div>
+        <div class="flow-box accent"><b>HBM (고대역폭 메모리)</b><div class="desc">HBM3E → HBM4 — GPU·ASIC 옆에 붙는 AI 핵심 부품, 가장 높은 이익률</div></div>
         <div class="flow-arrow">+</div>
-        <div class="flow-box accent">
-          <b>NAND (Solidigm, 美 자회사)</b>
-          <div class="desc">엔터프라이즈 SSD·eSSD, 옛 인텔 낸드사업 기반</div>
-        </div>
+        <div class="flow-box accent"><b>범용 DRAM</b><div class="desc">서버·PC·모바일 — HBM에 생산능력이 쏠리며 공급 부족 → 가격 급등</div></div>
+        <div class="flow-arrow">+</div>
+        <div class="flow-box accent"><b>NAND (솔리다임)</b><div class="desc">AI 서버용 대용량 eSSD</div></div>
       </div>
-      <div class="flow-arrow down">↓ 매출로 정산 (Q2 2026 79.3조원, 영업이익률 76.3% · Q3 컨센서스 99.5조원) ↓</div>
+      <div class="flow-arrow down">↓ 매출 79.3조원 → 영업이익 60.5조원 (2분기, 이익률 76%) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
-          <b>재투자 — R&D·설비 증설</b>
-          <div class="desc">HBM4E 개발, 용인 클러스터·M15X 등 국내 생산능력 확충, 인디애나 패키징 공장($4B)</div>
+          <b>재투자 (설비·R&amp;D)</b>
+          <div class="desc">FY2025 설비투자 27.5조원 — 용인 클러스터·M15X·청주, 美 인디애나 패키징 공장, HBM4E 개발</div>
         </div>
         <div class="flow-box reward">
-          <b>Solidigm 독자 자금조달 (검토)</b>
-          <div class="desc">美 IPO 검토(가치 최대 $150B, $15B 조달) — 뉴욕주 NAND 공장 건설 자금 확보, 다만 모회사 가치 할인 우려</div>
+          <b>주주환원</b>
+          <div class="desc">40조원 자사주 매입·전량 소각(발행주식 3.3%) + 배당(FY2025 주당 3,000원 + 추가 1,500원)</div>
         </div>
       </div>
       <div class="flow-arrow down">↓</div>
       <div class="flow-row">
         <div class="flow-box">
-          <b>HBM 리더십 유지 → 차기 공급계약 확보</b>
-          <div class="desc">공급 부족 국면 지속 시 가격 협상력·장기계약 확대로 이어짐</div>
+          <b>HBM 리더십 → 장기 공급계약 → 차기 사이클 확보</b>
+          <div class="desc">공급 부족이 이어지는 동안 가격 협상력 유지. 위험은 삼성 추격과 AI 투자 사이클 둔화</div>
         </div>
       </div>
     </div>
-
     <div class="callout">
-      → SK hynix는 <b>HBM·AI 메모리</b> 글로벌 리더입니다. 매출은 DRAM(서버·PC·모바일용 및 HBM)이 핵심이며,
-      AI 서버향 고부가 제품인 HBM이 최근 매출·수익성 개선을 견인하고 있습니다. NAND는 미국 자회사 Solidigm을
-      통해 별도 운영되며, 이 자회사의 나스닥 상장이 성사되면 모회사 투자 부담 없이 독자적으로 자금을 조달해
-      미국 내 사업을 확장할 수 있는 구조로 이어집니다. Q2 실적은 사상 최고 수준이었고, HBM4와 미국 공장 투자,
-      Solidigm 상장이 중장기 스토리입니다. 단기적으로는 <b>美 금리 고공행진·외국인 매도·삼성의 HBM 추격</b>이 부담 요인이며, Solidigm 상장은 자금조달에는 도움이 되지만 모회사 가치 할인 논란을 낳고 있습니다.
+      → SK하이닉스는 <b>AI 서버 한 대가 늘 때마다 HBM과 고용량 DRAM이 함께 팔리는 구조</b>입니다. HBM에 생산라인을 많이 돌리면서 범용 DRAM까지 부족해져, 매출이 1년 새 4배가 되고 이익률이 70%대 후반까지 올라왔습니다.<br>
+      벌어들인 돈은 설비투자와 함께 <b>40조원 자사주 소각</b>이라는 대규모 주주환원으로 돌아가고 있습니다. 다만 그 자사주 매입이 이번 주 끝나면서, 주가는 이제 순수하게 <b>외국인 수급과 다음 실적</b>에 맡겨지게 됩니다.
     </div>
   </section>
 
-  <!-- 4. 주요 일정 -->
+  <!-- 5. 재무제표 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>5. 2025회계연도 재무제표 (FY2025, 2025.12.31 마감 · 연결)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">97.15조원</div><div class="k">약 $724억</div><div class="d">▲ +47% YoY</div></div>
+      <div class="fk"><div class="l">영업이익</div><div class="v">47.21조원</div><div class="k">약 $352억</div><div class="d">▲ +101% · 영업이익률 48.6%</div></div>
+      <div class="fk"><div class="l">순이익</div><div class="v">42.95조원</div><div class="k">약 $320억</div><div class="d">▲ +117% · EPS 60,378원</div></div>
+      <div class="fk"><div class="l">잉여현금흐름</div><div class="v">25.85조원</div><div class="k">약 $193억</div><div class="d">▲ +87% · 순현금 전환</div></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2024 vs FY2025 (FY25 매출을 100으로 둔 막대)<i style="background:var(--border)"></i>FY24<i style="background:var(--accent)"></i>FY25</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:68.1%"></div><div class="b y25" style="width:100%"></div></div><span class="v">66.19조 → 97.15조</span></div>
+      <div class="cmp-row"><span class="nm">영업현금흐름</span><div class="bars2"><div class="b y24" style="width:30.7%"></div><div class="b y25" style="width:54.9%"></div></div><span class="v">29.80조 → 53.37조</span></div>
+      <div class="cmp-row"><span class="nm">영업이익</span><div class="bars2"><div class="b y24" style="width:24.2%"></div><div class="b y25" style="width:48.6%"></div></div><span class="v">23.47조 → 47.21조</span></div>
+      <div class="cmp-row"><span class="nm">순이익</span><div class="bars2"><div class="b y24" style="width:20.4%"></div><div class="b y25" style="width:44.2%"></div></div><span class="v">19.79조 → 42.95조</span></div>
+      <div class="cmp-row"><span class="nm">설비투자</span><div class="bars2"><div class="b y24" style="width:16.4%; background:var(--neg-text); opacity:.45"></div><div class="b y25" style="width:28.3%; background:var(--neg-text)"></div></div><span class="v">15.95조 → 27.52조</span></div>
+      <div class="cmp-row"><span class="nm">FCF</span><div class="bars2"><div class="b y24" style="width:14.3%"></div><div class="b y25" style="width:26.6%"></div></div><span class="v">13.85조 → 25.85조</span></div>
+    </div>
+
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>97조 1,467억원</b><span class="krw">약 $724억</span></td><td class="num">66조 1,930억원<span class="krw">약 $493억</span></td><td class="num up">+47%</td></tr>
+      <tr><td>매출원가</td><td class="num">38조 4,559억원</td><td class="num">34조 3,648억원</td><td class="num">+12%</td></tr>
+      <tr><td>매출총이익 <span class="hz">GPM 60.4% (전년 48.1%)</span></td><td class="num">58조 6,908억원<span class="krw">약 $437억</span></td><td class="num">31조 8,281억원<span class="krw">약 $237억</span></td><td class="num up">+84%</td></tr>
+      <tr><td><b>영업이익</b> <span class="hz">OPM 48.6% (전년 35.5%)</span></td><td class="num"><b>47조 2,063억원</b><span class="krw">약 $352억</span></td><td class="num">23조 4,673억원<span class="krw">약 $175억</span></td><td class="num up">+101%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 4분기 영업이익 (이익률 58%)</td><td class="num">19조 1,696억원</td><td class="num">-</td><td class="num">-</td></tr>
+      <tr><td><b>순이익</b> <span class="hz">순이익률 44.2%</span></td><td class="num"><b>42조 9,479억원</b><span class="krw">약 $320억</span></td><td class="num">19조 7,887억원<span class="krw">약 $148억</span></td><td class="num up">+117%</td></tr>
+      <tr><td>주당순이익 (EPS)</td><td class="num">60,378원</td><td class="num">28,419원</td><td class="num up">+112%</td></tr>
+      <tr><td>감가상각비</td><td class="num">13조 9,301억원</td><td class="num">12조 5,815억원</td><td class="num">+11%</td></tr>
+      <tr><td>주당 배당금</td><td class="num">3,000원 (+추가 1,500원)</td><td class="num">2,204원</td><td class="num up">+36%</td></tr>
+    </table>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2025.12.31</th><th class="num">2024.12.31</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">14조 9,238억원</td><td class="num">11조 2,051억원</td><td class="num up">+33%</td></tr>
+      <tr><td>단기금융상품</td><td class="num">14조 8,750억원</td><td class="num">2조 4,273억원</td><td class="num up">+513%</td></tr>
+      <tr><td><b>현금+단기금융상품</b></td><td class="num"><b>29조 7,987억원</b><span class="krw">약 $222억</span></td><td class="num">13조 6,324억원</td><td class="num up">+119%</td></tr>
+      <tr><td>재고자산</td><td class="num">14조 2,894억원</td><td class="num">13조 3,139억원</td><td class="num">+7%</td></tr>
+      <tr><td>유동자산</td><td class="num">69조 4,581억원</td><td class="num">42조 2,789억원</td><td class="num up">+64%</td></tr>
+      <tr><td>유형자산 (팹·장비)</td><td class="num">79조 8,392억원</td><td class="num">62조 6,443억원</td><td class="num">+27%</td></tr>
+      <tr><td>총자산</td><td class="num">176조 1,077억원<span class="krw">약 $1,313억</span></td><td class="num">119조 8,552억원</td><td class="num up">+47%</td></tr>
+      <tr><td>유동부채</td><td class="num">37조 3,790억원</td><td class="num">24조 9,654억원</td><td class="num">+50%</td></tr>
+      <tr><td>총차입금</td><td class="num">24조 7,578억원</td><td class="num">25조 4,521억원</td><td class="num up">−3%</td></tr>
+      <tr><td>총부채 <span class="hz">부채비율 45.9% (전년 62.2%)</span></td><td class="num">55조 4,409억원</td><td class="num">45조 9,395억원</td><td class="num">+21%</td></tr>
+      <tr><td><b>자본총계</b> <span class="hz">자기자본비율 68.5%</span></td><td class="num"><b>120조 6,668억원</b><span class="krw">약 $900억</span></td><td class="num">73조 9,157억원</td><td class="num up">+63%</td></tr>
+      <tr><td><b>순현금 (현금+단기금융상품 − 차입금)</b></td><td class="num up"><b>+10조 3,797억원</b></td><td class="num dn">−11조 2,504억원 (순차입)</td><td class="num up">순현금 전환</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2025</th><th class="num">FY2024</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">53조 3,731억원<span class="krw">약 $398억</span></td><td class="num">29조 7,959억원</td><td class="num up">+79%</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num">27조 5,189억원<span class="krw">약 $205억</span></td><td class="num">15조 9,455억원</td><td class="num">+73%</td></tr>
+      <tr><td><b>잉여현금흐름 (FCF)</b></td><td class="num"><b>25조 8,542억원</b><span class="krw">약 $193억</span></td><td class="num">13조 8,504억원</td><td class="num up">+87%</td></tr>
+      <tr><td>배당 지급</td><td class="num">1조 6,812억원</td><td class="num">8,263억원</td><td class="num up">+103%</td></tr>
+      <tr><td>장기차입 (신규 − 상환)</td><td class="num">8.18조 − 8.01조 = +0.17조</td><td class="num">8.72조 − 16.70조 = −7.98조</td><td class="num">-</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2025는 <b>빚 있는 회사에서 현금 많은 회사로 바뀐 해</b>입니다. 매출 +47%에 영업이익은 2배가 됐고(이익률 35.5% → 48.6%), 영업현금 53조원으로 설비투자 27.5조원을 하고도 <b>FCF 25.9조원</b>이 남았습니다.
+      덕분에 순차입 11.3조원이 <b>순현금 10.4조원</b>으로 돌아섰고 부채비율은 62% → 46%로 내려갔습니다.<br>
+      이 체력이 2026년 <b>40조원 자사주 소각</b>의 바탕입니다. 그리고 2026년은 2분기 한 분기 영업이익(60.5조원)이 FY2025 연간(47.2조원)을 넘을 만큼 규모가 한 단계 더 커졌습니다.
+      지금 주가 하락은 이 재무 체력의 문제가 아니라 <b>수급과 'AI 사이클이 언제 꺾이나'라는 불안</b>의 문제라는 점이 재무제표에서 확인됩니다.
+      <br><span style="font-size:12.5px;">※ 매출·영업이익·순이익·4분기는 회사 발표(2026.1.28) 기준, 그 외 항목은 StockAnalysis 집계(연결) 기준입니다. 집계 기준 지배주주 순이익은 42조 9,193억원으로 발표치와 소폭 다릅니다. 달러 환산은 1,341.5원 적용.</span>
+    </div>
+  </section>
+
+  <!-- 6. 주요 일정 -->
+  <section>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>지속</td><td>美 국채금리·유가(美-이란), 외국인 수급, Solidigm 상장 후속 보도, 삼성 HBM4 추격</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 5일 (월)</td><td>🇰🇷 개천절 대체공휴일 — 한국 증시 휴장 (美 ISM 서비스업 23:00 발표는 10/6 개장 때 반영)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 9일 (금)</td><td>🇰🇷 한글날 — 한국 증시 휴장 (이번 주 한국장은 10/6~8 3일만 거래)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 둘째 주 (예상)</td><td>삼성전자 3분기 잠정실적 — 메모리 업황·HBM 가격의 첫 확인, SK하이닉스 실적 가늠자</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 15일 (목) 오후 3:00경</td><td>TSMC 3분기 실적 — AI 칩 생산(CoWoS) 증설 = HBM 수요 지표</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 말 (예상)</td><td><b>SK하이닉스 Q3 2026 실적</b> (회사 공지 전) — HBM4 출하·가격, Q4 가이던스, Solidigm 상장 언급 여부</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>NVIDIA 실적 — 최대 HBM 고객의 수요 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><th style="width:28%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>지속</td><td>외국인 순매도 강도, 美 국채금리, 솔리다임 상장 후속 보도, 삼성 HBM4 추격</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 13~16일 (이번 주)</td><td><b>40조원 자사주 매입 완료 예상</b> (잔여 약 240만주) — 매수 주체 공백 시작</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 13일 (화) 오후 7:45경</td><td>JP모건 등 美 대형 은행 실적 — 3분기 어닝시즌 개막</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 2:00경</td><td>ASML 3분기 실적 — 반도체 장비 수주(메모리 투자 지표)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td><b>美 9월 CPI</b> — 예상 3.7%(8월 3.4%), 금리·외국인 수급 직결</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 3:00경</td><td><b>TSMC 3분기 실적</b> — AI 칩 생산(CoWoS) 증설 = HBM 수요 지표</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 17일 (토) 오전 5:00</td><td>美 월간 옵션만기 (ADR·무기한선물 변동성)</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
+      <tr><td>10월 하순 (미확정)</td><td><b>SK하이닉스 3분기 실적</b> — 컨센서스 매출 98.4조·영업이익 77.1조원, HBM4 출하·가격, 4분기 전망, 추가 주주환원 여부</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 10월 인상 확률 약 20%대</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) ~ 30일 (금) 새벽</td><td>메타·알파벳·마이크로소프트·아마존 실적 — <b>AI 설비투자 계획 = HBM 수요</b></td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>엔비디아 실적 — 최대 HBM 고객의 수요 확인</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
     </table>
   </section>
 
-  <!-- 6. 핵심 한눈에 -->
+  <!-- 7. 핵심 한눈에 -->
   <section>
-    <h2>6. 핵심 한눈에 보기 📱</h2>
+    <h2>7. 핵심 한눈에 보기 📱</h2>
 
     <div class="key-hero">
       <div class="tag">한 줄 요약</div>
-      <div class="line"><em>메모리 호황으로 사상 최대 실적이 확실한데,</em><br><strong>美 금리와 외국인 매도가 발목을 잡는다.</strong></div>
+      <div class="line"><em>돈은 역대 최고로 벌고 있는데,</em><br><strong>외국인이 팔고 회사의 자사주 매입도 끝나 가는 중.</strong></div>
     </div>
 
     <div class="key-two">
       <div class="key-card good">
         <h4>👍 좋은 점 3가지</h4>
         <ol>
-          <li><b>3분기 영업이익 78조원 예상</b><span>1년 전보다 약 7배 · 사상 최대</span></li>
-          <li><b>경쟁사 마이크론도 대박</b><span>"메모리 호황 아직 안 끝났다" 확인 · HBM 값 내년 2배 이상 전망</span></li>
-          <li><b>9월 반도체 수출 사상 최대</b><span>81조원어치 · 전체 수출의 절반</span></li>
+          <li><b>3분기 영업이익 77조원 예상</b><span>1년 전의 약 7배 · 매출의 78%가 이익</span></li>
+          <li><b>빚보다 현금이 많아짐</b><span>2025년 현금 26조원 남김 · 순현금 10조원</span></li>
+          <li><b>메모리 호황 계속</b><span>삼성도 영업이익 107조원 · 마이크론 이익률 80%</span></li>
         </ol>
       </div>
       <div class="key-card bad">
         <h4>👎 나쁜 점 3가지</h4>
         <ol>
-          <li><b>외국인이 계속 팜</b><span>9/28 하루에만 1.7조원 매도</span></li>
-          <li><b>미국 금리가 너무 높음</b><span>10년물 5.3% · 24년 만에 최고</span></li>
-          <li><b>삼성이 빠르게 추격</b><span>HBM 점유율 21% → 33% · 자회사 상장 할인 우려도</span></li>
+          <li><b>외국인이 계속 팜</b><span>하루 1조원 넘게 · 코스피 전체로는 10거래일 연속</span></li>
+          <li><b>회사 자사주 매입이 곧 끝남</b><span>매일 1조원씩 사주던 쪽이 사라짐</span></li>
+          <li><b>AI 투자 의심 + 높은 금리</b><span>OpenAI 쇼크 · 美 금리 24년 최고</span></li>
         </ol>
       </div>
     </div>
 
     <div class="key-dates">
       <div class="key-date">
-        <div class="d">10/6 (화)</div>
-        <div class="e">연휴 후 한국장 개장</div>
-        <div class="w">美 재료 한꺼번에 반영 · 갭 주의</div>
+        <div class="d">이번 주</div>
+        <div class="e">자사주 매입 종료 + CPI(10/14)</div>
+        <div class="w">수급 공백 · 바닥 확인 구간</div>
       </div>
       <div class="key-date">
-        <div class="d">10월 둘째 주</div>
-        <div class="e">삼성 잠정실적 (예상)</div>
-        <div class="w">메모리 업황 첫 성적표</div>
+        <div class="d">10/15 오후</div>
+        <div class="e">TSMC 실적</div>
+        <div class="w">AI 칩 수요 = HBM 수요</div>
       </div>
       <div class="key-date hot">
-        <div class="d">10월 말</div>
+        <div class="d">10월 하순</div>
         <div class="e">3분기 실적 (예상)</div>
         <div class="w">🔥 제일 큰 고비</div>
       </div>
@@ -597,66 +563,45 @@
 
     <div class="key-ladder">
       <h4>📍 가격 기준선 (본주 · ADR)</h4>
-      <div class="rung ok"><span class="px">190만원 ↑</span><span>넘으면 → 다시 상승 🚀 (ADR $200 돌파 = 52주 신고가)</span></div>
-      <div class="rung now"><span class="px">184.1만원</span><span>지금 (10/2 종가 · ADR $195.13)</span></div>
-      <div class="rung warn"><span class="px">176만원</span><span>이 아래면 → 조심 ⚠️ (9/28~30 바닥)</span></div>
-      <div class="rung bad"><span class="px">169만원</span><span>최후 방어선 🛑 (9월 중순 저점)</span></div>
+      <div class="rung ok"><span class="px">177만원 ↑</span><span>넘으면 → 반등 신호 🚀 (무너진 박스 하단 회복, 다음 184만원)</span></div>
+      <div class="rung now"><span class="px">160.5만원</span><span>지금 (10/12 종가 · ADR 10/9 $169)</span></div>
+      <div class="rung warn"><span class="px">155만원</span><span>이 아래면 → 조심 ⚠️ (7월 말 저점대)</span></div>
+      <div class="rung bad"><span class="px">142만원</span><span>최후 방어선 🛑 (8/7 저점)</span></div>
     </div>
 
     <div class="key-final">
-      💡 <b>결론:</b> 실적은 역대급이 거의 확실하지만, 주가는 <b>미국 금리와 외국인 매도</b>에 눌려 176만~190만원 박스에 있습니다.
-      <b>10월 말 실적 전까지는 박스 하단(176만원 근처)에서 나눠 사는</b> 전략이 무난하고, 190만원을 거래량과 함께 넘으면 추세가 다시 위로 열립니다.
-      ADR이 52주 고점 근처라 <b>미국장 분위기가 본주보다 먼저 좋아지고 있다</b>는 점은 긍정적 신호입니다.
+      ⚖️ <b>호재·악재 점수: +14.0 vs −14.2 → 균형(−0.2)</b> — 단, 단기는 약세(−6.2), 중기는 강세(+6.0)로 정반대.<br>
+      💡 <b>결론:</b> 회사는 역대 최고로 돈을 벌고 있지만, 지금 주가는 <b>'누가 사줄 것인가'</b>의 문제입니다. 자사주 매입이 끝나는 이번 주가 수급상 가장 약한 구간이라
+      <b>바로 사기보다 155만원 지지와 외국인 매도 둔화를 확인한 뒤</b> 나눠서 접근하는 게 안전합니다.
+      다음 방향은 <b>10/14 CPI → 10/15 TSMC → 10월 하순 자사 실적</b> 순서로 정해집니다.
     </div>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.10.02 코스피 종가 / ADR(SKHY) 2026.10.02 나스닥 종가(KST 10/3 05:00). 일별 시세는 Investing.com 기준.
-    Q2 실적은 2026.07.29 발표 기준, Q3 컨센서스는 파이낸셜뉴스(9/28) 집계. Q3 실적일은 회사 공식 공지 전입니다. 달러 금액의 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용.
-    시나리오 확률은 주관적 판단입니다. 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있습니다.
+    ※ 본 자료는 공개된 차트·뉴스·공시 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 본주(000660.KS) 2026.10.12 코스피 종가 / ADR(SKHY) 2026.10.09 나스닥 종가(KST 10/10 05:00).
+    본주 10/6·10/8 종가는 보도된 다음 날 등락률로 확인했습니다(일부 매체 수치와 1천~5천원 차이). 3분기 컨센서스는 FnGuide(10/8, 서울신문 보도) 기준이며, 실적 발표일은 회사 공지 전입니다.
+    FY2025 재무제표는 회사 발표 및 StockAnalysis 연결 집계 기준. 달러 환산은 10/12 오후 시세 1,341.5원 적용. 시나리오 확률과 요인별 점수는 주관적 판단입니다. 본주와 ADR 가격은 거래시간·환율·수급에 따라 괴리될 수 있습니다.
+    상단 차트는 TradingView 실시간 위젯(OKX SKHYUSDT.P)으로, 이 HTML 파일을 브라우저에서 직접 열면 실시간으로 갱신됩니다.
   </footer>
-
 </div>
 
 <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
 <script type="text/javascript">
-  new TradingView.widget({
-    "container_id": "tv_skhy_daily",
-    "width": "100%",
-    "height": 440,
-    "symbol": "OKX:SKHYUSDT.P",
-    "interval": "D",
-    "timezone": "Asia/Seoul",
-    "theme": "dark",
-    "style": "1",
-    "locale": "kr",
-    "toolbar_bg": "#1a1d24",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_legend": false,
-    "save_image": false,
-    "studies": ["MASimple@tv-basicstudies"],
-    "support_host": "https://www.tradingview.com"
-  });
-
-  new TradingView.widget({
-    "container_id": "tv_skhy_15m",
-    "width": "100%",
-    "height": 440,
-    "symbol": "OKX:SKHYUSDT.P",
-    "interval": "15",
-    "timezone": "Asia/Seoul",
-    "theme": "dark",
-    "style": "1",
-    "locale": "kr",
-    "toolbar_bg": "#1a1d24",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_legend": false,
-    "save_image": false,
-    "studies": ["MASimple@tv-basicstudies"],
-    "support_host": "https://www.tradingview.com"
-  });
+  function mkWidget(interval, id){
+    new TradingView.widget({
+      "container_id": id,
+      "width": "100%", "height": 440,
+      "symbol": "OKX:SKHYUSDT.P",
+      "interval": interval,
+      "timezone": "Asia/Seoul", "theme": "dark", "style": "1", "locale": "kr",
+      "toolbar_bg": "#1a1d24", "enable_publishing": false,
+      "hide_top_toolbar": false, "hide_legend": false, "save_image": false,
+      "studies": ["MASimple@tv-basicstudies"],
+      "support_host": "https://www.tradingview.com"
+    });
+  }
+  mkWidget("D", "tv_skhy_daily");
+  mkWidget("15", "tv_skhy_15m");
 </script>
 <script type="text/javascript">
   // 실시간 시세 갱신 (OKX 공개 API · SKHY-USDT-SWAP · 30초 주기)
@@ -692,8 +637,7 @@
         const diff = last - prevClose;
         const pct = (diff / prevClose) * 100;
         const arrow = diff >= 0 ? "▲" : "▼";
-        const cls = diff >= 0 ? "chg-up" : "chg-down";
-        chgEl.className = cls;
+        chgEl.className = diff >= 0 ? "chg-up" : "chg-down";
         chgEl.textContent = `${arrow} 24시간 ${diff >= 0 ? "+" : ""}${diff.toFixed(2)} (${pct >= 0 ? "+" : ""}${pct.toFixed(2)}%) · OKX 무기한선물 실시간가`;
       } else {
         chgEl.textContent = "실시간가 반영됨 (전일 종가 비교 데이터 없음)";
@@ -701,7 +645,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SKHYUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 ADR 종가 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/9 ADR 종가 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }
