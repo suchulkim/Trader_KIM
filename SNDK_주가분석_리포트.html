@@ -300,6 +300,51 @@
     font-size:12px;
     color:var(--text-soft);
   }
+
+  /* 점수화 */
+  .tbl-wrap{overflow-x:auto; border-radius:10px;}
+  .tbl-wrap table{min-width:600px;}
+  table.score td, table.score th{font-size:13.5px;}
+  table.score td.sc{font-variant-numeric:tabular-nums; text-align:center; white-space:nowrap;}
+  table.score td.tot{font-weight:800; text-align:center; font-variant-numeric:tabular-nums;}
+  table.score tr.pos td.tot{color:var(--pos-text);}
+  table.score tr.neg td.tot{color:var(--neg-text);}
+  table.score tr.sum td{background:var(--table-head); font-weight:700;}
+  .hz{display:inline-block; font-size:11px; padding:1px 6px; border-radius:5px; background:var(--chip-bg); color:var(--text-soft); margin-left:4px; white-space:nowrap;}
+  .verdict{margin-top:14px; background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; box-shadow:var(--shadow);}
+  .verdict h4{margin:0 0 10px; font-size:15px;}
+  .tug{display:flex; height:26px; border-radius:999px; overflow:hidden; font-size:12.5px; font-weight:700; color:#fff;}
+  .tug .p{background:var(--pos-text); display:flex; align-items:center; padding-left:12px; white-space:nowrap;}
+  .tug .n{background:var(--neg-text); display:flex; align-items:center; justify-content:flex-end; padding-right:12px; white-space:nowrap;}
+  .verdict .big{font-size:19px; font-weight:800; margin-top:12px;}
+  .verdict .big .g{color:var(--pos-text);}
+  .verdict .sub{font-size:13.5px; color:var(--text-soft); margin-top:6px;}
+  .verdict .sub b{color:var(--text);}
+  .hz-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:12px;}
+  .hz-card{background:var(--chip-bg); border-radius:10px; padding:10px 12px; font-size:13.5px;}
+  .hz-card .t{font-size:12px; color:var(--text-soft);}
+  .hz-card .v{font-size:16px; font-weight:800; margin:2px 0;}
+  .hz-card .v.r{color:var(--neg-text);} .hz-card .v.g{color:var(--pos-text);} .hz-card .v.y{color:#e0a800;}
+  /* 재무제표 */
+  .fin-kpi{display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; margin-bottom:14px;}
+  .fk{background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; box-shadow:var(--shadow);}
+  .fk .l{font-size:12px; color:var(--text-soft);}
+  .fk .v{font-size:18px; font-weight:800; font-variant-numeric:tabular-nums;}
+  .fk .k{font-size:12px; color:var(--text-soft);}
+  .fk .d{font-size:12px; font-weight:700; color:var(--pos-text);}
+  table.fin td, table.fin th{font-size:13.5px;}
+  table.fin td.num, table.fin th.num{text-align:right; white-space:nowrap;}
+  table.fin td.up{color:var(--pos-text); font-weight:600;} table.fin td.dn{color:var(--neg-text); font-weight:600;}
+  table.fin .krw{display:block; margin-left:0;}
+  .cmp-row{display:flex; align-items:center; gap:10px; font-size:13px; margin-bottom:6px;}
+  .cmp-row .nm{flex:0 0 96px; color:var(--text-soft);}
+  .cmp-row .bars2{flex:1;}
+  .cmp-row .b{height:11px; border-radius:6px; margin:2px 0;}
+  .cmp-row .b.y24{background:var(--border);} .cmp-row .b.y25{background:var(--accent);}
+  .cmp-row .v{flex:0 0 140px; text-align:right; font-variant-numeric:tabular-nums; font-size:12.5px;}
+  .legend{font-size:12px; color:var(--text-soft); margin-bottom:8px;}
+  .legend i{display:inline-block; width:10px; height:10px; border-radius:3px; margin:0 4px 0 10px; vertical-align:middle;}
+  @media (max-width:640px){ .hz-grid{grid-template-columns:1fr;} .cmp-row .v{flex-basis:100px;} }
 </style>
 </head>
 <body>
@@ -307,22 +352,23 @@
 
   <header class="title-block">
     <div class="eyebrow">
-      <span>2026.10.04 (일) · 업데이트</span>
+      <span>2026.10.14 (수) 00:30 업데이트 — 호재/악재 점수화·FY2026 재무제표 추가, 템플릿 개편</span>
       <span>·</span>
-      <span>기준시각 10/3(토) 오전 5:00 (KST) · 美 정규장 마감(10/2 16:00 ET) 기준</span>
+      <span>시세 서술은 10/12 정규장 마감(KST 10/13 05:00) 기준 + 10/13 장 초반 반영 · 상단 가격은 실시간 자동 갱신</span>
     </div>
     <h1>SanDisk (SNDK) 주가 분석 리포트<span class="ticker">NASDAQ · Perpetual: SNDKUSDT.P</span></h1>
 
     <div class="price-card">
       <div>
-        <div class="price-main"><span id="live-price">$1,719.99</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
-        <div class="chg-down" id="live-chg">10/2 정규장 ▼ -3.79% (-$67.70) · 2주간 -4.0% (9/18 $1,791.82 →) · 하루 ±3~7% 큰 변동성</div>
+        <div class="price-main"><span id="live-price">$1,487.33</span><span class="live-badge" id="live-badge"><span class="live-dot"></span>LIVE</span></div>
+        <div class="chg-down" id="live-chg">10/12 정규장 ▼ −5.97% · 6거래일 −13.5% (10/2 $1,719.99 →) · 10/13 장 초반 약 $1,440~1,450(−3%)</div>
         <div class="live-updated" id="live-updated">실시간 시세 연결 중… (OKX SNDKUSDT.P 무기한선물 기준, 30초 자동 갱신)</div>
       </div>
       <div class="price-sub">
-        9/21 S&amp;P 100 편입 후 9/22 <b>Rosenblatt 신규 '매수'(목표가 $2,400)</b>로 $1,887까지 올랐지만, 9/23~24 이틀간 -7% 밀렸습니다.
-        9/28 Mizuho 목표가 하향·금리 급등에 -3.65%, 10/1 마이크론 깜짝 실적에 +2.75% 반등했다가 10/2 다시 -3.79% — <b>$1,660~1,820 사이를 크게 오가는 중</b>입니다.
-        회사는 9/29 <b>다음 실적일을 10/29(현지)로 확정</b> 공지했습니다. 6월 사상 최고가($2,354) 대비 약 -27%, 시가총액 약 $252B<span class="krw">(약 340조원)</span>.
+        지난 리포트(10/4) 이후 <b>6거래일 중 5일 하락</b>했습니다. 10/8 삼성전자 3분기 잠정실적(매출 컨센서스 하회)으로 메모리주 전체가 −4.9% 밀렸고,
+        10/12에는 <b>중국 CXMT가 고밀도 차세대 D램(4F²) 진전과 연말 서버용 DDR5 출시 계획</b>을 밝히면서 −5.97%를 기록했습니다.
+        샌디스크는 D램을 만들지 않지만 <b>메모리주가 한 덩어리로 매도</b>되는 흐름에 휩쓸렸습니다. 같은 시기 삼성·SK하이닉스의 약 $400억 자사주 매입이 조기 종료되어 수급도 약해졌습니다.
+        회사 실적은 그대로입니다(다음 분기 가이던스 $10.3~10.8B). 6월 사상 최고가($2,354) 대비 약 −37%, 시가총액 약 $2,180억<span class="krw">(약 294조원)</span>입니다.
       </div>
     </div>
 
@@ -331,15 +377,11 @@
       <div class="charts-grid">
         <div>
           <div class="cap" style="margin-top:4px;">일봉 (1D)</div>
-          <div class="tv-widget-container">
-            <div id="tv_sndk_daily" style="height:100%; width:100%;"></div>
-          </div>
+          <div class="tv-widget-container"><div id="tv_sndk_daily" style="height:100%; width:100%;"></div></div>
         </div>
         <div>
           <div class="cap" style="margin-top:4px;">15분봉</div>
-          <div class="tv-widget-container">
-            <div id="tv_sndk_15m" style="height:100%; width:100%;"></div>
-          </div>
+          <div class="tv-widget-container"><div id="tv_sndk_15m" style="height:100%; width:100%;"></div></div>
         </div>
       </div>
     </div>
@@ -349,8 +391,9 @@
   <section>
     <h2>1. 차트 현황</h2>
     <div class="callout" style="margin-top:0;">
-      <b>일봉</b>: 9/16 저점 $1,504 → 9/17~18 이틀 +18%(S&amp;P 100 편입 발표 효과) → 9/22 장중 <b>$1,909.48</b> 고점 → 9/23~24 급락 → 9/28 장중 $1,659 → 10/1 $1,802 고점 후 10/2 $1,720. 고점은 낮아지고(1,909→1,802) 저점은 $1,660~1,700에서 지켜지는 <b>수렴(삼각형) 모양</b>입니다.<br>
-      <b>15분봉</b>: 10/2 시가 $1,773에서 바로 밀려 저가권 마감. <b>$1,690~1,710</b>(9/29·10/2 저점)이 1차 지지, <b>$1,660</b>(9/28 저점)이 2차 지지, <b>$1,800~1,815</b>가 저항입니다.
+      <b>일봉</b>: 지난 리포트에서 본 <b>삼각형 수렴($1,660~1,820)이 아래로 깨졌습니다.</b> 10/6 종가 $1,660.46으로 하단을 시험한 뒤 10/8 $1,609(−4.9%), 10/12 $1,487(−5.97%)로 이탈했고, 10/13 장중 <b>$1,401</b>까지 밀렸습니다.
+      20일선(약 $1,694)은 크게 아래로 내려왔고, 9/22 고점($1,909) 대비 약 −24%입니다. 하락일 거래량(830~910만주)이 반등일보다 많아 <b>매도 우위</b>가 이어지고 있습니다. 다만 하루 −6%의 투매가 나온 뒤라 기술적 반등이 나올 수 있는 자리이기도 합니다.<br>
+      <b>15분봉</b>: <b>$1,400</b>(10/13 장중 저점·심리선)이 1차 지지, 이탈 시 <b>$1,300</b>대가 다음 지지입니다. 위로는 <b>$1,465~1,490</b>(10/12 저점·종가) → <b>$1,540</b>(10/12 갭 시작점) → <b>$1,580~1,610</b>(10/8·10/9 종가) → <b>$1,660</b>(무너진 박스 하단, 이제 저항)입니다.
     </div>
   </section>
 
@@ -360,40 +403,44 @@
     <table>
       <tr><th style="width:22%">날짜 · 종가</th><th>내용</th><th style="width:24%">비고</th></tr>
       <tr>
-        <td><b>9/25(금)</b><br>$1,777.80<br><span style="color:var(--up); font-weight:600;">▲ +1.38%</span></td>
-        <td>9/22 Rosenblatt 신규 '매수'(목표가 $2,400, "NAND가 AI 인프라 핵심 부품으로 격상")로 $1,887 급등 후, 9/23~24 이틀간 -7% 차익실현. 이날 소폭 반등</td>
-        <td>9/21 S&amp;P 100 편입 · 장중 $1,815</td>
+        <td><b>10/5(월)</b><br>$1,704.16<br><span style="color:var(--down); font-weight:600;">▼ −0.92%</span></td>
+        <td>10/2 급락 뒤 반등하지 못하고 약보합. 실적(10/29 현지)까지 관망 심리가 이어졌습니다.</td>
+        <td>장중 $1,681</td>
       </tr>
       <tr>
-        <td><b>9/28(월)</b><br>$1,712.89<br><span style="color:var(--down); font-weight:600;">▼ -3.65%</span></td>
-        <td>美 국채금리·유가 급등 속 메모리주 동반 약세. <b>Mizuho 목표가 하향</b>("스핀오프 후 급등으로 밸류에이션 부담"), NAND 마진 정점 우려, 소비자용 매출 -32%(전분기 대비) 재부각</td>
-        <td>장중 $1,659 · 2주 최저</td>
+        <td><b>10/6(화)</b><br>$1,660.46<br><span style="color:var(--down); font-weight:600;">▼ −2.56%</span></td>
+        <td>삼성전자 자사주 매입이 10/6 조기 종료되면서 한국 메모리주 수급 우려가 커졌고, 美 10년물 금리 상승으로 성장주가 약세였습니다.</td>
+        <td>박스 하단($1,660) 종가 시험</td>
       </tr>
       <tr>
-        <td><b>9/29(화)</b><br>$1,729.76<br><span style="color:var(--up); font-weight:600;">▲ +0.98%</span></td>
-        <td>회사, <b>Q1 FY2027 실적 발표일을 10/29(현지)로 확정</b> 공지. 마이크론 실적 대기 속 소폭 반등</td>
-        <td>장중 $1,693 지지</td>
+        <td><b>10/7(수)</b><br>$1,692.42<br><span style="color:var(--up); font-weight:600;">▲ +1.92%</span></td>
+        <td>10년물 5.32%(2002년 이후 최고) 쇼크에 $1,620으로 갭하락 출발했지만, 장중 저가 매수로 반등 마감했습니다.</td>
+        <td>장중 $1,617.77 · 긴 아래꼬리</td>
       </tr>
       <tr>
-        <td><b>9/30(수)</b><br>$1,739.89<br><span style="color:var(--up); font-weight:600;">▲ +0.59%</span></td>
-        <td>장마감 후 마이크론 실적 발표 대기. 3분기 마지막 거래일</td>
-        <td>보합권</td>
+        <td><b>10/8(목)</b><br>$1,609.46<br><span style="color:var(--down); font-weight:600;">▼ −4.90%</span></td>
+        <td><b>삼성전자 3분기 잠정실적</b>: 매출 약 195조원으로 컨센서스를 2.8% 밑돌았습니다(영업이익은 약 107조원으로 소폭 상회). "메모리 호황이 이미 주가에 반영됐다"는 인식에 메모리주가 동반 하락했고, OpenAI 매출 하향 보도로 AI주 전반이 약세였습니다.</td>
+        <td>박스 하단 이탈 · 거래량 907만주</td>
       </tr>
       <tr>
-        <td><b>10/1(목)</b><br>$1,787.69<br><span style="color:var(--up); font-weight:600;">▲ +2.75%</span></td>
-        <td><b>마이크론 깜짝 실적</b>(분기 매출 $54.2B, 다음 분기 가이던스 $61.5B, "FY2027~28 메모리 수급은 더 빡빡") — 데이터센터 SSD 수요 재확인</td>
-        <td>장중 $1,802</td>
+        <td><b>10/9(금)</b><br>$1,581.82<br><span style="color:var(--down); font-weight:600;">▼ −1.72%</span></td>
+        <td>개장 전 메모리주 반등 시도가 있었지만 장중 상승분을 반납했습니다. "AI 스토리지 호황은 수년 갈 수 있다"는 낙관론도 매도를 막지 못했습니다.</td>
+        <td>3일 연속 하락</td>
       </tr>
       <tr>
-        <td><b>10/2(금)</b><br>$1,719.99<br><span style="color:var(--down); font-weight:600;">▼ -3.79%</span></td>
-        <td>전날 상승분 반납 — 실적(10/29) 앞둔 차익실현, "AI 데이터센터 SSD는 강하지만 스마트폰·PC용은 부진"이라는 수요 양극화 우려, 마진 정점 논쟁</td>
-        <td>시가 $1,773 → 저가권 마감</td>
+        <td><b>10/12(월)</b><br>$1,487.33<br><span style="color:var(--down); font-weight:600;">▼ −5.97%</span></td>
+        <td><b>중국 CXMT 쇼크</b>: CXMT가 셀 면적을 약 1/3 줄여 같은 웨이퍼에서 저장 밀도를 약 50% 높이는 <b>4F² D램 구조 진전</b>과, 연말 <b>서버용 DDR5 RDIMM 출시</b> 계획을 밝혔습니다. SK하이닉스 −9%, 삼성 약 −7%, 마이크론 −3.9%가 동반됐습니다. 샌디스크는 D램을 만들지 않지만 "메모리 = 한 덩어리" 매도에 휩쓸렸고, 7월 CXMT 상장 때(−11%)의 공포가 되살아났습니다.</td>
+        <td>$1,538 갭하락 → 장중 $1,464 · KOSPI 자사주 종료 후 −10%</td>
+      </tr>
+      <tr>
+        <td><b>10/13(화)</b><br>장 초반 약 $1,440~1,450<br><span style="color:var(--down); font-weight:600;">▼ 약 −3%</span></td>
+        <td>매도가 이틀째 이어지며 $1,406에 갭하락 출발했고 장중 $1,401까지 밀렸습니다. 반면 S&amp;P가 샌디스크 신용등급을 투자적격(BBB)으로 올렸다는 보도와 "월가는 걱정하지 않는다"는 분석도 나왔습니다(평균 목표가 $2,173).</td>
+        <td>KST 23시~00시 기준 · 장중 진행 중</td>
       </tr>
     </table>
     <div class="callout">
-      → 2주간 샌디스크는 <b>호재(S&amp;P 100 편입·Rosenblatt $2,400·마이크론 실적)가 나오면 급등, 그다음 날 차익실현으로 급락</b>을 반복했습니다.
-      시장이 고민하는 건 하나 — <b>"지금의 높은 NAND 가격과 마진이 얼마나 오래 갈까"</b>입니다. 데이터센터 SSD는 폭발적으로 크고 있지만 소비자용은 줄고 있고,
-      다음 분기 마진 가이던스(83~85%)가 직전 분기(84.6%)와 비슷해 "가격 상승세가 꺾이는 것 아니냐"는 의문이 남아 있습니다. 답은 <b>10/29(현지) 실적</b>에서 나옵니다.
+      → 지난 2주의 하락은 <b>샌디스크 자체 악재가 아니라 "메모리 업종 전체의 공포"</b>였습니다. 순서대로 보면 ① 삼성 실적이 기대에 못 미쳤고(10/8), ② 한국 메모리주의 자사주 매입이 끝나 받쳐줄 돈이 빠졌으며, ③ 중국 CXMT의 기술 진전(10/12)이 "중국발 공급 과잉" 공포를 다시 키웠습니다.
+      샌디스크의 실적 가이던스와 장기계약($93.9B)은 그대로라 <b>펀더멘털과 주가가 벌어진 상태</b>입니다. 다만 메모리주는 업황 사이클을 미리 반영하는 주식이라 "실적은 좋은데 주가는 빠지는" 구간이 길어질 수 있고, 반전 계기는 <b>10/30 새벽(KST) 자체 실적</b>입니다.
     </div>
   </section>
 
@@ -404,52 +451,87 @@
     <div class="factor-block pos">
       <h4>🟢 긍정적 요인</h4>
       <ul class="plain">
-        <li>Q4 FY2026 매출 $8.97B<span class="krw">(약 12조 1,150억원)</span>(+372% YoY, +51% QoQ), 데이터센터 매출 +103% QoQ</li>
-        <li><b>Q1 FY2027 가이던스 매출 $10.3~10.8B</b><span class="krw">(약 13조 9,110억~14조 5,860억원)</span>(+15~20% QoQ), Non-GAAP EPS $44~46</li>
-        <li><b>장기공급계약(NBM) $93.9B</b><span class="krw">(약 126조 8,210억원)</span> — 주요 고객 8곳, FY2027 생산량의 약 50%·FY2028의 약 2/3 확보 → NAND 호황·불황 사이클 완화 기대</li>
-        <li><b>$14B 자사주 매입</b><span class="krw">(약 18조 9,080억원)</span> 프로그램 — Q4에만 $4.5B<span class="krw">(약 6조 780억원)</span> 매입, 분기 조정 FCF $5.0B</li>
-        <li>Rosenblatt 신규 '매수' 목표가 <b>$2,400</b>(9/22), 애널리스트 평균 목표가 현재가 대비 약 +23%</li>
-        <li>마이크론 "FY2027~28 메모리 수급은 2026년보다 더 빡빡" — 업황 지속 신호 · 9/21 S&amp;P 100 편입</li>
-        <li>가이던스 기준 연환산 PER 약 10배 — "싸다" vs "이익이 지속될까" 논쟁 중</li>
+        <li><b>Q1 FY2027 가이던스 매출 $10.3~10.8B</b><span class="krw">(약 13조 9,110억~14조 5,860억원)</span>(+15~20% QoQ), Non-GAAP EPS $44~46 — 가이던스 연환산 PER 약 8배</li>
+        <li><b>장기공급계약(NBM) $93.9B</b><span class="krw">(약 126조 8,210억원)</span> — 주요 고객 8곳, FY2027 생산량의 약 50%·FY2028의 약 2/3 확보 → 가격 하락기 완충</li>
+        <li><b>무차입·현금 부자</b> — FY2026 FCF $115억<span class="krw">(약 15조 5,240억원)</span>, 차입금 0, 현금 $47.6억. S&amp;P 투자적격(BBB) 상향 보도(10/13)</li>
+        <li><b>$14B 자사주 매입</b><span class="krw">(약 18조 9,080억원)</span> — FY2026에 $45억 집행, 주가 하락기 매입 여력</li>
+        <li><b>CXMT는 D램, 샌디스크는 낸드</b> — 이번 중국 악재는 직접 경쟁 제품이 아님(24/7 Wall St.). 애널리스트 평균 목표가 $2,173(10/12 종가 대비 +46%)</li>
+        <li>마이크론 "FY2027~28 메모리 수급은 2026년보다 더 빡빡" — 업황 지속 신호</li>
       </ul>
     </div>
     <div class="factor-block neg">
       <h4>🔴 부정·주의 요인</h4>
       <ul class="plain">
-        <li><b>마진 정점 신호</b> — 다음 분기 매출총이익률 가이던스 83~85%(직전 84.6%) → 가격 상승세 둔화 가능성</li>
-        <li><b>소비자용 매출 -32% QoQ</b> — 스마트폰·PC 출하 부진으로 NAND 수요 양극화</li>
-        <li>Mizuho 목표가 하향(9/28) — 스핀오프 후 급등에 따른 밸류에이션 부담</li>
-        <li>中 CXMT의 AI 고객向 NAND 진출 준비 — 중장기 가격 경쟁 리스크</li>
-        <li>극심한 변동성 — 2주간 일일 등락 -3.8%~+11.0%, 사상 최고가($2,354) 대비 -27%</li>
-        <li>무배당 · 美 국채금리 고공행진(10년물 5.3%대)</li>
+        <li><b>중국 메모리 추격</b> — CXMT 4F² D램·서버 DDR5(연말), YMTC 낸드 점유율 14%(2분기, 1년 전 9%) vs 샌디스크 11%(13%에서 하락). 낸드 공급 과잉 우려의 불씨</li>
+        <li><b>차트 붕괴</b> — 6거래일 −13.5%, $1,660 박스 하단 이탈, 하락일 거래량 우위. 6월 최고가 대비 −37%</li>
+        <li><b>마진 정점 신호</b> — 다음 분기 매출총이익률 가이던스 83~85%(직전 84.6%), 성장의 대부분이 물량이 아닌 가격 상승분</li>
+        <li><b>한국 메모리주 수급 공백</b> — 삼성·SK하이닉스 약 $400억 자사주 매입 조기 종료, KOSPI −10%</li>
+        <li><b>소비자용 매출 −32% QoQ</b> — 스마트폰·PC 출하 부진으로 낸드 수요 양극화</li>
+        <li>무배당 · 美 10년물 5.2%대 · 10/14 CPI 경계 · 하루 ±5% 넘는 극심한 변동성</li>
       </ul>
     </div>
+
+    <h3>요인별 점수화 · 종합 평가</h3>
+    <div class="tbl-wrap">
+    <table class="score">
+      <tr><th style="width:48%">요인</th><th style="text-align:center">영향도<br>(1~5)</th><th style="text-align:center">실현·지속<br>가능성</th><th style="text-align:center">가중점수</th></tr>
+      <tr class="pos"><td colspan="4" style="background:var(--pos-bg); font-weight:700; color:var(--pos-text);">🟢 호재</td></tr>
+      <tr class="pos"><td>Q1 FY27 가이던스 $10.3~10.8B·EPS $44~46<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">+3.6</td></tr>
+      <tr class="pos"><td>장기공급계약 $93.9B (FY27 50%·FY28 2/3 확보)<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">+3.6</td></tr>
+      <tr class="pos"><td><b>FY2026 재무 체력</b> — FCF $115억, 무차입, 투자적격 상향<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">1.0</td><td class="tot">+3.0</td></tr>
+      <tr class="pos"><td>밸류: 가이던스 연환산 PER 약 8배, 목표가 +46%<span class="hz">중기</span></td><td class="sc">3</td><td class="sc">0.8</td><td class="tot">+2.4</td></tr>
+      <tr class="pos"><td>$14B 자사주 매입 (하락기 매입 여력)<span class="hz">중기</span></td><td class="sc">2</td><td class="sc">0.9</td><td class="tot">+1.8</td></tr>
+      <tr class="pos"><td>마이크론 "FY27~28 수급 더 빡빡" 업황 코멘트<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.8</td><td class="tot">+1.6</td></tr>
+      <tr class="sum pos"><td>호재 합계 (6개)</td><td></td><td></td><td class="tot">+16.0</td></tr>
+      <tr class="neg"><td colspan="4" style="background:var(--neg-bg); font-weight:700; color:var(--neg-text);">🔴 악재</td></tr>
+      <tr class="neg"><td>중국 CXMT·YMTC 추격 → 메모리주 일괄 매도<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">−3.6</td></tr>
+      <tr class="neg"><td>차트 붕괴 — 박스 하단 이탈, 6일 −13.5%, 매도 거래량 우위<span class="hz">단기</span></td><td class="sc">4</td><td class="sc">0.9</td><td class="tot">−3.6</td></tr>
+      <tr class="neg"><td>마진 정점·낸드 가격 사이클 꺾임 우려<span class="hz">중기</span></td><td class="sc">4</td><td class="sc">0.7</td><td class="tot">−2.8</td></tr>
+      <tr class="neg"><td>고금리(10년물 5.2%대)·10/14 CPI<span class="hz">단기</span></td><td class="sc">3</td><td class="sc">0.7</td><td class="tot">−2.1</td></tr>
+      <tr class="neg"><td>한국 메모리주 자사주 매입 종료 → 업종 수급 공백<span class="hz">단기</span></td><td class="sc">2</td><td class="sc">0.8</td><td class="tot">−1.6</td></tr>
+      <tr class="neg"><td>소비자용 매출 −32%·수요 양극화<span class="hz">중기</span></td><td class="sc">2</td><td class="sc">0.8</td><td class="tot">−1.6</td></tr>
+      <tr class="sum neg"><td>악재 합계 (6개)</td><td></td><td></td><td class="tot">−15.3</td></tr>
+    </table>
+    </div>
+    <div class="scn-note">※ 가중점수 = 영향도(주가에 미칠 크기, 1~5) × 실현·지속 가능성(이미 확인 1.0 · 높음 0.8~0.9 · 중간 0.7 · 낮음 0.5~0.6). 점수는 차트·뉴스·공시를 바탕으로 한 주관적 판단입니다.</div>
+
+    <div class="verdict">
+      <h4>⚖️ 종합 평가</h4>
+      <div class="tug"><div class="p" style="width:51%">호재 +16.0 (51%)</div><div class="n" style="width:49%">악재 −15.3 (49%)</div></div>
+      <div class="big">순점수 <span class="g">+0.7</span> → '균형' (단기 악재 · 중기 호재로 극명하게 갈림)</div>
+      <div class="sub">점수 합계는 비슷하지만 <b>시간대별로 정반대</b>입니다. 단기 악재는 거의 다 "업종 심리·차트·수급"이고, 중기 호재는 "실적·계약·현금"입니다. 즉 <b>지금 주가를 누르는 힘은 강하지만, 회사 체력은 손상되지 않았습니다</b>.</div>
+      <div class="hz-grid">
+        <div class="hz-card"><div class="t">단기 (~10/30 실적 전)</div><div class="v r">호재 +5.2 vs 악재 −10.9 → 악재 우위(−5.7)</div><div>중국 공포·수급 공백이 걷힐 때까지 반등은 짧을 가능성</div></div>
+        <div class="hz-card"><div class="t">중기 (FY2027~28)</div><div class="v g">호재 +10.8 vs 악재 −4.4 → 호재 우위(+6.4)</div><div>장기계약·무차입·저PER이 사이클 우려를 상쇄</div></div>
+      </div>
+    </div>
+
     <h3>시나리오</h3>
     <table class="scn">
       <tr><th style="width:19%">시나리오</th><th style="width:9%">확률</th><th style="width:21%">가격 범위</th><th>조건</th></tr>
       <tr>
-        <td>① 박스권 횡보</td>
+        <td>① 바닥 다지기</td>
         <td class="prob">약 45%</td>
-        <td class="rng">1,660~1,820</td>
-        <td>실적(10/30 KST) 전까지 뚜렷한 새 재료 없이 메모리 업종 흐름을 따라 오르내리는 경우. <b>$1,660 지지·$1,820 저항</b></td>
+        <td class="rng">1,400~1,610</td>
+        <td>중국 악재가 추가로 나오지 않고 CPI가 예상 수준이라, 실적(10/30 KST) 전까지 투매 후 기술적 반등과 재하락을 반복하는 경우. <b>$1,400 지지, $1,540~1,610 저항</b></td>
       </tr>
       <tr>
-        <td>② 상단 돌파</td>
-        <td class="prob">약 30%</td>
-        <td class="rng">1,820 → 1,910, 넘으면 2,000~2,100</td>
-        <td>SK하이닉스·삼성 실적이 NAND 가격 강세를 확인하고, 10/29 실적에서 매출이 가이던스 상단($10.8B)을 넘고 다음 분기 가이던스가 상향되는 경우. <b>$1,820 위 종가 마감</b>이 1차 신호, 9/22 고점 $1,909 돌파 시 $2,000대(Rosenblatt $2,400 방향)</td>
-      </tr>
-      <tr>
-        <td>③ 하단 이탈</td>
+        <td>② 반등 회복</td>
         <td class="prob">약 25%</td>
-        <td class="rng">1,660 이탈 → 1,500~1,550</td>
-        <td>FOMC 의사록(10/8) 매파·금리 재급등, 또는 NAND 가격 둔화·마진 하락 신호가 나오는 경우. <b>$1,660이 깨지면</b> 9월 중순 저점 $1,505 부근까지 열립니다</td>
+        <td class="rng">1,610 → 1,700, 넘으면 1,800~1,900</td>
+        <td>SK하이닉스 실적(10월 넷째 주 예상)에서 낸드·eSSD 가격 강세가 재확인되고, 10/30 실적에서 매출이 가이던스 상단($10.8B)을 넘으며 다음 분기 마진 가이던스가 85% 이상으로 나오는 경우. <b>$1,660(옛 박스 하단) 위 종가</b>가 회복 신호, 20일선 $1,694 돌파 시 $1,800대</td>
+      </tr>
+      <tr>
+        <td>③ 추가 하락</td>
+        <td class="prob">약 30%</td>
+        <td class="rng">1,400 이탈 → 1,300 → 1,200</td>
+        <td>CPI 근원 0.3% 이상으로 금리 재상승, YMTC 등 중국 낸드 업체의 추가 증설·가격 공세 뉴스, 또는 실적에서 마진 하락 가이던스가 나오는 경우. <b>$1,400이 깨지면</b> $1,300대, 심리선 $1,200까지 열립니다</td>
       </tr>
     </table>
-    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단입니다.</div>
+    <div class="scn-note">※ 확률은 차트·뉴스 흐름을 바탕으로 한 주관적 판단이며, 10/14 CPI·SK하이닉스 실적·10/30 자체 실적 후 재조정이 필요합니다.</div>
   </section>
 
-  <!-- 3. 매출구조/수익구조 -->
+  <!-- 4. 매출구조/수익구조 -->
   <section>
     <h2>4. 매출구조/수익구조 (Q4 FY2026, 2026.08.05 발표)</h2>
     <table>
@@ -457,32 +539,20 @@
       <tr><td>📊 총 매출</td><td class="num">$8.97B<span class="krw">(약 12조 1,150억원)</span></td><td class="num">+372% YoY / +51% QoQ</td></tr>
       <tr><td>🖥️ 데이터센터</td><td class="num">$2.98B<span class="krw">(약 4조 250억원)</span></td><td class="num">+103% QoQ, 매출 비중 약 33%</td></tr>
       <tr><td>📱 Edge(모바일·PC·임베디드)</td><td class="num">$5.43B<span class="krw">(약 7조 3,340억원)</span></td><td class="num">+48% QoQ, 매출 비중 약 61%</td></tr>
-      <tr><td>🛒 Consumer(소비자용)</td><td class="num">$556M<span class="krw">(약 7,510억원)</span></td><td class="num">-32% QoQ, 매출 비중 약 6%</td></tr>
+      <tr><td>🛒 Consumer(소비자용)</td><td class="num">$556M<span class="krw">(약 7,510억원)</span></td><td class="num">−32% QoQ, 매출 비중 약 6%</td></tr>
       <tr><td>💰 EPS (Non-GAAP/GAAP)</td><td class="num">$39.25 / $43.97</td><td class="num">분기 기준</td></tr>
       <tr><td>📈 Non-GAAP 총이익률</td><td class="num">84.6%</td><td class="num">QoQ +6.2%p</td></tr>
       <tr><td>🎯 Q1 FY2027 가이던스</td><td class="num">매출 $10.3~10.8B<span class="krw">(약 13조 9,110억~14조 5,860억원)</span></td><td class="num">Non-GAAP EPS $44~46 · 매출총이익률 83~85%</td></tr>
       <tr><td>🤝 장기공급계약(NBM)</td><td class="num">$93.9B<span class="krw">(약 126조 8,210억원)</span></td><td class="num">FY27 생산량 약 50%, FY28 약 2/3 확보</td></tr>
-      <tr><td>💵 자사주 매입</td><td class="num">$14B 프로그램<span class="krw">(약 18조 9,080억원)</span></td><td class="num">Q4에만 $4.5B 매입 · 무배당</td></tr>
-      <tr><td>📈 시가총액</td><td class="num">약 $252B<span class="krw">(약 340조원)</span></td><td class="num">10/2 종가 기준 · 9/21 S&amp;P 100 편입</td></tr>
-      <tr><td>📅 다음 실적</td><td class="num">2026.10.29 (현지) <b>확정</b></td><td class="num">Q1 FY2027 · 장마감 후 → KST 10/30(금) 새벽</td></tr>
+      <tr><td>💵 자사주 매입</td><td class="num">$14B 프로그램<span class="krw">(약 18조 9,080억원)</span></td><td class="num">FY26 $45억 집행 · 무배당</td></tr>
+      <tr><td>📈 시가총액</td><td class="num">약 $2,180억<span class="krw">(약 294조원)</span></td><td class="num">10/12 종가 기준 (10/2 약 $2,520억)</td></tr>
+      <tr><td>📅 다음 실적</td><td class="num">2026.10.29 (현지) <b>확정</b></td><td class="num">Q1 FY2027 · 장마감 후 → KST 10/30(금) 새벽 5시경</td></tr>
     </table>
 
     <div class="rev-bar-wrap">
-      <div class="rev-row">
-        <div class="rev-label">Edge (모바일·PC 등)</div>
-        <div class="rev-track"><div class="rev-fill" style="width:61%; background:#0071e3;"></div></div>
-        <div class="rev-pct">~61%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">Datacenter</div>
-        <div class="rev-track"><div class="rev-fill" style="width:33%; background:#e0a800;"></div></div>
-        <div class="rev-pct">~33%</div>
-      </div>
-      <div class="rev-row">
-        <div class="rev-label">Consumer</div>
-        <div class="rev-track"><div class="rev-fill" style="width:6%; background:#8e8e93;"></div></div>
-        <div class="rev-pct">~6%</div>
-      </div>
+      <div class="rev-row"><div class="rev-label">Edge (모바일·PC 등)</div><div class="rev-track"><div class="rev-fill" style="width:61%; background:#0071e3;"></div></div><div class="rev-pct">~61%</div></div>
+      <div class="rev-row"><div class="rev-label">Datacenter</div><div class="rev-track"><div class="rev-fill" style="width:33%; background:#e0a800;"></div></div><div class="rev-pct">~33%</div></div>
+      <div class="rev-row"><div class="rev-label">Consumer</div><div class="rev-track"><div class="rev-fill" style="width:6%; background:#8e8e93;"></div></div><div class="rev-pct">~6%</div></div>
     </div>
 
     <h3>매출구조도 (가치 축적 구조)</h3>
@@ -497,7 +567,7 @@
       <div class="flow-row">
         <div class="flow-box accent">
           <b>NAND 웨이퍼 생산</b>
-          <div class="desc">Kioxia와의 일본 JV를 통한 수직계열화 생산</div>
+          <div class="desc">Kioxia와의 일본 JV를 통한 수직계열화 생산 (설비투자 부담은 JV가 분담 → FY26 자체 Capex $1.8억)</div>
         </div>
         <div class="flow-arrow">→</div>
         <div class="flow-box accent">
@@ -508,7 +578,7 @@
       <div class="flow-arrow down">↓ 매출로 정산 (Q4 FY26 $8.97B<span class="krw">(약 12조 1,150억원)</span>, Datacenter 비중 33%로 확대 중) ↓</div>
       <div class="flow-split">
         <div class="flow-box burn">
-          <b>재투자 — Kioxia JV 증설·R&D</b>
+          <b>재투자 — Kioxia JV 증설·R&amp;D</b>
           <div class="desc">차세대 NAND 공정 개발, 일본 팹 생산능력 확충</div>
         </div>
         <div class="flow-box reward">
@@ -520,75 +590,138 @@
       <div class="flow-row">
         <div class="flow-box">
           <b>공급 타이트닝 유지 → 가격 협상력 강화</b>
-          <div class="desc">AI 수요發 NAND 공급부족 구조가 지속되며 다음 가격 사이클에서도 유리한 위치 확보</div>
+          <div class="desc">AI 수요發 NAND 공급부족 구조가 지속되는 한 유리 — <b>중국(YMTC) 증설로 공급이 늘면 이 고리가 약해짐</b></div>
         </div>
       </div>
     </div>
     <div class="callout">
       → SanDisk는 <b>NAND 플래시·SSD</b> 기반 스토리지 반도체 기업으로, 2025년 Western Digital에서 스핀오프되었습니다.
-      매출은 아직 Edge(모바일·PC·임베디드용 스토리지)가 약 61%로 가장 크지만, Datacenter(엔터프라이즈 SSD) 매출이
-      전년 대비 10배 이상 급증하며 비중을 빠르게 확대(약 33%)하는 중입니다. 벌어들인 현금은 Kioxia JV 증설과
-      NBM 장기계약 확보에 재투자되며, 이는 공급 타이트닝을 유지시켜 다음 가격 사이클에서도 유리한 협상력을
-      가져가는 구조로 이어집니다. 다만 Q4 매출 성장의 상당 부분이 물량이 아닌 NAND 가격 상승분이라는 점은
-      업황 사이클에 대한 민감도를 높이는 요인이며, 다음 분기 마진 가이던스(83~85%)가 정체된 것도 같은 맥락입니다.
+      매출은 아직 Edge가 약 61%로 가장 크지만, Datacenter(엔터프라이즈 SSD)가 빠르게 비중을 키우는 중(약 33%)입니다.
+      이 구조의 약점은 <b>매출 성장 대부분이 물량이 아닌 NAND 가격 상승분</b>이라는 점입니다. 그래서 "중국이 공급을 늘려 가격이 꺾인다"는 이야기에 주가가 실적보다 먼저, 크게 반응합니다.
+      이번 CXMT 뉴스는 D램 이야기지만, <b>YMTC의 낸드 점유율 상승(9% → 14%)</b>과 겹쳐 시장이 같은 공포로 읽고 있습니다. 장기계약($93.9B)이 그 공포를 얼마나 막아 주는지가 실적 발표의 핵심입니다.
     </div>
   </section>
 
-  <!-- 4. 주요 일정 -->
+  <!-- 5. 재무제표 -->
   <section>
-    <h2>5. 주요 일정 (KST 기준)</h2>
+    <h2>5. 2026회계연도 재무제표 (FY2026, 2026.7.3 마감)</h2>
+    <div class="fin-kpi">
+      <div class="fk"><div class="l">매출</div><div class="v">$202.5억</div><div class="k">약 27조 3,470억원</div><div class="d">▲ +175% YoY (2.75배)</div></div>
+      <div class="fk"><div class="l">영업이익 (GAAP)</div><div class="v">$123.9억</div><div class="k">약 16조 7,330억원</div><div class="d">▲ 흑자전환 · 영업이익률 61.2%</div></div>
+      <div class="fk"><div class="l">순이익 (GAAP)</div><div class="v">$114.3억</div><div class="k">약 15조 4,410억원</div><div class="d">▲ 흑자전환 · EPS $73.76</div></div>
+      <div class="fk"><div class="l">잉여현금흐름</div><div class="v">$114.9억</div><div class="k">약 15조 5,240억원</div><div class="d">▲ 흑자전환 · 매출 대비 57%</div></div>
+    </div>
+
+    <div class="chart-card" style="margin-top:0; margin-bottom:14px;">
+      <div class="legend">FY2025 vs FY2026 (FY26 매출을 100으로 둔 막대)<i style="background:var(--border)"></i>FY25<i style="background:var(--accent)"></i>FY26</div>
+      <div class="cmp-row"><span class="nm">매출</span><div class="bars2"><div class="b y24" style="width:36.3%"></div><div class="b y25" style="width:100%"></div></div><span class="v">$73.6억 → $202.5억</span></div>
+      <div class="cmp-row"><span class="nm">매출총이익</span><div class="bars2"><div class="b y24" style="width:10.9%"></div><div class="b y25" style="width:71.5%"></div></div><span class="v">$22.1억 → $144.7억</span></div>
+      <div class="cmp-row"><span class="nm">영업이익</span><div class="bars2"><div class="b y24" style="width:0.5%; background:var(--neg-text)"></div><div class="b y25" style="width:61.2%"></div></div><span class="v">−$13.8억 → $123.9억</span></div>
+      <div class="cmp-row"><span class="nm">영업현금흐름</span><div class="bars2"><div class="b y24" style="width:0.4%"></div><div class="b y25" style="width:57.6%"></div></div><span class="v">$0.8억 → $116.7억</span></div>
+      <div class="cmp-row"><span class="nm">잉여현금흐름</span><div class="bars2"><div class="b y24" style="width:0.5%; background:var(--neg-text)"></div><div class="b y25" style="width:56.8%"></div></div><span class="v">−$1.2억 → $114.9억</span></div>
+    </div>
+
+    <h3>손익계산서</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2026</th><th class="num">FY2025</th><th class="num">YoY</th></tr>
+      <tr><td><b>매출</b></td><td class="num"><b>$202.48억</b><span class="krw">약 27조 3,470억원</span></td><td class="num">$73.55억<span class="krw">약 9조 9,340억원</span></td><td class="num up">+175%</td></tr>
+      <tr><td>매출총이익 <span class="hz">GPM 71.5% (전년 30.1%)</span></td><td class="num">$144.72억<span class="krw">약 19조 5,460억원</span></td><td class="num">$22.12억<span class="krw">약 2조 9,880억원</span></td><td class="num up">+554%</td></tr>
+      <tr><td><b>영업이익 (GAAP)</b> <span class="hz">OPM 61.2%</span></td><td class="num"><b>$123.89억</b><span class="krw">약 16조 7,330억원</span></td><td class="num dn">−$13.77억<span class="krw">약 −1조 8,600억원</span></td><td class="num up">흑자전환</td></tr>
+      <tr><td><b>순이익 (GAAP)</b> <span class="hz">순이익률 56.5%</span></td><td class="num"><b>$114.33억</b><span class="krw">약 15조 4,410억원</span></td><td class="num dn">−$16.41억<span class="krw">약 −2조 2,160억원</span></td><td class="num up">흑자전환</td></tr>
+      <tr><td>순이익 (Non-GAAP)</td><td class="num">$109.87억<span class="krw">약 14조 8,390억원</span></td><td class="num">$4.40억<span class="krw">약 5,940억원</span></td><td class="num up">약 25배</td></tr>
+      <tr><td>희석 EPS (GAAP / Non-GAAP)</td><td class="num">$73.76 / $70.88</td><td class="num">−$11.32 / $2.99</td><td class="num up">흑자전환 / 약 24배</td></tr>
+    </table>
+    </div>
+
+    <h3>재무상태표 (기말)</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">2026.7.3</th><th class="num">2025.6.27</th><th class="num">증감</th></tr>
+      <tr><td>현금성자산</td><td class="num">$47.62억<span class="krw">약 6조 4,320억원</span></td><td class="num">$14.81억<span class="krw">약 2조원</span></td><td class="num up">+222%</td></tr>
+      <tr><td>총자산</td><td class="num">$225.07억<span class="krw">약 30조 3,980억원</span></td><td class="num">$129.85억<span class="krw">약 17조 5,380억원</span></td><td class="num up">+73%</td></tr>
+      <tr><td>총부채</td><td class="num">$67.71억<span class="krw">약 9조 1,450억원</span></td><td class="num">$37.69억<span class="krw">약 5조 900억원</span></td><td class="num">+80%</td></tr>
+      <tr><td style="padding-left:24px; color:var(--text-soft);">↳ 차입금</td><td class="num"><b>$0</b></td><td class="num">$18.49억<span class="krw">약 2조 4,970억원</span></td><td class="num up">전액 상환</td></tr>
+      <tr><td><b>자본총계</b> <span class="hz">자기자본비율 69.9%</span></td><td class="num"><b>$157.36억</b><span class="krw">약 21조 2,530억원</span></td><td class="num">$92.16억<span class="krw">약 12조 4,470억원</span></td><td class="num up">+71%</td></tr>
+    </table>
+    </div>
+
+    <h3>현금흐름표</h3>
+    <div class="tbl-wrap">
+    <table class="fin">
+      <tr><th>항목</th><th class="num">FY2026</th><th class="num">FY2025</th><th class="num">YoY</th></tr>
+      <tr><td>영업활동현금흐름</td><td class="num">$116.71억<span class="krw">약 15조 7,630억원</span></td><td class="num">$0.84억<span class="krw">약 1,130억원</span></td><td class="num up">약 139배</td></tr>
+      <tr><td>설비투자 (Capex)</td><td class="num">$1.77억<span class="krw">약 2,390억원</span></td><td class="num">$2.04억<span class="krw">약 2,760억원</span></td><td class="num">−13%</td></tr>
+      <tr><td><b>잉여현금흐름 (FCF)</b></td><td class="num"><b>$114.94억</b><span class="krw">약 15조 5,240억원</span></td><td class="num dn">−$1.20억<span class="krw">약 −1,620억원</span></td><td class="num up">흑자전환</td></tr>
+      <tr><td>조정 FCF (회사 기준)</td><td class="num">$87.43억<span class="krw">약 11조 8,080억원</span></td><td class="num">$2.38억<span class="krw">약 3,210억원</span></td><td class="num up">약 37배</td></tr>
+      <tr><td>자사주 매입</td><td class="num">$45.24억<span class="krw">약 6조 1,100억원</span></td><td class="num">$0</td><td class="num up">신규</td></tr>
+    </table>
+    </div>
+    <div class="callout">
+      → FY2026은 스핀오프 1년 만에 <b>적자 회사가 초고수익 회사로 바뀐 해</b>입니다. 매출은 2.75배, 매출총이익률은 30% → 72%로 뛰었고 영업·순이익 모두 흑자전환했습니다.
+      특히 <b>설비투자가 매출의 1%도 안 되는 구조</b>(Kioxia JV가 팹 투자를 분담)라 영업현금이 거의 그대로 FCF로 남습니다. 그 돈으로 <b>차입금 $18억을 전액 갚고 자사주 $45억을 샀습니다</b>.<br>
+      주의할 점은 이 숫자의 대부분이 <b>낸드 가격 급등</b>에서 나왔다는 것입니다. 가격이 꺾이면 이익도 같은 속도로 줄어들 수 있어, 시장이 PER 8배라는 낮은 값만 주고 있습니다. 반대로 무차입·현금 $48억이라 <b>업황이 꺾여도 버틸 체력</b>은 충분합니다.
+      <br><span style="font-size:12.5px;">※ 회계연도는 6월 말~7월 초 마감(FY26 2026.7.3, FY25 2025.6.27). 출처: SanDisk 4분기·연간 실적 발표(2026.8.5, SEC 8-K Exhibit 99.1, 감사 전 수치). 원화는 리포트 공통 환율 1,350.6원 적용.</span>
+    </div>
+  </section>
+
+  <!-- 6. 주요 일정 -->
+  <section>
+    <h2>6. 주요 일정 (KST 기준)</h2>
     <table>
-      <tr><th style="width:26%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
-      <tr><td>수시</td><td>NAND 현물/계약 가격, 데이터센터 SSD 수요, 中 CXMT 진출, Kioxia JV, 메모리 업종(MU·SK하이닉스) 동조화</td><td><span class="star">★★★★★</span></td></tr>
-      <tr><td>10월 6일 (화)</td><td>Micron 대만 노조 파업 투표 마감 — 메모리 업종 심리에 영향</td><td><span class="star">★★</span><span class="star-dim">★★★</span></td></tr>
-      <tr><td>10월 8일 (목) 오전 3:00</td><td>9월 FOMC 의사록 — 매파적이면 금리 재상승 부담</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td>10월 둘째 주 (예상)</td><td>삼성전자 3분기 잠정실적 — 메모리(NAND 포함) 가격 흐름 첫 확인</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 말 (예상)</td><td>SK하이닉스 3분기 실적 — 낸드·eSSD(솔리다임) 흐름 비교</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
-      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 고용 쇼크 후 동결 기대(인상 확률 약 16%)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
-      <tr><td><b>10월 30일 (금) 새벽</b></td><td><b>Q1 FY2027 실적 발표 (美 현지 10/29 장마감 후, 회사 확정 공지)</b> — 가이던스($10.3~10.8B) 달성, 마진 방향, NBM 추가 계약, CXMT 관련 코멘트</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><th style="width:28%">일정 (KST)</th><th>내용</th><th style="width:16%">중요도</th></tr>
+      <tr><td>수시</td><td>중국 CXMT·YMTC 증설/기술 뉴스, NAND 현물·계약 가격, 메모리 업종(MU·SK하이닉스·삼성) 동조화</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 2:00</td><td>ASML 3분기 실적 — 반도체 장비 수주로 메모리 증설 사이클 확인</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 14일 (수) 오후 9:30</td><td><b>美 9월 CPI</b> — 근원 0.3% 이상이면 금리 재상승, 성장주 부담</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>10월 15일 (목) 오후 (美 개장 전)</td><td>TSMC 3분기 실적 — AI 데이터센터 투자 사이클</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 17일 (토) 오전 5:00</td><td>10월 월간 옵션만기 (현지 10/16 금 장마감)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
+      <tr><td>10월 넷째 주 (예상)</td><td><b>SK하이닉스 3분기 실적</b> — 낸드·eSSD(솔리다임) 가격·수요, 중국 경쟁에 대한 코멘트</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td>10월 29일 (목) 오전 3:00</td><td>FOMC 금리결정 — 10월 인상 확률 약 17~22% (CME, 10/10 기준)</td><td><span class="star">★★★★</span><span class="star-dim">★</span></td></tr>
+      <tr><td><b>10월 30일 (금) 새벽 5시경</b></td><td><b>Q1 FY2027 실적 발표 (美 현지 10/29 장마감 후, 회사 확정 공지)</b> — 가이던스($10.3~10.8B) 달성, 마진 방향, NBM 추가 계약, 중국 경쟁 영향 코멘트</td><td><span class="star">★★★★★</span></td></tr>
+      <tr><td>연말 (CXMT 계획)</td><td>CXMT 서버용 DDR5 RDIMM 출시 — 중국 메모리 추격 실체 확인</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
       <tr><td>11월 26일 (목) 오전 6:00 (예상)</td><td>NVIDIA 실적 — AI 데이터센터 수요(스토리지 포함) 확인</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
       <tr><td>12월 10일 (목) 오전 4:00</td><td>FOMC 금리결정 (2026년 마지막 회의)</td><td><span class="star">★★★</span><span class="star-dim">★★</span></td></tr>
     </table>
   </section>
 
-  <!-- 6. 핵심 한눈에 -->
+  <!-- 7. 핵심 한눈에 -->
   <section>
-    <h2>6. 핵심 한눈에 보기 📱</h2>
+    <h2>7. 핵심 한눈에 보기 📱</h2>
 
     <div class="key-hero">
       <div class="tag">한 줄 요약</div>
-      <div class="line"><em>AI 데이터센터 덕에 돈은 1년 새 4배 넘게 버는데,</em><br><strong>"이 호황이 얼마나 갈까" 의심에 주가는 롤러코스터.</strong></div>
+      <div class="line"><em>회사는 무차입에 PER 8배로 돈을 쓸어 담는데,</em><br><strong>"중국이 메모리를 싸게 쏟아낸다"는 공포에 2주 새 −14%.</strong></div>
     </div>
 
     <div class="key-two">
       <div class="key-card good">
         <h4>👍 좋은 점 3가지</h4>
         <ol>
-          <li><b>매출이 1년 새 4.7배</b><span>분기 12조원 · 다음 분기 +15~20% 더 예상</span></li>
+          <li><b>1년에 15조원 넘는 현금을 남김</b><span>매출 2.75배 · 빚 전부 갚음 · 자사주 6조원 매입</span></li>
           <li><b>2년치 주문을 미리 받아 둠</b><span>장기계약 127조원 · 내년 생산량 절반 확보</span></li>
-          <li><b>자기 주식을 19조원어치 사는 중</b><span>분기에만 6조원 매입 · S&amp;P 100 편입</span></li>
+          <li><b>주가가 이익에 비해 매우 쌈</b><span>다음 분기 이익 기준 PER 약 8배 · 월가 목표가 +46%</span></li>
         </ol>
       </div>
       <div class="key-card bad">
         <h4>👎 나쁜 점 3가지</h4>
         <ol>
-          <li><b>남는 이익률이 더 안 오름</b><span>84.6% → 다음 분기 83~85% · 가격 상승 둔화 신호</span></li>
-          <li><b>소비자용은 줄어듦</b><span>스마트폰·PC용 매출 -32%</span></li>
-          <li><b>하루에도 크게 출렁</b><span>2주 사이 -4% ~ +11% · 최고가 대비 -27%</span></li>
+          <li><b>중국 메모리 추격 공포</b><span>CXMT 신기술 발표에 메모리주 일제히 급락</span></li>
+          <li><b>차트가 무너짐</b><span>버티던 $1,660이 깨지고 6일 새 −13.5%</span></li>
+          <li><b>이익이 '가격'에 달려 있음</b><span>낸드 가격이 꺾이면 이익도 빠르게 줄 수 있음</span></li>
         </ol>
       </div>
     </div>
 
     <div class="key-dates">
       <div class="key-date">
-        <div class="d">10/8 새벽</div>
-        <div class="e">FOMC 의사록</div>
-        <div class="w">금리 오르면 하락 주의</div>
+        <div class="d">10/14 밤 9:30</div>
+        <div class="e">美 9월 물가(CPI)</div>
+        <div class="w">높으면 추가 하락 주의</div>
       </div>
       <div class="key-date">
-        <div class="d">10월 말</div>
+        <div class="d">10월 넷째 주</div>
         <div class="e">SK하이닉스 실적</div>
-        <div class="w">메모리 가격 흐름 확인</div>
+        <div class="w">낸드 가격 흐름 확인</div>
       </div>
       <div class="key-date hot">
         <div class="d">10/30 새벽</div>
@@ -599,22 +732,24 @@
 
     <div class="key-ladder">
       <h4>📍 가격 기준선</h4>
-      <div class="rung ok"><span class="px">$1,820 ↑</span><span>여기를 넘으면 → 다시 상승 🚀 (다음 $1,910 → $2,000대)</span></div>
-      <div class="rung now"><span class="px">$1,720</span><span>지금 (10/2 종가)</span></div>
-      <div class="rung warn"><span class="px">$1,690</span><span>이 아래면 → 조심 ⚠️ (최근 바닥)</span></div>
-      <div class="rung bad"><span class="px">$1,660</span><span>최후 방어선 🛑 (깨지면 $1,500대)</span></div>
+      <div class="rung ok"><span class="px">$1,660 ↑</span><span>여기를 다시 넘으면 → 반등 확인 🚀 (다음 $1,700 → $1,800대)</span></div>
+      <div class="rung now"><span class="px">$1,487</span><span>지금 (10/12 종가 · 10/13 장중 $1,400대)</span></div>
+      <div class="rung warn"><span class="px">$1,400</span><span>이 아래면 → 조심 ⚠️ (10/13 장중 저점)</span></div>
+      <div class="rung bad"><span class="px">$1,300</span><span>최후 방어선 🛑 (깨지면 $1,200까지)</span></div>
     </div>
 
     <div class="key-final">
-      💡 <b>결론:</b> 회사는 역대급으로 돈을 벌고 있지만, 주가는 <b>"NAND 가격이 언제 꺾이나"</b>를 걱정하며 $1,660~1,820 사이를 크게 오가고 있습니다.
-      하루 변동이 크니 <b>한 번에 사지 말고 $1,700 아래에서 나눠서</b>, 진짜 방향은 <b>10/30 새벽 실적의 마진·다음 분기 가이던스</b>를 보고 정하는 게 안전합니다.
+      ⚖️ <b>호재·악재 점수: +16.0 vs −15.3 → 균형(+0.7)</b> — 단기는 악재 우위(−5.7), 중기는 호재 우위(+6.4).<br>
+      💡 <b>결론:</b> 지금 하락은 회사가 아니라 <b>"메모리 업종 공포"</b> 때문이라, 길게 보면 싼 가격입니다. 하지만 공포 국면은 바닥을 예측하기 어렵습니다.
+      <b>$1,400~1,450에서 아주 작게 나눠서</b> 담고, 본격 매수는 <b>$1,660 회복이나 10/30 실적 확인 뒤</b>로 미루는 게 안전합니다. <b>$1,400이 종가로 깨지면</b> 추가 매수를 멈추세요.
+      하루 ±5% 넘게 움직이는 종목이라 레버리지 선물은 청산 위험이 매우 큽니다. 레버리지는 2배 이하로 낮추고, 손절 주문을 미리 걸어두세요.
     </div>
   </section>
 
   <footer>
-    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.02 16:00 ET 정규장 마감 (KST 2026.10.03 오전 5:00). 일별 시세는 Investing.com 기준.
-    실적은 FY2026 Q4(2026.08.05 발표, 회계분기 마감 2026.07.03) 기준. 다음 실적일(10/29 현지)은 회사 공식 공지(9/29) 기준이며 정확한 KST 시각은 근접 시 재확인이 필요합니다.
-    원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률은 주관적 판단입니다. 가격은 OKX 퍼블릭 API(SNDKUSDT.P)로 30초마다 자동 갱신됩니다.
+    ※ 본 자료는 공개된 차트·뉴스 기반 분석이며 투자 조언이 아닙니다. 데이터 기준: 2026.10.12 16:00 ET 정규장 마감 (KST 2026.10.13 오전 5:00), 일별 시세·시가총액·목표가는 StockAnalysis 기준. 10/13 장중 시세(KST 23:00~00:00)는 진행 중 값입니다.
+    실적은 FY2026 Q4·연간(2026.08.05 발표, 회계연도 마감 2026.07.03, 감사 전) 기준. 다음 실적일(10/29 현지)은 회사 공식 공지(9/29) 기준이며 정확한 KST 시각은 근접 시 재확인이 필요합니다.
+    중국 CXMT 관련 내용은 10/12~13 보도 기준이며, S&amp;P 신용등급 상향은 보도 헤드라인 기준으로 원문을 확인하지 못했습니다. 원화 환산은 10/2 원·달러 주간 종가 1,350.6원 적용(10억원 단위 반올림). 시나리오 확률과 요인별 점수는 주관적 판단입니다.
   </footer>
 
 </div>
@@ -702,7 +837,7 @@
       updatedEl.textContent = `마지막 갱신: ${fmtTimeKST()} · OKX SNDKUSDT.P 무기한선물 기준`;
       badgeEl.style.opacity = "1";
     } catch(err){
-      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/2 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
+      updatedEl.textContent = "실시간 시세를 불러오지 못했습니다 — 위 가격은 10/12 정규장 마감 기준 값입니다 (파일을 브라우저에서 열면 자동 재시도합니다)";
       badgeEl.style.opacity = "0.4";
       console.error("Live price fetch failed:", err);
     }
