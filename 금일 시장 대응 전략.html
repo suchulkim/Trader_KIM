@@ -127,8 +127,8 @@
   .sec b{font-size:14px;}
   .news{font-size:15px;line-height:1.55;margin:0;padding:0;}
   .news li{list-style:none;margin-bottom:5px;display:flex;gap:8px;}
-  .news .p,.news .m{flex:none;min-width:24px;font-weight:800;font-variant-numeric:tabular-nums;}
-  .news .p{color:var(--long);} .news .m{color:var(--short);}
+  .news .p,.news .m,.news .z{flex:none;min-width:24px;font-weight:800;font-variant-numeric:tabular-nums;}
+  .news .p{color:var(--long);} .news .m{color:var(--short);} .news .z{color:var(--soft);}
   .plan{font-size:15px;background:var(--card-2);border-radius:10px;padding:12px 14px;line-height:1.55;}
   .plan .t{font-weight:900;font-size:16px;margin-bottom:6px;}
   .plan .ln{display:flex;gap:10px;margin-bottom:4px;}
@@ -229,40 +229,40 @@
    1) 재료 점수 — 매일 이 블록만 갱신하면 됩니다.
    items: [점수, "내용"]  (+1/+2 호재, -1/-2 악재)  → 합계 ±2 cap
    ========================================================= */
-const NEWS_DATE = "2026-10-12";
+const NEWS_DATE = "2026-10-13";
 const T = [
-  {s:"SPY", n:"S&P 500 ETF", cat:"macro", items:[[1,"3대 지수 주간 상승 마감(10/9 S&P 7,811)"],[1,"10월 인상 확률 20%대로 하락"],[-1,"10년물 5.24% — 24년 최고권 유지"],[-1,"9월 CPI 3.7% 재가속 예상(10/14)"]]},
-  {s:"QQQ", n:"Nasdaq-100", cat:"macro", items:[[1,"MSFT·AMZN·PLTR 반등(10/9)"],[1,"10월 인상 확률 20%대"],[-1,"반도체 약세 지속(SOXL 주간 -14.6%)"],[-1,"10년물 5.24% 고공행진"],[-1,"CPI 재가속 예상(10/14)"]]},
-  {s:"XAU", n:"Gold", cat:"macro", items:[[1,"금 +1.5% $4,220(10/9)"],[1,"호르무즈 유조선 공격·이란 '美 제안 불충분'"],[-1,"실질금리 고공행진"]]},
-  {s:"CL", n:"WTI 원유", cat:"macro", items:[[-1,"트럼프 '러·우 에너지 휴전' 발표(10/11) — 아시아장 WTI -1.7%"],[-1,"美·러 디젤 공급 합의(10/9)"],[1,"이란 '호르무즈 재개방 美 제안 불충분'·유조선 공격 지속"],[1,"골드만 12월 브렌트 전망 $85→$90 상향"]]},
-  {s:"PLTR", n:"Palantir", cat:"us", items:[[1,"10/9 +5.2% — AI 칩→소프트웨어 자금 이동"]]},
-  {s:"AMZN", n:"Amazon", cat:"us", items:[[1,"10/9 +3.3% — 빅테크 순환매 수혜"],[1,"프라임 세일(10/6~7) 효과"]]},
-  {s:"MSFT", n:"Microsoft", cat:"us", items:[[1,"Melius 매수·웰스파고 목표가 $725"],[1,"10/9 +2.4% 반등"]]},
-  {s:"TSLA", n:"Tesla", cat:"us", items:[[1,"Cybercab 운행 확대(45→169대)"],[1,"10/16 로드스터 시연 기대"],[-1,"에너지 저장 부진·재고 털어 맞춘 인도량"]]},
-  {s:"GOOGL", n:"Alphabet", cat:"us", items:[[1,"Constellation 원전 전력 계약 기대(10/6)"]]},
-  {s:"SPCX", n:"SpaceX", cat:"us", items:[[1,"美 저대역 주파수 인수 — 통신주 급락(TMUS -13%)으로 위협 부각"],[1,"락업 해제 ①(3.28억주) 무난 소화"],[-1,"$400억 부채로 엔비디아 칩 구매 보도"]]},
-  {s:"META", n:"Meta", cat:"us", items:[[1,"AI 비서 Muse 흥행"],[1,"트럼프 주식 매수 보도"],[-1,"뉴멕시코 벌금 판결 대기"],[-1,"합의금 13조원 3분기 비용"]]},
-  {s:"AAPL", n:"Apple", cat:"us", items:[[-2,"아이폰18 Pro 주문 감축 보도 — 10/9 -1.1%"],[1,"중국 아이폰 판매 +12%"]]},
-  {s:"NVDA", n:"NVIDIA", cat:"semi", items:[[1,"Foxconn 호실적"],[1,"오픈모델 '리플렉션 AI' 인수 협상 보도(10/11)"],[-2,"최대 고객 OpenAI 매출 하향 보도 — 10/9도 -0.5%"]]},
-  {s:"AMD", n:"AMD", cat:"semi", items:[[1,"리사 수 '향후 수년 강한 수요'"],[-2,"OpenAI(핵심 파트너) 매출 하향 보도"]]},
-  {s:"AVGO", n:"Broadcom", cat:"semi", items:[[-1,"OpenAI 쇼크 — 맞춤형 AI 칩 수요 의구심"]]},
-  {s:"TSM", n:"TSMC ADR", cat:"semi", items:[[2,"3분기 매출 사상 최대(가이던스 상단 상회)"],[1,"머스크 Terafab 협상"],[-1,"美 관세 압박(최대 200%)"],[-1,"OpenAI 쇼크로 AI 칩 심리 위축"]]},
-  {s:"MU", n:"Micron", cat:"semi", items:[[-2,"대만 노조 파업권 확보(99% 찬성)"],[-1,"OpenAI 쇼크 — 10/9도 -0.7%"],[1,"목표가 상향(DA데이비슨·로젠블랫)"]]},
-  {s:"SNDK", n:"SanDisk", cat:"semi", items:[[-1,"OpenAI 쇼크 — 메모리 호황 지속성 의심"]]},
-  {s:"SKHY", n:"SK하이닉스", cat:"semi", items:[[1,"삼성 잠정실적으로 메모리 업황 확인"],[-1,"외국인 1조431억 순매도 1위 — 10/12 -4.5% 저가 마감"],[-1,"자사주 매입 막바지 — 수급 공백"],[-1,"연휴 중 AI 수익성 의구심 일괄 반영"]]},
-  {s:"SOXL", n:"반도체 3x", cat:"semi", items:[[-2,"OpenAI 쇼크 — 주간 -14.6%"],[1,"TSMC 3분기 매출 사상 최대"]]},
-  {s:"EWY", n:"Korea ETF", cat:"kr", items:[[-1,"외국인 2조 순매도·코스피 -3.65% 6,384(10/12)"],[-1,"외국인 10거래일 연속 매도"],[1,"삼성 사상 최대 실적·반도체 수출 호조"]]},
-  {s:"KORU", n:"Korea 3x", cat:"kr", items:[[-1,"코스피 -3.65%·코스닥 -4.83%(10/12)"],[-1,"외국인 10거래일 연속 매도"],[1,"삼성 사상 최대 실적"]]},
-  {s:"SAMSUNG", n:"삼성전자", cat:"kr", items:[[2,"3분기 영업익 107.4조 사상 최대(10/8)"],[-1,"호실적 셀온 — 10/12 -4.4%, 외국인 5,331억 매도"],[-1,"자사주 매입 막바지·ETF 비중 상한 매도"]]},
-  {s:"HYUNDAI", n:"현대차", cat:"kr", items:[[-2,"3분기 이익 추정 하향·목표가 줄하향"],[1,"美 판매 사상 최대"]]},
-  {s:"LGELECTRONICS", n:"LG전자", cat:"kr", items:[[2,"AI 데이터센터 칠러 역대 최대 수주(10/5)"],[-2,"3분기 영업익 컨센서스 -24% 어닝미스(10/7)"]]},
-  {s:"NAVER", n:"네이버", cat:"kr", items:[[-2,"두나무 합병 3차 연기(10/7)"]]},
-  {s:"BTC", n:"Bitcoin", cat:"crypto", items:[[1,"주말 반등 $84K 회복 — 러·우 에너지 휴전·유가 하락"],[1,"BTC 현물 ETF 순유입 전환(10/9)"],[-1,"美 상원 클래리티법 제동 — 규제 불확실성"],[-1,"10년물 24년 최고권 고금리 부담"],[1,"10월 인상 확률 하락"]]},
-  {s:"ETH", n:"Ethereum", cat:"crypto", items:[[1,"주말 +2%대 반등·알트 강세"],[1,"10월 인상 확률 하락"],[-1,"ETH 현물 ETF 9거래일 연속 순유출"],[-1,"美 상원 클래리티법 제동"]]},
-  {s:"SOL", n:"Solana", cat:"crypto", items:[[1,"주말 알트 동반 반등"],[-1,"美 상원 클래리티법 제동"]]},
-  {s:"ONDO", n:"Ondo", cat:"crypto", items:[[-1,"美 상원 클래리티법 제동 — 토큰화 규제 지연"]]},
-  {s:"MSTR", n:"MicroStrategy", cat:"crypto", items:[[1,"BTC $84K 회복"],[-1,"美 상원 클래리티법 제동"]]},
-  {s:"CRCL", n:"Circle", cat:"crypto", items:[[-1,"美 금리 고공행진(이자수익 vs 밸류 부담)"],[1,"금리 인상 확률 하락"],[-1,"美 상원 클래리티법 제동"]]}
+  {s:"SPY", n:"S&P 500 ETF", cat:"macro", items:[[0,"10/12 S&P -0.06% 7,807 보합 — 다우 +0.4%·나스닥 -0.4% 가치주 순환"],[-1,"9월 CPI 3.6% 재가속 예상(10/14 21:30)"],[-1,"10년물 5.24% — 24년 최고권 유지"],[1,"대형은행 실적 시즌 개막(오늘 19:45~)"]]},
+  {s:"QQQ", n:"Nasdaq-100", cat:"macro", items:[[-1,"10/12 나스닥 -0.44% — S&P 기술업종 -1.25%"],[-1,"中 CXMT발 메모리주 급락"],[1,"MSFT·AAPL·META 대형주 강세 방어"],[-1,"CPI 재가속 예상(10/14)"]]},
+  {s:"XAU", n:"Gold", cat:"macro", items:[[-1,"10/12 금 -0.6% $4,168 — 달러·금리 강세"],[1,"후티 리야드 공항 공격·호르무즈 유조선 피격"],[-1,"실질금리 고공행진"]]},
+  {s:"CL", n:"WTI 원유", cat:"macro", items:[[1,"10/12 WTI +2.1% $93.8·브렌트 $106 — 후티 사우디 공항 공격"],[1,"트럼프 '사우디의 후티 공격 동참' 시사"],[-1,"러시아 디젤 공급 합의 — 10/13 아시아장 브렌트 -1%"],[-1,"러, 우크라 발전소 타격 — 에너지 휴전 흔들"]]},
+  {s:"PLTR", n:"Palantir", cat:"us", items:[[1,"사상 최고가권 유지 — 바클레이스 $265"],[-1,"기술주 약세(나스닥 -0.4%)"]]},
+  {s:"AMZN", n:"Amazon", cat:"us", items:[[-1,"10/12 -1.1% $259.5 — 전주 급등분 차익"],[1,"프라임 세일 효과 기대"]]},
+  {s:"MSFT", n:"Microsoft", cat:"us", items:[[1,"10/12 +1.1% $541 — 빅테크 순환매"],[1,"Melius 매수·웰스파고 $725"]]},
+  {s:"TSLA", n:"Tesla", cat:"us", items:[[-1,"10/12 -1.2% $378"],[1,"10/16 09:00 로드스터 시연 기대"],[1,"Cybercab 운행 확대"],[-1,"에너지 저장 부진·재고 털어 맞춘 인도량"]]},
+  {s:"GOOGL", n:"Alphabet", cat:"us", items:[[1,"10/12 +0.3% $349 — 견조"],[1,"원전 전력 계약 기대"]]},
+  {s:"SPCX", n:"SpaceX", cat:"us", items:[[1,"애널리스트 상승여력 60% 제시(10/13)"],[1,"美 저대역 주파수 인수 — 통신 위협 부각"],[-1,"$400억 부채로 엔비디아 칩 구매 보도"]]},
+  {s:"META", n:"Meta", cat:"us", items:[[2,"10/12 +3.4% $743 — AI 비서 Muse 흥행·Muse Wonder 모델"],[1,"웰스파고 목표가 $1,000"],[-1,"뉴멕시코 벌금(최대 $400억) 판결 대기"],[-1,"합의금 13조원 3분기 비용"]]},
+  {s:"AAPL", n:"Apple", cat:"us", items:[[1,"10/12 +1.3% $341 — 주문감축 악재 되돌림"],[1,"10/14 02:00 스마트홈 신제품(Siri AI)"],[-1,"사상 최고가 $345 이중천정 우려·평균 목표가 $328 상회"]]},
+  {s:"NVDA", n:"NVIDIA", cat:"semi", items:[[-1,"10/12 -1.3% $226 — 반도체 밸류 부담"],[1,"OpenAI 연매출 $700억 목표 — 수요 우려 완화"],[-1,"OpenAI 매출 하향 보도 여진"]]},
+  {s:"AMD", n:"AMD", cat:"semi", items:[[1,"리사 수 '향후 수년 강한 수요'"],[-1,"반도체 업종 약세(S&P 기술 -1.25%)"],[-1,"OpenAI(핵심 파트너) 매출 의구심"]]},
+  {s:"AVGO", n:"Broadcom", cat:"semi", items:[[-1,"반도체 밸류 부담 — 마벨 -3.4%·루멘텀 -10%"],[-1,"OpenAI 쇼크 — 맞춤형 칩 수요 의구심"]]},
+  {s:"TSM", n:"TSMC ADR", cat:"semi", items:[[2,"3분기 매출 +50% 사상 최대 — 10/15 실적(EPS $4.48 예상)"],[-1,"반도체 업종 약세"],[-1,"美 관세 압박(최대 200%)"]]},
+  {s:"MU", n:"Micron", cat:"semi", items:[[-2,"10/12 -4% $984 — 中 CXMT 고밀도(4F²) 서버 D램 연내 출시"],[-1,"MS 자체칩 경쟁 우려 — $1,000 하회"],[-1,"대만 노조 파업권 확보"],[1,"목표가 상향(DA데이비슨·로젠블랫)"]]},
+  {s:"SNDK", n:"SanDisk", cat:"semi", items:[[-2,"10/12 -6% — CXMT발 메모리 경쟁 우려"],[-1,"메모리 호황 지속성 의심"]]},
+  {s:"SKHY", n:"SK하이닉스", cat:"semi", items:[[-2,"10/13 -10.1% 144.3만 — CXMT 서버 D램 공포"],[-2,"외국인 2조3,613억 순매도(1위)"],[-1,"자사주 매입 종료 — 수급 공백"],[-1,"ADR 10/12 -4% $162"]]},
+  {s:"SOXL", n:"반도체 3x", cat:"semi", items:[[-2,"메모리 급락·S&P 기술 -1.25%"],[1,"TSMC 실적(10/15) 반등 계기 기대"]]},
+  {s:"EWY", n:"Korea ETF", cat:"kr", items:[[-2,"10/13 코스피 -5.46% 6,035 '검은 화요일' — 매도 사이드카"],[-2,"외국인 4.5조 순매도 — 70일 만에 최대"],[-1,"5거래일 -13.8%·시총 800조 증발"],[1,"개인 2.2조·기관 1.7조 순매수"]]},
+  {s:"KORU", n:"Korea 3x", cat:"kr", items:[[-2,"코스피 -5.46%·장중 5,911(6천 붕괴)"],[-2,"외국인 4.5조 투매"],[1,"과매도 — 기술적 반등 여지"]]},
+  {s:"SAMSUNG", n:"삼성전자", cat:"kr", items:[[-2,"10/13 -7.4% 23.2만 — CXMT 서버 D램 경쟁"],[-1,"외국인 1조3,595억 순매도"],[-1,"임직원 보상용 자사주 매입 종료"],[1,"3분기 영업익 107.4조 사상 최대"]]},
+  {s:"HYUNDAI", n:"현대차", cat:"kr", items:[[-1,"10/13 장중 -5% 30.35만 — 지수 급락 동반"],[-2,"3분기 이익 추정 하향·목표가 줄하향"],[1,"美 판매 사상 최대"]]},
+  {s:"LGELECTRONICS", n:"LG전자", cat:"kr", items:[[-1,"10/13 장중 -4% 17.7만"],[1,"AI 데이터센터 칠러 역대 최대 수주"],[-2,"3분기 영업익 컨센서스 -24% 어닝미스"]]},
+  {s:"NAVER", n:"네이버", cat:"kr", items:[[-2,"두나무 합병 3차 연기(10/7)"],[-1,"코스피 급락 동반"]]},
+  {s:"BTC", n:"Bitcoin", cat:"crypto", items:[[-1,"$83.7K — $84K 회복 실패·$81K까지 밀려 롱 1.2억$ 청산"],[-1,"현물 ETF 주간 -$6.8억 — 6월 이후 최대 유출"],[-1,"달러·금리·유가 강세"],[1,"Strategy 250 BTC 추가 매수"],[0,"10/14 CPI 변동성 대기"]]},
+  {s:"ETH", n:"Ethereum", cat:"crypto", items:[[-1,"ETH 현물 ETF 순유출 지속(10월 누적 $10억↑ 유출)"],[-1,"美 상원 클래리티법 제동"],[0,"10/14 CPI 대기"]]},
+  {s:"SOL", n:"Solana", cat:"crypto", items:[[-1,"24h -3.3% — 상위 코인 중 낙폭 3위"],[-1,"美 상원 클래리티법 제동"]]},
+  {s:"ONDO", n:"Ondo", cat:"crypto", items:[[-1,"美 상원 클래리티법 제동 — 토큰화 규제 지연"],[-1,"FSB 스테이블코인 감독 강화 요구"]]},
+  {s:"MSTR", n:"MicroStrategy", cat:"crypto", items:[[1,"250 BTC 추가 매수"],[-1,"BTC $84K 저항·ETF 유출"]]},
+  {s:"CRCL", n:"Circle", cat:"crypto", items:[[-1,"FSB·G20 스테이블코인 감독 강화 요구"],[-1,"美 상원 클래리티법 제동"],[1,"고금리 — 준비금 이자수익 유지"]]}
 ];
 
 /* 2) 일정 (KST, 24시간 이내면 ⚡) */
@@ -271,13 +271,15 @@ const EVENTS = [
   {at:"2026-10-14T02:00", who:["AAPL"], what:"스마트홈 신제품"},
   {at:"2026-10-14T14:00", who:["semi","kr"], what:"ASML 실적"},
   {at:"2026-10-14T19:45", who:["SPY"], what:"BofA·모건스탠리 실적"},
-  {at:"2026-10-14T21:30", who:["all"], what:"9월 CPI"},
+  {at:"2026-10-14T21:30", who:["all"], what:"9월 CPI(예상 3.6%)"},
   {at:"2026-10-15T03:00", who:["macro"], what:"연준 베이지북"},
   {at:"2026-10-15T15:00", who:["TSM","semi","kr"], what:"TSMC 실적"},
   {at:"2026-10-15T21:30", who:["all"], what:"PPI·소매판매"},
   {at:"2026-10-16T09:00", who:["TSLA"], what:"로드스터 시연"},
   {at:"2026-10-17T05:00", who:["us","semi","macro"], what:"월간 옵션 만기"},
-  {at:"2026-10-29T03:00", who:["all"], what:"FOMC"}
+  {at:"2026-10-29T03:00", who:["all"], what:"FOMC"},
+  {at:"2026-10-29T05:00", who:["META"], what:"메타 실적"},
+  {at:"2026-10-30T05:30", who:["AAPL"], what:"애플 실적"}
 ];
 const kst = s => new Date(s + ":00+09:00").getTime();
 function eventsFor(t, now){
@@ -381,7 +383,7 @@ function rowHTML(t, now){
   const r = classify(t);
   const evs = eventsFor(t, now);
   const evTag = evs.map(e => `<span class="tag ev">⚡ ${e.what} ${e.at.slice(5,10).replace("-","/")} ${e.at.slice(11)}</span>`).join("");
-  const news = t.items.length ? `<ul class="news">${t.items.map(([v,txt]) => `<li><span class="${v>0?'p':'m'}">${v>0?'+':''}${v}</span><span>${txt}</span></li>`).join("")}</ul>` : `<div class="news" style="color:var(--soft)">최근 5일 뚜렷한 개별 재료 없음 (0)</div>`;
+  const news = t.items.length ? `<ul class="news">${t.items.map(([v,txt]) => `<li><span class="${v>0?'p':v<0?'m':'z'}">${v>0?'+':''}${v}</span><span>${txt}</span></li>`).join("")}</ul>` : `<div class="news" style="color:var(--soft)">최근 5일 뚜렷한 개별 재료 없음 (0)</div>`;
   const nwTxt = r.nw.side==="good"?"호재 우위":r.nw.side==="bad"?"악재 우위":"중립";
   const d = r.m ? r.m.d : "wait";
   let trHTML;
