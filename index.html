@@ -527,6 +527,7 @@
     <div class="hm-head">
       <span class="hm-title" id="hmTitle">🗺️ 워치리스트 히트맵</span>
       <div class="hm-modes" role="group" aria-label="등락률 기준">
+        <button type="button" data-mode="m15" aria-pressed="false" id="hmBtnM15">15분봉</button>
         <button type="button" data-mode="sum" aria-pressed="true">24시간</button>
         <button type="button" data-mode="curr" aria-pressed="false" id="hmBtnCurr">현재 구간</button>
         <button type="button" data-mode="prev" aria-pressed="false" id="hmBtnPrev">직전 구간</button>
@@ -879,10 +880,27 @@
     };
   }
 
+  // 15분봉: 진행 중인 최신 15분봉(시가 대비 현재가)과 직전 완료 15분봉 변동률
+  const m15Cache = {};
+  async function fetch15mForSymbol(sym) {
+    const url = OKX_CANDLES_ENDPOINT + '?instId=' + okxInstId(sym) + '&bar=15m&limit=2';
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error('okx http ' + res.status);
+    const data = await res.json();
+    if (!data || data.code !== '0' || !Array.isArray(data.data) || !data.data.length) throw new Error('okx bad payload');
+    const c = data.data.map(r => ({ ts: parseInt(r[0], 10), o: parseFloat(r[1]), c: parseFloat(r[4]) })).sort((a, b) => b.ts - a.ts);
+    const pct = k => (c[k] && c[k].o > 0) ? ((c[k].c - c[k].o) / c[k].o) * 100 : null;
+    return { pct: pct(0), prevPct: pct(1), ts: c[0].ts, close: c[0].c };
+  }
+
   async function refreshQuotes() {
     const symbols = HM_GROUPS.flatMap(g => g.items.map(i => i.sym));
 
-    const results = await Promise.allSettled(symbols.map(sym => fetchKstAlignedChangeForSymbol(sym)));
+    const [results, res15] = await Promise.all([
+      Promise.allSettled(symbols.map(sym => fetchKstAlignedChangeForSymbol(sym))),
+      Promise.allSettled(symbols.map(sym => fetch15mForSymbol(sym))),
+    ]);
+    symbols.forEach((sym, i) => { if (res15[i].status === 'fulfilled') m15Cache[sym] = res15[i].value; });
 
     let anySuccess = false;
     symbols.forEach((sym, i) => {
@@ -964,6 +982,7 @@
   function hmPct(sym) {
     const g = lastGoodChg[sym];
     if (!g) return null;
+    if (hmMode === 'm15') return m15Cache[sym] ? m15Cache[sym].pct : null;
     if (hmMode === 'curr') return g.currPct;
     if (hmMode === 'prev') return g.prevPct;
     return ((1 + g.prevPct / 100) * (1 + g.currPct / 100) - 1) * 100;
@@ -1011,6 +1030,14 @@
     return out;
   }
 
+  // 15분봉은 움직임이 작으므로 색 범위를 ±1%로 좁힌다 (24시간·12시간 구간은 ±3%)
+  function hmScale() { return hmMode === 'm15' ? 3 : 1; }
+  function hmLegend() {
+    const leg = document.getElementById('hmLegend'); if (!leg) return;
+    const sc = hmScale();
+    leg.innerHTML = [-3, -2, -1, 0, 1, 2, 3].map(v => { const x = v / sc; return '<span style="background:' + hmColor(v) + '">' + (x > 0 ? '+' : '') + Number(x.toFixed(2)) + '%</span>'; }).join('');
+  }
+
   function hmFmtPct(p) { return (p === null || p === undefined || Number.isNaN(p)) ? '···' : (p > 0 ? '+' : '') + p.toFixed(2) + '%'; }
 
   function renderHeatmap() {
@@ -1033,7 +1060,7 @@
         const showPct = side > 26, showPx = side > 90 && r.w > 90;
         const g2 = lastGoodChg[sym];
         html += '<a class="hm-tile' + (stale ? ' stale' : '') + '" href="' + it.href + '" data-sym="' + sym + '" data-name="' + it.name.replace(/"/g, '&quot;') + '"'
-          + ' style="left:' + (r.x + GAP) + 'px;top:' + (r.y + LABEL) + 'px;width:' + r.w + 'px;height:' + r.h + 'px;background:' + hmColor(p) + '">'
+          + ' style="left:' + (r.x + GAP) + 'px;top:' + (r.y + LABEL) + 'px;width:' + r.w + 'px;height:' + r.h + 'px;background:' + hmColor(p === null ? null : p * hmScale()) + '">'
           + '<span class="t-sym" style="font-size:' + fs.toFixed(1) + 'px">' + lbl + '</span>'
           + (showPct ? '<span class="t-pct" style="font-size:' + Math.max(9, fs * 0.55).toFixed(1) + 'px">' + hmFmtPct(p) + '</span>' : '')
           + (showPx && g2 ? '<span class="t-px">' + formatPrice(g2.currPrice) + '</span>' : '')
@@ -1044,6 +1071,11 @@
     box.innerHTML = html;
 
     const any = Object.values(lastGoodChg)[0];
+    const m15Any = Object.values(m15Cache)[0], btnM = document.getElementById('hmBtnM15');
+    if (m15Any && btnM) {
+      const k = toKstShifted(m15Any.ts), p2 = n => String(n).padStart(2, '0');
+      btnM.textContent = '15분봉 (' + p2(k.getUTCHours()) + ':' + p2(k.getUTCMinutes()) + '~)';
+    }
     const btnC = document.getElementById('hmBtnCurr'), btnP = document.getElementById('hmBtnPrev');
     if (any) {
       if (btnC) btnC.textContent = '현재 구간 (' + any.currLabel + '~)';
@@ -1052,11 +1084,11 @@
   }
 
   (function initHeatmap() {
-    const leg = document.getElementById('hmLegend');
-    if (leg) leg.innerHTML = [-3, -2, -1, 0, 1, 2, 3].map(v => '<span style="background:' + hmColor(v) + '">' + (v > 0 ? '+' : '') + v + '%</span>').join('');
+    hmLegend();
     document.querySelectorAll('.hm-modes button').forEach(b => b.addEventListener('click', () => {
       hmMode = b.dataset.mode;
       document.querySelectorAll('.hm-modes button').forEach(x => x.setAttribute('aria-pressed', x === b ? 'true' : 'false'));
+      hmLegend();
       renderHeatmap();
     }));
     const tip = document.getElementById('hmTip'), box = document.getElementById('heatmap');
@@ -1070,6 +1102,8 @@
              + '<div class="row"><span>' + g.prevLabel + '~</span><span>' + hmFmtPct(g.prevPct) + '</span></div>'
              + '<div class="row"><span>' + g.currLabel + '~</span><span>' + hmFmtPct(g.currPct) + '</span></div>'
              + '<div class="row"><span>24시간</span><span>' + hmFmtPct(((1 + g.prevPct / 100) * (1 + g.currPct / 100) - 1) * 100) + '</span></div>'
+             + (m15Cache[t.dataset.sym] ? '<div class="row"><span>15분봉 (현재)</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].pct) + '</span></div>'
+                + '<div class="row"><span>15분봉 (직전)</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].prevPct) + '</span></div>' : '')
              : '<div class="row"><span>시세</span><span>불러오는 중</span></div>');
         tip.style.display = 'block';
         const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
