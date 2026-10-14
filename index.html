@@ -511,13 +511,13 @@
     <div class="eyebrow">Watchlist Reports</div>
     <h1>MARKET DASHBOARD</h1>
     <nav class="top-nav" aria-label="페이지 이동">
-      <a href="macro_tv_15m.html">📊 마켓 대시보드 <span class="arr">→</span></a>
-      <a href="watchlist_tv_15m.html">📈 15분봉 차트 워치리스트 <span class="arr">→</span></a>
-      <a href="관심종목_핵심요약.html">📝 관심종목 핵심요약 <span class="arr">→</span></a>
-      <a href="금일%20종목별%20전략.html">🎯 금일 종목별 전략 <span class="arr">→</span></a>
-      <a href="금일%20시장%20예상%20시나리오.html">🔮 금일 시장 예상 시나리오 <span class="arr">→</span></a>
-      <a href="매크로%20지수%20결과.html">📉 매크로 지수 결과 <span class="arr">→</span></a>
-      <a href="매매일지.html">📒 매매일지 🔒 <span class="arr">→</span></a>
+      <a href="macro_tv_15m.html" target="_blank" rel="noopener">📊 마켓 대시보드 <span class="arr">→</span></a>
+      <a href="watchlist_tv_15m.html" target="_blank" rel="noopener">📈 15분봉 차트 워치리스트 <span class="arr">→</span></a>
+      <a href="관심종목_핵심요약.html" target="_blank" rel="noopener">📝 관심종목 핵심요약 <span class="arr">→</span></a>
+      <a href="금일%20종목별%20전략.html" target="_blank" rel="noopener">🎯 금일 종목별 전략 <span class="arr">→</span></a>
+      <a href="금일%20시장%20예상%20시나리오.html" target="_blank" rel="noopener">🔮 금일 시장 예상 시나리오 <span class="arr">→</span></a>
+      <a href="매크로%20지수%20결과.html" target="_blank" rel="noopener">📉 매크로 지수 결과 <span class="arr">→</span></a>
+      <a href="매매일지.html" target="_blank" rel="noopener">📒 매매일지 🔒 <span class="arr">→</span></a>
     </nav>
     <p class="sub">히트맵의 종목 칸을 클릭하면 해당 종목 분석 리포트(실시간 차트 포함)로 이동합니다.</p>
     <div class="quote-updated" id="quoteUpdated">💹 실시간 등락률 불러오는 중...</div>
@@ -527,7 +527,7 @@
     <div class="hm-head">
       <span class="hm-title" id="hmTitle">🗺️ 워치리스트 히트맵</span>
       <div class="hm-modes" role="group" aria-label="등락률 기준">
-        <button type="button" data-mode="m15" aria-pressed="false" id="hmBtnM15">15분봉</button>
+        <button type="button" data-mode="m15" aria-pressed="false" id="hmBtnM15">15분봉×2</button>
         <button type="button" data-mode="sum" aria-pressed="true">24시간</button>
         <button type="button" data-mode="curr" aria-pressed="false" id="hmBtnCurr">현재 구간</button>
         <button type="button" data-mode="prev" aria-pressed="false" id="hmBtnPrev">직전 구간</button>
@@ -880,7 +880,7 @@
     };
   }
 
-  // 15분봉: 진행 중인 최신 15분봉(시가 대비 현재가)과 직전 완료 15분봉 변동률
+  // 15분봉: 직전 완료 15분봉 + 진행 중인 15분봉 → 합산 변동률(직전 봉 시가 대비 현재가)로 히트맵 색 표시
   const m15Cache = {};
   async function fetch15mForSymbol(sym) {
     const url = OKX_CANDLES_ENDPOINT + '?instId=' + okxInstId(sym) + '&bar=15m&limit=2';
@@ -890,7 +890,8 @@
     if (!data || data.code !== '0' || !Array.isArray(data.data) || !data.data.length) throw new Error('okx bad payload');
     const c = data.data.map(r => ({ ts: parseInt(r[0], 10), o: parseFloat(r[1]), c: parseFloat(r[4]) })).sort((a, b) => b.ts - a.ts);
     const pct = k => (c[k] && c[k].o > 0) ? ((c[k].c - c[k].o) / c[k].o) * 100 : null;
-    return { pct: pct(0), prevPct: pct(1), ts: c[0].ts, close: c[0].c };
+    const sum = (c[1] && c[1].o > 0) ? ((c[0].c - c[1].o) / c[1].o) * 100 : pct(0);
+    return { pct: pct(0), prevPct: pct(1), sumPct: sum, ts: c[0].ts, prevTs: c[1] ? c[1].ts : c[0].ts, close: c[0].c };
   }
 
   async function refreshQuotes() {
@@ -982,7 +983,7 @@
   function hmPct(sym) {
     const g = lastGoodChg[sym];
     if (!g) return null;
-    if (hmMode === 'm15') return m15Cache[sym] ? m15Cache[sym].pct : null;
+    if (hmMode === 'm15') return m15Cache[sym] ? m15Cache[sym].sumPct : null;
     if (hmMode === 'curr') return g.currPct;
     if (hmMode === 'prev') return g.prevPct;
     return ((1 + g.prevPct / 100) * (1 + g.currPct / 100) - 1) * 100;
@@ -1059,7 +1060,7 @@
         const fs = Math.max(8, Math.min(34, side / 3.4, r.w / (lbl.length * (HM_LABEL[sym] ? 1.15 : 0.68))));
         const showPct = side > 26, showPx = side > 90 && r.w > 90;
         const g2 = lastGoodChg[sym];
-        html += '<a class="hm-tile' + (stale ? ' stale' : '') + '" href="' + it.href + '" data-sym="' + sym + '" data-name="' + it.name.replace(/"/g, '&quot;') + '"'
+        html += '<a class="hm-tile' + (stale ? ' stale' : '') + '" href="' + it.href + '" target="_blank" rel="noopener" data-sym="' + sym + '" data-name="' + it.name.replace(/"/g, '&quot;') + '"'
           + ' style="left:' + (r.x + GAP) + 'px;top:' + (r.y + LABEL) + 'px;width:' + r.w + 'px;height:' + r.h + 'px;background:' + hmColor(p === null ? null : p * hmScale()) + '">'
           + '<span class="t-sym" style="font-size:' + fs.toFixed(1) + 'px">' + lbl + '</span>'
           + (showPct ? '<span class="t-pct" style="font-size:' + Math.max(9, fs * 0.55).toFixed(1) + 'px">' + hmFmtPct(p) + '</span>' : '')
@@ -1073,8 +1074,8 @@
     const any = Object.values(lastGoodChg)[0];
     const m15Any = Object.values(m15Cache)[0], btnM = document.getElementById('hmBtnM15');
     if (m15Any && btnM) {
-      const k = toKstShifted(m15Any.ts), p2 = n => String(n).padStart(2, '0');
-      btnM.textContent = '15분봉 (' + p2(k.getUTCHours()) + ':' + p2(k.getUTCMinutes()) + '~)';
+      const k = toKstShifted(m15Any.prevTs), p2 = n => String(n).padStart(2, '0');
+      btnM.textContent = '15분봉×2 (' + p2(k.getUTCHours()) + ':' + p2(k.getUTCMinutes()) + '~)';
     }
     const btnC = document.getElementById('hmBtnCurr'), btnP = document.getElementById('hmBtnPrev');
     if (any) {
@@ -1103,7 +1104,8 @@
              + '<div class="row"><span>' + g.currLabel + '~</span><span>' + hmFmtPct(g.currPct) + '</span></div>'
              + '<div class="row"><span>24시간</span><span>' + hmFmtPct(((1 + g.prevPct / 100) * (1 + g.currPct / 100) - 1) * 100) + '</span></div>'
              + (m15Cache[t.dataset.sym] ? '<div class="row"><span>15분봉 (현재)</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].pct) + '</span></div>'
-                + '<div class="row"><span>15분봉 (직전)</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].prevPct) + '</span></div>' : '')
+                + '<div class="row"><span>15분봉 (직전)</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].prevPct) + '</span></div>'
+                + '<div class="row"><span>15분봉 합산</span><span>' + hmFmtPct(m15Cache[t.dataset.sym].sumPct) + '</span></div>' : '')
              : '<div class="row"><span>시세</span><span>불러오는 중</span></div>');
         tip.style.display = 'block';
         const x = Math.min(e.clientX + 14, window.innerWidth - tip.offsetWidth - 8);
