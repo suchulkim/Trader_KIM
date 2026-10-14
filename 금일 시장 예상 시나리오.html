@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>금일 시장 대응 전략 · 10/14 美 9월 CPI</title>
+<style>
+  :root {
+    --bg: #0f1115;
+    --card: #181b22;
+    --card-2: #1e222c;
+    --text: #eef0f4;
+    --soft: #9aa2b1;
+    --border: #2a2e38;
+    --accent: #4ea1ff;
+    --gold: #ffc94d;
+    --bull: #5fd188;   /* 상승 */
+    --bear: #ff6b6b;   /* 하락 */
+    --warn: #f7931a;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Malgun Gothic", "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+  }
+  .wrap { max-width: 960px; margin: 0 auto; padding: 28px 20px 60px; }
+  .back {
+    display: inline-block; font-size: 13px; font-weight: 700; color: var(--soft);
+    text-decoration: none; border: 1px solid var(--border); border-radius: 8px;
+    padding: 6px 12px; margin-bottom: 18px;
+  }
+  .back:hover { border-color: var(--accent); color: var(--text); }
+  .eyebrow { font-size: 13px; color: var(--soft); margin-bottom: 4px; }
+  h1 {
+    font-size: 30px; font-weight: 900; letter-spacing: -0.3px; margin-bottom: 6px;
+    color: var(--gold);
+    background: linear-gradient(90deg, #ffe066 0%, #ffb340 50%, #ff7a3d 100%);
+    -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  }
+  .sub { color: var(--soft); font-size: 14px; }
+
+  .time-banner {
+    margin: 22px 0 28px; padding: 18px 20px; border-radius: 12px;
+    background: linear-gradient(90deg, rgba(255,59,59,.16), var(--card));
+    border: 1px solid rgba(255,107,107,.5);
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+  .time-banner .clock {
+    font-size: 26px; font-weight: 900; color: #fff; background: #ff3b3b;
+    border-radius: 10px; padding: 6px 14px; white-space: nowrap;
+    box-shadow: 0 0 12px rgba(255,59,59,.45);
+  }
+  .time-banner .tb-text b { font-size: 17px; }
+  .time-banner .tb-text div { color: var(--soft); font-size: 13.5px; }
+  .countdown { margin-left: auto; font-size: 14px; font-weight: 800; color: var(--gold); white-space: nowrap; }
+
+  h2 {
+    font-size: 20px; font-weight: 800; color: var(--accent);
+    margin: 34px 0 12px; display: flex; align-items: center; gap: 10px;
+  }
+  h2 .num {
+    display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 7px;
+    border: 1.5px solid var(--gold); color: var(--gold); font-size: 14px;
+  }
+
+  .stats { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+  .stat .lbl { font-size: 13px; color: var(--soft); }
+  .stat .val { font-size: 30px; font-weight: 900; letter-spacing: -0.5px; margin: 4px 0; }
+  .stat .desc { font-size: 12.5px; color: var(--soft); }
+  .val.gold { color: var(--gold); }
+  .val.bear { color: var(--bear); }
+  .val.bull { color: var(--bull); }
+  .val.blue { color: var(--accent); }
+  .note { font-size: 12.5px; color: var(--soft); margin-top: 10px; }
+
+  .formula {
+    background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--gold);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .formula .eq { font-size: 18px; font-weight: 800; }
+  .formula .eq .arrow { color: var(--soft); margin: 0 6px; }
+  .formula .eq .neg { color: var(--bear); }
+  .formula .eq .pos { color: var(--bull); }
+  .formula p { margin-top: 8px; color: var(--soft); font-size: 14px; }
+  .formula p b { color: var(--text); }
+
+  .scen { display: flex; flex-direction: column; gap: 10px; }
+  .sc {
+    display: grid; grid-template-columns: 56px 1fr auto; align-items: center; gap: 14px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 14px 16px;
+    border-left: 4px solid var(--border);
+  }
+  .sc .no {
+    font-size: 22px; font-weight: 900; text-align: center; border-radius: 10px; padding: 6px 0;
+    background: var(--card-2);
+  }
+  .sc .cond { font-size: 16px; font-weight: 800; }
+  .sc .meaning { font-size: 13.5px; color: var(--soft); margin-top: 2px; }
+  .sc .react { font-size: 13.5px; margin-top: 4px; }
+  .pill {
+    font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 999px; white-space: nowrap;
+    border: 1px solid var(--border); background: var(--card-2); color: var(--soft);
+  }
+  .sc.bear { border-left-color: var(--bear); }
+  .sc.bear .no, .sc.bear .pill { color: var(--bear); }
+  .sc.bear .pill { background: rgba(255,107,107,.12); border-color: rgba(255,107,107,.45); }
+  .sc.bull { border-left-color: var(--bull); }
+  .sc.bull .no, .sc.bull .pill { color: var(--bull); }
+  .sc.bull .pill { background: rgba(95,209,136,.12); border-color: rgba(95,209,136,.45); }
+  .sc.flat { border-left-color: var(--soft); }
+  .sc.crash { border-left-color: #ff0044; box-shadow: 0 0 10px rgba(255,0,68,.25); }
+  .sc.crash .no, .sc.crash .pill { color: #ff4d6d; }
+  .sc.crash .pill { background: rgba(255,0,68,.14); border-color: rgba(255,0,68,.5); }
+
+  .summary { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 12px; }
+  .sm { border-radius: 12px; padding: 16px; border: 1px solid var(--border); background: var(--card); }
+  .sm .if { font-size: 14.5px; font-weight: 700; }
+  .sm .then { font-size: 22px; font-weight: 900; margin-top: 6px; }
+  .sm.bear { border-color: rgba(255,107,107,.45); } .sm.bear .then { color: var(--bear); }
+  .sm.bull { border-color: rgba(95,209,136,.45); } .sm.bull .then { color: var(--bull); }
+  .sm.crash { border-color: rgba(255,0,68,.5); } .sm.crash .then { color: #ff4d6d; }
+
+  .tips { display: flex; flex-direction: column; gap: 10px; }
+  .tip {
+    display: flex; gap: 12px; background: var(--card); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; font-size: 14.5px;
+  }
+  .tip .ic { font-size: 20px; flex: none; }
+  .tip b { color: var(--gold); }
+
+  .check { display: flex; flex-direction: column; gap: 8px; }
+  .check label {
+    display: flex; align-items: center; gap: 10px; background: var(--card);
+    border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px; font-size: 14.5px; cursor: pointer;
+  }
+  .check input { width: 18px; height: 18px; accent-color: var(--bull); flex: none; }
+  .check input:checked + span { color: var(--soft); text-decoration: line-through; }
+
+  footer {
+    margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--soft); line-height: 1.7;
+  }
+  footer a { color: var(--accent); }
+
+  @media (max-width: 640px) {
+    .stats, .summary { grid-template-columns: 1fr; }
+    .sc { grid-template-columns: 44px 1fr; }
+    .sc .pill { grid-column: 2; justify-self: start; }
+    .countdown { margin-left: 0; }
+    h1 { font-size: 25px; }
+  }
+  .tl { display:flex; flex-direction:column; gap:8px; }
+  .tl .row { display:grid; grid-template-columns:92px 1fr auto; gap:12px; align-items:center;
+    background:var(--card); border:1px solid var(--border); border-radius:10px; padding:11px 14px; font-size:14px; }
+  .tl .row .t { font-weight:900; color:var(--gold); font-variant-numeric:tabular-nums; }
+  .tl .row .w { color:var(--soft); font-size:12.5px; }
+  .tl .row.key { border-color:rgba(255,107,107,.5); background:linear-gradient(90deg,rgba(255,59,59,.10),var(--card)); }
+  .tl .row.done { opacity:.5; }
+  .tl .row.next { outline:2px solid var(--gold); }
+  .tag { font-size:11.5px; font-weight:800; padding:3px 9px; border-radius:999px; background:var(--card-2); color:var(--soft); white-space:nowrap; }
+  .tag.hi { color:var(--bear); background:rgba(255,107,107,.12); }
+  .recap { background:var(--card); border:1px solid var(--border); border-left:4px solid var(--accent); border-radius:12px; padding:16px 18px; font-size:14.5px; }
+  .recap b { color:var(--gold); }
+  @media (max-width:640px){ .tl .row{ grid-template-columns:70px 1fr; } .tl .row .tag{ grid-column:2; justify-self:start; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="index.html">← MARKET DASHBOARD</a>
+
+  <div class="eyebrow">2026년 10월 14일 (수) · 이벤트 대응 · 06:40 업데이트 · 美 10/13 마감 반영</div>
+  <h1>금일 시장 예상 시나리오</h1>
+  <p class="sub">오늘 밤 <b>21:30 美 9월 CPI</b>가 이번 주 최대 고비입니다. 헤드라인은 <b>휘발유 사상 최고가</b> 때문에 높게 나오는 게 이미 예상돼 있어서, 진짜 답은 <b>근원 CPI(전월비 0.2% vs 0.3%)</b>가 냅니다. 한국은 <b>CXMT 쇼크로 이틀간 코스피 -8.9%</b> — CPI 결과가 <b>내일(10/15) 09:00 한국장</b>에 그대로 반영됩니다.</p>
+
+  <div class="time-banner">
+    <span class="clock" id="nextClock">21:30 KST</span>
+    <div class="tb-text">
+      <b id="nextName">🔥 美 9월 소비자물가지수(CPI)</b>
+      <div>오늘 진짜 고비는 <b>21:30 CPI</b> — 예상: 헤드라인 <b>전월비 +0.6% · 전년비 3.6~3.7%</b> / 근원 <b>전월비 +0.2% · 전년비 2.4~2.5%</b></div>
+    </div>
+    <span class="countdown" id="countdown">계산 중…</span>
+  </div>
+
+  <h2><span class="num">0</span>지난 3거래일 복기 (10/9~10/13)</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="lbl">S&amp;P500 (10/13 마감)</div>
+      <div class="val bull">7,805.5</div>
+      <div class="desc">-0.02% · 사상 최고치 바로 아래 · 10/9 +0.6%로 주간 +1.2% 마감 후 보합권</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">코스피 (10/13 마감)</div>
+      <div class="val bear">6,035.4</div>
+      <div class="desc">-5.46% · 장중 5,911 · 매도 사이드카 · 10/12 -3.65%에 이어 이틀 -8.9%</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">SK하이닉스 / 삼성전자 (10/13)</div>
+      <div class="val bear">-10.1% / -7.4%</div>
+      <div class="desc">144.3만원 / 23.2만원 · 외국인 하루 5.15조, 10월 누적 13.6조 순매도</div>
+    </div>
+  </div>
+  <div class="recap" style="margin-top:12px">
+    <b>美는 버티고, 한국 메모리만 무너졌습니다.</b> 중국 <b>CXMT</b>가 10/9~10 상하이 학회에서 <b>차세대 4F² D램 구조</b>(셀 면적 약 33% 축소) 기반을 마련했고
+    연내 서버용 DDR5 모듈을 내놓겠다고 밝혔습니다. 삼성의 같은 구조 양산 목표가 2028년이라 <b>"중국이 2년 앞서나"</b>라는 공포가 번졌습니다. 다만 <b>사양·수율·고객 인증은 아무것도 공개되지 않았습니다</b>.<br>
+    여기에 <b>삼성·SK하이닉스 자사주 매입이 끝나가는 수급 공백</b>(삼성 10/6 종료, 하이닉스 이번 주 종료), <b>브로드컴 CEO의 "AI 투자는 카지노" 발언</b>, 코스피 <b>200일선 이탈</b>이 겹쳤습니다.
+    마이크론도 10/12 <b>-3.9%($989)</b>로 $1,000을 내줬고 10/13에도 장중 -4%대.<br>
+    반면 美 지수는 <b>은행 실적(골드만 EPS $17.01 vs 예상 $13.02 서프라이즈, JPM은 미스)</b>과 <b>유가 하락(브렌트 $104.4, -2.1%)</b>에 기대 보합. 국채 금리도 내려왔습니다.
+  </div>
+
+  <h2><span class="num">1</span>오늘 일정 (KST)</h2>
+  <div class="tl" id="tl"></div>
+  <p class="note">※ 美 동부 서머타임 기준 환산. ASML·모건스탠리·블랙록 발표 시각은 통상 일정 기준 추정이며, 회사 공지로 재확인하세요.</p>
+
+  <h2><span class="num">2</span>먼저 알아둘 숫자</h2>
+  <div class="stats">
+    <div class="stat">
+      <div class="lbl">10월 금리 인상 확률 (10/28 FOMC)</div>
+      <div class="val gold">약 17%</div>
+      <div class="desc">시장은 '10월 동결 → 12월 25bp 인상'에 무게 · CPI가 이 숫자를 다시 끌어올릴지가 관건</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">미시간 1년 기대인플레 (10/9)</div>
+      <div class="val bear">4.7%</div>
+      <div class="desc">전월 4.6% → 상승 · 5년 3.5% · 소비심리 46.3(예상 47.8 하회)</div>
+    </div>
+    <div class="stat">
+      <div class="lbl">9월 휘발유 평균 (AAA)</div>
+      <div class="val gold">$4.33</div>
+      <div class="desc">9월 기준 사상 최고 · 에너지 +5%대 → 헤드라인 CPI가 0.6%까지 튀는 이유</div>
+    </div>
+  </div>
+  <p class="note">※ 헤드라인이 0.6%로 높게 나와도 <b>'이미 아는 숫자'</b>입니다. 시장이 반응할 곳은 <b>에너지를 뺀 근원 CPI</b>, 그중에서도 <b>항공운임·운송 서비스</b>로 유가가 번졌는지입니다(8월 항공운임 전년비 +23.4%).</p>
+
+  <h2><span class="num">3</span>핵심 공식 (오늘 밤)</h2>
+  <div class="formula">
+    <div class="eq">근원 0.2% 이하<span class="arrow">→</span>"유가만 문제"<span class="arrow">→</span>금리↓<span class="arrow">→</span><span class="pos">반등</span> &nbsp;|&nbsp; 근원 0.3% 이상<span class="arrow">→</span>"물가 번짐"<span class="arrow">→</span>10월 인상 재부각<span class="arrow">→</span><span class="neg">하락</span></div>
+    <p>판단 순서는 <b>① 근원 전월비 → ② 10년물 반응 → ③ 메모리주</b>. 근원이 0.2%면 안도, <b>0.3%면 경계, 0.4% 이상이면 쇼크</b>. 이어서 10년물이 <b>5.2%대로 내려오는지, 5.3%를 다시 넘는지</b>를 보세요. 이미 많이 빠진 메모리(MU·SNDK·SK하이닉스)는 안도 시 반등 폭이 가장 크고, 쇼크 시 2차 하락도 가장 큽니다.</p>
+  </div>
+
+  <h2><span class="num">4</span>시나리오별 정리</h2>
+  <div class="scen">
+    <div class="sc bull">
+      <div class="no">①</div>
+      <div>
+        <div class="cond">근원 +0.1~0.2% + 헤드라인 예상(0.6%) 이하</div>
+        <div class="meaning">에너지 외 물가는 잡혀 있음 → 10월 동결 확신</div>
+        <div class="react">10년물 5.2%대 → 기술주·코인 반등 · 낙폭 큰 메모리 숏커버 · 내일 코스피 6,000 위 반등 시도</div>
+      </div>
+      <span class="pill">안도 반등</span>
+    </div>
+    <div class="sc flat">
+      <div class="no">②</div>
+      <div>
+        <div class="cond">헤드라인 0.6% · 근원 0.2% — 예상 그대로</div>
+        <div class="meaning">새 정보 없음, '12월 인상' 시나리오 유지</div>
+        <div class="react">반응 제한적 → 관심은 <b>내일 15:00 TSMC 실적</b>·21:30 PPI·소매판매로 이동</div>
+      </div>
+      <span class="pill">관망</span>
+    </div>
+    <div class="sc bear">
+      <div class="no">③</div>
+      <div>
+        <div class="cond">근원 +0.3% 또는 전년비 2.6% 이상</div>
+        <div class="meaning">유가가 서비스 물가로 번지기 시작 → 10월 인상 확률 재상승</div>
+        <div class="react">10년물 5.3%대 → 고평가 성장주(AMD·PLTR)·코인 먼저 하락 · 메모리 반등 무산</div>
+      </div>
+      <span class="pill">하락 압력</span>
+    </div>
+    <div class="sc crash">
+      <div class="no">④</div>
+      <div>
+        <div class="cond">근원 +0.4% 이상 또는 헤드라인 전년비 3.9% 이상</div>
+        <div class="meaning">10/28 인상이 다시 메인 시나리오로</div>
+        <div class="react">10년물 5.36%(10/7 고점) 재돌파 시도 · 메모리·AI 2차 매도 · 내일 코스피 6,000 이탈 위험</div>
+      </div>
+      <span class="pill">급락 주의</span>
+    </div>
+    <div class="sc crash">
+      <div class="no">⑤</div>
+      <div>
+        <div class="cond">CPI와 별개로 — 트럼프 '이란 결정' · 호르무즈 추가 피격</div>
+        <div class="meaning">유가 → 기대인플레 → 금리 3중 압박 (어젯밤 호르무즈 동쪽 유조선 화재, 사우디-후티 충돌 진행 중)</div>
+        <div class="react">브렌트 $107 이상(10/12 고점) 재돌파 시 CPI 결과가 좋아도 반등이 막힘</div>
+      </div>
+      <span class="pill">돌발 변수</span>
+    </div>
+  </div>
+  <p class="note">※ 근원 0.2·0.3·0.4%, 10년물 5.2·5.3%, 브렌트 $107은 공식 기준이 아니라 이 페이지의 참고용 경계선입니다.</p>
+
+  <h2><span class="num">5</span>한 줄 요약</h2>
+  <div class="summary">
+    <div class="sm bull"><div class="if">근원 0.2% 이하 + 10년물 5.2%대</div><div class="then">→ 반등 쪽</div></div>
+    <div class="sm bear"><div class="if">근원 0.3% + 10년물 5.3%대</div><div class="then">→ 하락 쪽</div></div>
+    <div class="sm crash"><div class="if">근원 0.4%↑ 또는 이란 확전</div><div class="then">→ 급락 주의</div></div>
+  </div>
+
+  <h2><span class="num">6</span>실전 팁</h2>
+  <div class="tips">
+    <div class="tip"><span class="ic">⏱️</span><div>CPI는 <b>美 개장(22:30) 1시간 전</b>입니다. 21:30 직후엔 <b>선물·코인만 먼저</b> 움직이고 첫 5~10분은 위아래로 흔들기 쉽습니다. 무기한선물은 <b>발표 전 레버리지를 낮추고</b>, 방향은 <b>22:30 본장에서 10년물과 함께 확인</b> 후 따라가세요.</div></div>
+    <div class="tip"><span class="ic">⛽</span><div><b>헤드라인 0.6%에 놀라지 마세요.</b> 휘발유가 9월 사상 최고($4.33)라 이미 예상된 숫자입니다. 헤드라인이 0.5%로 낮게 나오는 것보다, <b>근원 0.3%</b>가 훨씬 나쁜 신호입니다.</div></div>
+    <div class="tip"><span class="ic">🇰🇷</span><div><b>SK하이닉스·삼성은 '칼날 잡기' 금지.</b> CXMT 주장은 검증 전이고 선행 PER은 4배 이하까지 내려왔지만, <b>자사주 매입 종료 + 외국인 10월 13.6조 순매도</b>라는 수급 문제가 남아 있습니다. 내일 <b>외국인 매도가 줄어드는지</b> 먼저 확인하고, SK하이닉스는 <b>140만원·130만원(7/29 장중 저점권)</b>을 기준으로 나눠서 판단하세요.</div></div>
+    <div class="tip"><span class="ic">🏭</span><div>마이크론은 이사회(10/8)에서 <b>자사주 매입 한도를 $351.6억으로 확대</b>했지만 실제 매수는 <b>12/9부터</b>(CHIPS법 제약)라 당장 받쳐 주지 못합니다. 대만 노조와의 보상 합의 소식은 아직 없고, <b>10/19 타이베이 집회 → 10/22 타이중 중재</b>가 다음 일정입니다.</div></div>
+    <div class="tip"><span class="ic">📅</span><div>CPI 다음 고비는 바로 <b>내일 15:00 TSMC 3분기 실적</b>(매출은 사상 최대로 이미 확인, 마진·4분기 가이던스가 관건)과 <b>21:30 PPI·소매판매</b>. 오늘 오후 <b>ASML 실적</b>이 반도체 장비 쪽 힌트를 먼저 줍니다.</div></div>
+  </div>
+
+  <h2><span class="num">7</span>오늘 체크리스트</h2>
+  <div class="check">
+    <label><input type="checkbox"><span>오후 — ASML 3분기 실적·수주(반도체 장비 수요)</span></label>
+    <label><input type="checkbox"><span>19:45~20시대 — BofA·모건스탠리 실적 (은행 실적 시즌 2일차)</span></label>
+    <label><input type="checkbox"><span>CPI 전 — 무기한선물 레버리지·청산가 점검</span></label>
+    <label><input type="checkbox"><span>21:30 CPI — 근원 전월비 0.2% vs 0.3% · 근원 전년비 2.5% 상회 여부</span></label>
+    <label><input type="checkbox"><span>22:30 개장 — 10년물 5.2%대 vs 5.3%대 · MU $950·NVDA·AVGO 반응</span></label>
+    <label><input type="checkbox"><span>밤사이 — 트럼프 '이란 결정' 발표 · 브렌트 $107 재돌파 여부</span></label>
+    <label><input type="checkbox"><span>내일 09:00 — 코스피 6,000·SK하이닉스 140만원 지지, 외국인 매도 강도</span></label>
+  </div>
+
+  <footer>
+    ※ 투자 판단은 본인 몫이고, 위 내용은 일반적인 시장 반응 패턴일 뿐 실제 반응은 그날 분위기에 따라 다를 수 있습니다. 시나리오 경계선은 참고용 자체 기준입니다.
+    CPI 예상치는 10/8~10/13 집계 기준(전년비는 기관별로 3.6~3.7%, 근원 전년비 2.4~2.5%로 차이)이며, 마이크론 10/13 종가는 확인하지 못해 장중 등락으로 표기했습니다.<br>
+    참고: <a href="https://admiralmarkets.com/analytics/traders-blog/us-cpi-preview-september-2026-forecasts-and-the-core-cpi-outlook" target="_blank" rel="noopener">Admiral Markets (CPI 프리뷰)</a> ·
+    <a href="https://avaloncapitalresearch.substack.com/p/weekly-playbook-september-cpi-arrives" target="_blank" rel="noopener">Avalon (주간 일정·인상 확률)</a> ·
+    <a href="https://krmg.com/2026/10/13/how-major-us-stock-indexes-fared-tuesday-10-13-2026/" target="_blank" rel="noopener">AP (10/13 美 지수)</a> ·
+    <a href="https://www.lanacion.com.ar/usa/how-major-us-stock-indexes-fared-friday-1092026-nid09102026/" target="_blank" rel="noopener">AP (10/9 美 지수)</a> ·
+    <a href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-13-2026" target="_blank" rel="noopener">TheStreet (10/13 은행 실적·유가)</a> ·
+    <a href="https://www.newspim.com/news/view/20261013000914" target="_blank" rel="noopener">뉴스핌 (10/13 코스피)</a> ·
+    <a href="https://en.sedaily.com/international/2026/10/13/chinese-memory-makers-tech-claim-sinks-samsung-sk-hynix" target="_blank" rel="noopener">서울경제 (CXMT 4F²)</a> ·
+    <a href="https://investinglive.com/news/us-october-umich-prelim-consumer-sentiment-vs-47-8-expected/" target="_blank" rel="noopener">investingLive (미시간)</a> ·
+    <a href="https://www.tokenpost.com/news/business/30170" target="_blank" rel="noopener">TokenPost (마이크론 자사주)</a> ·
+    <a href="https://oilprice.com/Latest-Energy-News/World-News/Oil-Jumps-2-as-Saudi-Attacks-and-Tanker-Strikes-Revive-Hormuz-Fears.html" target="_blank" rel="noopener">OilPrice (주말 중동)</a>
+  </footer>
+</div>
+
+<script>
+  const EVENTS = [
+    { at:'2026-10-13T15:30:00+09:00', t:'10/13', n:'코스피 6,035.4 (-5.46%) 마감', w:'✅ SK하이닉스 -10.1% · 삼성 -7.4% · 외국인 5.15조 순매도' },
+    { at:'2026-10-14T05:00:00+09:00', t:'05:00', n:'美 10/13 마감 — 보합', w:'✅ S&P -0.02% · 나스닥 -0.15% · 브렌트 $104.4(-2.1%) · 금리 하락' },
+    { at:'2026-10-14T14:00:00+09:00', t:'14:00경', n:'ASML 3분기 실적 (예상 시각)', w:'반도체 장비 수주 · CXMT 등 중국향 매출 비중' },
+    { at:'2026-10-14T19:45:00+09:00', t:'19:45', n:'뱅크오브아메리카 3분기 실적', w:'모건스탠리·블랙록도 개장 전 발표 예정' },
+    { at:'2026-10-14T21:30:00+09:00', t:'21:30', n:'🔥 美 9월 CPI', w:'헤드라인 +0.6%/3.6~3.7% · 근원 +0.2%/2.4~2.5% 예상', key:1 },
+    { at:'2026-10-14T22:30:00+09:00', t:'22:30', n:'美 정규장 개장', w:'10년물 5.2%대 vs 5.3%대 · 메모리주 반응', key:1 },
+    { at:'2026-10-15T03:00:00+09:00', t:'03:00', n:'연준 베이지북', w:'지역 경기·물가 체감 · 10/28 FOMC 참고자료' },
+    { at:'2026-10-15T09:00:00+09:00', t:'10/15 09:00', n:'한국장 개장 — CPI 반영', w:'코스피 6,000 · SK하이닉스 140만원 · 외국인 수급', key:1 },
+    { at:'2026-10-15T15:00:00+09:00', t:'10/15 15:00', n:'🔥 TSMC 3분기 실적 컨퍼런스', w:'마진·4분기 가이던스 · AI 수요 확인', key:1 }
+  ];
+  const tl = document.getElementById('tl');
+  const cd = document.getElementById('countdown');
+  function render() {
+    const now = Date.now();
+    const nextIdx = EVENTS.findIndex(e => new Date(e.at).getTime() > now);
+    tl.innerHTML = EVENTS.map((e, i) => {
+      const done = new Date(e.at).getTime() <= now;
+      const cls = ['row', e.key ? 'key' : '', done ? 'done' : '', i === nextIdx ? 'next' : ''].join(' ');
+      const tag = done ? '✅ 완료' : (i === nextIdx ? '⏳ 다음' : (e.key ? '중요' : ''));
+      return `<div class="${cls}"><span class="t">${e.t}</span><div><b>${e.n}</b><div class="w">${e.w}</div></div>${tag ? `<span class="tag ${e.key && !done ? 'hi' : ''}">${tag}</span>` : '<span></span>'}</div>`;
+    }).join('');
+    if (nextIdx < 0) { cd.textContent = '✅ 일정 종료 — 결과 확인'; return; }
+    const ev = EVENTS[nextIdx];
+    document.getElementById('nextClock').textContent = ev.t + (ev.t.includes('/') ? '' : ' KST');
+    document.getElementById('nextName').textContent = ev.n;
+    const diff = new Date(ev.at).getTime() - now;
+    const h = Math.floor(diff / 3600000);
+    const m = Math.floor((diff % 3600000) / 60000);
+    const sec = Math.floor((diff % 60000) / 1000);
+    cd.textContent = '⏳ ' + (h ? h + '시간 ' : '') + String(m).padStart(2, '0') + '분 ' + String(sec).padStart(2, '0') + '초 남음';
+  }
+  render();
+  setInterval(render, 1000);
+</script>
+</body>
+</html>
