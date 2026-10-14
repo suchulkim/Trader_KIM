@@ -500,23 +500,97 @@
   .hm-tip .row { display:flex; justify-content:space-between; gap:14px; color:var(--text-soft); }
   .hm-tip .row span:last-child { color:var(--text); font-variant-numeric:tabular-nums; }
   @media (max-width:640px){ .heatmap { height:620px; } }
+
+  /* ══════════════════════════════════════════════════════════
+     레이아웃: 본문(왼쪽) + 일간 일정 패널(오른쪽)
+     ══════════════════════════════════════════════════════════ */
+  .layout {
+    max-width: 1320px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 340px;
+    gap: 8px;
+    align-items: start;
+  }
+  .layout > .wrap { max-width: 960px; width: 100%; }
+  .daily-panel {
+    position: sticky;
+    top: 96px;
+    margin: 32px 20px 0 0;
+    background: #0b0d10;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px 18px;
+    max-height: calc(100vh - 120px);
+    overflow-y: auto;
+  }
+  .daily-head {
+    font-size: 19px;
+    font-weight: 800;
+    color: #3fc1ff;
+    letter-spacing: -0.2px;
+  }
+  .daily-sub {
+    font-size: 12px;
+    color: var(--text-soft);
+    margin: 2px 0 12px;
+  }
+  .daily-list { display: flex; flex-direction: column; gap: 9px; }
+  .daily-item { font-size: 15px; line-height: 1.45; }
+  .daily-item .d-line { font-weight: 600; color: var(--text); }
+  .daily-item .d-time { font-weight: 800; font-variant-numeric: tabular-nums; }
+  .daily-item .d-country { color: var(--text-soft); }
+  .daily-item .d-stars { color: #e0b84d; letter-spacing: 1px; white-space: nowrap; }
+  .daily-item .d-detail {
+    font-size: 13.5px;
+    color: var(--text-soft);
+    padding-left: 18px;
+    font-variant-numeric: tabular-nums;
+  }
+  .daily-item .d-detail .act { color: #ffc94d; font-weight: 700; }
+  .daily-item.done { opacity: 0.4; }
+  .daily-item.next {
+    background: rgba(63, 193, 255, 0.08);
+    border-left: 3px solid #3fc1ff;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin-left: -11px;
+  }
+  .daily-item.imp-5 .d-line, .daily-item.imp-4 .d-line { color: #ffd2d2; }
+  .daily-empty { font-size: 13px; color: var(--text-soft); }
+  @media (max-width: 1180px) {
+    .layout { display: block; }
+    .daily-panel {
+      position: static;
+      max-height: none;
+      max-width: 960px;
+      margin: 20px auto 0;
+      width: calc(100% - 40px);
+    }
+  }
 </style>
 </head>
 <body>
 <div id="eventBanner" class="event-banner" hidden>
   <div class="event-banner-inner" id="eventBannerInner"></div>
 </div>
-<div class="wrap">
+<div class="layout">
+<aside class="daily-panel" id="dailyPanel" aria-labelledby="dailyHead" style="grid-column:2;grid-row:1">
+  <div class="daily-head" id="dailyHead">【 주요 일정 】</div>
+  <div class="daily-sub" id="dailySub">KST 기준</div>
+  <div class="daily-list" id="dailyList"></div>
+</aside>
+<div class="wrap" style="grid-column:1;grid-row:1">
   <header>
     <div class="eyebrow">Watchlist Reports</div>
     <h1>MARKET DASHBOARD</h1>
     <nav class="top-nav" aria-label="페이지 이동">
       <a href="macro_tv_15m.html" target="_blank" rel="noopener">📊 마켓 대시보드 <span class="arr">→</span></a>
+      <a href="매크로%20지수%20결과.html" target="_blank" rel="noopener">📉 매크로 지수 결과 <span class="arr">→</span></a>
       <a href="watchlist_tv_15m.html" target="_blank" rel="noopener">📈 15분봉 차트 워치리스트 <span class="arr">→</span></a>
       <a href="관심종목_핵심요약.html" target="_blank" rel="noopener">📝 관심종목 핵심요약 <span class="arr">→</span></a>
       <a href="금일%20종목별%20전략.html" target="_blank" rel="noopener">🎯 금일 종목별 전략 <span class="arr">→</span></a>
       <a href="금일%20시장%20예상%20시나리오.html" target="_blank" rel="noopener">🔮 금일 시장 예상 시나리오 <span class="arr">→</span></a>
-      <a href="매크로%20지수%20결과.html" target="_blank" rel="noopener">📉 매크로 지수 결과 <span class="arr">→</span></a>
       <a href="매매일지.html" target="_blank" rel="noopener">📒 매매일지 🔒 <span class="arr">→</span></a>
     </nav>
     <p class="sub">히트맵의 종목 칸을 클릭하면 해당 종목 분석 리포트(실시간 차트 포함)로 이동합니다.</p>
@@ -548,6 +622,7 @@
     <div class="section-title">⏰ 주요 이벤트 일정 (KST)</div>
     <div class="events-list" id="eventsList"></div>
   </section>
+</div>
 </div>
 <script src="event_schedule.js"></script>
 <script>
@@ -1212,8 +1287,109 @@
     }
   }
 
+  // ══════════════════════════════════════════════════════════
+  // 일간 일정 패널 (오른쪽)
+  // - 데이터: event_schedule.js
+  //     ① window.DAILY_SCHEDULE (일간 지표·연설 등, 권장)
+  //     ② window.SeptSchedule 안의 모든 일정 배열 (기존 주요 이벤트도 함께 표시)
+  // - 표시 구간: KST 07:00 ~ 익일 07:00 (미국 장 마감까지를 '하루'로 봄)
+  // - 항목 필드: dateKST, timeKST, country, event, importance(1~5),
+  //              forecast(예상), previous(이전), actual(결과), detail(자유 문구), note
+  // ══════════════════════════════════════════════════════════
+  const DAILY_DAY_START_HOUR = 7;
+  const WEEKDAY_KO = ['일', '월', '화', '수', '목', '금', '토'];
+
+  function dailySources() {
+    const out = [];
+    const mod = window.SeptSchedule;
+    const daily = (mod && mod.DAILY_SCHEDULE) || window.DAILY_SCHEDULE;
+    if (Array.isArray(daily)) out.push(...daily); // 일간 일정 우선(중복 시 이쪽 문구 사용)
+    if (mod) {
+      Object.values(mod).forEach(v => {
+        if (Array.isArray(v) && v.length && v[0] && v[0].dateKST) out.push(...v);
+      });
+    }
+    // 같은 날짜·시각·이벤트명은 한 번만
+    const seen = new Set();
+    return out.filter(ev => {
+      if (!ev || !ev.dateKST || !ev.event) return false;
+      const key = ev.dateKST + '|' + (ev.timeKST || '') + '|' + ev.event;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+  }
+
+  function dailyWindow(now) {
+    const s = toKstShifted(now.getTime());
+    let y = s.getUTCFullYear(), m = s.getUTCMonth(), d = s.getUTCDate();
+    if (s.getUTCHours() < DAILY_DAY_START_HOUR) d -= 1; // 새벽엔 전날 일정 구간을 계속 표시
+    const startMs = Date.UTC(y, m, d, DAILY_DAY_START_HOUR) - KST_OFFSET_MS;
+    return { start: startMs, end: startMs + 86400000, labelDate: new Date(startMs + KST_OFFSET_MS) };
+  }
+
+  function dailyStars(n) {
+    // 패널은 첨부 화면처럼 채운 별(★)만 표시
+    return n ? '★'.repeat(Math.max(0, Math.min(5, n))) : '';
+  }
+
+  function dailyDetail(ev) {
+    const parts = [];
+    if (ev.actual !== undefined && ev.actual !== '') parts.push('<span class="act">결과: ' + ev.actual + '</span>');
+    if (ev.forecast !== undefined && ev.forecast !== '') parts.push('예상: ' + ev.forecast);
+    if (ev.previous !== undefined && ev.previous !== '') parts.push('이전: ' + ev.previous);
+    let txt = parts.length ? '(' + parts.join('&nbsp; ') + ')' : '';
+    if (ev.detail) txt += (txt ? ' ' : '') + ev.detail;
+    return txt;
+  }
+
+  function renderDaily() {
+    const listEl = document.getElementById('dailyList');
+    const subEl = document.getElementById('dailySub');
+    if (!listEl) return;
+    if (!window.SeptSchedule && !window.DAILY_SCHEDULE) {
+      listEl.innerHTML = '<div class="daily-empty">event_schedule.js를 불러오지 못했습니다.</div>';
+      return;
+    }
+    const now = new Date();
+    const win = dailyWindow(now);
+    const ld = win.labelDate;
+    if (subEl) {
+      subEl.textContent = (ld.getUTCMonth() + 1) + '/' + ld.getUTCDate() + '(' + WEEKDAY_KO[ld.getUTCDay()] + ') '
+        + String(DAILY_DAY_START_HOUR).padStart(2, '0') + ':00 ~ 익일 ' + String(DAILY_DAY_START_HOUR).padStart(2, '0') + ':00 · KST 기준';
+    }
+
+    const items = dailySources()
+      .map(ev => ({ ev, t: new Date(ev.dateKST + 'T' + (ev.timeKST || '23:59') + ':00+09:00').getTime() }))
+      .filter(x => x.t >= win.start && x.t < win.end)
+      .sort((a, b) => a.t - b.t || (b.ev.importance || 0) - (a.ev.importance || 0));
+
+    if (!items.length) {
+      listEl.innerHTML = '<div class="daily-empty">오늘 등록된 일정이 없습니다.<br>event_schedule.js의 DAILY_SCHEDULE에 추가해 주세요.</div>';
+      return;
+    }
+
+    const nowMs = now.getTime();
+    const nextIdx = items.findIndex(x => x.t > nowMs);
+    listEl.innerHTML = items.map((x, i) => {
+      const ev = x.ev;
+      const done = x.t <= nowMs;
+      const cls = 'daily-item imp-' + (ev.importance || 0) + (done ? ' done' : '') + (i === nextIdx ? ' next' : '');
+      const detail = dailyDetail(ev);
+      return '<div class="' + cls + '">'
+        + '<div class="d-line"><span class="d-time">' + (ev.timeKST || '미정') + '</span>'
+        + (ev.country ? ' – <span class="d-country">' + ev.country + '</span>' : '')
+        + ' – ' + ev.event
+        + (ev.importance ? ' <span class="d-stars">' + dailyStars(ev.importance) + '</span>' : '')
+        + '</div>'
+        + (detail ? '<div class="d-detail">' + detail + '</div>' : '')
+        + '</div>';
+    }).join('');
+  }
+
   renderEvents();
-  setInterval(renderEvents, EVENTS_REFRESH_MS);
+  renderDaily();
+  setInterval(() => { renderEvents(); renderDaily(); }, EVENTS_REFRESH_MS);
 
 
 </script>
