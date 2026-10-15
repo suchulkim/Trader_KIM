@@ -1803,5 +1803,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "bg-1494484043947950081-1792038682925-1792059886563",
+  "ex": "BITGET",
+  "instId": "GOOGLUSDT",
+  "sym": "GOOGL",
+  "side": "long",
+  "lever": null,
+  "openPx": 343.15,
+  "closePx": 343.43,
+  "size": 13.7,
+  "notional": 4701.155,
+  "openTime": 1792038682925,
+  "closeTime": 1792059886563,
+  "holdMin": 353.4,
+  "pnl": 3.836,
+  "fee": -1.8812292,
+  "funding": 0.0,
+  "realized": 1.9547708,
+  "pnlRatio": 0.000816,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
