@@ -1826,5 +1826,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "bg-1494618359571005441-1792070706265-1792075600215",
+  "ex": "BITGET",
+  "instId": "CRWVUSDT",
+  "sym": "CRWV",
+  "side": "short",
+  "lever": null,
+  "openPx": 61.78,
+  "closePx": 61.04,
+  "size": 31.53,
+  "notional": 1947.9234,
+  "openTime": 1792070706265,
+  "closeTime": 1792075600215,
+  "holdMin": 81.6,
+  "pnl": 23.1482,
+  "fee": -1.54907944,
+  "funding": 0.0,
+  "realized": 21.59912056,
+  "pnlRatio": 0.011884,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
