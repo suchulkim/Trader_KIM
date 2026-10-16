@@ -1849,5 +1849,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "4012107866713051137-1792072532097-1792110979122",
+  "ex": "OKX",
+  "instId": "SKHY-USDT-SWAP",
+  "sym": "SKHY",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 139.33,
+  "closePx": 142.0066794310722,
+  "size": 36.56,
+  "notional": 5093.9048,
+  "openTime": 1792072532097,
+  "closeTime": 1792110979122,
+  "holdMin": 640.8,
+  "pnl": -97.8594,
+  "fee": -5.1428345,
+  "funding": 0.0,
+  "realized": -103.0022345,
+  "pnlRatio": -0.019211,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
