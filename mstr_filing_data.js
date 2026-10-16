@@ -3,13 +3,13 @@
 window.__MSTR_FILING__ = {
   "filing": {
     "action": "매입",
-    "btcAmount": "1,665",
-    "aggHoldings": "847,666",
-    "avgPrice": "75,437",
-    "headline": "매입 1,665 BTC · 누적 보유 847,666 BTC",
-    "detail": "평균단가 약 $75,437",
-    "filingDate": "2026-09-28",
-    "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526403417/mstr-20260914.htm"
+    "btcAmount": null,
+    "aggHoldings": null,
+    "avgPrice": null,
+    "headline": "BTC Update 공시 확인됨 (표 파싱 실패 — 원문 확인 필요)",
+    "detail": "",
+    "filingDate": "2026-10-05",
+    "url": "https://www.sec.gov/Archives/edgar/data/1050446/000119312526413164/mstr-20261005.htm"
   },
-  "fetched_at": "2026-10-02 09:00:44 UTC"
+  "fetched_at": "2026-10-15 18:31:07 UTC"
 };
