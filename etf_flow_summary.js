@@ -1,10 +1,11 @@
 // 자동 생성 파일 — 수정하지 마세요 (run_market_intel.py가 생성)
 window.EtfFlowSummary = {
-  "generatedAt": "2026-10-17 12:25:02",
+  "generatedAt": "2026-10-17 17:00:04",
   "btc": {
     "date": "2026-10-16",
     "dateLabel": "16 Oct 2026",
     "byFund": {
+      "Blackrock": -71.8,
       "Fidelity": -10.6,
       "Bitwise": 0.0,
       "Ark": 0.0,
@@ -16,12 +17,13 @@ window.EtfFlowSummary = {
       "MS": 0.0,
       "Grayscale": 0.0
     },
-    "totalNetFlow": -10.6
+    "totalNetFlow": -82.4
   },
   "eth": {
     "date": "2026-10-16",
     "dateLabel": "16 Oct 2026",
     "byFund": {
+      "Blackrock": 0.0,
       "Fidelity": 0.0,
       "Bitwise": 0.0,
       "21Shares": 0.0,
@@ -31,6 +33,6 @@ window.EtfFlowSummary = {
       "ms": 0.0,
       "Grayscale": 0.0
     },
-    "totalNetFlow": 0.0
+    "totalNetFlow": -69.7
   }
 };
