@@ -2,9 +2,9 @@
 // fetch_foreign_flow.py 가 매 실행마다 이 파일을 덮어씁니다.
 window.__EWY_FOREIGN_FLOW__ = {
   "date": "20261020",
-  "fetched_at": "2026-10-20 10:50:04",
+  "fetched_at": "2026-10-20 10:55:06",
   "kospi_market": {
-    "순매수": -558222286491,
+    "순매수": -573593940259,
     "기준일": "20261020"
   },
   "tickers": {
