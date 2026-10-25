@@ -5,5 +5,5 @@ window.__ETF_FLOW__ = {
     "btc": null,
     "eth": null
   },
-  "fetched_at": "2026-10-25 07:00:25 UTC"
+  "fetched_at": "2026-10-25 12:31:11 UTC"
 };
