@@ -156,7 +156,6 @@
   }
   @media (max-width:560px){ .mx{grid-template-columns:62px repeat(3,minmax(0,1fr));gap:4px;} .cell{padding:7px;} .cell .tks{font-size:11.5px;} h1{font-size:23px;} }
 </style>
-<script src="https://s3.tradingview.com/tv.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -447,7 +446,7 @@ function applyFilter(){
   });
 }
 
-/* 4-1) 분류 칸 클릭 → 15분봉 TradingView 차트 */
+/* 4-1) 분류 칸 클릭 → 15분봉 Trader_KIM Chart */
 let SEL = null, TV_SEQ = 0;
 const tvSym = s => `OKX:${s}USDT.P`;
 function cellTickers(key){
@@ -458,14 +457,28 @@ function cellLabel(key){
   const rl = {up:"상승",side:"횡보",down:"하락"}[rk], cl = {good:"호재 우위",flat:"중립",bad:"악재 우위"}[ck];
   return `${m.d==="long"?"🟢":m.d==="short"?"🔴":"⚪"} ${m.k} <span class="sub2">(${rl} × ${cl})</span>`;
 }
-function mountTV(id, sym, h){
-  if (typeof TradingView === "undefined"){ const el = document.getElementById(id); if (el) el.innerHTML = `<div class="err" style="padding:14px">TradingView 위젯을 불러오지 못했습니다 — 파일을 로컬 브라우저에서 열어 주세요.</div>`; return; }
-  new TradingView.widget({
-    container_id:id, symbol:tvSym(sym), interval:"15", timezone:"Asia/Seoul", theme:"dark", style:"1",
-    locale:"kr", width:"100%", height:h, toolbar_bg:"#181b22", enable_publishing:false,
-    hide_side_toolbar:false, allow_symbol_change:true, save_image:false,
-    withdateranges:true, details:false,
-    studies:[{id:"MASimple@tv-basicstudies",inputs:{length:20}},{id:"MASimple@tv-basicstudies",inputs:{length:200}}]
+/* Trader_KIM Chart (같은 폴더의 Trader_KIM_Chart.html)를 iframe으로 삽입.
+   웹(GitHub Pages)에서는 파일을 한 번 받아 srcdoc으로 띄워 이 페이지와 저장소(선·포지션·알람)를 공유하고,
+   로컬 파일(file://)처럼 fetch가 막히면 iframe src로 직접 엽니다. 차트 파일을 고치면 이 페이지에도 바로 반영됩니다. */
+const CHART_FILE = "Trader_KIM_Chart.html";
+const chartQS = (s, embed) => (embed ? "embed=1&" : "") + "t=" + encodeURIComponent(s) + "&bar=15m";
+const chartUrl = s => CHART_FILE + "?" + chartQS(s, false);
+let CHART_SRC = null;   // null: 아직 시도 안 함 · "": fetch 불가 → src 방식
+const chartSrcP = (location.protocol === "file:" ? Promise.resolve("") :
+  fetch(CHART_FILE, {cache:"no-cache"}).then(r => r.ok ? r.text() : "").catch(() => ""))
+  .then(t => (CHART_SRC = t));
+function mountTV(id, sym){
+  const el = document.getElementById(id); if (!el) return;
+  el.innerHTML = `<div class="err" style="padding:14px;color:var(--soft)">Trader_KIM Chart 불러오는 중…</div>`;
+  chartSrcP.then(src => {
+    const box = document.getElementById(id); if (!box) return;
+    const fr = document.createElement("iframe");
+    fr.title = sym + " 차트"; fr.setAttribute("allow", "autoplay");
+    fr.style.cssText = "width:100%;height:100%;border:0;display:block;background:#131722";
+    if (src) fr.srcdoc = src.replace("<head>", "<head><script>window.__QS=" + JSON.stringify(chartQS(sym, true)) + ";<\/script>");
+    else fr.src = CHART_FILE + "?" + chartQS(sym, true);
+    fr.addEventListener("error", () => { box.innerHTML = `<div class="err" style="padding:14px">Trader_KIM_Chart.html을 찾지 못했습니다 — 이 파일과 같은 폴더에 두세요.</div>`; });
+    box.innerHTML = ""; box.appendChild(fr);
   });
 }
 function boxHTML(s, id){
@@ -478,7 +491,7 @@ function boxHTML(s, id){
   const px = st.c5 ? fmt(st.c5[4].c) : "—";
   const ev = eventsFor(t, Date.now()).length ? '<span class="bell" title="24시간 내 일정">⚡</span>' : '';
   const n = loadAlarms().filter(a=>a.s===s).length;
-  return `<div class="tvbox" id="box-${s}"><div class="bh"><span class="sym">${s}USDT.P</span><span class="vd ${d}">${vd}</span><span class="memo" title="${memo.replace(/"/g,'&quot;')}">${memo}</span><span class="px2" data-px="${s}">${px}</span>${ev}<button class="bellbtn ${n?'on':''}" data-bell="${s}" title="가격 알람">🔔<span class="cnt" data-cnt="${s}">${n||''}</span></button><a href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(tvSym(s))}" target="_blank" rel="noopener">TradingView ↗</a><a href="#r-${s}">카드 ↓</a></div><div class="alm" id="alm-${s}"></div><div class="tvwrap"><div id="${id}"></div></div></div>`;
+  return `<div class="tvbox" id="box-${s}"><div class="bh"><span class="sym">${s}USDT.P</span><span class="vd ${d}">${vd}</span><span class="memo" title="${memo.replace(/"/g,'&quot;')}">${memo}</span><span class="px2" data-px="${s}">${px}</span>${ev}<button class="bellbtn ${n?'on':''}" data-bell="${s}" title="가격 알람">🔔<span class="cnt" data-cnt="${s}">${n||''}</span></button><a href="${chartUrl(s)}" target="_blank" rel="noopener" title="Trader_KIM Chart 새 탭에서 크게 보기">크게 보기 ⤢</a><a href="https://www.tradingview.com/chart/?symbol=${encodeURIComponent(tvSym(s))}" target="_blank" rel="noopener">TradingView ↗</a><a href="#r-${s}">카드 ↓</a></div><div class="alm" id="alm-${s}"></div><div class="tvwrap"><div id="${id}"></div></div></div>`;
 }
 function openCharts(key, only){
   const list = cellTickers(key);
