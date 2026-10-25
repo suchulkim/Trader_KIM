@@ -850,6 +850,7 @@ const store = {
   set(k,v){ try { localStorage.setItem('possize_'+k, JSON.stringify(v)); } catch(e){} }
 };
 const uid = () => Math.random().toString(36).slice(2, 10);
+const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 
 /* ── 숫자 유틸 ── */
 function decOf(step){ const s = String(step); if (s.includes('e-')) return +s.split('e-')[1]; const i = s.indexOf('.'); return i < 0 ? 0 : s.length - i - 1; }
@@ -924,7 +925,6 @@ function mousePt(){
 /* ───────────────── 오버레이 렌더링 (그림 + 포지션) ───────────────── */
 class Overlay {
   constructor(){
-    const self = this;
     this._req = null; this._axis = [];
     this._pv = { zOrder: () => 'top', renderer: () => ({ draw: t => t.useMediaCoordinateSpace(sc => { try { renderOverlay(sc.context, sc.mediaSize.width, sc.mediaSize.height); } catch(e){ console.warn(e); } }) }) };
   }
@@ -975,7 +975,7 @@ function pill(ctx, cx, y, lines, bg, fg, anchor){
   lines.forEach((s, i) => ctx.fillText(s, cx, top + padY + lh/2 + i*lh - 1));
 }
 
-/* 선택 미니 툴바를 선택된 대상 바로 위에 붙임 (화면 이동/드래그 시에도 따라감) */
+/* 선택 미니 툴바를 차트 상단(오른쪽)에 고정 — 그림을 가리지 않도록 */
 function placeSelbar(W, H){
   const bar = $('selbar'); if (bar.style.display === 'none') return;
   const bw = bar.offsetWidth || 160;
@@ -1514,7 +1514,7 @@ function refreshSel(){
   };
   bar.querySelectorAll('.sw').forEach(b => b.onclick = () => { d.color = b.dataset.c; saveDrawings(); refreshSel(); });
   $('selDel').onclick = deleteSelected;
-  bar.style.display = d.type === 'hline' ? 'flex' : 'flex';
+  bar.style.display = 'flex';
   overlay.update();
 }
 function deleteSelected(){
@@ -1691,8 +1691,8 @@ function renderLegend(b, mv){
 }
 function tickCountdown(){
   const lb = lastBar(), el = $('cdLbl');
-  const now = new Date(), p2 = x => String(x).padStart(2, '0');
-  $('clock').textContent = `${p2(now.getHours())}:${p2(now.getMinutes())}:${p2(now.getSeconds())} UTC+9`;
+  const now = new Date(Date.now() + KST * 1000), p2 = x => String(x).padStart(2, '0');   // PC 시간대와 무관하게 KST
+  $('clock').textContent = `${p2(now.getUTCHours())}:${p2(now.getUTCMinutes())}:${p2(now.getUTCSeconds())} UTC+9`;
   if (!lb){ el.style.display = 'none'; return; }
   const s = Math.max(0, Math.floor((lb.t + BAR_MS[S.bar] - Date.now()) / 1000));
   const d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), sec = s % 60;
@@ -1971,8 +1971,8 @@ const EXA = {
       return (Array.isArray(j) ? j : []).filter(x => ['USD','USDC','USDT'].includes(x.quote_currency) && x.status === 'online' && !x.trading_disabled).map(x => (
         { key:'COINBASE:' + x.id, ex:'coinbase', sym:x.id, base:x.base_currency, tickSz:+x.quote_increment, lotSz:+x.base_increment, minSz:+x.base_min_size || +x.base_increment, ctVal:1, ctValCcy:x.base_currency, desc:`${x.base_currency}/${x.quote_currency} 현물` }));
     },
-    async range(sym, bar, endMs){
-      const g = this.gr[bar][0], end = Math.floor(endMs / 1000), start = end - g * 300;
+    async range(sym, bar, endMs, n){
+      const g = this.gr[bar][0], end = Math.floor(endMs / 1000), start = end - g * Math.min(300, n || 300);
       const j = await getJ(`${this.base}/products/${sym}/candles?granularity=${g}&start=${new Date(start * 1000).toISOString()}&end=${new Date(end * 1000).toISOString()}`);
       if (!Array.isArray(j)) throw new Error(j.message || 'candles');
       return j.map(k => ({ t:k[0] * 1000, l:+k[1], h:+k[2], o:+k[3], c:+k[4], v:+k[5] })).sort((a, b) => a.t - b.t);
@@ -1988,7 +1988,10 @@ const EXA = {
       if (out.length > 1) out.shift();          // 맨 앞 봉은 일부만 포함될 수 있어 버림
       return out;
     },
-    async candles(sym, bar){ return this.agg(await this.range(sym, bar, Date.now()), bar); },
+    async candles(sym, bar, limit){   // 폴링(limit 3~10)은 필요한 만큼만 요청 — 매번 300봉 받던 문제 수정
+      const k = this.gr[bar][1], n = limit ? (limit + 2) * k : 300;
+      return this.agg(await this.range(sym, bar, Date.now(), n), bar);
+    },
     async older(sym, bar, before){ return this.agg(await this.range(sym, bar, before - 1), bar).filter(b => b.t < before); },
     ws:{ url: () => 'wss://ws-feed.exchange.coinbase.com',
          sub: sym => ({ type:'subscribe', product_ids:[sym], channels:['matches'] }),
@@ -2164,11 +2167,10 @@ async function poll(force){
     recomputeMAs(); S.last = lastBar().c; showLast(); if (!hovering) renderLegend();
     checkAlertsKey(S.ticker, S.last);
   } catch(e){}
-  if (!wsOpen) pollAlertTickers();
 }
 
 /* ───────────────── 알람 ───────────────── */
-const hms = t => { const d = new Date(t), p2 = x => String(x).padStart(2, '0'); return `${p2(d.getHours())}:${p2(d.getMinutes())}:${p2(d.getSeconds())}`; };
+const hms = t => { const d = new Date(t + KST * 1000), p2 = x => String(x).padStart(2, '0'); return `${p2(d.getUTCHours())}:${p2(d.getUTCMinutes())}:${p2(d.getUTCSeconds())}`; };
 const COND_TXT = { cross:'교차', up:'상향 돌파', down:'하향 돌파' };
 let wsAlertSubs = new Set();
 const alertsHere = () => hideDraw ? [] : alerts.filter(a => a.tk === S.ticker);
@@ -2190,12 +2192,32 @@ function syncAlertSubs(){
   if (del.length) ws.send(JSON.stringify({ op:'unsubscribe', args: del.map(i => ({ channel:'tickers', instId:i })) }));
   wsAlertSubs = need;
 }
+/* 현재 차트가 아닌 종목의 알람 감시 (5초 주기)
+   - OKX: tickers WS가 끊겼을 때만 REST로 보완
+   - Binance / Bitget: 전체 시세 1회 호출로 일괄 확인
+   - Coinbase: 종목별 ticker 호출 */
+let alPolling = false;
 async function pollAlertTickers(){
-  if (EMBED) return;
-  const ids = [...new Set(alerts.filter(a => a.on && a.tk !== S.ticker && !String(a.tk).includes(':')).map(a => a.tk + '-USDT-SWAP'))];
-  for (const id of ids){
-    try { const r = await fetch(`${API}/api/v5/market/ticker?instId=${id}`); const j = await r.json(); if (j.data && j.data[0]) checkAlerts(id, +j.data[0].last); } catch(e){}
-  }
+  if (EMBED || alPolling) return;
+  const keys = [...new Set(alerts.filter(a => a.on && a.tk !== S.ticker).map(a => a.tk))];
+  if (!keys.length) return;
+  alPolling = true;
+  const by = ex => keys.filter(k => parseKey(k).ex === ex), jobs = [];
+  if (!wsOpen) by('okx').forEach(k => jobs.push(getJ(`${API}/api/v5/market/ticker?instId=${k}-USDT-SWAP`)
+    .then(j => { if (j.data && j.data[0]) checkAlertsKey(k, +j.data[0].last); }).catch(() => {})));
+  const bn = by('binance');
+  if (bn.length) jobs.push(getJ(EXA.binance.base + '/fapi/v1/ticker/price').then(j => {
+    const m = new Map((Array.isArray(j) ? j : []).map(t => [t.symbol, +t.price]));
+    bn.forEach(k => { const p = m.get(parseKey(k).sym); if (p) checkAlertsKey(k, p); });
+  }).catch(() => {}));
+  const bg = by('bitget');
+  if (bg.length) jobs.push(getJ(EXA.bitget.base + '/api/v2/mix/market/tickers?productType=USDT-FUTURES').then(j => {
+    const m = new Map((j.data || []).map(t => [t.symbol, +t.lastPr]));
+    bg.forEach(k => { const p = m.get(parseKey(k).sym); if (p) checkAlertsKey(k, p); });
+  }).catch(() => {}));
+  by('coinbase').forEach(k => jobs.push(getJ(`${EXA.coinbase.base}/products/${parseKey(k).sym}/ticker`)
+    .then(j => { if (j && j.price) checkAlertsKey(k, +j.price); }).catch(() => {})));
+  try { await Promise.all(jobs); } finally { alPolling = false; }
 }
 function checkAlerts(inst, px){ checkAlertsKey(inst.replace('-USDT-SWAP', ''), px); }
 function checkAlertsKey(tk, px){
@@ -2220,8 +2242,8 @@ function fireAlert(a, px, how){
   const body = `현재가 ${fP(px)} · ${time}${a.note ? ' · ' + a.note : ''}`;
   // 화면 카드
   const card = document.createElement('div'); card.className = 'al-card';
-  card.innerHTML = `<button class="x">✕</button><b>${title}</b><div class="t">${body}<br>조건: ${COND_TXT[a.cond]}${a.repeat ? ' · 매번' : ' · 1회 (꺼짐)'}</div>` +
-    (a.tk !== S.ticker ? `<button class="go">${a.tk} 차트 보기</button>` : '');
+  card.innerHTML = `<button class="x">✕</button><b>${esc(title)}</b><div class="t">${esc(body)}<br>조건: ${COND_TXT[a.cond]}${a.repeat ? ' · 매번' : ' · 1회 (꺼짐)'}</div>` +
+    (a.tk !== S.ticker ? `<button class="go">${esc(dispName(a.tk))} 차트 보기</button>` : '');
   let stopSnd = null;
   const closeCard = () => { if (stopSnd) stopSnd(); card.remove(); };
   card.querySelector('.x').onclick = closeCard;
@@ -2347,8 +2369,8 @@ function renderAlertList(){
     const cur = a.tk === S.ticker ? S.last : alPrev[a.tk];
     const dist = cur ? (a.p - cur) / cur * 100 : null;
     const row = document.createElement('div'); row.className = 'al-row' + (a.on ? '' : ' off');
-    row.innerHTML = `<span class="dot"></span><span class="tk" title="차트로 이동">${a.tk}</span>
-      <span>${COND_TXT[a.cond]} <b>${fP(a.p)}</b>${a.repeat ? ' · 매번' : ''}${a.note ? ` <span class="ds">${a.note}</span>` : ''}</span>
+    row.innerHTML = `<span class="dot"></span><span class="tk" title="차트로 이동">${esc(parseKey(a.tk).ex === 'okx' ? a.tk : dispName(a.tk))}</span>
+      <span>${COND_TXT[a.cond]} <b>${fP(a.p)}</b>${a.repeat ? ' · 매번' : ''}${a.note ? ` <span class="ds">${esc(a.note)}</span>` : ''}</span>
       <span class="ds">${a.on ? (dist != null ? `${dist >= 0 ? '+' : ''}${f(dist, 2)}%` : '') : (a.fired ? '발동 ' + hms(a.fired) : '꺼짐')}</span>
       <button title="${a.on ? '끄기' : '다시 켜기'}">${a.on ? '⏸' : '▶'}</button><button title="삭제">✕</button>`;
     const [bOn, bDel] = row.querySelectorAll('button');
@@ -2396,6 +2418,7 @@ function initAlerts(){
   document.addEventListener('mousedown', ensureAudio, { once:true });   // 브라우저 정책: 첫 클릭 후 소리 가능
   updateBadge();
   setInterval(() => { if (panelView === 'alerts') renderAlertList(); }, 3000);
+  setInterval(pollAlertTickers, 5000);   // 다른 종목·다른 거래소 알람 감시
 }
 
 /* ── WebSocket (체결 단위 실시간) ── */
@@ -2675,6 +2698,7 @@ function ordRender(){
     $('oConfirm').className = 'o-confirm ' + pd.side;
     $('oConfirm').innerHTML = `<div class="oc-t">${OEX_NAME[pd.exchange]} · <b>${pd.base}USDT</b> ${pd.side === 'buy' ? '매수' : '매도'}${pd.reduceOnly ? ' (청산 전용)' : ''}</div>
       <div>${pd.type === 'limit' ? '지정가 <b>' + oFmt(pd.price, oDec(pd.price)) + '</b>' : '시장가'} · 수량 <b>${oFmt(pd.qty, 6)}</b> ${pd.base} · ≈ ${oFmt(pd.qty * pd.refPrice, 2)} USDT</div>
+      ${pd.pxSrc ? `<div class="o-bad">⚠ 가격 기준이 ${pd.pxSrc} 차트 현재가입니다 — ${OEX_NAME[pd.exchange]} 실제 가격과 차이가 날 수 있습니다</div>` : ''}
       <div>${pd.reduceOnly ? '' : `레버리지 ${pd.leverage}x · ${pd.marginMode === 'isolated' ? '격리' : '교차'}`}${pd.tp ? ' · 익절 ' + oFmt(pd.tp, oDec(pd.tp)) : ''}${pd.sl ? ' · 손절 ' + oFmt(pd.sl, oDec(pd.sl)) : ''}</div>
       <div class="oc-b"><button id="ocGo">${ORD.busy ? '주문 중…' : '실거래 주문 실행'}</button><button id="ocNo">취소</button></div>`;
     $('ocGo').onclick = ordSend; $('ocNo').onclick = () => { ORD.pending = null; ordRender(); };
@@ -2720,7 +2744,8 @@ function ordPrepare(side){
   if (tp && (side === 'buy' ? tp <= ref : tp >= ref)) return ordMsg('err', `익절가는 ${side === 'buy' ? '가격보다 높아야' : '가격보다 낮아야'} 합니다`);
   if (sl && (side === 'buy' ? sl >= ref : sl <= ref)) return ordMsg('err', `손절가는 ${side === 'buy' ? '가격보다 낮아야' : '가격보다 높아야'} 합니다`);
   if (type === 'limit' && oPxNow() && Math.abs(price / oPxNow() - 1) > 0.15) ordMsg('warn', `⚠ 지정가가 현재가와 ${oFmt(Math.abs(price / oPxNow() - 1) * 100, 1)}% 차이 납니다 — 가격을 다시 확인하세요`);
-  ORD.pending = { exchange: ORD.ex, base: ORD.base, side, type, price: type === 'limit' ? price : null, refPrice: ref, qty: +qty.toPrecision(12),
+  const chEx = parseKey(S.ticker).ex, pxSrc = chEx !== ORD.ex && (type === 'market' || ORD.unit === 'usdt') ? (EXA[chEx] ? EXA[chEx].label : chEx) : null;
+  ORD.pending = { pxSrc, exchange: ORD.ex, base: ORD.base, side, type, price: type === 'limit' ? price : null, refPrice: ref, qty: +qty.toPrecision(12),
                   leverage: Math.max(1, Math.round(oNum('oLev')) || 1), marginMode: ORD.mm, reduceOnly: $('oReduce').checked, tp, sl };
   ordRender();
 }
