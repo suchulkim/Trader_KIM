@@ -1987,5 +1987,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 81360.8
+ },
+ {
+  "id": "4043560986735235072-1793009908120-1793016381459",
+  "ex": "OKX",
+  "instId": "SOXL-USDT-SWAP",
+  "sym": "SOXL",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 84.09,
+  "closePx": 88.13,
+  "size": 7.25,
+  "notional": 609.6525,
+  "openTime": 1793009908120,
+  "closeTime": 1793016381459,
+  "holdMin": 107.9,
+  "pnl": -29.29,
+  "fee": -0.6242975,
+  "funding": 0.0,
+  "realized": -29.9142975,
+  "pnlRatio": -0.048044,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 88.12
  }
 ]
