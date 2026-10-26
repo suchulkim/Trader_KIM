@@ -1372,7 +1372,7 @@ function bindMouse(el){
     drag = null;
     dragJustEnded = true; setTimeout(() => dragJustEnded = false, 80);
     lockChart(false);
-    if (wasAl) saveAlerts(); else if (wasPos) saveLevels(); else { saveDrawings(); if (drag0d && drag0d.type === 'fibpos') saveLevels(); }
+    if (wasAl) saveAlerts(); else if (wasPos){ if (fpCur()) saveDrawings(); saveLevels(); } else { saveDrawings(); if (drag0d && drag0d.type === 'fibpos') saveLevels(); }
   });
 }
 
@@ -1382,7 +1382,9 @@ function doDrag(x, y){
   const dl = Math.round(chart.timeScale().coordinateToLogical(x) - drag.l0);
   const shiftT = (t, n) => logicalToTime(timeToLogical(t) + n);
   if (h.kind === 'pos-level'){
-    S[h.k] = snapPrice(x, y); syncInputs(); calc();
+    const sp = snapPrice(x, y); if (sp == null) return;
+    if (h.k === 'entry') moveEntry(sp, drag.snapPos); else S[h.k] = sp;
+    syncInputs(); calc();
   } else if (h.kind === 'pos-move'){
     const s = drag.snapPos;
     ['entry','stop','target'].forEach(k => { if (s[k] != null) S[k] = roundTick(s[k] + dp); });
@@ -2478,7 +2480,32 @@ function showLast(){
 
 /* ───────────────── 상태 저장 ───────────────── */
 function fpUnlink(){ if (!S.fpId) return; const id = S.fpId; S.fpId = null; if (drawings.some(d => d.id === id)){ drawings = drawings.filter(d => d.id !== id); if (sel === id) sel = null; saveDrawings(); refreshSel(); } fpRow(); }
-function setLevel(k, v){ if (v == null) fpUnlink(); S[k] = v; if (k === 'entry' && v == null) S.entryTime = null; syncInputs(); calc(); saveLevels(); overlay.update(); }
+/* 진입가 변경 → 손절·목표 자동 갱신
+   · 피보 포지션 연결 시: 기준점은 그대로, 진입가를 옮긴 뒤 피보 규칙대로 손절(0)·목표 재계산
+   · 일반 포지션: 기준 스냅샷(base)의 진입~손절 / 진입~목표 거리를 유지한 채 함께 이동 (RR 유지) */
+function moveEntry(v, base){
+  if (v == null) return;
+  base = base || { entry:S.entry, stop:S.stop, target:S.target };
+  const d = fpCur();
+  if (d && d.pts[0] && d.pts[1]){
+    if (Math.abs(v - d.pts[0].p) < (tickSz() || 1e-12)) return;          // 진입가 = 기준점이면 계산 불가 → 무시
+    d.pts[1] = { t: d.pts[1].t, p: v };
+    const L = fpLevels(d); if (!L) return;
+    d.pts[2] = { t: L.pts[2].t, p: L.stop };
+    S.entry = L.entry; S.stop = L.stop; S.target = L.target;
+    return;
+  }
+  const e = roundTick(v);
+  if (base.entry != null){
+    const dp = e - base.entry;
+    if (base.stop != null) S.stop = roundTick(base.stop + dp);
+    if (base.target != null) S.target = roundTick(base.target + dp);
+  }
+  S.entry = e;
+}
+function setLevel(k, v){
+  if (k === 'entry' && v != null){ moveEntry(v); if (fpCur()) saveDrawings(); syncInputs(); calc(); saveLevels(); overlay.update(); return; }
+  if (v == null) fpUnlink(); S[k] = v; if (k === 'entry' && v == null) S.entryTime = null; syncInputs(); calc(); saveLevels(); overlay.update(); }
 function syncInputs(){ $('pEntry').value = S.entry ?? ''; $('pStop').value = S.stop ?? ''; $('pTarget').value = S.target ?? ''; }
 function saveLevels(){ histPush(); store.set('lv_' + S.ticker, { entry:S.entry, stop:S.stop, target:S.target, entryTime:S.entryTime, posBars:S.posBars, fpId:S.fpId || null }); }
 function loadLevels(){
@@ -2887,10 +2914,19 @@ function buildUI(){
     syncInputs(); calc(); saveLevels(); overlay.update();
   };
   document.querySelectorAll('[data-clr]').forEach(b => b.onclick = () => setLevel(b.dataset.clr, null));
+  let entryBase = null;   // 진입가 입력 시작 시점의 진입·손절·목표 (타이핑 중간값 누적 방지)
+  $('pEntry').addEventListener('focus', () => { entryBase = { entry:S.entry, stop:S.stop, target:S.target }; });
+  $('pEntry').addEventListener('blur', () => { entryBase = null; });
   [['pEntry','entry'],['pStop','stop'],['pTarget','target']].forEach(([id,k]) => {
     $(id).addEventListener('input', e => {
       const raw = e.target.value.trim(), v = raw === '' ? null : +raw;
       if (v !== null && !(v > 0)) return;
+      if (k === 'entry'){
+        if (v == null) return;                                   // 비우는 중엔 대기 (지우기는 ✕ 버튼)
+        moveEntry(v, entryBase || undefined); if (fpCur()) saveDrawings();
+        $('pStop').value = S.stop ?? ''; $('pTarget').value = S.target ?? '';
+        calc(); saveLevels(); overlay.update(); return;
+      }
       if (v == null) fpUnlink();
       S[k] = v; if (k === 'entry' && v == null) S.entryTime = null;
       calc(); saveLevels(); overlay.update();
