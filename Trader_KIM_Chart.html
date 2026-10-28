@@ -550,6 +550,35 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
 .fd-f .fd-c:hover{background:var(--panel2)}
 .fd-f .fd-ok{background:#f2f2f2;color:#111;border:none;border-radius:7px;padding:9px 20px;font-weight:700;font-size:14px}
 .fd-f .fd-ok:hover{background:#fff}
+/* ── 멀티 타임프레임 RSI 테이블 ── */
+#rsiTbl{position:absolute;top:8px;right:70px;z-index:6;pointer-events:none;display:none}
+#rsiTbl.on{display:block}
+#rsiTbl.pos-tl{left:62px;right:auto;top:84px}
+#rsiTbl.pos-bl{left:62px;right:auto;top:auto;bottom:40px}
+#rsiTbl.pos-br{top:auto;bottom:40px}
+#rsiTbl table{border-collapse:collapse;background:rgba(15,15,15,.92);border:1px solid rgba(120,123,134,.5);font-variant-numeric:tabular-nums;font-size:13px}
+#rsiTbl.sz-s table{font-size:11px}#rsiTbl.sz-l table{font-size:15px}
+#rsiTbl th,#rsiTbl td{border:1px solid rgba(120,123,134,.5);padding:3px 8px;text-align:center;white-space:nowrap;color:#fff;font-weight:600}
+#rsiTbl th{background:#2a2e39;font-weight:700}
+#rsiTbl td.lb{background:#000}
+#rsiTbl td.ob{background:rgba(242,54,69,.32)}
+#rsiTbl td.os{background:rgba(8,153,129,.32)}
+#rsiTbl td.nt{background:rgba(120,123,134,.16)}
+#rsiTbl td.warn{background:rgba(242,54,69,.22);color:#ff4d5e;font-weight:800;font-size:1.25em}
+#rsiTbl td.na{color:var(--muted);font-weight:400}
+#rsiTbl.loading td:not(.lb){opacity:.55}
+#rsiTbl .rt-msg{display:none;margin-top:4px;padding:5px 9px;background:rgba(242,54,69,.18);border:1px solid rgba(242,54,69,.6);border-left:3px solid #f23645;color:#ff4d5e;font-weight:800;font-size:13px;line-height:1.5;white-space:nowrap;text-align:right}
+#rsiTbl .rt-msg.on{display:block}
+#rsiTbl .rt-msg em{font-style:normal;font-weight:600;color:#ffb3ba;font-size:.9em;margin-left:6px}
+#rsiTbl.pos-tl .rt-msg,#rsiTbl.pos-bl .rt-msg{text-align:left}
+#rsiTbl.sz-s .rt-msg{font-size:11px}#rsiTbl.sz-l .rt-msg{font-size:15px}
+.rt-set{border-top:1px solid var(--line2);margin-top:12px;padding-top:10px}
+.rt-set .rt-g{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px;font-size:12px;color:var(--muted)}
+.rt-set label{display:flex;flex-direction:column;gap:3px}
+.rt-set label.rt-chk{flex-direction:row;align-items:center;gap:6px;color:var(--text);font-size:13px;margin-bottom:8px}
+.rt-set input[type=number],.rt-set select{padding:4px 6px;font-size:12px;width:100%}
+.rt-set .rt-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
+html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #rsiTbl th,html.embed #rsiTbl td{padding:2px 5px}html.embed #rsiTbl .rt-msg{font-size:11px;padding:3px 7px}
 </style>
 </head>
 <body>
@@ -704,7 +733,18 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
   <div class="sm-foot">OKX · Binance · Bitget · Coinbase · ↑↓ 이동 · Enter 선택 · Esc 닫기</div>
 </div></div>
 
-<div class="pop" id="popInd"><h3>이동평균선 설정</h3><div class="ma-head"><span></span><span>종류</span><span>기간</span><span>색</span><span></span><span></span></div><div id="maRows"></div></div>
+<div class="pop" id="popInd"><h3>이동평균선 설정</h3><div class="ma-head"><span></span><span>종류</span><span>기간</span><span>색</span><span></span><span></span></div><div id="maRows"></div><div class="rt-set"><h3>멀티 타임프레임 RSI 테이블</h3>
+  <label class="rt-chk"><input type="checkbox" id="rtOn"> 차트에 표시</label>
+  <div class="rt-g">
+    <label>RSI 기간<input type="number" id="rtLen" min="1" max="200" step="1"></label>
+    <label>위치<select id="rtPos"><option value="tr">우측 상단</option><option value="tl">좌측 상단</option><option value="br">우측 하단</option><option value="bl">좌측 하단</option></select></label>
+    <label>과매수 기준<input type="number" id="rtOB" min="50" max="100" step="1"></label>
+    <label>과매도 기준<input type="number" id="rtOS" min="0" max="50" step="1"></label>
+    <label>글자 크기<select id="rtSz"><option value="s">작게</option><option value="m">보통</option><option value="l">크게</option></select></label>
+  </div>
+  <div class="rt-note">과매수=빨강 · 과매도=초록 · 일봉 RSI 27~33 → <b>롱 금지 · 추가 하락 가능</b>, 67~73 → <b>숏 금지 · 추가 상승 가능성 높음</b> 경고 문구 표시(완브로). 15m~월봉을 종가 기준으로 계산(60초마다 갱신, 현재가 실시간 반영).</div>
+</div>
+</div>
 <div class="pop" id="popHelp">
   <h3>조작법</h3>
   <ul class="help">
@@ -2476,6 +2516,7 @@ function showLast(){
   const el = $('lastPx'); el.textContent = fP(S.last);
   if (prevLast != null && S.last !== prevLast) el.className = 'px ' + (S.last > prevLast ? 'up' : 'down');
   prevLast = S.last;
+  rtTick();
 }
 
 /* ───────────────── 상태 저장 ───────────────── */
@@ -3263,6 +3304,160 @@ function initFibDlg(){
   window.addEventListener('mouseup', () => { mv = null; });
 }
 
+/* ───────── 멀티 타임프레임 RSI 테이블 (Pine '멀티 타임프레임 RSI 테이블' 이식) ───────── */
+const RT_TF = [['15m','15m'],['1H','1H'],['4H','4H'],['8H','8H'],['12H','12H'],['D','일봉'],['W','주봉'],['M','월봉']];
+const RT_MS = { '15m':900e3, '1H':3600e3, '4H':14400e3, '8H':28800e3, '12H':43200e3, 'D':864e5 };
+const rtBk = {
+  fix: ms => t => Math.floor(t / ms) * ms,
+  week: t => { const o = 4 * 864e5, w = 7 * 864e5; return Math.floor((t - o) / w) * w + o; },   // 월요일 00:00 UTC 시작
+  month: t => { const d = new Date(t); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), 1); }
+};
+/* 거래소별: 각 TF → [원본 요청 키, 합칠 버킷 함수(없으면 그대로)] */
+const RT_SRC = {
+  okx:      { '15m':['15m'], '1H':['1H'], '4H':['4H'], '8H':['4H', rtBk.fix(28800e3)], '12H':['12Hutc'], 'D':['1Dutc'], 'W':['1Wutc'], 'M':['1Mutc'] },
+  binance:  { '15m':['15m'], '1H':['1h'], '4H':['4h'], '8H':['8h'], '12H':['12h'], 'D':['1d'], 'W':['1w'], 'M':['1M'] },
+  bitget:   { '15m':['15m'], '1H':['1H'], '4H':['4H'], '8H':['4H', rtBk.fix(28800e3)], '12H':['12Hutc'], 'D':['1Dutc'], 'W':['1Wutc'], 'M':['1Mutc'] },
+  coinbase: { '15m':['900'], '1H':['3600'], '4H':['3600', rtBk.fix(14400e3)], '8H':['3600', rtBk.fix(28800e3)], '12H':['21600', rtBk.fix(43200e3)],
+              'D':['86400'], 'W':['86400', rtBk.week], 'M':['86400', rtBk.month] }
+};
+async function rtFetch(ex, sym, k){
+  if (ex === 'okx'){
+    const j = await getJ(`${API}/api/v5/market/candles?instId=${sym}&bar=${k}&limit=300`);
+    if (j.code && j.code !== '0') throw new Error(j.msg);
+    return (j.data || []).map(rawBar).reverse();
+  }
+  if (ex === 'binance'){
+    const j = await getJ(`${EXA.binance.base}/fapi/v1/klines?symbol=${sym}&interval=${k}&limit=500`);
+    return Array.isArray(j) ? EXA.binance.kl(j) : [];
+  }
+  if (ex === 'bitget'){
+    const j = await getJ(`${EXA.bitget.base}/api/v2/mix/market/candles?symbol=${sym}&productType=${EXA.bitget.pt}&granularity=${k}&limit=500`);
+    return j.code === '00000' ? EXA.bitget.kl(j.data || []) : [];
+  }
+  if (ex === 'coinbase'){   // 300봉 제한 → 여러 페이지 이어 받기 (일봉은 월봉용으로 넉넉히)
+    const g = +k, pages = g === 86400 ? 6 : g === 3600 ? 3 : 2; let end = Math.floor(Date.now() / 1000), out = [];
+    for (let p = 0; p < pages; p++){
+      const start = end - g * 300;
+      const j = await getJ(`${EXA.coinbase.base}/products/${sym}/candles?granularity=${g}&start=${new Date(start * 1000).toISOString()}&end=${new Date(end * 1000).toISOString()}`);
+      if (!Array.isArray(j) || !j.length) break;
+      out = j.map(r => ({ t:r[0] * 1000, l:+r[1], h:+r[2], o:+r[3], c:+r[4], v:+r[5] })).concat(out);
+      end = start;
+    }
+    const m = new Map(out.map(b => [b.t, b])); return [...m.values()].sort((a, b) => a.t - b.t);
+  }
+  return [];
+}
+function rtAgg(rows, bk){
+  const out = [];
+  for (const r of rows){ const t = bk(r.t), l = out[out.length - 1]; if (l && l.t === t) l.c = r.c; else out.push({ t, c:r.c }); }
+  if (out.length > 1) out.shift();   // 맨 앞 버킷은 일부만 포함될 수 있어 버림
+  return out;
+}
+/* TradingView ta.rsi 와 동일 (Wilder RMA, 첫 값은 SMA로 시작) */
+function rtRSI(c, n){
+  if (!c || c.length <= n) return null;
+  let g = 0, l = 0;
+  for (let i = 1; i <= n; i++){ const d = c[i] - c[i - 1]; if (d > 0) g += d; else l -= d; }
+  g /= n; l /= n;
+  for (let i = n + 1; i < c.length; i++){ const d = c[i] - c[i - 1]; g = (g * (n - 1) + Math.max(d, 0)) / n; l = (l * (n - 1) + Math.max(-d, 0)) / n; }
+  return l === 0 ? 100 : g === 0 ? 0 : 100 - 100 / (1 + g / l);
+}
+const RT = { cfg:null, key:null, seq:0, data:{}, vals:{}, timer:null, raf:false };
+function rtCfg(){
+  if (!RT.cfg){
+    const s = store.get(EMBED ? 'rsiTblE' : 'rsiTbl') || {};
+    RT.cfg = { on: s.on != null ? !!s.on : (EMBED ? QS0.get('rsi') !== '0' : true), len: +s.len || 14, ob: s.ob != null ? +s.ob : 70, os: s.os != null ? +s.os : 30, pos: s.pos || 'tr', sz: s.sz || 'm' };
+  }
+  return RT.cfg;
+}
+function rtSave(){ store.set(EMBED ? 'rsiTblE' : 'rsiTbl', RT.cfg); }
+function rtInit(){
+  const c = rtCfg(), box = document.createElement('div'); box.id = 'rsiTbl';
+  box.innerHTML = `<table><tr><th>TF</th>${RT_TF.map(([, n]) => `<th>${n}</th>`).join('')}</tr><tr><td class="lb">RSI</td>${RT_TF.map(([k]) => `<td data-tf="${k}" class="na">—</td>`).join('')}</tr></table><div class="rt-msg" id="rtMsg"></div>`;
+  $('chartWrap').appendChild(box);
+  $('rtOn').checked = c.on; $('rtLen').value = c.len; $('rtOB').value = c.ob; $('rtOS').value = c.os; $('rtPos').value = c.pos; $('rtSz').value = c.sz;
+  const upd = () => {
+    c.on = $('rtOn').checked; c.len = Math.max(1, Math.min(200, Math.round(+$('rtLen').value || 14)));
+    c.ob = Math.max(50, Math.min(100, +$('rtOB').value || 70)); c.os = Math.max(0, Math.min(50, +$('rtOS').value || 0));
+    c.pos = $('rtPos').value; c.sz = $('rtSz').value; rtSave(); rtStyle();
+    if (c.on && RT.key !== S.ticker) rtLoad(); else rtCalc();
+  };
+  ['rtOn','rtLen','rtOB','rtOS','rtPos','rtSz'].forEach(id => $(id).addEventListener('change', upd));
+  rtStyle();
+  const iv = EMBED ? 120000 + Math.floor(Math.random() * 30000) : 60000;
+  RT.timer = setInterval(() => { if (rtCfg().on && !document.hidden) rtLoad(); }, iv);
+  setInterval(rtPlace, 1000);
+}
+function rtStyle(){ const c = rtCfg(), el = $('rsiTbl'); if (!el) return; el.className = (c.on ? 'on ' : '') + 'pos-' + c.pos + ' sz-' + c.sz; rtPlace(); }
+function rtPlace(){   // 가격축 폭만큼 오른쪽 여백
+  const el = $('rsiTbl'), c = rtCfg(); if (!el || !chart || !c.on) return;
+  let w = 60; try { w = chart.priceScale('right').width() || 60; } catch(e){}
+  el.style.right = (c.pos === 'tr' || c.pos === 'br') ? (w + 8) + 'px' : '';
+}
+async function rtLoad(){
+  if (!rtCfg().on || !$('rsiTbl')) return;
+  const tk = S.ticker, pk = parseKey(tk), src = RT_SRC[pk.ex], seq = ++RT.seq;
+  if (RT.key !== tk){ RT.data = {}; RT.vals = {}; RT.key = tk; rtCalc(); }
+  if (!src) return;
+  $('rsiTbl').classList.add('loading');
+  const need = [...new Set(Object.values(src).map(s => s[0]))], raw = {};
+  const get = async k => { try { const r = await rtFetch(pk.ex, pk.sym, k); return r && r.length ? r : null; } catch(e){ return null; } };
+  await Promise.all(need.map(async k => { raw[k] = await get(k); }));
+  const miss = need.filter(k => !raw[k]);
+  if (miss.length && seq === RT.seq){ await new Promise(r => setTimeout(r, 4000 + Math.random() * 2000)); await Promise.all(miss.map(async k => { raw[k] = await get(k); })); }
+  if (seq !== RT.seq || tk !== S.ticker) return;
+  for (const [tf, [k, bk]] of Object.entries(src)){
+    const r = raw[k]; if (!r || !r.length){ RT.data[tf] = null; continue; }
+    RT.data[tf] = bk ? rtAgg(r, bk) : r.map(b => ({ t:b.t, c:b.c }));
+  }
+  $('rsiTbl').classList.remove('loading');
+  rtCalc();
+}
+function rtCalc(){
+  const c = rtCfg(), el = $('rsiTbl'); if (!el || !c.on) return;
+  const px = RT.key === S.ticker && S.last != null && isFinite(S.last) ? S.last : null, now = Date.now();
+  for (const [tf] of RT_TF){
+    const d = RT.data[tf]; let v = null;
+    if (d && d.length){
+      const cl = d.map(b => b.c), last = d[d.length - 1];
+      if (px != null){   // 현재가를 진행 중인 봉 종가로 반영 (봉이 바뀌었으면 새 봉으로)
+        if (RT_MS[tf] && now >= last.t + RT_MS[tf]) cl.push(px); else cl[cl.length - 1] = px;
+      }
+      v = rtRSI(cl, c.len);
+    }
+    RT.vals[tf] = v;
+    const td = el.querySelector(`td[data-tf="${tf}"]`); if (!td) continue;
+    if (v == null){ td.textContent = '—'; td.className = 'na'; td.title = '데이터 부족'; continue; }
+    const warn = tf === 'D' && ((v >= 27 && v <= 33) || (v >= 67 && v <= 73));
+    td.textContent = (Math.round(v * 100) / 100).toString();
+    td.className = warn ? 'warn' : v >= c.ob ? 'ob' : v <= c.os ? 'os' : 'nt';
+    td.title = warn ? (v <= 50 ? '롱 금지 · 추가 하락 가능' : '숏 금지 · 추가 상승 가능성 높음') : '';
+  }
+  rtMsg(RT.vals.D);
+}
+/* 완브로 규칙: 일봉 RSI 27~33 → 롱 금지 · 추가 하락 가능 / 67~73 → 숏 금지 · 추가 상승 가능성 높음 */
+function rtMsg(v){
+  const m = $('rtMsg'); if (!m) return;
+  let t = '';
+  if (v != null && v >= 27 && v <= 33) t = `⚠ 일봉 RSI ${v.toFixed(2)} · 롱 금지 — 추가 하락 가능`;
+  else if (v != null && v >= 67 && v <= 73) t = `⚠ 일봉 RSI ${v.toFixed(2)} · 숏 금지 — 추가 상승 가능성 높음`;
+  m.innerHTML = t ? t + '<em>(완브로)</em>' : '';
+  m.classList.toggle('on', !!t);
+}
+function rtTick(){   // showLast()에서 호출 — 종목이 바뀌면 다시 받고, 아니면 현재가만 반영
+  if (!rtCfg().on) return;
+  if (RT.key !== S.ticker){
+    if (EMBED){   // 워치리스트 칸: 0~2.5초 랜덤 지연 후 요청
+      if (RT.wait === S.ticker) return; RT.wait = S.ticker;
+      setTimeout(() => { RT.wait = null; if (RT.key !== S.ticker) rtLoad(); }, Math.random() * 2500);
+      return;
+    }
+    rtLoad(); return;
+  }
+  if (RT.raf) return; RT.raf = true;
+  setTimeout(() => { RT.raf = false; rtCalc(); }, 500);
+}
+
 /* ───────────────── 시작 ───────────────── */
 (async function start(){
   const cfg = store.get('cfg') || {};
@@ -3278,7 +3473,7 @@ function initFibDlg(){
   S.bar = qs.get('bar') || cfg.bar || '15m';
   if (!BARS.includes(S.bar)) S.bar = '15m';
 
-  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg();
+  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); rtInit();
   wlLoad(); if (!EMBED){ wlFetch(); wlTimer = setInterval(wlFetch, 10000); }
   showPanel(EMBED ? null : store.get('pview') || null);
   setInterval(tickCountdown, 1000);
