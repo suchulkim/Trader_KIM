@@ -151,6 +151,18 @@ main.panel-open{grid-template-columns:1fr 330px}
 #nodata{position:absolute;top:42%;left:calc(50% + 26px);transform:translate(-50%,-50%);z-index:7;display:none;text-align:center;background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:16px 22px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.45)}
 #nodata b{font-size:14px}
 #nodata .muted{font-size:12px}
+#axPlus{position:absolute;z-index:8;width:24px;height:24px;padding:0;display:none;align-items:center;justify-content:center;border:none;border-radius:4px;background:#3a3a3a;color:#e3e3e3;cursor:pointer}
+#axPlus.joined{border-radius:4px 0 0 4px}
+#axLbl{position:absolute;z-index:8;display:none;height:24px;line-height:24px;padding:0 6px;background:#3a3a3a;color:#fff;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:0 4px 4px 0;pointer-events:none;white-space:nowrap}
+#axPlus:hover,#axPlus.on{background:#505050;color:#fff}
+#axPlus svg{width:18px;height:18px}
+#axMenu{position:absolute;z-index:45;display:none;min-width:340px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;box-shadow:0 12px 34px rgba(0,0,0,.6);padding:5px 0}
+#axMenu.open{display:block}
+.ax-i{display:flex;align-items:center;gap:12px;padding:9px 16px;cursor:pointer;white-space:nowrap;font-size:14px;color:#e6e6e6}
+.ax-i:hover{background:var(--panel2)}
+.ax-i svg{width:26px;height:26px;flex:none}
+.ax-i .key{margin-left:auto;padding-left:28px;color:var(--muted);font-size:12px}
+.ax-sep{height:1px;background:var(--line2);margin:5px 0}
 #btnRT{position:absolute;right:90px;bottom:40px;z-index:6;display:none;width:30px;height:30px;padding:0;border-radius:50%;font-size:15px;background:var(--panel);color:var(--text);border:1px solid var(--line2)}
 
 /* ── 팝오버 ── */
@@ -614,6 +626,9 @@ html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #r
       <div id="nodata"></div>
       <div id="cdLbl"></div>
       <button id="btnRT" title="최신 봉으로 이동">»</button>
+      <button id="axPlus" title="이 가격에 알람 · 수평선"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="14" r="9"/><path d="M14 9.5v9M9.5 14h9"/></svg></button>
+      <div id="axLbl"></div>
+      <div id="axMenu"></div>
     </div>
     <div id="bottombar">
       <div id="ranges"></div>
@@ -751,7 +766,8 @@ html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #r
     <li><b>드래그</b> 차트 상하좌우 이동 · <b>휠</b> 시간축 확대/축소</li>
     <li><b>가격축 드래그·휠</b> 세로 확대/축소 · <b>A</b>/가격축 더블클릭 자동 맞춤</li>
     <li><b>롱/숏 포지션 도구</b> 클릭 한 번 → 진입·손절·익절 박스 생성, 선/박스 드래그로 조정</li>
-    <li><b>수평선</b> Alt+H (왼쪽 툴바 2번째) · <b>추세선</b> Alt+T (2번째 점 찍을 때 Shift → 수평) · <b>수평 레이</b> Alt+J · <b>피보나치 되돌림</b> Alt+F (2점) · <b>추세 기반 확장</b> Alt+E (3점)</li>
+    <li><b>가격축 ＋ 버튼 / 우클릭</b> 커서 가격에 알람 만들기 · 수평선 그리기 · 주문 추가 (Alt+A · Alt+H · Shift+T)</li>
+    <li><b>수평선</b> Alt+H (마우스 위치 가격에 바로 그림, 왼쪽 툴바 2번째) · <b>추세선</b> Alt+T (2번째 점 찍을 때 Shift → 수평) · <b>수평 레이</b> Alt+J · <b>피보나치 되돌림</b> Alt+F (2점) · <b>추세 기반 확장</b> Alt+E (3점)</li>
     <li><b>피보 롱/숏 포지션</b> (포지션 도구 ▸ 메뉴) ① 기준점 → ② 진입가 2번 클릭. 진입가가 1.618 레벨에 고정되도록 손절가(0)가 자동 계산되고, 목표가 = 진입가 + (진입가−손절가) × 목표 배수(기본 1). 손절가 점은 좌우로만 이동</li>
     <li><b>피보나치 설정</b> 피보나치 더블클릭 또는 선택 후 ⚙ → 레벨·색·선 스타일·확장·좌표·표시 시간대</li>
     <li><b>가격 범위 측정</b> Shift+클릭 → 두 번째 클릭 (다음 클릭 시 사라짐)</li>
@@ -1028,6 +1044,7 @@ function renderOverlay(ctx, W, H){
   ovW = W;
   if (!bars.length) return;
   placeSelbar(W, H); placeCd();
+  if (axGuide && !mouse && axY != null && !drag){ ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#9598a1'; ctx.lineWidth = 1; const gy = Math.round(axY) + .5; line(ctx, 0, gy, W, gy); ctx.restore(); }
   drawPosition(ctx, W, H);
   drawAlerts(ctx, W);
   if (!hideDraw) for (const d of drawings) if (visOn(d)) drawShape(ctx, d, W, d.id === sel, false);
@@ -1375,14 +1392,34 @@ function bindMouse(el){
     const k = Math.exp(Math.max(-100, Math.min(100, e.deltaY)) * 0.002);
     const anchor = a - (y / H) * (a - b);
     setManual({ top:T.i(anchor + (a - anchor) * k), bot:T.i(anchor - (anchor - b) * k) });
+    axMove();
   }, { capture:true, passive:false });
 
-  el.addEventListener('mouseleave', () => { mouse = null; overlay.update(); });
+  el.addEventListener('mouseleave', e => {
+    if (e.relatedTarget && e.relatedTarget.closest && e.relatedTarget.closest('#axPlus,#axMenu')) return;
+    mouse = null; if (!axMenuOpen) axGuide = false; axHide(); overlay.update();
+  });
+  el.addEventListener('contextmenu', e => {          // 우클릭 → 같은 메뉴
+    const x = relX(e), y = relY(e);
+    if (x > paneW() || y > paneH() || !bars.length) return;
+    e.preventDefault();
+    const p = snapPrice(x, y); if (p == null) return;
+    axOpen(p, x, y, false);
+  });
 
   window.addEventListener('mousemove', e => {
+    if (e.target && e.target.closest && e.target.closest('#axPlus,#axMenu')){   // ＋ 버튼 위: 위치·점선 고정
+      if (e.target.closest('#axPlus') && !axGuide){ axGuide = true; mouse = null; axMove(); overlay.update(); }
+      return;
+    }
     const x = relX(e), y = relY(e);
     const inside = el.contains(e.target);
     mouse = inside && x <= paneW() && y <= paneH() ? { x, y } : null;
+    if (!axMenuOpen){
+      const onAxis = inside && !mouse && x > paneW() && y >= 0 && y <= paneH();
+      axGuide = onAxis; if (mouse) axY = mouse.y; else if (onAxis) axY = y;
+    }
+    axMove(); if (axGuide || !mouse) overlay.update();
 
     if (drag){ doDrag(x, y); return; }
     if (vDrag){
@@ -1474,6 +1511,91 @@ function placePoint(x, y){
     refreshSel();
   }
   overlay.update();
+}
+
+/* ───────── 가격축 ＋ 버튼 (TradingView: 이 가격에 알람 / 수평선) ───────── */
+let axP = null, axMenuOpen = false;
+const AX_IC = {
+  alert: I('<circle cx="12" cy="15" r="7"/><path d="M12 11.5V15l2 2M5 6.5l2.5-2M19 6.5l-2.5-2"/><path d="M21 19v6M18 22h6" stroke-width="1.6"/>'),
+  order: I('<rect x="4" y="6" width="17" height="15" rx="2"/><path d="M7 16l3-3 3 2 4-5"/><path d="M22 18v6M19 21h6" stroke-width="1.6"/>')
+};
+let axY = null, axGuide = false;   // axGuide: 가격축/＋버튼 위 → 직접 점선·가격 라벨 표시
+function axHide(){ if (axMenuOpen) return; $('axPlus').style.display = 'none'; $('axLbl').style.display = 'none'; }
+function axMove(){
+  const b = $('axPlus'), lb = $('axLbl');
+  if (axMenuOpen) return;
+  const busy = drag || (vDrag && vDrag.moved) || S.tool !== 'cursor' || !bars.length;
+  if (busy || (!mouse && !axGuide) || axY == null){ axHide(); return; }
+  const p = mouse ? snapPrice(mouse.x, mouse.y) : roundTick(priceAt(axY));
+  if (p == null || !isFinite(p)){ axHide(); return; }
+  axP = p;
+  const top = Math.max(0, Math.min(paneH() - 24, axY - 12));
+  b.style.display = 'flex'; b.style.left = (paneW() - 25) + 'px'; b.style.top = top + 'px';
+  b.classList.toggle('joined', !mouse);
+  if (!mouse){                     // 차트 안에선 기본 십자선 라벨이 있으므로 가격축 위일 때만 라벨 표시
+    lb.textContent = fP(p); lb.style.display = 'block'; lb.style.left = (paneW() + 1) + 'px'; lb.style.top = top + 'px';
+    lb.style.minWidth = Math.max(40, chart.priceScale('right').width() - 2) + 'px';
+  } else lb.style.display = 'none';
+}
+function axOpen(p, ax, ay, fromBtn){
+  axP = p; axMenuOpen = true;
+  const m = $('axMenu'), nm = dispName(S.ticker), px = fP(p);
+  m.innerHTML =
+    `<div class="ax-i" data-a="alert">${AX_IC.alert}<span>${esc(nm)} 에 대해 ${px} 으로 얼러트 만들어 넣기</span><span class="key">Alt + A</span></div>` +
+    (EMBED ? '' : `<div class="ax-sep"></div><div class="ax-i" data-a="order">${AX_IC.order}<span>${esc(nm)}에 ${px} 주문 추가…</span><span class="key">Shift + T</span></div>`) +
+    `<div class="ax-sep"></div><div class="ax-i" data-a="hline">${ICON.hline}<span>${px}에 수평선 그리기</span><span class="key">Alt + H</span></div>`;
+  m.querySelectorAll('.ax-i').forEach(it => it.onclick = () => {
+    const a = it.dataset.a, price = axP; axClose();
+    if (a === 'alert') alertAt(price); else if (a === 'hline') hlineAt(price); else orderAt(price);
+  });
+  m.classList.add('open');
+  const W = $('chartWrap').clientWidth, H = $('chartWrap').clientHeight, mw = m.offsetWidth, mh = m.offsetHeight;
+  let left = fromBtn ? ax - mw : ax, top = ay + 4;
+  left = Math.max(4, Math.min(W - mw - 4, left));
+  if (top + mh > H - 4) top = Math.max(4, (fromBtn ? ay - 28 : ay) - mh - 4);
+  m.style.left = left + 'px'; m.style.top = top + 'px';
+  $('axPlus').classList.add('on');
+}
+function axClose(){
+  if (!axMenuOpen) return;
+  axMenuOpen = false; $('axMenu').classList.remove('open'); $('axPlus').classList.remove('on');
+  if (!mouse){ axGuide = false; axHide(); overlay && overlay.update(); }
+}
+function alertAt(p){
+  if (p == null) return;
+  const a = addAlert(S.ticker, roundTick(p), 'cross');
+  if (hideDraw){ hideDraw = false; refreshToolbar(); }
+  setTool('cursor'); sel = 'al:' + a.id; refreshSel();
+}
+function hlineAt(p){
+  if (p == null) return;
+  const lb = lastBar(), t = mouse ? xToTime(mouse.x) : (lb ? cTime(lb) : 0);
+  const d = { id: uid(), type:'hline', pts:[{ t, p: roundTick(p) }], color:'#2962ff' };
+  drawings.push(d); saveDrawings();
+  if (hideDraw){ hideDraw = false; refreshToolbar(); }
+  setTool('cursor'); sel = d.id; refreshSel(); overlay.update();
+  toast(`${fP(d.pts[0].p)}에 수평선을 그렸습니다`);
+}
+function orderAt(p){
+  if (p == null || EMBED) return;
+  showPanel('order');
+  ORD.type = 'limit'; store.set('ordType', 'limit'); ORD.pending = null; ORD.hint = null;
+  $('oPrice').value = +(+roundTick(p)).toPrecision(10);
+  ordRender();
+  ordMsg('warn', `지정가 <b>${fP(p)}</b> 를 불러왔습니다 — 수량을 입력하고 매수/매도를 누르세요 (확인 단계 후 실거래 주문).`);
+}
+function initAxPlus(){
+  const b = $('axPlus'), m = $('axMenu');
+  [b, m].forEach(x => x.addEventListener('mousedown', e => e.stopPropagation()));
+  b.addEventListener('click', e => {
+    e.stopPropagation();
+    if (axMenuOpen){ axClose(); return; }
+    const top = parseFloat(b.style.top) || 0;
+    axOpen(axP, paneW() - 2, top + 24, true);
+  });
+  b.addEventListener('wheel', e => { axClose(); b.style.display = 'none'; }, { passive:true });
+  document.addEventListener('mousedown', axClose);
+  m.addEventListener('contextmenu', e => e.preventDefault());
 }
 
 function createPosition(dir, pt){
@@ -2998,14 +3120,16 @@ function buildUI(){
     const k = e.key.toLowerCase();
     if (e.altKey){
       if (k === 'a'){ const p = mouse ? snapPrice(mouse.x, mouse.y) : (S.last ? roundTick(S.last) : null); if (p){ const a = addAlert(S.ticker, p, 'cross'); sel = 'al:' + a.id; refreshSel(); } }
-      else if (k === 'r') resetView(); else if (k === 'h') setTool('hline'); else if (k === 't') setTool('trend'); else if (k === 'j') setTool('hray'); else if (k === 'f') setTool('fibret'); else if (k === 'e') setTool('fibext'); else return;
+      else if (k === 'r') resetView(); else if (k === 'h'){ if (mouse) hlineAt(snapPrice(mouse.x, mouse.y)); else setTool('hline'); } else if (k === 't') setTool('trend'); else if (k === 'j') setTool('hray'); else if (k === 'f') setTool('fibret'); else if (k === 'e') setTool('fibext'); else return;
       e.preventDefault(); return;
     }
     if ((e.ctrlKey || e.metaKey) && k === 'z'){ e.shiftKey ? redo() : undo(); e.preventDefault(); return; }
     if ((e.ctrlKey || e.metaKey) && k === 'y'){ redo(); e.preventDefault(); return; }
     if (e.ctrlKey || e.metaKey) return;
+    if (e.shiftKey && k === 't' && !EMBED){ const p = mouse ? snapPrice(mouse.x, mouse.y) : (S.last ? roundTick(S.last) : null); if (p != null) orderAt(p); e.preventDefault(); return; }
     if (/^[a-z0-9]$/.test(k) && !e.shiftKey){ openSymSearch(e.key.toUpperCase()); e.preventDefault(); return; }   // TradingView처럼 글자 입력 → 심볼 검색
     if (k === 'escape'){
+      if (axMenuOpen){ axClose(); return; }
       closePops(); closeFlyouts();
       if (S.tool !== 'cursor' || pending.length) setTool('cursor');
       else if (drawings.some(d => d.ephemeral)){ drawings = drawings.filter(d => !d.ephemeral); overlay.update(); }
@@ -3473,7 +3597,7 @@ function rtTick(){   // showLast()에서 호출 — 종목이 바뀌면 다시 �
   S.bar = qs.get('bar') || cfg.bar || '15m';
   if (!BARS.includes(S.bar)) S.bar = '15m';
 
-  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); rtInit();
+  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); rtInit(); initAxPlus();
   wlLoad(); if (!EMBED){ wlFetch(); wlTimer = setInterval(wlFetch, 10000); }
   showPanel(EMBED ? null : store.get('pview') || null);
   setInterval(tickCountdown, 1000);
