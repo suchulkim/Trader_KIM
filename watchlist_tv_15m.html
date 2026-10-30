@@ -101,6 +101,21 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
 .alist li button{padding:1px 7px;font-size:11.5px}
 .toasts{position:fixed;right:14px;bottom:14px;display:flex;flex-direction:column;gap:8px;z-index:60;max-width:calc(100vw - 28px)}
 .toast{background:#2a2410;border:1px solid var(--gold);border-radius:8px;padding:10px 12px;font-size:13px;min-width:260px;box-shadow:0 6px 20px rgba(0,0,0,.45);line-height:1.5}
+/* ── 내 종목 선택 ── */
+#myBtn.on{background:#2a2410;color:var(--gold);border-color:var(--gold);font-weight:600}
+#myStat{font-family:var(--mono);font-size:12px;color:var(--muted)}
+.mymodal{width:min(720px,100%)}
+.mytools{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-bottom:6px}
+.mytools input{flex:1;min-width:140px}
+.mygrp{border-top:1px solid var(--line);padding:8px 0 4px}
+.mygrp h4{margin:0 0 6px;font-size:13px;color:var(--grp);display:flex;align-items:center;gap:8px}
+.mygrp h4 button{padding:1px 7px;font-size:11px;font-weight:500}
+.mychips{display:flex;flex-wrap:wrap;gap:6px}
+.mychips label{display:inline-flex;align-items:center;gap:5px;font-family:var(--mono);font-size:12px;background:var(--bg);border:1px solid var(--line);border-left:3px solid var(--c);border-radius:4px;padding:3px 8px;cursor:pointer;user-select:none}
+.mychips label:has(input:checked){background:#2a2410;border-color:var(--gold);border-left-color:var(--c);color:var(--gold)}
+.mychips input{margin:0;accent-color:var(--gold)}
+.ph .star{padding:1px 6px;font-size:12px;color:var(--muted)}
+.ph .star.on{color:var(--gold);border-color:var(--gold)}
 .toast b{color:var(--gold)} .toast button{float:right;margin-left:10px;background:var(--gold);color:var(--bg);border-color:var(--gold);padding:2px 9px}
 </style>
 </head>
@@ -153,6 +168,11 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
       <button type="button" id="alarmBtn" title="소리·데스크톱 알림 허용 (브라우저 정책상 최초 1회 클릭 필요)">🔇 소리 꺼짐 (클릭)</button>
       <button type="button" id="alertAll" title="설정된 전체 알림 보기">알림 0</button>
     </div>
+    <div class="ctl" title="체크한 종목만 표시 (선택은 이 브라우저에 저장)">
+      <button type="button" id="myBtn">⭐ 내 종목만 보기 꺼짐</button>
+      <button type="button" id="mySet" title="표시할 종목 고르기">⚙ 종목 선택</button>
+      <span id="myStat"></span>
+    </div>
     <div class="ctl" title="12시간봉(UTC 09:00·21:00 KST 시작) 최근 3개(현재 진행 중 봉 포함)가 모두 음봉인 종목만 표시">
       <button type="button" id="r3Btn">🕯 12H 음봉×3만 보기</button>
       <span id="r3Stat">확인 중…</span>
@@ -192,6 +212,20 @@ main{max-width:1800px;margin:0 auto;padding:16px;display:grid;grid-template-colu
       <div class="row"><input class="memo" id="mMemo" placeholder="메모 (선택) — 예: 박스 상단 돌파, 0.786 되돌림"></div>
     </div>
     <ul class="alist" id="mList"></ul>
+  </div>
+</div>
+<div class="modal-bg" id="myBg" role="dialog" aria-modal="true" aria-labelledby="myTitle">
+  <div class="modal mymodal">
+    <button type="button" class="close" id="myClose" aria-label="닫기">×</button>
+    <h3 id="myTitle">⭐ 내 종목 선택</h3>
+    <div class="sub">체크한 종목만 화면에 표시됩니다. 바꾸면 바로 반영되고, 이 브라우저에 저장돼 다음에 열어도 유지됩니다.</div>
+    <div class="mytools">
+      <input type="search" id="myQ" placeholder="종목 검색 (예: NVDA, ETH)" aria-label="종목 검색">
+      <button type="button" id="myAll">전체 선택</button>
+      <button type="button" id="myNone">전체 해제</button>
+      <button type="button" class="add" id="myDone">완료</button>
+    </div>
+    <div id="myList"></div>
   </div>
 </div>
 <div class="toasts" id="toasts" aria-live="polite"></div>
@@ -345,6 +379,7 @@ grid.innerHTML = GROUPS.map(([g,gn]) => {
       <span class="dpx" data-dpx="${s}" title="최신 15분봉 시가 대비 하락폭"></span>
       <button type="button" class="dropbtn" data-dack="${s}" title="급락 표시 해제">📉 급락 · 해제</button>
       <button type="button" class="hitbtn" data-ack="${s}" title="빨간 테두리 해제 (알림 기록은 목록에 남음)">🚨 도달 · 해제</button>
+      <button type="button" class="star" data-star="${s}" title="내 종목에 추가/제거">☆</button>
       <button type="button" class="bell" data-bell="${s}" title="가격 알림 설정">🔔</button>
       <a href="#" class="biglink" data-big="${s}" title="Trader_KIM Chart 전체 화면으로 보기">크게 보기 ⤢</a>
       <a href="${tvUrl(s)}" class="tvlink" target="_blank" rel="noopener">TradingView ↗</a>
@@ -417,22 +452,35 @@ function applyLayout(){
 /* 12H 3연속 음봉 필터 상태 (기본 켜짐) */
 const R3 = { on: store.get("r3on","1") === "1", res: {}, busy: false, at: 0 };
 const r3Pass = s => !R3.on || (R3.res[s] && R3.res[s].match);
+/* 내 종목 선택 (기본 꺼짐) — 켜져 있고 필터가 '전체'면 한국지수·코스피도 체크한 종목은 표시 */
+const MY = { on: store.get("myon","0") === "1", sel: new Set() };
+try{ (JSON.parse(store.get("mysel","null")) || WATCH.filter(w => !HIDE_IN_ALL.includes(w[1])).map(w => w[0])).forEach(s => MY.sel.add(s)); }catch(e){}
+const saveMy = () => { store.set("myon", MY.on ? "1" : "0"); store.set("mysel", JSON.stringify([...MY.sel])); };
+const myPass = s => !MY.on || MY.sel.has(s);
+const grpPass = (f, g) => (MY.on && f === "all") || inFilter(f, g);
 function applyFilter(){
-  const f = state.flt;
-  grid.querySelectorAll(".panel[data-g]").forEach(el => { el.hidden = !inFilter(f, el.dataset.g) || !r3Pass(el.dataset.s); });
+  const f = state.flt, narrow = R3.on || MY.on;
+  grid.querySelectorAll(".panel[data-g]").forEach(el => { el.hidden = !grpPass(f, el.dataset.g) || !r3Pass(el.dataset.s) || !myPass(el.dataset.s); });
   grid.querySelectorAll(".grp[data-g]").forEach(h => {
     const vis = [...grid.querySelectorAll(`.panel[data-g="${h.dataset.g}"]`)].filter(p => !p.hidden).length;
-    h.hidden = !inFilter(f, h.dataset.g) || (R3.on && !vis);
-    const sp = h.querySelector("span"); if (sp) sp.textContent = R3.on ? vis : grid.querySelectorAll(`.panel[data-g="${h.dataset.g}"]`).length;
+    h.hidden = !grpPass(f, h.dataset.g) || (narrow && !vis);
+    const sp = h.querySelector("span"); if (sp) sp.textContent = narrow ? vis : grid.querySelectorAll(`.panel[data-g="${h.dataset.g}"]`).length;
   });
-  nav.querySelectorAll("a").forEach(a => { a.hidden = !inFilter(f, a.dataset.g) || !r3Pass(a.dataset.s); });
+  nav.querySelectorAll("a").forEach(a => { a.hidden = !grpPass(f, a.dataset.g) || !r3Pass(a.dataset.s) || !myPass(a.dataset.s); });
   let em = document.getElementById("r3Empty");
   const any = [...grid.querySelectorAll(".panel")].some(p => !p.hidden);
-  if (R3.on && !any){
+  if (narrow && !any){
     if (!em){ em = document.createElement("div"); em.id = "r3Empty"; em.className = "r3empty"; grid.appendChild(em); }
-    em.innerHTML = R3.busy && !R3.at ? "12시간봉 3개를 불러오는 중…" : "현재 필터 범위에 <b>12H 음봉·음봉·음봉(현재봉)</b> 패턴인 종목이 없습니다.<br>상단 '🕯 12H 음봉×3만 보기'를 끄면 전체 종목이 보입니다.";
+    const why = [];
+    if (MY.on) why.push(MY.sel.size ? "<b>내 종목</b>" : "<b>내 종목(선택된 종목 없음)</b>");
+    if (R3.on) why.push("<b>12H 음봉·음봉·음봉(현재봉)</b> 패턴");
+    em.innerHTML = R3.on && R3.busy && !R3.at ? "12시간봉 3개를 불러오는 중…" :
+      `현재 필터 범위에 ${why.join(" + ")} 조건을 만족하는 종목이 없습니다.<br>` +
+      (MY.on ? "'⚙ 종목 선택'에서 종목을 체크하거나 '⭐ 내 종목만 보기'를 끄세요." : "") +
+      (R3.on ? (MY.on ? "<br>" : "") + "상단 '🕯 12H 음봉×3만 보기'를 끄면 전체 종목이 보입니다." : "");
     em.hidden = false;
   } else if (em) em.hidden = true;
+  if (typeof myUI === "function") myUI();
 }
 
 const $ = id => document.getElementById(id);
@@ -674,6 +722,8 @@ function closeBig(){ $("bigBg").classList.remove("open"); $("bigBody").innerHTML
 $("bigClose").addEventListener("click", closeBig);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("bigBg").classList.contains("open")) closeBig(); });
 grid.addEventListener("click", e => {
+  const st = e.target.closest("[data-star]");
+  if (st){ myToggle(st.dataset.star, !MY.sel.has(st.dataset.star)); return; }
   const dk = e.target.closest("[data-dack]");
   if (dk){ dropAck(dk.dataset.dack); return; }
   const big = e.target.closest("[data-big]");
@@ -891,6 +941,51 @@ $("r3Btn").addEventListener("click", () => { R3.on = !R3.on; store.set("r3on", R
 $("r3Ref").addEventListener("click", r3Scan);
 $("ex").addEventListener("change", () => setTimeout(r3Scan, 800));
 r3UI(); applyFilter(); r3Scan(); setInterval(r3Scan, 300000);
+/* ════════════ 내 종목 선택 ════════════ */
+function myUI(){
+  const b = $("myBtn"); if (!b) return;
+  b.classList.toggle("on", MY.on);
+  b.textContent = MY.on ? "⭐ 내 종목만 보기 켜짐" : "⭐ 내 종목만 보기 꺼짐";
+  $("myStat").textContent = `${MY.sel.size}/${WATCH.length}`;
+  document.querySelectorAll("[data-star]").forEach(x => {
+    const on = MY.sel.has(x.dataset.star); x.textContent = on ? "★" : "☆"; x.classList.toggle("on", on);
+  });
+}
+function myRender(){
+  const q = $("myQ").value.trim().toUpperCase();
+  $("myList").innerHTML = GROUPS.map(([g, gn]) => {
+    const items = WATCH.filter(w => w[1] === g && (!q || w[0].includes(q) || (w[3] || "").toUpperCase().includes(q)));
+    if (!items.length) return "";
+    const n = items.filter(w => MY.sel.has(w[0])).length;
+    return `<div class="mygrp"><h4>${gn} <span style="color:var(--muted);font-size:11.5px;font-weight:500">${n}/${items.length}</span>
+      <button type="button" data-mg="${g}" data-mv="1">모두</button><button type="button" data-mg="${g}" data-mv="0">해제</button></h4>
+      <div class="mychips">${items.map(([s,,k,nt]) => `<label style="--c:${COLOR[k]}" title="${(nt || "").replace(/"/g,"&quot;")}"><input type="checkbox" data-ms="${s}"${MY.sel.has(s) ? " checked" : ""}>${s.replace("USDT.P","")}</label>`).join("")}</div></div>`;
+  }).join("") || `<div style="color:var(--muted);padding:10px 0">검색 결과가 없습니다.</div>`;
+}
+function myToggle(s, on){ on ? MY.sel.add(s) : MY.sel.delete(s); saveMy(); applyFilter(); if ($("myBg").classList.contains("open")) myRender(); }
+function myVisible(){ const q = $("myQ").value.trim().toUpperCase(); return WATCH.filter(w => !q || w[0].includes(q) || (w[3] || "").toUpperCase().includes(q)).map(w => w[0]); }
+function myOpen(){ $("myQ").value = ""; myRender(); $("myBg").classList.add("open"); $("myQ").focus(); }
+function myClose(){ $("myBg").classList.remove("open"); }
+$("myBtn").addEventListener("click", () => {
+  MY.on = !MY.on; saveMy(); applyFilter(); window.scrollTo({top:0});
+  if (MY.on && !MY.sel.size) myOpen();
+});
+$("mySet").addEventListener("click", myOpen);
+$("myClose").addEventListener("click", myClose);
+$("myDone").addEventListener("click", () => { if (!MY.on && MY.sel.size){ MY.on = true; saveMy(); applyFilter(); window.scrollTo({top:0}); } myClose(); });
+$("myBg").addEventListener("click", e => { if (e.target.id === "myBg") myClose(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("myBg").classList.contains("open")) myClose(); });
+$("myQ").addEventListener("input", myRender);
+$("myAll").addEventListener("click", () => { myVisible().forEach(s => MY.sel.add(s)); saveMy(); applyFilter(); myRender(); });
+$("myNone").addEventListener("click", () => { myVisible().forEach(s => MY.sel.delete(s)); saveMy(); applyFilter(); myRender(); });
+$("myList").addEventListener("change", e => { const c = e.target.closest("[data-ms]"); if (c) myToggle(c.dataset.ms, c.checked); });
+$("myList").addEventListener("click", e => {
+  const b = e.target.closest("[data-mg]"); if (!b) return;
+  const q = myVisible();
+  WATCH.filter(w => w[1] === b.dataset.mg && q.includes(w[0])).forEach(([s]) => b.dataset.mv === "1" ? MY.sel.add(s) : MY.sel.delete(s));
+  saveMy(); applyFilter(); myRender();
+});
+myUI(); applyFilter();
 document.getElementById("chartSrcSel").addEventListener("change", e => {
   chartMode = e.target.value; store.set("chartMode", chartMode);
   extOK = null; extVer = ""; chartSrcUI(); reloadAll();
