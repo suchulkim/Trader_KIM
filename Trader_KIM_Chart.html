@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>포지션 사이즈 계산기</title>
+<script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-10-30.4';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -48,6 +49,7 @@ main.panel-open{grid-template-columns:1fr 330px}
 #chart[data-cur=ns] *{cursor:ns-resize!important}
 #chart[data-cur=ew] *{cursor:ew-resize!important}
 #chart[data-cur=pointer] *{cursor:pointer!important}
+#chart[data-cur=nwse] *{cursor:nwse-resize!important}
 
 /* ── 좌측 도구 막대 (TradingView 스타일) ── */
 .toolbar{position:absolute;top:0;bottom:0;left:0;width:52px;background:var(--bg);border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:6px 0;gap:2px;z-index:15}
@@ -71,6 +73,8 @@ main.panel-open{grid-template-columns:1fr 330px}
 .fly-item.cur{color:var(--blue)}
 .fly-item svg{width:26px;height:26px;flex:none}
 .fly-item .key{margin-left:auto;padding-left:16px;color:var(--muted);font-size:12px}
+.fly-h{color:var(--muted);font-size:12px;padding:6px 14px 4px;letter-spacing:.3px}
+.fly-sep{height:1px;background:var(--line2);margin:4px 0}
 .badge{display:inline-block;min-width:16px;padding:0 4px;border-radius:8px;background:var(--warn);color:#131722;font-size:11px;font-weight:700;line-height:16px;text-align:center}
 .badge:empty{display:none}
 #popAlerts{width:430px}
@@ -119,6 +123,13 @@ main.panel-open{grid-template-columns:1fr 330px}
 #selbar select{background:var(--bg);padding:3px 4px;font-size:12px}
 #selbar .sbtn{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:3px 8px;font-size:12px}
 #selbar .sbtn.on{border-color:var(--warn);color:var(--warn)}
+#selbar .sbtn{white-space:nowrap}
+#rgnOv{position:absolute;inset:0;z-index:30;cursor:crosshair;background:rgba(0,0,0,.35)}
+#rgnOv.drag{background:transparent}
+#rgnOv .rg-box{position:absolute;display:none;border:1.5px dashed #5b8cff;box-shadow:0 0 0 9999px rgba(0,0,0,.45);pointer-events:none}
+#rgnOv .rg-box::after{content:attr(data-sz);position:absolute;right:0;bottom:-22px;background:#2962ff;color:#fff;font-size:11px;padding:2px 6px;border-radius:3px;white-space:nowrap}
+#rgnOv .rg-tip{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--panel);border:1px solid var(--line2);color:#f2f2f2;font-size:13px;padding:7px 14px;border-radius:6px;box-shadow:0 8px 24px rgba(0,0,0,.5);pointer-events:none;white-space:nowrap}
+#rgnOv.drag .rg-tip{display:none}
 #tip{position:fixed;z-index:60;background:#0e1117;color:#e6e8ee;font-size:12px;padding:6px 9px;border-radius:4px;pointer-events:none;white-space:nowrap;display:none;box-shadow:0 4px 14px rgba(0,0,0,.5)}
 #tip .k{color:var(--muted);margin-left:8px}
 
@@ -591,6 +602,46 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
 .rt-set input[type=number],.rt-set select{padding:4px 6px;font-size:12px;width:100%}
 .rt-set .rt-note{font-size:11px;color:var(--muted);margin-top:8px;line-height:1.5}
 html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #rsiTbl th,html.embed #rsiTbl td{padding:2px 5px}html.embed #rsiTbl .rt-msg{font-size:11px;padding:3px 7px}
+/* ── 스냅샷 · 종목별 화면 저장 ── */
+#camMenu,#layMenu{min-width:320px}
+.dd .dd-i .key{margin-left:auto;padding-left:18px;color:var(--muted);font-size:12px}
+.dd .dd-i.dis{opacity:.4;pointer-events:none}
+.dd .dd-sep{height:1px;background:var(--line2);margin:5px 0}
+.dd .dd-chk{display:flex;align-items:center;gap:8px;padding:6px 14px;font-size:13px;color:var(--text);cursor:pointer;white-space:nowrap}
+.dd .dd-note{color:var(--muted);font-size:11px;line-height:1.55;padding:6px 14px 4px;white-space:normal;max-width:330px}
+.dd .lay-row{display:flex;align-items:center;gap:8px;padding:5px 8px 5px 14px;cursor:pointer;font-size:13px}
+.dd .lay-row:hover{background:var(--panel2)}
+.dd .lay-row.cur{color:var(--blue)}
+.dd .lay-row .sub{color:var(--muted);font-size:11px}
+.dd .lay-row .x{margin-left:auto;background:transparent;border:none;color:var(--muted);border-radius:4px;padding:1px 6px}
+.dd .lay-row .x:hover{color:var(--red);background:var(--bg)}
+.tbtn.saved svg{color:var(--blue)}
+html.embed #layWrap{display:none}
+#snapCard{position:fixed;right:70px;bottom:22px;z-index:85;width:360px;background:var(--panel);border:1px solid var(--line2);border-left:4px solid var(--blue);border-radius:8px;padding:10px 12px;box-shadow:0 12px 34px rgba(0,0,0,.6);animation:alIn .25s ease-out}
+#snapCard img{width:100%;border-radius:4px;border:1px solid var(--line);display:block}
+#snapCard .t{font-size:12px;color:#d6d6d6;margin:8px 0;line-height:1.5}
+#snapCard .b{display:flex;gap:6px}
+#snapCard .b button{flex:1;white-space:nowrap;background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:6px;font-size:12px}
+#snapCard .b button:hover{border-color:var(--blue)}
+#snapCard .x{position:absolute;top:4px;right:6px;background:transparent;border:none;color:var(--muted);font-size:15px}
+#snapModal{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:90;display:none;align-items:flex-start;justify-content:center;padding-top:5vh}
+#snapModal.open{display:flex}
+#snapModal .sm-box{width:960px;max-height:88vh}
+#snBody{overflow-y:auto;flex:1;padding:14px 18px;border-top:1px solid var(--line)}
+.sn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:12px}
+.sn-it{background:var(--bg);border:1px solid var(--line);border-radius:6px;overflow:hidden;cursor:pointer}
+.sn-it:hover{border-color:var(--blue)}
+.sn-it img{width:100%;aspect-ratio:16/9;object-fit:cover;object-position:left top;display:block;background:#000}
+.sn-it .m{padding:6px 9px 8px;font-size:12px}
+.sn-it .m b{color:#fff;font-size:13px}
+.sn-it .m div{color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sn-view img{width:100%;border-radius:6px;border:1px solid var(--line);display:block}
+.sn-bar{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.sn-bar button{background:var(--panel2);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:6px 10px;font-size:12px}
+.sn-bar button:hover{border-color:var(--blue)}
+.sn-bar button.danger{color:#ff8a94;border-color:rgba(242,54,69,.5)}
+.sn-bar input{flex:1;min-width:160px}
+.sn-meta{color:var(--muted);font-size:12px;margin-top:8px}
 </style>
 </head>
 <body>
@@ -607,6 +658,9 @@ html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #r
   <div class="tsep"></div>
   <button class="tbtn" id="btnUndo" title="되돌리기 (Ctrl+Z)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 9H17a5 5 0 0 1 0 10h-4"/><path d="M12 5L8 9l4 4"/></svg></button>
   <button class="tbtn" id="btnRedo" title="다시 실행 (Ctrl+Y)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M19 9H11a5 5 0 0 0 0 10h4"/><path d="M16 5l4 4-4 4"/></svg></button>
+  <div class="tsep"></div>
+  <div class="dd-wrap" id="camWrap"><button class="tbtn" id="btnCam" title="스냅샷 — 차트 이미지 복사 (Ctrl+Shift+S)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 9.5h4.5l2-3h6l2 3h4.5v12.5h-19z"/><circle cx="14" cy="15.5" r="4"/></svg></button><div class="dd" id="camMenu"></div></div>
+  <div class="dd-wrap" id="layWrap"><button class="tbtn" id="btnLay" title="종목별 화면 저장 (Ctrl+S)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 5h13l3 3v15H6z"/><path d="M10 5v5h8V5M10 23v-7h8v7"/></svg><span>화면 저장</span></button><div class="dd" id="layMenu"></div></div>
   <div class="live"><span class="ws" id="wsStat"><i></i><span>연결중</span></span><span class="inst" id="instLbl">—</span><span class="px" id="lastPx">—</span></div>
   <button class="tbtn" id="btnHelp" title="조작법">?</button>
 </header>
@@ -770,11 +824,16 @@ html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #r
     <li><b>수평선</b> Alt+H (마우스 위치 가격에 바로 그림, 왼쪽 툴바 2번째) · <b>추세선</b> Alt+T (2번째 점 찍을 때 Shift → 수평) · <b>수평 레이</b> Alt+J · <b>피보나치 되돌림</b> Alt+F (2점) · <b>추세 기반 확장</b> Alt+E (3점)</li>
     <li><b>피보 롱/숏 포지션</b> (포지션 도구 ▸ 메뉴) ① 기준점 → ② 진입가 2번 클릭. 진입가가 1.618 레벨에 고정되도록 손절가(0)가 자동 계산되고, 목표가 = 진입가 + (진입가−손절가) × 목표 배수(기본 1). 손절가 점은 좌우로만 이동</li>
     <li><b>피보나치 설정</b> 피보나치 더블클릭 또는 선택 후 ⚙ → 레벨·색·선 스타일·확장·좌표·표시 시간대</li>
-    <li><b>가격 범위 측정</b> Shift+클릭 → 두 번째 클릭 (다음 클릭 시 사라짐)</li>
+    <li><b>측정 도구</b> (왼쪽 막대 ▸) <b>가격 범위</b> Alt+M — 가격 변화·%·틱 · <b>날짜 범위</b> Alt+N — 봉 수·기간·시작→끝·거래량 (둘 다 저장되는 그림, 드래그로 수정)</li>
+    <li><b>빠른 측정</b> Shift+클릭 → 두 번째 클릭 (가격·기간 동시, 다음 클릭 시 사라짐)</li>
     <li><b>🔍 심볼 검색</b> OKX · Binance · Bitget(무기한) · Coinbase(현물) 종목 통합 검색, 거래소 탭으로 필터</li>
     <li>그림 클릭 → 선택, 점/몸통 드래그로 수정 · <b>Delete</b> 삭제 · <b>Esc</b> 취소</li>
     <li><b>🔔 알람</b> 도구로 클릭 또는 Alt+A(마우스 위치 가격) → 주황 점선. 선 드래그로 가격 변경, 수평선/포지션 선택 후 🔔로 알람 전환</li>
     <li><b>심볼 검색</b> 차트에서 아무 글자나 입력 · <b>Ctrl+Z / Ctrl+Y</b> 그림·포지션 되돌리기/다시 실행 · 하단 <b>1D~전체</b> 기간 버튼</li>
+    <li><b>📷 스냅샷</b> Ctrl+Shift+S / Alt+S 영역 드래그 캡처 → 클립보드 복사 (클릭만 = 전체) → 텔레그램·카톡·메모에 Ctrl+V · Ctrl+Alt+S 이미지 다운로드 · 종목별 스냅샷 보관함</li>
+    <li><b>💾 화면 저장</b> Ctrl+S 이 종목의 시간 간격·차트 유형·이평선·로그·보이는 구간·RSI 테이블 저장 → 종목 전환 시 자동 적용</li>
+    <li><b>📌 이미지 붙이기</b> 캡처(📷·Win+Shift+S 등) 후 차트에서 <b>Ctrl+V</b> → 마우스 위치에 붙음 · 몸통 드래그 이동 · 우하단 점 드래그 크기 조절 · 이미지 파일 끌어다 놓기도 가능</li>
+    <li><b>📤 백업</b> 💾 메뉴 → 전체 백업 내보내기(.json) · 다른 브라우저/PC에서 「백업 파일 불러오기」 또는 파일을 차트에 끌어다 놓기</li>
     <li><b>자석</b> 켜면 봉의 시가·고가·저가·종가에 붙음 · <b>Alt+R</b> 차트 초기화</li>
   </ul>
   <div style="margin-top:10px;font-size:11px;color:var(--muted)">차트 엔진: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener" style="color:var(--muted)">TradingView Lightweight Charts™</a> (Copyright © TradingView, Inc. · Apache-2.0)</div>
@@ -786,6 +845,12 @@ html.embed #rsiTbl{top:6px}html.embed #rsiTbl table{font-size:11px}html.embed #r
   <div class="fd-f"><select id="fdTpl"><option value="">템플릿</option><option value="save">현재 설정을 기본값으로 저장</option><option value="apply">저장한 기본값 적용</option><option value="reset">초기 설정 복원</option></select>
     <button class="fd-c" id="fdCancel">취소</button><button class="fd-ok" id="fdOk">확인</button></div>
 </div>
+<div id="snapModal"><div class="sm-box">
+  <div class="sm-h"><b>저장된 차트 스냅샷</b><button id="snClose">✕</button></div>
+  <div class="sm-tabs" id="snTabs"></div>
+  <div id="snBody"></div>
+  <div class="sm-foot" id="snFoot"></div>
+</div></div>
 <div id="alarmStack"></div>
 <div id="tip"></div>
 <div class="toast" id="toast"></div>
@@ -840,7 +905,7 @@ function fibTemplate(type){
 }
 function fibCfg(d){ if (!d.fib || !d.fib.levels) d.fib = { ...fibDefaults(d.type), ...(d.fib || {}) }; return d.fib; }
 const visOn = d => !d.vis || d.vis[S.bar] !== false;
-const NEED = { trend:2, hray:1, hline:1, fibret:2, fibext:3, measure:2, long:1, short:1, alert:1, fiblong:2, fibshort:2 };
+const NEED = { trend:2, hray:1, hline:1, fibret:2, fibext:3, measure:2, prange:2, drange:2, long:1, short:1, alert:1, fiblong:2, fibshort:2 };
 const isFP = t => t === 'fiblong' || t === 'fibshort' || t === 'fibpos';
 const FP_RATIOS = [1, 1.272, 1.414, 1.618, 2, 2.272, 2.618, 3.618, 4.236];
 
@@ -857,6 +922,8 @@ const ICON = {
   fiblong: I('<path d="M4 15l4 5 5-8" stroke-dasharray="1.6 2"/><circle cx="4" cy="15" r="1.7" fill="currentColor" stroke="none"/><circle cx="8" cy="20" r="1.7" fill="currentColor" stroke="none"/><circle cx="13" cy="12" r="1.7" fill="currentColor" stroke="none"/><rect x="15" y="4" width="9" height="11" fill="rgba(8,153,129,.35)" stroke="#089981"/><rect x="15" y="15" width="9" height="6" fill="rgba(242,54,69,.3)" stroke="#f23645"/>'),
   fibshort:I('<path d="M4 13l4-5 5 8" stroke-dasharray="1.6 2"/><circle cx="4" cy="13" r="1.7" fill="currentColor" stroke="none"/><circle cx="8" cy="8" r="1.7" fill="currentColor" stroke="none"/><circle cx="13" cy="16" r="1.7" fill="currentColor" stroke="none"/><rect x="15" y="7" width="9" height="6" fill="rgba(242,54,69,.3)" stroke="#f23645"/><rect x="15" y="13" width="9" height="11" fill="rgba(8,153,129,.35)" stroke="#089981"/>'),
   short:  I('<rect x="5" y="5" width="18" height="9" fill="rgba(242,54,69,.3)" stroke="#f23645"/><rect x="5" y="14" width="18" height="9" fill="rgba(8,153,129,.35)" stroke="#089981"/><path d="M9 17l3 3 3-3" stroke="#fff"/>'),
+  prange: I('<path d="M5 5h14M9 23h14"/><circle cx="21" cy="5" r="1.9"/><circle cx="7" cy="23" r="1.9"/><path d="M14 20V8.5M10.8 11.5L14 8.3l3.2 3.2"/>'),
+  drange: I('<path d="M5 5v14M23 9v14"/><circle cx="5" cy="21" r="1.9"/><circle cx="23" cy="7" r="1.9"/><path d="M8 14h11.5M16.5 10.8l3.2 3.2-3.2 3.2"/>'),
   measure:I('<path d="M14 5v18M10.5 8.5L14 5l3.5 3.5M10.5 19.5L14 23l3.5-3.5"/><path d="M5 5h5M18 5h5M5 23h5M18 23h5" opacity=".6"/>'),
   magnet: I('<path d="M8 5v9a6 6 0 0 0 12 0V5"/><path d="M8 9h4V5M16 9h4V5"/>'),
   eye:    I('<path d="M3 14s4-7 11-7 11 7 11 7-4 7-11 7S3 14 3 14z"/><circle cx="14" cy="14" r="3"/>'),
@@ -870,20 +937,29 @@ const ICON = {
   arrow:  '<svg viewBox="0 0 8 8" fill="currentColor"><path d="M2 1l4 3-4 3z"/></svg>'
 };
 const TOOLDEF = {
-  cursor:{ tip:'십자 커서', key:'Esc' },
-  trend:{ tip:'추세선 (Shift: 수평)', key:'Alt+T' },
-  hline:{ tip:'수평선 — 클릭한 가격에 가로선', key:'Alt+H' },
-  hray:{ tip:'수평 레이', key:'Alt+J' },
-  fibext:{ tip:'추세 기반 피보나치 확장', key:'Alt+E' },
-  fibret:{ tip:'피보나치 되돌림', key:'Alt+F' },
-  long:{ tip:'롱 포지션', key:'' },
-  short:{ tip:'숏 포지션', key:'' },
-  fiblong:{ tip:'피보 롱 포지션 (기준점→진입가, 진입가=1.618)', key:'' },
-  fibshort:{ tip:'피보 숏 포지션 (기준점→진입가, 진입가=1.618)', key:'' },
-  measure:{ tip:'가격 범위 측정', key:'Shift+클릭' },
-  alert:{ tip:'알람 (클릭한 가격에 수평선 알람)', key:'Alt+A' }
+  cursor:{ name:'십자 커서', tip:'십자 커서', key:'Esc' },
+  trend:{ name:'추세선', tip:'추세선 (Shift: 수평)', key:'Alt+T' },
+  hline:{ name:'수평선', tip:'수평선 — 클릭한 가격에 가로선', key:'Alt+H' },
+  hray:{ name:'수평 레이', tip:'수평 레이', key:'Alt+J' },
+  fibret:{ name:'피보나치 되돌림', tip:'피보나치 되돌림', key:'Alt+F' },
+  fibext:{ name:'추세 기반 피보나치 확장', tip:'추세 기반 피보나치 확장', key:'Alt+E' },
+  long:{ name:'롱 포지션', tip:'롱 포지션', key:'' },
+  short:{ name:'숏 포지션', tip:'숏 포지션', key:'' },
+  fiblong:{ name:'피보 롱 포지션', tip:'피보 롱 포지션 (기준점→진입가, 진입가=1.618)', key:'' },
+  fibshort:{ name:'피보 숏 포지션', tip:'피보 숏 포지션 (기준점→진입가, 진입가=1.618)', key:'' },
+  prange:{ name:'가격 범위', tip:'가격 범위 — 두 점 사이 가격 변화·%·틱', key:'Alt+M' },
+  drange:{ name:'날짜 범위', tip:'날짜 범위 — 두 점 사이 봉 수·기간·거래량', key:'Alt+N' },
+  measure:{ name:'빠른 측정', tip:'빠른 측정 (다음 클릭 시 사라짐)', key:'Shift+클릭' },
+  alert:{ name:'알람', tip:'알람 (클릭한 가격에 수평선 알람)', key:'Alt+A' }
 };
-const TB_GROUPS = [['cursor'], 'sep', ['hline'], ['trend','hray'], ['fibext','fibret'], ['long','short','fiblong','fibshort'], ['measure'], 'sep', ['alert']];
+/* 왼쪽 도구 막대: 그룹 = 버튼 하나 + ▸ 플라이아웃 (마지막에 쓴 도구가 버튼에 표시됨) */
+const TB_GROUPS = [['cursor'], 'sep', ['hline'], ['trend','hray'], ['fibret','fibext'], ['long','short','fiblong','fibshort'], ['prange','drange'], 'sep', ['alert']];
+const FLY_META = {   // 그룹 첫 도구 기준: 플라이아웃 제목 · 구분선
+  trend:  { title:'선' },
+  fibret: { title:'피보나치' },
+  long:   { title:'포지션', sep:['fiblong'] },
+  prange: { title:'측정 도구', foot:'Shift+클릭 = 빠른 측정 (가격·기간 동시, 다음 클릭 시 사라짐)' }
+};
 const groupCur = {};
 
 /* ── 상태 ── */
@@ -999,8 +1075,8 @@ function buildAxisViews(){
   };
   if (!hideDraw) drawings.forEach(d => {
     if (d.type === 'hline' || d.type === 'hray') add(d.pts[0].p, d.color);
-    else if (d.type === 'measure'){ add(d.pts[0].p, '#2962ff'); add(d.pts[1].p, '#2962ff'); }
-    else if (d.id === sel) d.pts.forEach(pt => add(pt.p, '#2962ff'));
+    else if (d.type === 'measure' || d.type === 'prange'){ add(d.pts[0].p, d.color || '#2962ff'); add(d.pts[1].p, d.color || '#2962ff'); }
+    else if (d.id === sel && d.type !== 'image') d.pts.forEach(pt => add(pt.p, '#2962ff'));
   });
   alertsHere().forEach(a => add(a.p, a.on ? '#ff9800' : '#5d6680'));
   if (S.entry != null) add(S.entry, '#5d6680');
@@ -1073,8 +1149,14 @@ function drawShape(ctx, d, W, selected, preview){
     drawFib(ctx, d, P, selected, W);
   } else if (d.type === 'measure'){
     drawMeasure(ctx, d, P);
+  } else if (d.type === 'prange'){
+    drawPRange(ctx, d, P, selected || preview);
+  } else if (d.type === 'drange'){
+    drawDRange(ctx, d, P, selected || preview);
   } else if (isFP(d.type)){
     drawFibPos(ctx, d, P, selected, preview);
+  } else if (d.type === 'image'){
+    drawImg(ctx, d, P[0], selected);
   }
   ctx.restore();
 }
@@ -1211,6 +1293,48 @@ function measureInfo(d){
   const t = tickSz();
   return { dp, pct, nb, ticks: t ? Math.round(dp / t) : null, dur: nb * BAR_MS[S.bar] };
 }
+/* ── 측정 도구: 가격 범위 / 날짜 범위 (TradingView 스타일, 저장되는 그림) ── */
+function rangeBox(P){ const [a, b] = P; return { x1: Math.min(a.x, b.x), x2: Math.max(a.x, b.x), y1: Math.min(a.y, b.y), y2: Math.max(a.y, b.y) }; }
+function rangeCol(d, neg){ const c = d.color || '#2962ff'; return neg && c === '#2962ff' ? C_DN : c; }
+function drawPRange(ctx, d, P, sel_){
+  const [a, b] = P, B = rangeBox(P), m = measureInfo(d), up = m.dp >= 0, col = rangeCol(d, !up);
+  ctx.fillStyle = hexA(col, .15); ctx.fillRect(B.x1, B.y1, B.x2 - B.x1, B.y2 - B.y1);
+  ctx.strokeStyle = col; ctx.lineWidth = 1;
+  line(ctx, B.x1, Math.round(a.y) + .5, B.x2, Math.round(a.y) + .5);
+  line(ctx, B.x1, Math.round(b.y) + .5, B.x2, Math.round(b.y) + .5);
+  const mx = (B.x1 + B.x2) / 2;
+  if (Math.abs(b.y - a.y) > 6) arrowLine(ctx, mx, a.y, mx, b.y, col);
+  const sg = up ? '+' : '−';
+  const l1 = `${sg}${fP(Math.abs(m.dp))} (${sg}${f(Math.abs(m.pct), 2)}%)`;
+  const l2 = m.ticks != null ? `${Math.abs(m.ticks).toLocaleString()}틱` : '';
+  const lines = [l1 + (l2 ? '  ' + l2 : '')];
+  if (up) pill(ctx, mx, B.y1 - 6, lines, col, '#fff', 'bottom'); else pill(ctx, mx, B.y2 + 6, lines, col, '#fff', 'top');
+  if (sel_) P.forEach(p => handle(ctx, p.x, p.y, col));
+}
+function rangeVol(d){
+  const n = bars.length; if (!n) return null;
+  let i0 = Math.round(timeToLogical(d.pts[0].t)), i1 = Math.round(timeToLogical(d.pts[1].t));
+  if (i0 > i1) [i0, i1] = [i1, i0];
+  i0 = Math.max(0, i0); i1 = Math.min(n - 1, i1); if (i1 < i0) return null;
+  const ct = S.inst && curEx() === 'okx' ? +S.inst.ctVal : 1; let v = 0;
+  for (let i = i0; i <= i1; i++) v += bars[i].v * ct;
+  return v;
+}
+const rangeDate = t => { const s = new Date(t * 1000).toISOString(); return BAR_MS[S.bar] >= 864e5 ? s.slice(2, 10) : s.slice(5, 16).replace('T', ' '); };
+function drawDRange(ctx, d, P, sel_){
+  const [a, b] = P, B = rangeBox(P), m = measureInfo(d), fw = m.nb >= 0, col = rangeCol(d, !fw);
+  ctx.fillStyle = hexA(col, .15); ctx.fillRect(B.x1, B.y1, B.x2 - B.x1, B.y2 - B.y1);
+  ctx.strokeStyle = col; ctx.lineWidth = 1;
+  line(ctx, Math.round(a.x) + .5, B.y1, Math.round(a.x) + .5, B.y2);
+  line(ctx, Math.round(b.x) + .5, B.y1, Math.round(b.x) + .5, B.y2);
+  const my = (B.y1 + B.y2) / 2;
+  if (Math.abs(b.x - a.x) > 6) arrowLine(ctx, a.x, my, b.x, my, col);
+  const vol = rangeVol(d), ccy = S.inst ? S.inst.ctValCcy || '' : '';
+  const lines = [`${fw ? '' : '−'}${Math.abs(m.nb)}봉, ${fDur(m.dur)}`, `${rangeDate(Math.min(d.pts[0].t, d.pts[1].t))} → ${rangeDate(Math.max(d.pts[0].t, d.pts[1].t))}`];
+  if (vol != null) lines.push(`거래량 ${fK(vol)}${ccy ? ' ' + ccy : ''}`);
+  pill(ctx, (B.x1 + B.x2) / 2, B.y2 + 6, lines, col, '#fff', 'top');
+  if (sel_) P.forEach(p => handle(ctx, p.x, p.y, col));
+}
 function drawMeasure(ctx, d, P){
   const [a, b] = P, up = d.pts[1].p >= d.pts[0].p, col = up ? '#2962ff' : C_DN;
   const x1 = Math.min(a.x, b.x), x2 = Math.max(a.x, b.x), y1 = Math.min(a.y, b.y), y2 = Math.max(a.y, b.y);
@@ -1258,9 +1382,13 @@ function drawPosition(ctx, W, H){
 /* ── 히트 테스트 ── */
 function hitTest(x, y){
   const T = 6, near = (a, b) => a != null && Math.abs(a - b) <= T;
+  if (!hideDraw && sel){                                         // 선택된 이미지의 크기 조절 핸들
+    const di = drawings.find(z => z.id === sel && z.type === 'image');
+    if (di){ const q = toXY(di.pts[0]); if (q.x != null && q.y != null && Math.hypot(q.x + di.w - x, q.y + di.h - y) <= 9) return { kind:'img-size', d: di }; }
+  }
   if (!hideDraw){
     for (let i = drawings.length - 1; i >= 0; i--){
-      const d = drawings[i]; if (d.ephemeral || d.type === 'hline' || !visOn(d)) continue;
+      const d = drawings[i]; if (d.ephemeral || d.type === 'hline' || d.type === 'image' || !visOn(d)) continue;
       const P = d.pts.map(toXY);
       for (let j = 0; j < P.length; j++) if (P[j].x != null && P[j].y != null && Math.hypot(P[j].x - x, P[j].y - y) <= T + 2) return { kind:'pt', d, j };
     }
@@ -1276,22 +1404,30 @@ function hitTest(x, y){
   for (const a of alertsHere()){ if (near(yOf(a.p), y)) return { kind:'alert', a }; }
   if (!hideDraw){
     for (let i = drawings.length - 1; i >= 0; i--){
-      const d = drawings[i]; if (d.ephemeral || !visOn(d)) continue;
+      const d = drawings[i]; if (d.ephemeral || d.type === 'image' || !visOn(d)) continue;
       const P = d.pts.map(toXY);
       if (d.type === 'hline'){ if (near(P[0].y, y)) return { kind:'move', d }; }
       else if (d.type === 'hray'){ if (P[0].x != null && x >= P[0].x - T && near(P[0].y, y)) return { kind:'move', d }; }
       else if (d.type === 'fibpos'){ if (P.every(q => q.x != null && q.y != null) && P.slice(1).some((q, k) => segDist(x, y, P[k], q) <= T)) return { kind:'move', d }; }
+      else if (d.type === 'prange' || d.type === 'drange'){
+        if (P.every(q => q.x != null && q.y != null)){ const B = rangeBox(P); if (x >= B.x1 - T && x <= B.x2 + T && y >= B.y1 - T && y <= B.y2 + T) return { kind:'move', d }; }
+      }
       else if (d.type === 'trend'){ if (P.every(q => q.x != null && q.y != null) && segDist(x, y, P[0], P[1]) <= T) return { kind:'move', d }; }
       else {
         const g2 = fibGeom(d, P);
         if (g2 && x >= g2.xs - T && x <= g2.xe + T && g2.levels.some(l => near(l.y, y))) return { kind:'move', d };
       }
     }
+    for (let i = drawings.length - 1; i >= 0; i--){             // 붙여넣은 이미지 (가장 낮은 우선순위)
+      const d = drawings[i]; if (d.type !== 'image' || !visOn(d)) continue;
+      const q = toXY(d.pts[0]);
+      if (q.x != null && q.y != null && x >= q.x - T && x <= q.x + d.w + T && y >= q.y - T && y <= q.y + d.h + T) return { kind:'move', d };
+    }
   }
   return null;
 }
 function segDist(x, y, a, b){ const dx = b.x - a.x, dy = b.y - a.y, L = dx*dx + dy*dy; let t = L ? ((x - a.x) * dx + (y - a.y) * dy) / L : 0; t = Math.max(0, Math.min(1, t)); return Math.hypot(x - (a.x + t*dx), y - (a.y + t*dy)); }
-const CURSOR_OF = { 'alert':'ns', 'pt':'pointer', 'pos-level':'ns', 'pos-width':'ew', 'pos-move':'move', 'move':'move' };
+const CURSOR_OF = { 'alert':'ns', 'pt':'pointer', 'pos-level':'ns', 'pos-width':'ew', 'pos-move':'move', 'move':'move', 'img-size':'nwse' };
 
 /* ───────────────── 차트 ───────────────── */
 function initChart(){
@@ -1470,6 +1606,9 @@ function doDrag(x, y){
     const sp = snapPrice(x, y); if (sp != null) h.a.p = sp;
   } else if (h.kind === 'pos-width'){
     S.posBars = Math.max(3, Math.round(chart.timeScale().coordinateToLogical(x) - timeToLogical(S.entryTime)));
+  } else if (h.kind === 'img-size'){
+    const q = toXY(h.d.pts[0]); if (q.x == null) return;
+    h.d.w = Math.max(40, x - q.x); h.d.h = h.d.w / (h.d.ar || 1);
   } else if (h.kind === 'pt'){
     const sp = snapPrice(x, y); if (sp != null) h.d.pts[h.j] = { t: xToTime(x), p: sp };
     if (h.d.type === 'fibpos') fpSync(h.d);
@@ -1501,7 +1640,7 @@ function placePoint(x, y){
     return;
   }
   if (pending.length >= NEED[tool]){
-    const d = { id: uid(), type: tool, pts: pending.slice(), color: ['hline','trend','hray'].includes(tool) ? '#2962ff' : '#787b86' };
+    const d = { id: uid(), type: tool, pts: pending.slice(), color: ['hline','trend','hray','prange','drange'].includes(tool) ? '#2962ff' : '#787b86' };
     if (tool === 'measure') d.ephemeral = true;
     if (isFib(tool)) d.fib = JSON.parse(JSON.stringify(fibTemplate(tool)));
     drawings.push(d);
@@ -1611,7 +1750,7 @@ function createPosition(dir, pt){
 }
 
 /* ── 선택된 그림 미니 툴바 ── */
-const TYPE_NAME = { trend:'추세선', hray:'수평 레이', hline:'수평선', fibret:'피보나치 되돌림', fibext:'추세 기반 피보나치 확장', fibpos:'피보 포지션' };
+const TYPE_NAME = { trend:'추세선', hray:'수평 레이', hline:'수평선', fibret:'피보나치 되돌림', fibext:'추세 기반 피보나치 확장', fibpos:'피보 포지션', image:'이미지', prange:'가격 범위', drange:'날짜 범위' };
 function refreshSel(){
   const bar = $('selbar');
   if (sel === 'pos' && S.entry != null){                      // 포지션 선택 → 계산기 열기 + 삭제
@@ -1659,6 +1798,19 @@ function refreshSel(){
     $('selDel').onclick = deleteSelected;
     bar.style.display = 'flex'; overlay.update(); return;
   }
+  if (d.type === 'image'){
+    const ops = [1, .85, .7, .5, .3];
+    bar.innerHTML = `<span class="sname">🖼 이미지</span>` +
+      `<select id="sbOp" title="불투명도">${ops.map(o => `<option value="${o}" ${+(d.op ?? 1) === o ? 'selected' : ''}>불투명 ${Math.round(o * 100)}%</option>`).join('')}</select>` +
+      `<button class="sbtn" id="sbImgR" title="원래 크기 (최대 화면의 90%)">원래 크기</button>` +
+      `<button class="sbtn" id="sbImgC" title="이미지를 클립보드에 복사">복사</button>` +
+      `<button class="tb" id="selDel" title="삭제 (Delete)">${ICON.trash}</button>`;
+    $('sbOp').onchange = e => { d.op = +e.target.value; saveDrawings(); overlay.update(); };
+    $('sbImgR').onclick = () => { const c = imgGet(d.img); const nw = c.el ? c.el.naturalWidth : d.w; d.w = Math.min(nw, paneW() * 0.9); d.h = d.w / (d.ar || 1); if (d.h > paneH() * 0.9){ d.h = paneH() * 0.9; d.w = d.h * (d.ar || 1); } saveDrawings(); overlay.update(); };
+    $('sbImgC').onclick = async () => { try { const r = await sdbTx('readonly', st => st.get(d.img), 'imgs'); await snapClipboard(r.blob); toast('📋 이미지를 복사했습니다'); } catch(e){ toast('복사 실패'); } };
+    $('selDel').onclick = deleteSelected;
+    bar.style.display = 'flex'; overlay.update(); return;
+  }
   if (isFib(d.type)){
     bar.innerHTML = `<span class="sname">${TYPE_NAME[d.type]}</span>` +
       `<button class="tb" id="selCfg" title="설정 (더블클릭)">${ICON.gear}</button>` +
@@ -1702,7 +1854,11 @@ function buildToolbar(){
     if (g.length > 1){
       const ar = document.createElement('button'); ar.className = 'tb-arrow'; ar.innerHTML = ICON.arrow;
       const fly = document.createElement('div'); fly.className = 'flyout';
-      fly.innerHTML = g.map(t => `<div class="fly-item" data-t="${t}">${ICON[t]}<span>${TOOLDEF[t].tip}</span><span class="key">${TOOLDEF[t].key}</span></div>`).join('');
+      const meta = FLY_META[g[0]] || {};
+      fly.innerHTML = (meta.title ? `<div class="fly-h">${meta.title}</div>` : '') +
+        g.map(t => (meta.sep && meta.sep.includes(t) ? '<div class="fly-sep"></div>' : '') +
+          `<div class="fly-item" data-t="${t}" title="${TOOLDEF[t].tip}">${ICON[t]}<span>${TOOLDEF[t].name || TOOLDEF[t].tip}</span><span class="key">${TOOLDEF[t].key}</span></div>`).join('') +
+        (meta.foot ? `<div class="fly-sep"></div><div class="fly-h" style="font-size:11px;padding-bottom:6px">${meta.foot}</div>` : '');
       ar.onclick = e => { e.stopPropagation(); const open = !fly.classList.contains('open'); closeFlyouts(); if (open){ const r = wrap.getBoundingClientRect(); fly.style.left = (r.right + 6) + 'px'; fly.style.top = Math.max(4, Math.min(r.top - 4, window.innerHeight - fly.offsetHeight - 8 - (fly.offsetHeight ? 0 : 200))) + 'px'; } fly.classList.toggle('open', open); if (open){ const fh = fly.offsetHeight, r = wrap.getBoundingClientRect(); fly.style.top = Math.max(4, Math.min(r.top - 4, window.innerHeight - fh - 8)) + 'px'; } hideTip(); };
       fly.querySelectorAll('.fly-item').forEach(it => it.onclick = e => { e.stopPropagation(); groupCur[gi] = it.dataset.t; closeFlyouts(); setTool(it.dataset.t); });
       wrap.appendChild(ar); wrap.appendChild(fly);
@@ -3118,9 +3274,15 @@ function buildUI(){
   document.addEventListener('keydown', e => {
     if (['INPUT','SELECT','TEXTAREA'].includes(document.activeElement.tagName)) return;
     const k = e.key.toLowerCase();
+    if ($('snapModal').classList.contains('open')){ if (k === 'escape') sgClose(); return; }
+    const kc = e.code === 'KeyS';   // Alt 조합 시 e.key가 특수문자로 바뀌는 경우 대비
+    if (kc && (e.ctrlKey || e.metaKey) && e.altKey){ snapDownload(); e.preventDefault(); return; }    // Ctrl+Alt+S 이미지 다운로드
+    if (kc && (e.ctrlKey || e.metaKey) && e.shiftKey){ snapCopy(); e.preventDefault(); return; }     // Ctrl+Shift+S 이미지 복사
+    if (kc && (e.ctrlKey || e.metaKey)){ if (!EMBED) layoutSave(); e.preventDefault(); return; }     // Ctrl+S 종목 화면 저장
+    if (kc && e.altKey && !e.shiftKey){ snapCopy(); e.preventDefault(); return; }                    // Alt+S 이미지 복사 (TradingView)
     if (e.altKey){
       if (k === 'a'){ const p = mouse ? snapPrice(mouse.x, mouse.y) : (S.last ? roundTick(S.last) : null); if (p){ const a = addAlert(S.ticker, p, 'cross'); sel = 'al:' + a.id; refreshSel(); } }
-      else if (k === 'r') resetView(); else if (k === 'h'){ if (mouse) hlineAt(snapPrice(mouse.x, mouse.y)); else setTool('hline'); } else if (k === 't') setTool('trend'); else if (k === 'j') setTool('hray'); else if (k === 'f') setTool('fibret'); else if (k === 'e') setTool('fibext'); else return;
+      else if (k === 'r') resetView(); else if (k === 'h'){ if (mouse) hlineAt(snapPrice(mouse.x, mouse.y)); else setTool('hline'); } else if (k === 't') setTool('trend'); else if (k === 'j') setTool('hray'); else if (k === 'f') setTool('fibret'); else if (k === 'e') setTool('fibext'); else if (k === 'm') setTool('prange'); else if (k === 'n') setTool('drange'); else return;
       e.preventDefault(); return;
     }
     if ((e.ctrlKey || e.metaKey) && k === 'z'){ e.shiftKey ? redo() : undo(); e.preventDefault(); return; }
@@ -3283,7 +3445,8 @@ function renderSym(keepScroll){
   if (keepScroll){ const h = $('smList').querySelector('.hi'); if (h) h.scrollIntoView({ block:'nearest' }); }
 }
 
-function switchTicker(tk){
+function switchTicker(tk, forceLay){
+  if (!EMBED && layAutoSave() && bars.length && S.ticker && S.ticker !== tk) layoutSave(true);   // 떠나는 종목 화면 자동 저장
   S.ticker = tk; prevLast = null;
   const pk = parseKey(tk);
   $('symTxt').innerHTML = dispName(tk) + (pk.ex !== 'okx' ? ` <em class="exb ${pk.ex}">${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}</em>` : '');
@@ -3291,11 +3454,17 @@ function switchTicker(tk){
   const u = new URL(location.href); u.searchParams.set('t', tk);
   if (!window.__QS) try { history.replaceState(null, '', u); } catch(e){}
   if (fdl) closeFibDlg(false);
+  const L = !EMBED && (forceLay || layAuto()) ? store.get(layKey(tk)) : null;   // 종목별 저장 화면
+  if (L) layoutPre(L);
+  layMark();
   loadLevels(); loadDrawings(); saveSettings(); setTool('cursor'); histReset(); fpRow();
   if (panelView === 'order') ordSyncSym(true);
   $('ranges').querySelectorAll('button').forEach(x => x.classList.remove('on'));
   if (panelView === 'watch') renderWatch();
-  return loadCandles();
+  const seq0 = loadSeq + 1;
+  return loadCandles().then(async () => {
+    if (L && loadSeq === seq0){ await layoutPost(L); toast(`↺ ${dispName(tk)} 저장된 화면 적용`); }
+  });
 }
 
 /* ───────────────── 피보나치 설정 창 ───────────────── */
@@ -3582,6 +3751,586 @@ function rtTick(){   // showLast()에서 호출 — 종목이 바뀌면 다시 �
   setTimeout(() => { RT.raf = false; rtCalc(); }, 500);
 }
 
+/* ═══════════════ 스냅샷 (차트 이미지 복사·다운로드·보관) ═══════════════ */
+const SNAP_FONT = '"Segoe UI","Malgun Gothic",-apple-system,BlinkMacSystemFont,Roboto,sans-serif';
+const nextFrame = () => new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+function kstStr(ms){ const d = new Date(ms + KST * 1000), p = x => String(x).padStart(2, '0');
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`; }
+let snapBusy = false;
+
+/* 차트 + 범례·현재가·RSI 테이블·워터마크를 한 장으로 합성 */
+async function snapCanvas(){
+  if (!chart || !bars.length) throw new Error('차트 데이터가 없습니다');
+  const sel0 = sel; sel = null; axGuide = false; axHide(); $('selbar').style.display = 'none';
+  try { chart.clearCrosshairPosition && chart.clearCrosshairPosition(); } catch(e){}
+  overlay.update(); await nextFrame();
+  let sc;
+  try { sc = chart.takeScreenshot(); } finally { sel = sel0; refreshSel(); }
+  const el = $('chart'), cw = el.clientWidth, chh = el.clientHeight, k = sc.width / cw || 1, HEAD = 40;
+  const pw = chart.priceScale('right').width(), pH = paneH();
+  const out = document.createElement('canvas');
+  out.width = sc.width; out.height = Math.round((chh + HEAD) * k);
+  const c = out.getContext('2d'); c.scale(k, k);
+  c.fillStyle = '#0f0f0f'; c.fillRect(0, 0, cw, chh + HEAD);
+  c.drawImage(sc, 0, HEAD, cw, chh);
+  // ── 상단 정보 줄
+  const pk = parseKey(S.ticker), lb = lastBar(), col = lb.c >= lb.o ? C_UP : C_DN;
+  c.fillStyle = '#161616'; c.fillRect(0, 0, cw, HEAD); c.fillStyle = '#2a2a2a'; c.fillRect(0, HEAD - 1, cw, 1);
+  c.textBaseline = 'middle'; c.textAlign = 'right'; c.font = `500 12px ${SNAP_FONT}`; c.fillStyle = '#a6a6a6';
+  const rt = `${kstStr(Date.now())} UTC+9 · Trader_KIM`; c.fillText(rt, cw - 12, HEAD / 2);
+  const lim = cw - 12 - c.measureText(rt).width - 20;
+  c.textAlign = 'left'; let x = 12;
+  const put = (t, font, color) => { c.font = font; const w = c.measureText(t).width; if (x + w > lim) return false; c.fillStyle = color; c.fillText(t, x, HEAD / 2); x += w; return true; };
+  put(dispName(S.ticker), `700 15px ${SNAP_FONT}`, '#f5f5f5'); x += 10;
+  put(`${TF_FULL[S.bar]} · ${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}`, `500 13px ${SNAP_FONT}`, '#a6a6a6'); x += 16;
+  const chg = (lb.c - lb.o) / lb.o * 100;
+  for (const [l, v] of [['시', lb.o], ['고', lb.h], ['저', lb.l], ['종', lb.c]]){
+    if (!put(l + ' ', `500 13px ${SNAP_FONT}`, '#bdbdbd')) break;
+    if (!put(fP(v), `500 13px ${SNAP_FONT}`, col)) break; x += 10;
+  }
+  put(`${chg >= 0 ? '+' : ''}${f(chg, 2)}%`, `600 13px ${SNAP_FONT}`, col);
+  // ── 이동평균선 범례
+  c.font = `500 13px ${SNAP_FONT}`; c.textAlign = 'left';
+  let ly = HEAD + 16; const on = mas.filter(m => m.on && m.vals);
+  on.forEach(m => {
+    const nm = maLabel(m), v = fP(m.vals[m.vals.length - 1]);
+    c.fillStyle = 'rgba(15,15,15,.75)'; c.fillRect(6, ly - 10, c.measureText(nm + '  ' + v).width + 12, 20);
+    c.fillStyle = '#e3e3e3'; c.fillText(nm, 12, ly);
+    c.fillStyle = m.color; c.fillText(v, 12 + c.measureText(nm + '  ').width, ly);
+    ly += 20;
+  });
+  const legH = on.length * 20;
+  // ── 현재가 라벨 (가격축)
+  const y0 = yOf(lb.c);
+  if (y0 != null && y0 >= 0 && y0 <= pH){
+    const y = HEAD + y0, pc = (chartType === 'line' || chartType === 'area') ? '#2962ff' : col;
+    c.fillStyle = pc; c.fillRect(cw - pw, y - 9, pw, 18);
+    c.fillStyle = '#fff'; c.font = `500 12px ${SNAP_FONT}`; c.textAlign = 'center'; c.fillText(fP(lb.c), cw - pw / 2, y);
+  }
+  // ── RSI 테이블
+  snapRsi(c, cw, HEAD, HEAD + pH, pw, legH);
+  // ── 워터마크
+  const by = HEAD + pH - 24;
+  c.globalAlpha = .6; rr(c, 12, by - 11, 22, 22, 5); c.fillStyle = '#e3e3e3'; c.fill();
+  c.fillStyle = '#0f0f0f'; c.font = `800 11px ${SNAP_FONT}`; c.textAlign = 'center'; c.fillText('TK', 23, by);
+  c.fillStyle = '#e3e3e3'; c.font = `700 14px ${SNAP_FONT}`; c.textAlign = 'left'; c.fillText('Trader_KIM', 40, by);
+  c.globalAlpha = 1;
+  return out;
+}
+function snapRsi(c, cw, top, bottom, pw, legH){
+  const cfg = rtCfg(); if (!cfg.on || !$('rsiTbl')) return;
+  c.font = `600 12px ${SNAP_FONT}`; c.textBaseline = 'middle';
+  const head = ['TF', ...RT_TF.map(t => t[1])];
+  const vals = ['RSI', ...RT_TF.map(([kk]) => RT.vals[kk] == null ? '—' : String(Math.round(RT.vals[kk] * 100) / 100))];
+  const ws = head.map((h, i) => Math.max(c.measureText(h).width, c.measureText(vals[i]).width) + 14);
+  const W = ws.reduce((a, b) => a + b, 0), rh = 20, H = rh * 2;
+  const msg = $('rtMsg') && $('rtMsg').classList.contains('on') ? $('rtMsg').textContent : '';
+  const left = cfg.pos === 'tl' || cfg.pos === 'bl', topPos = cfg.pos === 'tr' || cfg.pos === 'tl';
+  const x = left ? 10 : cw - pw - 8 - W;
+  const y = topPos ? top + 8 + (cfg.pos === 'tl' ? legH + 4 : 0) : bottom - H - 8 - (msg ? 26 : 0);
+  c.fillStyle = 'rgba(15,15,15,.92)'; c.fillRect(x, y, W, H);
+  let cx = x;
+  head.forEach((h, i) => {
+    const w = ws[i];
+    c.fillStyle = '#2a2e39'; c.fillRect(cx, y, w, rh);
+    let bg = '#000', fg = '#fff';
+    if (i){
+      const tf = RT_TF[i - 1][0], v = RT.vals[tf];
+      if (v == null){ bg = 'rgba(120,123,134,.08)'; fg = '#a6a6a6'; }
+      else {
+        const warn = tf === 'D' && ((v >= 27 && v <= 33) || (v >= 67 && v <= 73));
+        bg = warn ? 'rgba(242,54,69,.22)' : v >= cfg.ob ? 'rgba(242,54,69,.32)' : v <= cfg.os ? 'rgba(8,153,129,.32)' : 'rgba(120,123,134,.16)';
+        if (warn) fg = '#ff4d5e';
+      }
+    }
+    c.fillStyle = bg; c.fillRect(cx, y + rh, w, rh);
+    c.textAlign = 'center'; c.font = `700 12px ${SNAP_FONT}`; c.fillStyle = '#fff'; c.fillText(h, cx + w / 2, y + rh / 2);
+    c.font = `600 12px ${SNAP_FONT}`; c.fillStyle = fg; c.fillText(vals[i], cx + w / 2, y + rh * 1.5);
+    c.strokeStyle = 'rgba(120,123,134,.5)'; c.lineWidth = 1; c.strokeRect(cx + .5, y + .5, w, H);
+    cx += w;
+  });
+  c.beginPath(); c.moveTo(x, y + rh + .5); c.lineTo(x + W, y + rh + .5); c.stroke();
+  if (msg){
+    c.font = `800 12px ${SNAP_FONT}`; const mw = c.measureText(msg).width + 18, mx = left ? x : x + W - mw, my = y + H + 4;
+    c.fillStyle = 'rgba(242,54,69,.18)'; c.fillRect(mx, my, mw, 22); c.fillStyle = '#f23645'; c.fillRect(mx, my, 3, 22);
+    c.fillStyle = '#ff4d5e'; c.textAlign = 'left'; c.fillText(msg, mx + 10, my + 11);
+  }
+}
+const snapMeta = () => ({ tk:S.ticker, bar:S.bar, px:S.last, ts:Date.now() });
+/* 영역 지정: 차트 위에서 드래그 → {x,y,w,h} · 클릭만 = 'full' · Esc = null */
+function regionPick(){
+  return new Promise(res => {
+    const wrap = $('chartWrap'); if ($('rgnOv')) return res(null);
+    const ov = document.createElement('div'); ov.id = 'rgnOv';
+    ov.innerHTML = '<div class="rg-tip">✂ 드래그해서 캡처할 영역을 지정하세요 · 클릭만 하면 전체 차트 · Esc 취소</div><div class="rg-box"></div>';
+    wrap.appendChild(ov);
+    const box = ov.querySelector('.rg-box'); let st = null;
+    const rel = e => { const r = wrap.getBoundingClientRect(); return { x: Math.max(0, Math.min(r.width, e.clientX - r.left)), y: Math.max(0, Math.min(r.height, e.clientY - r.top)) }; };
+    const draw = q => { const x = Math.min(st.x, q.x), y = Math.min(st.y, q.y), w = Math.abs(q.x - st.x), h = Math.abs(q.y - st.y);
+      Object.assign(box.style, { left: x + 'px', top: y + 'px', width: w + 'px', height: h + 'px' }); box.dataset.sz = `${Math.round(w)} × ${Math.round(h)}`; return { x, y, w, h }; };
+    const done = v => { window.removeEventListener('mousemove', mv, true); window.removeEventListener('mouseup', up, true); window.removeEventListener('keydown', kd, true); ov.remove(); res(v); };
+    const mv = e => { if (st){ e.stopPropagation(); draw(rel(e)); } };
+    const up = e => { if (!st) return; e.stopPropagation(); const r = draw(rel(e)); done(r.w < 8 || r.h < 8 ? 'full' : r); };
+    const kd = e => { if (e.key === 'Escape'){ e.stopPropagation(); e.preventDefault(); done(null); } };
+    ov.addEventListener('mousedown', e => { e.stopPropagation(); e.preventDefault(); if (e.button !== 0){ done(null); return; } st = rel(e); ov.classList.add('drag'); box.style.display = 'block'; draw(st); });
+    ov.addEventListener('contextmenu', e => { e.preventDefault(); done(null); });
+    window.addEventListener('mousemove', mv, true); window.addEventListener('mouseup', up, true); window.addEventListener('keydown', kd, true);
+  });
+}
+/* 전체 합성 이미지에서 영역만 잘라내고 위에 얇은 정보 줄을 붙임 */
+async function snapRegionCanvas(r){
+  const full = await snapCanvas(), HEAD = 40, k = full.width / $('chart').clientWidth, STRIP = 26;
+  const out = document.createElement('canvas');
+  out.width = Math.round(r.w * k); out.height = Math.round((r.h + STRIP) * k);
+  const c = out.getContext('2d');
+  c.drawImage(full, r.x * k, (r.y + HEAD) * k, r.w * k, r.h * k, 0, STRIP * k, r.w * k, r.h * k);
+  c.scale(k, k);
+  c.fillStyle = '#161616'; c.fillRect(0, 0, r.w, STRIP); c.fillStyle = '#2a2a2a'; c.fillRect(0, STRIP - 1, r.w, 1);
+  const pk = parseKey(S.ticker);
+  c.textBaseline = 'middle'; c.textAlign = 'left'; c.font = `700 12px ${SNAP_FONT}`; c.fillStyle = '#f5f5f5';
+  const t1 = dispName(S.ticker); c.fillText(t1, 8, STRIP / 2);
+  let x = 8 + c.measureText(t1).width + 8;
+  c.font = `500 11px ${SNAP_FONT}`; c.fillStyle = '#a6a6a6';
+  const t2 = `${TF_FULL[S.bar]} · ${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}`; c.fillText(t2, x, STRIP / 2); x += c.measureText(t2).width;
+  const t3 = `${kstStr(Date.now())} UTC+9 · Trader_KIM`;
+  if (x + c.measureText(t3).width + 20 < r.w){ c.textAlign = 'right'; c.fillText(t3, r.w - 8, STRIP / 2); }
+  return out;
+}
+async function snapBlob(region){
+  const cv = region && region !== 'full' ? await snapRegionCanvas(region) : await snapCanvas();
+  return await new Promise((res, rej) => cv.toBlob(b => b ? res(b) : rej(new Error('이미지 생성 실패')), 'image/png'));
+}
+function snapName(m){
+  const t = kstStr(m.ts).replace(/[-:]/g, '').replace(' ', '_');
+  return `${dispName(m.tk).replace(/[^\w.-]/g, '_')}_${m.bar}_${t}.png`;
+}
+function snapDownloadBlob(blob, meta){
+  const a = document.createElement('a'), u = URL.createObjectURL(blob);
+  a.href = u; a.download = snapName(meta); document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(u), 4000);
+}
+async function snapClipboard(blobOrPromise){
+  if (!navigator.clipboard || !window.ClipboardItem) throw new Error('이 브라우저는 이미지 클립보드를 지원하지 않습니다');
+  await navigator.clipboard.write([new ClipboardItem({ 'image/png': blobOrPromise })]);
+}
+/* TradingView '차트 이미지 복사' — 클립보드에 넣어 다른 곳에 Ctrl+V */
+async function snapCopy(full){
+  if (snapBusy || $('rgnOv')) return;
+  let region = 'full';
+  if (full !== true){ closeDD(); region = await regionPick(); if (!region) return; }
+  snapBusy = true;
+  const meta = snapMeta(), p = snapBlob(region);
+  p.catch(() => {});
+  try {
+    await snapClipboard(p);
+    snapCard(await p, meta, '📋 이미지를 복사했습니다 — 차트 위에서 <b>Ctrl+V</b>(붙이기) 또는 텔레그램·카톡·메모에 <b>Ctrl+V</b>');
+  } catch(e){
+    let blob = null; try { blob = await p; } catch(e2){ toast(e2.message || '스냅샷 실패'); snapBusy = false; return; }
+    snapCard(blob, meta, '⚠ 클립보드 복사가 막혀 있습니다 (브라우저 권한). 아래 다운로드를 사용하세요.');
+  }
+  snapBusy = false;
+}
+async function snapDownload(){
+  if (snapBusy) return; snapBusy = true;
+  try { const meta = snapMeta(), b = await snapBlob(); snapDownloadBlob(b, meta); toast('차트 이미지를 다운로드했습니다'); }
+  catch(e){ toast(e.message || '스냅샷 실패'); }
+  snapBusy = false;
+}
+async function snapSaveNow(){
+  if (snapBusy) return; snapBusy = true;
+  try { const meta = snapMeta(), b = await snapBlob(); await snapStore(b, meta); }
+  catch(e){ toast(e.message || '스냅샷 실패'); }
+  snapBusy = false;
+}
+function snapCard(blob, meta, msg){
+  const old = $('snapCard'); if (old) old.remove();
+  const el = document.createElement('div'), url = URL.createObjectURL(blob);
+  el.id = 'snapCard';
+  el.innerHTML = `<button class="x" title="닫기">✕</button><img src="${url}" alt=""><div class="t">${msg}</div>
+    <div class="b"><button data-a="pin">📌 차트에 붙이기</button><button data-a="dl">⬇ 다운로드</button><button data-a="save">💾 보관함 저장</button></div>`;
+  document.body.appendChild(el);
+  let tm; const close = () => { clearTimeout(tm); el.remove(); URL.revokeObjectURL(url); };
+  const arm = () => { clearTimeout(tm); tm = setTimeout(close, 9000); }; arm();
+  el.onmouseenter = () => clearTimeout(tm); el.onmouseleave = arm;
+  el.addEventListener('mousedown', e => e.stopPropagation());
+  el.querySelector('.x').onclick = close;
+  el.querySelector('[data-a=dl]').onclick = () => snapDownloadBlob(blob, meta);
+  el.querySelector('[data-a=pin]').onclick = () => { close(); imgAdd(blob); };
+  el.querySelector('[data-a=save]').onclick = async e => { const b = e.currentTarget; b.disabled = true; if (await snapStore(blob, meta)) b.textContent = '✓ 저장됨'; else b.disabled = false; };
+}
+
+/* ── 스냅샷 보관함 (IndexedDB, 종목별) ── */
+let sdbP = null;
+function sdbOpen(){
+  if (sdbP) return sdbP;
+  sdbP = new Promise((res, rej) => {
+    const r = indexedDB.open('traderkim_snaps', 2);
+    r.onupgradeneeded = () => {
+      const db = r.result;
+      if (!db.objectStoreNames.contains('snaps')){ const s = db.createObjectStore('snaps', { keyPath:'id' }); s.createIndex('tk', 'tk'); }
+      if (!db.objectStoreNames.contains('imgs')) db.createObjectStore('imgs', { keyPath:'id' });   // 차트에 붙인 이미지
+    };
+    r.onsuccess = () => res(r.result); r.onerror = () => { sdbP = null; rej(r.error); };
+  });
+  return sdbP;
+}
+async function sdbTx(mode, fn, store = 'snaps'){
+  const db = await sdbOpen();
+  return new Promise((res, rej) => {
+    const tx = db.transaction(store, mode), rq = fn(tx.objectStore(store)); let out;
+    if (rq) rq.onsuccess = () => { out = rq.result; };
+    tx.oncomplete = () => res(out); tx.onerror = () => rej(tx.error); tx.onabort = () => rej(tx.error || new Error('저장 공간 부족'));
+  });
+}
+const snapPut = rec => sdbTx('readwrite', st => st.put(rec));
+const snapDel = id => sdbTx('readwrite', st => st.delete(id));
+const snapAll = () => sdbTx('readonly', st => st.getAll());
+async function snapStore(blob, meta){
+  const rec = { id: Date.now().toString(36) + uid(), ...meta, note:'', blob };
+  try { await snapPut(rec); toast(`💾 ${dispName(meta.tk)} 스냅샷을 저장했습니다 (📷 → 저장된 스냅샷)`); return true; }
+  catch(e){ toast('스냅샷 저장 실패: ' + (e && e.message || e)); return false; }
+}
+const SG = { tab:'cur', all:[], urls:{}, open:null };
+function sgUrl(r){ return SG.urls[r.id] || (SG.urls[r.id] = URL.createObjectURL(r.blob)); }
+async function sgLoad(){ try { SG.all = (await snapAll()) || []; } catch(e){ SG.all = []; toast('스냅샷 저장소를 열지 못했습니다'); } SG.all.sort((a, b) => b.ts - a.ts); }
+async function openGallery(){ SG.open = null; $('snapModal').classList.add('open'); await sgLoad(); sgRender(); }
+function sgClose(){ $('snapModal').classList.remove('open'); Object.values(SG.urls).forEach(u => URL.revokeObjectURL(u)); SG.urls = {}; }
+function sgRender(){
+  const cur = SG.all.filter(r => r.tk === S.ticker), list = SG.tab === 'cur' ? cur : SG.all;
+  $('snTabs').innerHTML = `<button data-t="cur" class="${SG.tab === 'cur' ? 'on' : ''}">${esc(dispName(S.ticker))} (${cur.length})</button><button data-t="all" class="${SG.tab === 'all' ? 'on' : ''}">전체 (${SG.all.length})</button>`;
+  $('snTabs').querySelectorAll('button').forEach(b => b.onclick = () => { SG.tab = b.dataset.t; SG.open = null; sgRender(); });
+  const mb = SG.all.reduce((s, r) => s + (r.blob ? r.blob.size : 0), 0) / 1048576;
+  $('snFoot').innerHTML = `브라우저(IndexedDB)에 보관 · ${SG.all.length}장 · ${f(mb, 1)} MB<span style="float:right">Esc 닫기</span>`;
+  const r = SG.open && SG.all.find(x => x.id === SG.open);
+  if (r){
+    $('snBody').innerHTML = `<div class="sn-view"><div class="sn-bar">
+      <button id="snBack">← 목록</button><input id="snNote" placeholder="메모 (진입 근거, 시나리오 등)" value="${esc(r.note || '')}">
+      <button id="snPin">📌 지금 차트에 붙이기</button><button id="snCp">📋 복사</button><button id="snDl">⬇ 다운로드</button><button id="snGo">차트로 이동</button><button id="snDel" class="danger">삭제</button></div>
+      <img src="${sgUrl(r)}" alt="">
+      <div class="sn-meta">${esc(dispName(r.tk))} · ${TF_FULL[r.bar] || r.bar} · ${kstStr(r.ts)} (UTC+9)${r.px ? ' · 당시 가격 ' + fP(r.px) : ''}</div></div>`;
+    $('snBack').onclick = () => { SG.open = null; sgRender(); };
+    $('snNote').onchange = async e => { r.note = e.target.value.trim(); try { await snapPut(r); toast('메모 저장됨'); } catch(err){ toast('메모 저장 실패'); } };
+    $('snNote').onkeydown = e => { if (e.key === 'Enter') e.target.blur(); };
+    $('snCp').onclick = async () => { try { await snapClipboard(r.blob); toast('📋 이미지를 복사했습니다 — Ctrl+V로 붙여넣기'); } catch(e){ toast('클립보드 복사 실패 — 다운로드를 사용하세요'); } };
+    $('snDl').onclick = () => snapDownloadBlob(r.blob, r);
+    $('snPin').onclick = () => { sgClose(); imgAdd(r.blob); };
+    $('snGo').onclick = () => { sgClose(); const go = () => { if (r.bar !== S.bar && BARS.includes(r.bar)) setBar(r.bar); }; if (r.tk !== S.ticker) switchTicker(r.tk).then(go); else go(); };
+    $('snDel').onclick = async () => { if (!confirm('이 스냅샷을 삭제할까요?')) return; await snapDel(r.id).catch(() => {}); if (SG.urls[r.id]){ URL.revokeObjectURL(SG.urls[r.id]); delete SG.urls[r.id]; } SG.open = null; await sgLoad(); sgRender(); };
+    return;
+  }
+  $('snBody').innerHTML = list.length
+    ? `<div class="sn-grid">${list.map(x => `<div class="sn-it" data-id="${x.id}"><img src="${sgUrl(x)}" alt="" loading="lazy"><div class="m"><b>${esc(dispName(x.tk))}</b> · ${TF_FULL[x.bar] || x.bar}<div>${kstStr(x.ts)}${x.note ? ' · ' + esc(x.note) : ''}</div></div></div>`).join('')}</div>`
+    : `<div class="sm-empty">저장된 스냅샷이 없습니다.<br>📷 → 「이 종목에 스냅샷 저장」 또는 복사 후 카드의 💾 버튼</div>`;
+  $('snBody').querySelectorAll('.sn-it').forEach(it => it.onclick = () => { SG.open = it.dataset.id; sgRender(); });
+}
+
+/* ═══════════════ 종목별 화면 저장 (레이아웃) ═══════════════ */
+const layKey = tk => 'lay_' + tk;
+const layAuto = () => store.get('layAuto') !== false;
+const layAutoSave = () => store.get('layAutoSave') === true;
+function layList(){ try { return Object.keys(localStorage).filter(k => k.startsWith('possize_lay_')).map(k => k.slice(12)).sort(); } catch(e){ return []; } }
+function layoutSnap(){
+  const r = chart.timeScale().getVisibleLogicalRange(), n = bars.length;
+  const L = { v:1, bar:S.bar, ctype:chartType, mas: mas.map(({ vals, _n, ...x }) => x), log: isLog(), manual: manual ? { ...manual } : null, rsi: { ...rtCfg() }, ts: Date.now() };
+  if (r && n){ L.span = r.to - r.from; L.off = r.to - (n - 1); L.atEnd = L.off > -3; L.fromT = logicalToTime(Math.round(r.from)); }
+  return L;
+}
+function layoutSave(silent){
+  if (!bars.length){ if (!silent) toast('차트를 불러온 뒤 저장하세요'); return; }
+  store.set(layKey(S.ticker), layoutSnap()); layMark();
+  if (!silent) toast(`💾 ${dispName(S.ticker)} 화면 저장 — ${TF_FULL[S.bar]} · ${CT_NAME[chartType]} · 이평선 ${mas.filter(m => m.on).length}개`);
+}
+function layoutDel(tk){ try { localStorage.removeItem('possize_' + layKey(tk)); } catch(e){} layMark(); }
+function layMark(){ const b = $('btnLay'); if (b) b.classList.toggle('saved', !!store.get(layKey(S.ticker))); }
+function rtSyncUI(){ const c = rtCfg(); $('rtOn').checked = c.on; $('rtLen').value = c.len; $('rtOB').value = c.ob; $('rtOS').value = c.os; $('rtPos').value = c.pos; $('rtSz').value = c.sz; }
+/* 캔들 로드 전에 적용: 시간 간격 · 차트 유형 · 이평선 · 로그 · RSI */
+function layoutPre(L){
+  if (BARS.includes(L.bar)){ S.bar = L.bar; markBar(); }
+  if (L.ctype && CT_NAME[L.ctype] && L.ctype !== chartType) setChartType(L.ctype);
+  if (Array.isArray(L.mas)){ mas = L.mas.slice(0, MA_MAX).map(maDefaults); saveMAs(); maOpenIdx = -1; buildMAUI(); }
+  if (L.log != null && !!L.log !== isLog()){
+    $('btnLog').classList.toggle('on', !!L.log);
+    chart.priceScale('right').applyOptions({ mode: L.log ? LW.PriceScaleMode.Logarithmic : LW.PriceScaleMode.Normal });
+    applyManual();
+  }
+  if (L.rsi){ Object.assign(rtCfg(), L.rsi); rtSave(); rtSyncUI(); rtStyle(); }
+}
+/* 캔들 로드 후 적용: 보이는 구간 · 가격 범위 */
+async function layoutPost(L){
+  const seq = loadSeq;
+  if (!bars.length || L.span == null) return;
+  const ts = chart.timeScale();
+  if (!L.atEnd && L.fromT != null){
+    for (let i = 0; i < 30 && hasMore && cTime(bars[0]) > L.fromT; i++){
+      if (loadingOlder){ await sleep(200); continue; }
+      const n = bars.length; await loadOlder(); if (seq !== loadSeq) return; if (bars.length === n) break;
+    }
+    const a = timeToLogical(L.fromT);
+    if (a != null) ts.setVisibleLogicalRange({ from: a, to: a + L.span });
+  } else {
+    const to = bars.length - 1 + Math.max(0, L.off || 0);
+    ts.setVisibleLogicalRange({ from: to - L.span, to });
+  }
+  setManual(L.manual ? { ...L.manual } : null);
+  rtCalc(); overlay.update();
+}
+async function layoutLoad(){
+  const L = store.get(layKey(S.ticker)); if (!L) return toast('저장된 화면이 없습니다');
+  layoutPre(L); saveSettings();
+  const s = loadSeq + 1; await loadCandles();
+  if (loadSeq === s){ await layoutPost(L); toast(`↺ ${dispName(S.ticker)} 저장된 화면을 불러왔습니다`); }
+}
+
+/* ── 상단 메뉴 ── */
+async function buildCamMenu(){
+  const m = $('camMenu');
+  m.innerHTML = `<div class="dd-h">스냅샷 · ${esc(dispName(S.ticker))}</div>
+    <div class="dd-i" data-a="copy">✂ 영역 지정 캡처 → 복사<span class="key">Ctrl+Shift+S · Alt+S</span></div>
+    <div class="dd-i" data-a="full">📋 전체 차트 복사</div>
+    <div class="dd-i" data-a="dl">⬇ 전체 이미지 다운로드<span class="key">Ctrl+Alt+S</span></div>
+    <div class="dd-i" data-a="paste">📌 클립보드 이미지를 차트에 붙이기<span class="key">Ctrl+V</span></div>
+    <div class="dd-i" data-a="save">💾 이 종목에 스냅샷 저장</div>
+    <div class="dd-sep"></div>
+    <div class="dd-i" data-a="gal">🖼 저장된 스냅샷 보기<span class="key" id="camCnt"></span></div>
+    <div class="dd-note">영역 캡처: 드래그로 범위 지정(클릭만 = 전체). 복사한 이미지는 이 차트 위에서 Ctrl+V로 붙이거나 텔레그램·카톡·메모에 붙여넣을 수 있습니다.</div>`;
+  const act = { copy: () => snapCopy(), full: () => snapCopy(true), dl: snapDownload, save: snapSaveNow, gal: openGallery, paste: () => pasteFromClipboard(true) };
+  m.querySelectorAll('[data-a]').forEach(it => it.onclick = () => { closeDD(); act[it.dataset.a](); });
+  try { const all = (await snapAll()) || [], n = all.filter(r => r.tk === S.ticker).length; const el = $('camCnt'); if (el) el.textContent = `이 종목 ${n} · 전체 ${all.length}`; } catch(e){}
+}
+function buildLayMenu(){
+  const m = $('layMenu'), L = store.get(layKey(S.ticker)), list = layList();
+  const desc = x => x ? `${TF_FULL[x.bar] || x.bar} · ${CT_NAME[x.ctype] || ''}` : '';
+  m.innerHTML = `<div class="dd-h">${esc(dispName(S.ticker))} 화면</div>
+    <div class="dd-i" data-a="save">💾 ${L ? '이 종목 화면 덮어쓰기' : '이 종목 화면 저장'}<span class="key">Ctrl+S</span></div>
+    <div class="dd-i ${L ? '' : 'dis'}" data-a="load">↺ 저장된 화면 불러오기${L ? `<span class="key">${kstStr(L.ts).slice(5)}</span>` : ''}</div>
+    <div class="dd-i ${L ? '' : 'dis'}" data-a="del">🗑 저장된 화면 삭제</div>
+    <div class="dd-sep"></div>
+    <label class="dd-chk"><input type="checkbox" id="layAutoChk" ${layAuto() ? 'checked' : ''}> 종목 전환 시 저장된 화면 자동 적용</label>
+    <label class="dd-chk"><input type="checkbox" id="layAutoSaveChk" ${layAutoSave() ? 'checked' : ''}> 종목 전환 시 현재 화면 자동 저장</label>
+    ${list.length ? `<div class="dd-sep"></div><div class="dd-h">저장된 종목 (${list.length}) — 클릭하면 이동 + 적용</div>` +
+      list.map(tk => `<div class="lay-row ${tk === S.ticker ? 'cur' : ''}" data-tk="${esc(tk)}"><span>${esc(dispName(tk))}</span><span class="sub">${esc(desc(store.get(layKey(tk))))}</span><button class="x" data-x="${esc(tk)}" title="삭제">✕</button></div>`).join('') : ''}
+    <div class="dd-note">저장 항목: 시간 간격 · 차트 유형 · 이동평균선 · 로그 스케일 · 보이는 구간 · RSI 테이블. 그림·포지션·알람은 원래대로 종목별 자동 저장됩니다.</div>
+    <div class="dd-sep"></div>
+    <div class="dd-h">백업 (다른 브라우저·PC로 옮기기)</div>
+    <div class="dd-i" data-a="exp">📤 전체 백업 내보내기 (.json 파일)</div>
+    <div class="dd-i" data-a="imp">📥 백업 파일 불러오기</div>
+    <div class="dd-note">화면 저장 · 그림 · 포지션 · 알람 · 이평선 · 관심 종목 · 설정 · 스냅샷 보관함이 파일 하나에 담깁니다. 브리지 토큰은 보안상 제외됩니다.</div>`;
+  const act = { save: () => layoutSave(), load: layoutLoad, del: () => { layoutDel(S.ticker); toast('저장된 화면을 삭제했습니다'); }, exp: backupExport, imp: () => $('bkFile').click() };
+  m.querySelectorAll('[data-a]').forEach(it => it.onclick = () => { closeDD(); act[it.dataset.a](); });
+  $('layAutoChk').onchange = e => store.set('layAuto', e.target.checked);
+  $('layAutoSaveChk').onchange = e => store.set('layAutoSave', e.target.checked);
+  m.querySelectorAll('.lay-row').forEach(r => r.onclick = e => {
+    const x = e.target.closest('[data-x]');
+    if (x){ e.stopPropagation(); layoutDel(x.dataset.x); buildLayMenu(); return; }
+    closeDD(); const tk = r.dataset.tk;
+    if (tk === S.ticker) layoutLoad(); else switchTicker(tk, true);
+  });
+}
+/* ═══════════════ 백업 내보내기 / 불러오기 (브라우저·PC 무관) ═══════════════ */
+const BK_SKIP = new Set(['possize_brTok']);          // 주문 브리지 토큰은 파일에 넣지 않음
+const blobToDataURL = b => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(b); });
+function dataURLToBlob(u){
+  const i = u.indexOf(','), mime = (u.slice(5, i).split(';')[0]) || 'image/png', bin = atob(u.slice(i + 1));
+  const a = new Uint8Array(bin.length); for (let k = 0; k < bin.length; k++) a[k] = bin.charCodeAt(k);
+  return new Blob([a], { type: mime });
+}
+async function backupExport(){
+  toast('백업 파일을 만드는 중…');
+  const ls = {};
+  try { for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (k && k.startsWith('possize_') && !BK_SKIP.has(k)) ls[k] = localStorage.getItem(k); } } catch(e){}
+  let snaps = [];
+  try {
+    const all = (await snapAll()) || [];
+    for (const r of all){ const { blob, ...m } = r; snaps.push({ ...m, data: blob ? await blobToDataURL(blob) : null }); }
+  } catch(e){ toast('스냅샷 보관함을 읽지 못해 설정만 백업합니다'); }
+  let imgs = [];
+  try { for (const r of ((await sdbTx('readonly', st => st.getAll(), 'imgs')) || [])){ const { blob, ...m } = r; imgs.push({ ...m, data: blob ? await blobToDataURL(blob) : null }); } } catch(e){}
+  const bk = { app:'Trader_KIM_Chart', v:2, ts: Date.now(), ls, snaps, imgs };
+  const blob = new Blob([JSON.stringify(bk)], { type:'application/json' });
+  const a = document.createElement('a'), u = URL.createObjectURL(blob);
+  a.href = u; a.download = `Trader_KIM_backup_${kstStr(bk.ts).replace(/[-:]/g, '').replace(' ', '_')}.json`;
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 5000);
+  const nLay = Object.keys(ls).filter(k => k.startsWith('possize_lay_')).length;
+  toast(`📤 백업 완료 — 화면 ${nLay}개 · 스냅샷 ${snaps.length}장 · ${f(blob.size / 1048576, 1)} MB`);
+}
+async function backupImport(file){
+  if (!file) return;
+  let bk;
+  try { bk = JSON.parse(await file.text()); } catch(e){ return toast('백업 파일을 읽지 못했습니다 (JSON 형식 아님)'); }
+  if (!bk || bk.app !== 'Trader_KIM_Chart' || typeof bk.ls !== 'object') return toast('Trader_KIM 백업 파일이 아닙니다');
+  const keys = Object.keys(bk.ls).filter(k => k.startsWith('possize_') && !BK_SKIP.has(k));
+  const snaps = Array.isArray(bk.snaps) ? bk.snaps : [];
+  const nLay = keys.filter(k => k.startsWith('possize_lay_')).length, nDw = keys.filter(k => k.startsWith('possize_dw_')).length;
+  const head = `백업: ${kstStr(bk.ts)} (UTC+9)\n화면 저장 ${nLay}개 · 그림 ${nDw}개 종목 · 스냅샷 ${snaps.length}장\n\n`;
+  if (!confirm(head + '불러올까요?\n(같은 종목·같은 설정은 백업 내용으로 덮어쓰고, 나머지 현재 데이터는 유지합니다)')) return;
+  const wipe = confirm('현재 브라우저의 기존 데이터를 먼저 모두 지우고 백업 내용으로만 바꿀까요?\n\n확인 = 완전히 교체   ·   취소 = 병합 (권장)');
+  try {
+    if (wipe){
+      const old = []; for (let i = 0; i < localStorage.length; i++){ const k = localStorage.key(i); if (k && k.startsWith('possize_') && !BK_SKIP.has(k)) old.push(k); }
+      old.forEach(k => localStorage.removeItem(k));
+      try { await sdbTx('readwrite', st => st.clear()); } catch(e){}
+      try { await sdbTx('readwrite', st => st.clear(), 'imgs'); } catch(e){}
+    }
+    keys.forEach(k => localStorage.setItem(k, bk.ls[k]));
+  } catch(e){ return toast('설정 저장 실패: ' + (e && e.message || e)); }
+  let ok = 0, fail = 0;
+  for (const s of snaps){
+    try { if (!s.data || !s.id) throw 0; const { data, ...m } = s; await snapPut({ ...m, blob: dataURLToBlob(data) }); ok++; } catch(e){ fail++; }
+  }
+  for (const s of (Array.isArray(bk.imgs) ? bk.imgs : [])){
+    try { if (!s.data || !s.id) continue; const { data, ...m } = s; await sdbTx('readwrite', st => st.put({ ...m, blob: dataURLToBlob(data) }), 'imgs'); } catch(e){}
+  }
+  alert(`📥 불러오기 완료\n설정 ${keys.length}개 항목 · 스냅샷 ${ok}장${fail ? ` (실패 ${fail}장)` : ''}\n\n페이지를 새로 고쳐 적용합니다.`);
+  location.reload();
+}
+/* ═══════════════ 차트에 이미지 붙이기 (Ctrl+V · 끌어다 놓기) ═══════════════ */
+const IMGC = {};
+function imgGet(id){
+  let c = IMGC[id]; if (c) return c;
+  c = IMGC[id] = { state:'loading', el:null };
+  sdbTx('readonly', st => st.get(id), 'imgs').then(r => {
+    if (!r || !r.blob){ c.state = 'missing'; overlay && overlay.update(); return; }
+    const im = new Image();
+    im.onload = () => { c.el = im; c.state = 'ok'; overlay && overlay.update(); };
+    im.onerror = () => { c.state = 'missing'; overlay && overlay.update(); };
+    im.src = URL.createObjectURL(r.blob);
+  }).catch(() => { c.state = 'missing'; overlay && overlay.update(); });
+  return c;
+}
+/* 화면에 보이는 크기로 미리 축소해 둔 비트맵 (매 프레임 큰 원본을 축소하지 않도록) */
+function imgBitmap(c, w, h){
+  const dpr = window.devicePixelRatio || 1, bw = Math.max(1, Math.round(w * dpr)), bh = Math.max(1, Math.round(h * dpr));
+  if (c.bm && c.bm.width === bw && c.bm.height === bh) return c.bm;
+  const cv = document.createElement('canvas'); cv.width = bw; cv.height = bh;
+  const g = cv.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(c.el, 0, 0, bw, bh);
+  return c.bm = cv;
+}
+function drawImg(ctx, d, p, selected){
+  const c = imgGet(d.img), w = d.w, h = d.h;
+  if (p.x > ovW + 2 || p.x + w < -2) return;                         // 화면 밖이면 그리지 않음
+  const resizing = drag && drag.h && drag.h.kind === 'img-size' && drag.h.d === d;
+  if (c.el){ ctx.globalAlpha = d.op ?? 1; ctx.drawImage(resizing ? c.el : imgBitmap(c, w, h), p.x, p.y, w, h); ctx.globalAlpha = 1; }
+  else {
+    ctx.fillStyle = 'rgba(42,46,57,.6)'; ctx.fillRect(p.x, p.y, w, h);
+    ctx.fillStyle = '#a6a6a6'; ctx.font = `13px ${SNAP_FONT}`; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+    ctx.fillText(c.state === 'missing' ? '이미지 없음' : '이미지 불러오는 중…', p.x + w / 2, p.y + h / 2);
+  }
+  ctx.lineWidth = selected ? 1.5 : 1; ctx.strokeStyle = selected ? '#2962ff' : 'rgba(120,123,134,.45)';
+  ctx.strokeRect(Math.round(p.x) + .5, Math.round(p.y) + .5, Math.round(w), Math.round(h));
+  if (selected){ handle(ctx, p.x, p.y, '#2962ff'); handle(ctx, p.x + w, p.y + h, '#2962ff'); }
+}
+async function imgShrink(blob, max){
+  const url = URL.createObjectURL(blob);
+  try {
+    const im = await new Promise((res, rej) => { const i = new Image(); i.onload = () => res(i); i.onerror = () => rej(new Error('이미지를 읽지 못했습니다')); i.src = url; });
+    const w = im.naturalWidth, h = im.naturalHeight;
+    if (Math.max(w, h) <= max) return { blob, w, h };
+    const s = max / Math.max(w, h), c = document.createElement('canvas');
+    c.width = Math.round(w * s); c.height = Math.round(h * s);
+    c.getContext('2d').drawImage(im, 0, 0, c.width, c.height);
+    const b = await new Promise(r => c.toBlob(r, 'image/png'));
+    return { blob: b || blob, w: c.width, h: c.height };
+  } finally { URL.revokeObjectURL(url); }
+}
+async function imgAdd(blob, at){
+  if (!chart || !bars.length) return toast('차트를 불러온 뒤 붙여넣으세요');
+  try {
+    const r = await imgShrink(blob, 1800);
+    const id = 'im' + Date.now().toString(36) + uid();
+    await sdbTx('readwrite', st => st.put({ id, blob: r.blob, w: r.w, h: r.h, ts: Date.now() }), 'imgs');
+    const W = paneW(), H = paneH(), ar = r.w / r.h;
+    let w = Math.min(r.w, W * 0.45), h = w / ar;
+    if (h > H * 0.6){ h = H * 0.6; w = h * ar; }
+    let x = at ? at.x : (mouse ? mouse.x : 24), y = at ? at.y : (mouse ? mouse.y : 24);
+    x = Math.max(4, Math.min(W - w - 4, x)); y = Math.max(4, Math.min(H - h - 4, y));
+    const d = { id: uid(), type:'image', img: id, pts:[{ t: xToTime(x), p: priceAt(y) }], w, h, ar, op: 1, color:'#2962ff' };
+    drawings.push(d); saveDrawings();
+    if (hideDraw){ hideDraw = false; refreshToolbar(); }
+    setTool('cursor'); sel = d.id; refreshSel(); overlay.update();
+    toast('📌 이미지를 차트에 붙였습니다 — 드래그로 이동, 우하단 점으로 크기 조절');
+  } catch(e){ toast('이미지 붙이기 실패: ' + (e && e.message || e)); }
+}
+/* 어떤 그림에도 쓰이지 않는 하루 지난 이미지는 정리 */
+async function imgGC(){
+  const used = new Set();
+  try {
+    for (let i = 0; i < localStorage.length; i++){
+      const k = localStorage.key(i);
+      if (k && k.startsWith('possize_dw_')) (JSON.parse(localStorage.getItem(k)) || []).forEach(d => { if (d && d.img) used.add(d.img); });
+    }
+  } catch(e){ return; }
+  drawings.forEach(d => { if (d.img) used.add(d.img); });
+  const keys = await sdbTx('readonly', st => st.getAllKeys(), 'imgs').catch(() => null); if (!keys) return;
+  const old = keys.filter(id => !used.has(id) && Date.now() - (parseInt(String(id).slice(2, 10), 36) || 0) > 864e5);
+  for (const id of old) await sdbTx('readwrite', st => st.delete(id), 'imgs').catch(() => {});
+}
+/* 비동기 클립보드에서 이미지 읽기 (paste 이벤트가 안 올 때·메뉴 버튼용) */
+async function pasteFromClipboard(loud){
+  try {
+    if (!navigator.clipboard || !navigator.clipboard.read) throw new Error('nosupport');
+    const items = await navigator.clipboard.read();
+    for (const it of items){
+      const ty = it.types.find(t => /^image\//.test(t));
+      if (ty){ imgAdd(await it.getType(ty)); return true; }
+    }
+    if (loud) toast('클립보드에 이미지가 없습니다 — 먼저 캡처(📷 · Win+Shift+S)하세요');
+  } catch(e){
+    if (loud) toast(e && e.name === 'NotAllowedError' ? '클립보드 읽기 권한이 막혀 있습니다 — 주소창 왼쪽 아이콘 → 클립보드 허용' : '이 브라우저에서는 클립보드 이미지를 읽을 수 없습니다 — 이미지 파일을 차트에 끌어다 놓으세요');
+  }
+  return false;
+}
+let pasteGot = 0;
+const pasteBlocked = () => {
+  const ae = document.activeElement;
+  return (ae && ['INPUT', 'TEXTAREA', 'SELECT'].includes(ae.tagName)) || $('snapModal').classList.contains('open') || $('symModal').classList.contains('open') || $('fibDlg').classList.contains('open');
+};
+function initPaste(){
+  document.addEventListener('paste', e => {
+    if (pasteBlocked()) return;
+    pasteGot = Date.now();
+    const cd = e.clipboardData;
+    let file = null;
+    if (cd){
+      const it = [...(cd.items || [])].find(i => i.kind === 'file' && /^image\//.test(i.type));
+      file = it ? it.getAsFile() : [...(cd.files || [])].find(fl => /^image\//.test(fl.type)) || null;
+    }
+    e.preventDefault();
+    if (file) imgAdd(file); else pasteFromClipboard(true);   // 이벤트에 이미지가 안 실려 온 경우 → 직접 읽기
+  });
+  // Ctrl+V 를 눌렀는데 paste 이벤트 자체가 오지 않는 환경 대비
+  document.addEventListener('keydown', e => {
+    if (!(e.ctrlKey || e.metaKey) || e.altKey || e.shiftKey || e.code !== 'KeyV' || pasteBlocked()) return;
+    const t0 = Date.now();
+    setTimeout(() => { if (pasteGot < t0) pasteFromClipboard(true); }, 200);
+  });
+  setTimeout(imgGC, 8000);
+}
+function initSnap(){
+  initPaste();
+  if (!$('bkFile')){
+    const inp = document.createElement('input'); inp.type = 'file'; inp.id = 'bkFile'; inp.accept = '.json,application/json'; inp.style.display = 'none';
+    inp.onchange = () => { const fl = inp.files && inp.files[0]; inp.value = ''; backupImport(fl); };
+    document.body.appendChild(inp);
+  }
+  // 백업 파일을 차트 화면에 끌어다 놓아도 불러오기
+  window.addEventListener('dragover', e => { if (e.dataTransfer && [...e.dataTransfer.types].includes('Files')) e.preventDefault(); });
+  window.addEventListener('drop', e => {
+    const fl = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (fl && /\.json$/i.test(fl.name)){ e.preventDefault(); backupImport(fl); return; }
+    if (fl && /^image\//.test(fl.type)){                       // 이미지 파일을 차트에 끌어다 놓기
+      e.preventDefault(); const r = $('chart').getBoundingClientRect();
+      imgAdd(fl, { x: e.clientX - r.left, y: e.clientY - r.top });
+    }
+  });
+  const tog = (btn, menu, build) => { $(btn).onclick = e => { e.stopPropagation(); const o = !$(menu).classList.contains('open'); closeDD(); if (o){ build(); $(menu).classList.add('open'); } }; };
+  tog('btnCam', 'camMenu', buildCamMenu);
+  tog('btnLay', 'layMenu', buildLayMenu);
+  $('snClose').onclick = sgClose;
+  $('snapModal').addEventListener('mousedown', e => { e.stopPropagation(); if (e.target.id === 'snapModal') sgClose(); });
+  layMark();
+}
+
 /* ───────────────── 시작 ───────────────── */
 (async function start(){
   const cfg = store.get('cfg') || {};
@@ -3597,7 +4346,7 @@ function rtTick(){   // showLast()에서 호출 — 종목이 바뀌면 다시 �
   S.bar = qs.get('bar') || cfg.bar || '15m';
   if (!BARS.includes(S.bar)) S.bar = '15m';
 
-  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); rtInit(); initAxPlus();
+  buildUI(); buildToolbar(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); rtInit(); initAxPlus(); initSnap();
   wlLoad(); if (!EMBED){ wlFetch(); wlTimer = setInterval(wlFetch, 10000); }
   showPanel(EMBED ? null : store.get('pview') || null);
   setInterval(tickCountdown, 1000);
