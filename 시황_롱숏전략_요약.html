@@ -1067,4 +1067,108 @@ td.note{font-size:12px;color:var(--tx2);min-width:220px}
  }));
 })();
 </script>
+<style>
+.livebar{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;padding:2px 9px;border-radius:99px;background:var(--card2);color:var(--mu);margin-top:4px}
+.livebar i{width:7px;height:7px;border-radius:50%;background:var(--mu)}
+.livebar.on{color:#86efac}.livebar.on i{background:var(--up);animation:lvp 1.6s infinite}
+.livebar.off{color:#fca5a5}.livebar.off i{background:var(--dn)}
+@keyframes lvp{50%{opacity:.25}}
+.rrnow{font-size:11.5px;color:var(--mu);font-weight:600}
+.rrnow b{font-variant-numeric:tabular-nums}.rrnow .bad{color:#fca5a5}.rrnow .ok{color:#86efac}
+.flu{animation:flu .9s}.fld{animation:fld .9s}
+@keyframes flu{0%{color:var(--up)}}@keyframes fld{0%{color:var(--dn)}}
+.cur{transition:left .4s ease}
+</style>
+<script>
+/* 실시간 시세: OKX 공개 WebSocket(tickers) → 실패 시 REST 5초 폴링 */
+(function(){
+ const N=s=>parseFloat(String(s).replace(/[^\d.\-]/g,''));
+ const dec=s=>{s=String(s).replace(/,/g,'');return s.includes('.')?s.split('.')[1].length:0};
+ const fmt=(v,d)=>v.toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d});
+ const tick=a=>{const m=(a.getAttribute('href')||'').match(/[?&]t=([A-Z0-9]+)/);return m&&m[1]};
+ const W={}; const add=(t,o)=>(W[t]=W[t]||{cards:[],rows:[],kpi:[]})[o.k].push(o);
+
+ // 카드
+ document.querySelectorAll('article.card').forEach(c=>{
+  const t=tick(c.querySelector('a.tk')); if(!t)return;
+  const pe=c.querySelector('.c-px .p'), ge=c.querySelector('.c-px .gap'), cu=c.querySelector('.cur');
+  const z=c.querySelector('.lv .v.n').innerHTML.split('<br>'); const lo=N(z[0]), hi=N(z[1]);
+  const vals=[...c.querySelectorAll('.lv > div')].map(d=>N(d.querySelector('.v').textContent));
+  const stop=vals[1], tp1=vals[2], tp2=vals[3];
+  const sx=parseFloat(c.querySelector('.t-stop').style.left), tx=parseFloat(c.querySelector('.t-tg[style*="opacity"]').style.left);
+  const isLong=c.classList.contains('L');
+  ge.className='gap '+(isLong?'g-l':c.classList.contains('A')?'g-in':'g-wait');
+  const rr=document.createElement('span'); rr.className='rrnow'; pe.parentNode.appendChild(rr);
+  add(t,{k:'cards',pe,ge,cu,lo,hi,stop,tp1,tp2,sx,tx,isLong,rr,d:dec(pe.textContent)});
+ });
+ // 표
+ document.querySelectorAll('#tb tr').forEach(r=>{
+  const a=r.querySelector('td.tkc a.tk'); if(!a)return; const b=r.querySelector('td.r.n b'); if(!b)return;
+  add(tick(a),{k:'rows',b,d:dec(b.textContent)});
+ });
+ // BTC/ETH 지표
+ document.querySelectorAll('.kp').forEach(k=>{
+  if(!/BTC \/ ETH/.test(k.querySelector('.l')?.textContent||''))return;
+  const v=k.querySelector('.v'); const tn=[...v.childNodes].filter(n=>n.nodeType===3&&/\d/.test(n.textContent));
+  if(tn[0])add('BTC',{k:'kpi',node:tn[0],d:0,pre:'',post:' '}); if(tn[1])add('ETH',{k:'kpi',node:tn[1],d:0,pre:' ',post:''});
+ });
+
+ const pct=x=>(x>=0?'+':'−')+Math.abs(x).toFixed(1)+'%';
+ function flash(el,up){el.classList.remove('flu','fld');void el.offsetWidth;el.classList.add(up?'flu':'fld')}
+ function apply(t,p){
+  const w=W[t]; if(!w||!(p>0))return;
+  w.cards.forEach(o=>{
+   const old=N(o.pe.textContent); o.pe.textContent=fmt(p,o.d); if(p!==old)flash(o.pe,p>old);
+   // 진입 구간까지 (가까운 경계 기준)
+   let g; if(p<o.lo)g='진입 구간까지 '+pct((o.lo/p-1)*100); else if(p>o.hi)g='진입 구간까지 '+pct((o.hi/p-1)*100); else g='진입 구간 안';
+   o.ge.textContent=g;
+   // 사다리 현재 위치
+   let x=o.tx+(p-o.tp2)*(o.sx-o.tx)/(o.stop-o.tp2); o.cu.style.left=Math.max(0,Math.min(100,x)).toFixed(1)+'%';
+   // 지금 진입 시 손익비
+   const risk=o.isLong?p-o.stop:o.stop-p, rew=o.isLong?o.tp1-p:p-o.tp1;
+   if(risk<=0)o.rr.innerHTML='<b class="bad">손절가 이탈</b>';
+   else if(rew<=0)o.rr.innerHTML='<b class="bad">1차 목표 도달</b>';
+   else{const r=rew/risk;o.rr.innerHTML='지금 진입 시 손익비 <b class="'+(r>=1?'ok':'bad')+'">1 : '+r.toFixed(1)+'</b>';}
+  });
+  w.rows.forEach(o=>{const old=N(o.b.textContent);o.b.textContent=fmt(p,o.d);if(p!==old)flash(o.b,p>old)});
+  w.kpi.forEach(o=>{o.node.textContent=o.pre+fmt(p,o.d)+o.post});
+ }
+
+ // 상태 표시
+ const st=document.querySelector('.stamp'); const lb=document.createElement('div');
+ lb.innerHTML='<span class="livebar"><i></i><span>실시간 연결 중…</span></span>'; st.appendChild(lb);
+ const bar=lb.firstChild, bt=bar.querySelector('span');
+ const setSt=(cls,txt)=>{bar.className='livebar '+cls;bt.textContent=txt};
+ const now=()=>new Date().toLocaleTimeString('en-GB');
+ let lastMsg=0;
+ setInterval(()=>{if(lastMsg&&Date.now()-lastMsg>30000)setSt('off','실시간 지연 · 마지막 '+new Date(lastMsg).toLocaleTimeString('en-GB'))},5000);
+ const got=()=>{lastMsg=Date.now();setSt('on','실시간 OKX · '+now())};
+
+ const syms=Object.keys(W);
+ // REST 폴백
+ let poll=null;
+ async function rest(){
+  try{const r=await fetch('https://www.okx.com/api/v5/market/tickers?instType=SWAP',{cache:'no-store'});const j=await r.json();
+   (j.data||[]).forEach(d=>{const m=d.instId.match(/^([A-Z0-9]+)-USDT-SWAP$/);if(m&&W[m[1]])apply(m[1],+d.last)});got();
+  }catch(e){setSt('off','실시간 연결 실패 · 재시도 중')}
+ }
+ const startPoll=()=>{if(!poll){rest();poll=setInterval(rest,5000)}};
+ const stopPoll=()=>{clearInterval(poll);poll=null};
+ // WebSocket
+ let ws,ping,retry=0,pend={},raf=0;
+ function flush(){raf=0;for(const t in pend)apply(t,pend[t]);pend={};}
+ function connect(){
+  try{ws=new WebSocket('wss://ws.okx.com:8443/ws/v5/public')}catch(e){startPoll();return}
+  ws.onopen=()=>{retry=0;stopPoll();ws.send(JSON.stringify({op:'subscribe',args:syms.map(s=>({channel:'tickers',instId:s+'-USDT-SWAP'}))}));
+   clearInterval(ping);ping=setInterval(()=>{try{ws.send('ping')}catch(e){}},20000)};
+  ws.onmessage=e=>{if(e.data==='pong')return;let j;try{j=JSON.parse(e.data)}catch(x){return}
+   (j.data||[]).forEach(d=>{const m=d.instId.match(/^([A-Z0-9]+)-USDT-SWAP$/);if(m)pend[m[1]]=+d.last});
+   if(j.data){got();if(!raf)raf=requestAnimationFrame(flush)}};
+  ws.onclose=()=>{clearInterval(ping);startPoll();setTimeout(connect,Math.min(30000,2000*2**retry++))};
+  ws.onerror=()=>{try{ws.close()}catch(e){}};
+ }
+ if(syms.length)connect();
+})();
+</script>
+
 </body></html>
