@@ -4333,18 +4333,23 @@ function initSnap(){
 
 /* ───────────────── 링크로 받은 포지션 플랜 (시황 페이지 → 계산기 자동 입력) ─────────────────
    ?t=MSTR&bar=15m&e=now&sl=140.5&tp=128.49&lev=3&risk=50
-   e=now(또는 생략) → 현재가를 진입가로 · sl 손절가 · tp 익절가 · lev 레버리지 · risk 최대 손실(USDT)
+   e=now(또는 생략) → 현재가를 진입가로 (현재가가 손절~익절 밖이면 ez 값) · sl 손절가 · tp 익절가 · lev 레버리지 · risk 최대 손실(USDT)
    처음 열 때 한 번만 적용하고 주소에서 지워서, 이후 직접 고친 값은 새로고침해도 유지됩니다. */
 function applyPlanQS(){
   if (EMBED) return;
-  const q = QS0, keys = ['e','sl','tp','lev','risk'];
+  const q = QS0, keys = ['e','ez','sl','tp','lev','risk'];
   if (!keys.some(k => q.has(k))) return;
   const num = k => { const v = parseFloat(q.get(k)); return isFinite(v) && v > 0 ? v : null; };
   if (num('lev')) $('lev').value = Math.max(1, Math.round(num('lev')));
   if (num('risk')) $('maxLoss').value = num('risk');
   saveSettings();
-  const eRaw = q.get('e');
-  const e = (eRaw == null || eRaw === '' || eRaw === 'now') ? S.last : num('e');
+  const eRaw = q.get('e'), useNow = eRaw == null || eRaw === '' || eRaw === 'now';
+  let e = useNow ? S.last : num('e'), note = '';
+  // 현재가가 손절~익절 사이를 벗어났으면(이미 목표 도달 등) ez(진입 구간 중간값)로 대체
+  const sl0 = num('sl'), tp0 = num('tp');
+  if (useNow && e != null && sl0 != null && tp0 != null && !((e - tp0) * (sl0 - e) > 0) && num('ez') != null){
+    e = num('ez'); note = ' · 현재가가 손절~목표 범위 밖이라 진입 구간 중간값 사용';
+  }
   if (e != null){
     fpUnlink();
     S.entry = roundTick(e);
@@ -4355,7 +4360,7 @@ function applyPlanQS(){
   } else { calc(); }
   showPanel('calc');
   try { const u = new URL(location.href); keys.forEach(k => u.searchParams.delete(k)); history.replaceState(null, '', u); } catch(err){}
-  if (e != null) toast(`플랜 적용 · 진입 ${S.entry} / 손절 ${S.stop ?? '—'} / 익절 ${S.target ?? '—'} · ${$('lev').value}x · 손실 ${$('maxLoss').value} USDT`);
+  if (e != null) toast(`플랜 적용 · 진입 ${S.entry} / 손절 ${S.stop ?? '—'} / 익절 ${S.target ?? '—'} · ${$('lev').value}x · 손실 ${$('maxLoss').value} USDT${note}`);
 }
 
 /* ───────────────── 시작 ───────────────── */
