@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>포지션 사이즈 계산기</title>
-<script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-10-30.4';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
+<script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-10-31.1';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -4331,6 +4331,33 @@ function initSnap(){
   layMark();
 }
 
+/* ───────────────── 링크로 받은 포지션 플랜 (시황 페이지 → 계산기 자동 입력) ─────────────────
+   ?t=MSTR&bar=15m&e=now&sl=140.5&tp=128.49&lev=3&risk=50
+   e=now(또는 생략) → 현재가를 진입가로 · sl 손절가 · tp 익절가 · lev 레버리지 · risk 최대 손실(USDT)
+   처음 열 때 한 번만 적용하고 주소에서 지워서, 이후 직접 고친 값은 새로고침해도 유지됩니다. */
+function applyPlanQS(){
+  if (EMBED) return;
+  const q = QS0, keys = ['e','sl','tp','lev','risk'];
+  if (!keys.some(k => q.has(k))) return;
+  const num = k => { const v = parseFloat(q.get(k)); return isFinite(v) && v > 0 ? v : null; };
+  if (num('lev')) $('lev').value = Math.max(1, Math.round(num('lev')));
+  if (num('risk')) $('maxLoss').value = num('risk');
+  saveSettings();
+  const eRaw = q.get('e');
+  const e = (eRaw == null || eRaw === '' || eRaw === 'now') ? S.last : num('e');
+  if (e != null){
+    fpUnlink();
+    S.entry = roundTick(e);
+    S.entryTime = lastBar() ? cTime(lastBar()) : null;
+    S.stop = num('sl') != null ? roundTick(num('sl')) : null;
+    S.target = num('tp') != null ? roundTick(num('tp')) : null;
+    syncInputs(); calc(); saveLevels(); overlay.update();
+  } else { calc(); }
+  showPanel('calc');
+  try { const u = new URL(location.href); keys.forEach(k => u.searchParams.delete(k)); history.replaceState(null, '', u); } catch(err){}
+  if (e != null) toast(`플랜 적용 · 진입 ${S.entry} / 손절 ${S.stop ?? '—'} / 익절 ${S.target ?? '—'} · ${$('lev').value}x · 손실 ${$('maxLoss').value} USDT`);
+}
+
 /* ───────────────── 시작 ───────────────── */
 (async function start(){
   const cfg = store.get('cfg') || {};
@@ -4352,7 +4379,8 @@ function initSnap(){
   setInterval(tickCountdown, 1000);
   wsConnect();
   await loadInstruments();
-  switchTicker(S.ticker);
+  await switchTicker(S.ticker);
+  applyPlanQS();
 })();
 </script>
 </body>
