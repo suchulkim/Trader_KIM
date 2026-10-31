@@ -2,183 +2,1069 @@
 <html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>시황 · 롱/숏 전략 요약</title>
 <style>
-:root{--bg:#0d1117;--card:#161b22;--line:#30363d;--tx:#e6edf3;--mu:#8b949e;--up:#22c55e;--dn:#ef4444;--a:#f43f5e;--b:#f59e0b;--w:#64748b;--x:#3b82f6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.55 -apple-system,"Segoe UI","Malgun Gothic",sans-serif}
-.wrap{max-width:1280px;margin:0 auto;padding:20px 16px 60px}
-h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:34px 0 12px;padding-left:10px;border-left:4px solid var(--a)}
-h4{margin:0 0 6px;font-size:13px;color:var(--mu)}
-.muted,small{color:var(--mu)}small{font-size:11px}
-.up{color:var(--up)}.dn{color:var(--dn)}
-.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;align-items:flex-end}
-a.back{color:var(--mu);text-decoration:none;font-size:13px}
-.regime{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px;margin-top:16px}
-.kp{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px}
-.kp .l{font-size:12px;color:var(--mu)}.kp .v{font-size:20px;font-weight:700;font-variant-numeric:tabular-nums}
-.verdict{background:linear-gradient(90deg,rgba(244,63,94,.18),rgba(244,63,94,.03));border:1px solid rgba(244,63,94,.5);border-radius:12px;padding:14px 16px;margin-top:14px}
-.verdict b{font-size:16px}
-ul.news{margin:0;padding-left:18px}ul.news li{margin:4px 0}
-.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-.card.vab{border-top:3px solid var(--a)}.card.vbb{border-top:3px solid var(--b)}
-.ch{display:flex;justify-content:space-between;align-items:center}.ct{font-size:18px}
-.px{margin:6px 0 8px;font-variant-numeric:tabular-nums}
-table.lv{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-table.lv th{text-align:left;font-weight:400;color:var(--mu);padding:3px 0;width:42%}table.lv td{text-align:right;padding:3px 0;font-weight:600}
-.cn{font-size:12.5px;color:#c9d1d9;margin:8px 0 4px}.tag{font-size:12px;margin:0;color:var(--b)}
-.vab .tag{color:var(--a)}
-.chip{font-style:normal;font-size:11px;padding:2px 8px;border-radius:99px;white-space:nowrap;font-weight:600}
-.va{background:var(--a);color:#fff}.vb{background:var(--b);color:#111}.vw{background:#334155;color:#cbd5e1}.vx{background:var(--x);color:#fff}
-.heat{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
-.tiles{display:flex;flex-wrap:wrap;gap:6px}
-.tile{flex:1 1 110px;border-radius:8px;padding:8px;display:flex;flex-direction:column;gap:3px;border:1px solid rgba(255,255,255,.06)}
-.tile b{font-size:13px}.tile span{font-variant-numeric:tabular-nums;font-weight:600}
-.tw{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
-table.t{width:100%;border-collapse:collapse;min-width:1100px}
-table.t th{position:sticky;top:0;background:#1c2128;color:var(--mu);font-weight:500;font-size:12px;padding:8px;text-align:left;border-bottom:1px solid var(--line)}
-table.t td{padding:6px 8px;border-bottom:1px solid #21262d;vertical-align:middle}
-table.t tr.grp td{background:#1c2128;font-weight:700;color:#c9d1d9;font-size:12px}
-td.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-td.tk{font-weight:700;white-space:nowrap}td.tk small{display:block;font-weight:400}
-td.note{font-size:12px;color:#c9d1d9;min-width:260px}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}@media(max-width:800px){.two{grid-template-columns:1fr}}
-.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px}
-.box ol,.box ul{margin:0;padding-left:20px}.box li{margin:5px 0}
-table.ev{width:100%;border-collapse:collapse}table.ev td{padding:5px 4px;border-bottom:1px solid #21262d;font-size:13px}
-.foot{margin-top:30px;font-size:12px;color:var(--mu)}.foot a{color:#58a6ff}
-.card.vlb{border-top:3px solid var(--up)}.vlb .tag{color:var(--up)}.vl{background:var(--up);color:#06210f}
-h2.lg{border-left-color:var(--up)}.verdict.mx{background:linear-gradient(90deg,rgba(245,158,11,.16),rgba(245,158,11,.03));border-color:rgba(245,158,11,.5)}
-.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}.sum .box b{font-size:15px}</style></head><body><div class="wrap">
-<div class="top"><div><a class="back" href="index.html">← MARKET DASHBOARD</a><h1>시황 · 롱/숏 진입 후보 (목표 5%)</h1>
-<div class="muted">기준 2026-10-31(토) 10:15 KST · 미국장 금요일 마감 후 주말 · 시세: OKX 무기한선물(일봉 UTC / 4H) · 32종목</div></div></div>
+/* 레이아웃: 상단 결론 배너 → 지표 스트립 → 액션 보드(가격 사다리 카드) → 히트맵 → 전 종목 표 → 리스크·일정 */
+:root{
+  --bg:#0d1117;--card:#161b22;--card2:#1c2128;--line:#30363d;--line2:#21262d;
+  --tx:#e6edf3;--tx2:#c9d1d9;--mu:#8b949e;
+  --up:#22c55e;--up-bg:rgba(34,197,94,.14);--dn:#ef4444;--dn-bg:rgba(239,68,68,.14);
+  --a:#f43f5e;--a-bg:rgba(244,63,94,.14);--b:#f59e0b;--b-bg:rgba(245,158,11,.14);
+  --x:#3b82f6;--x-bg:rgba(59,130,246,.16);--w:#475569;--w-bg:rgba(100,116,139,.18);
+  --link:#79b8ff;
+  --sans:-apple-system,"Segoe UI","Malgun Gothic","맑은 고딕",sans-serif;
+  --mono:ui-monospace,"Cascadia Mono",Consolas,monospace;
+  color-scheme:dark
+}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 var(--sans)}
+a{color:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 16px 60px;display:grid;gap:26px}
+.n{font-variant-numeric:tabular-nums}
+.up{color:var(--up)}.dn{color:var(--dn)}.mu{color:var(--mu)}
+h2{font-size:16px;margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+h2 .cnt{font-size:12px;font-weight:500;color:var(--mu)}
+.sec{display:grid;gap:12px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.sec-h p{margin:0;font-size:12.5px;color:var(--mu)}
+.bar-a{width:4px;height:16px;border-radius:2px;background:var(--a)}
+.bar-b{width:4px;height:16px;border-radius:2px;background:var(--b)}
+.bar-l{width:4px;height:16px;border-radius:2px;background:var(--up)}
+.bar-x{width:4px;height:16px;border-radius:2px;background:var(--x)}
 
-<div class="verdict"><b>🔴 시장 체제: 리스크오프 지속 — "반등 시 숏" 우위, 단 과매도 종목은 반등 롱 기회</b><br>
-금요일 미국장 <b>나스닥 -2.86%, S&amp;P -1.82%, 필라델피아 반도체 -7.2%</b>로 10월을 급락 마감(인텔 -28.6%, 1974년 이후 최악). AI capex의 "수익 증명" 요구가 본격화.
-크립토는 <b>바이낸스 해킹</b> 여진 + BTC ETF -$4.1억 순유출로 BTC 7.7만 근처 약세 횡보.<br>
-→ <b>숏 A등급: AMD·SPCX·MSTR·CRCL</b> (지금 구간 진입 가능) · <b>롱: ONDO 즉시, AMZN·GOOGL·CL은 눌림 지정가</b>. 주말이라 주식 선물 유동성 얇음 → 월요일 갭 주의.</div>
+/* 칩 */
+.chip{display:inline-flex;align-items:center;gap:4px;font-style:normal;font-size:11px;padding:2px 8px;border-radius:99px;white-space:nowrap;font-weight:700;line-height:1.5}
+.va{background:var(--a);color:#fff}.vb{background:var(--b);color:#111}.vl{background:var(--up);color:#06210f}
+.vw{background:#334155;color:#cbd5e1}.vx{background:var(--x);color:#fff}
+.vl.go{background:transparent;color:var(--up);box-shadow:inset 0 0 0 1px var(--up)}
 
-<div class="regime">
-<div class="kp"><div class="l">S&amp;P500 / 나스닥 (10/30 종가)</div><div class="v"><span class="dn">-1.82%</span> / <span class="dn">-2.86%</span></div><small>S&amp;P 7,580 · 나스닥 25,437 · 다우 -1.09%</small></div>
-<div class="kp"><div class="l">BTC / ETH (현재)</div><div class="v">77,459 / 2,246.00</div><small>5일 -3.3% / -3.3% · ETF 순유출 BTC -$410M · ETH -$60M</small></div>
-<div class="kp"><div class="l">WTI / 브렌트</div><div class="v"><span class="up">$103.2</span> / ~$113</div><small>호르무즈 유조선 피격 · 에너지 섹터 +1.9%</small></div>
-<div class="kp"><div class="l">금 (XAU)</div><div class="v"><span class="dn">3,895.80</span></div><small>1년 최저 · 은 $50 붕괴 · RSI 28</small></div>
-<div class="kp"><div class="l">미 10년물 / VIX</div><div class="v">4.94% / 19.4</div><small>금리 -4bp (안전자산), VIX +12.9%</small></div>
-<div class="kp"><div class="l">코스피 수급 (10/30)</div><div class="v"><span class="dn">외국인 -1.62조</span></div><small>삼성 -2,308억 · 하이닉스 -4,229억 순매도</small></div>
+/* 종목 링크 */
+a.tk{text-decoration:none;font-weight:800;display:inline-flex;align-items:center;gap:5px;border-radius:4px}
+a.tk:hover{color:var(--link)}
+a.tk:hover .ci{opacity:1;color:var(--link)}
+a.tk:focus-visible,a:focus-visible{outline:2px solid var(--link);outline-offset:2px}
+.ci{width:13px;height:13px;opacity:.55;flex:none}
+
+/* 헤더 */
+.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;align-items:flex-end}
+.top h1{font-size:22px;margin:2px 0 2px}
+.back{color:var(--mu);text-decoration:none;font-size:13px}
+.back:hover{color:var(--link)}
+.stamp{font-size:12px;color:var(--mu);text-align:right}
+.stamp b{color:var(--tx2);font-weight:600}
+
+/* 결론 배너 */
+.hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);border:1px solid rgba(244,63,94,.45);border-radius:14px;overflow:hidden;background:linear-gradient(100deg,rgba(244,63,94,.16),rgba(244,63,94,.02) 60%)}
+@media(max-width:900px){.hero{grid-template-columns:1fr}}
+.hero-l{padding:18px 20px;display:grid;gap:10px;align-content:start}
+.regime{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.regime .big{font-size:22px;font-weight:900;color:var(--a);letter-spacing:.02em}
+.regime .dot{width:12px;height:12px;border-radius:50%;background:var(--a);box-shadow:0 0 0 4px rgba(244,63,94,.2)}
+.hero-l .one{font-size:15.5px;font-weight:600;line-height:1.45}
+.hero-l .why{font-size:13px;color:var(--tx2);margin:0}
+.hero-r{border-left:1px solid rgba(244,63,94,.25);padding:14px 16px;display:grid;gap:8px;background:rgba(13,17,23,.45)}
+@media(max-width:900px){.hero-r{border-left:0;border-top:1px solid rgba(244,63,94,.25)}}
+.act{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:center;padding:7px 0;border-bottom:1px dashed var(--line)}
+.act:last-child{border-bottom:0}
+.act .k{font-size:12px;font-weight:800}
+.act .k small{display:block;font-weight:500;color:var(--mu);font-size:11px}
+.act .v{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 9px;border-radius:8px;font-size:13px;text-decoration:none;font-weight:800;border:1px solid transparent}
+.pill .s{font-weight:500;font-size:11px;opacity:.85}
+.pill:hover{filter:brightness(1.2)}
+.p-a{background:var(--a-bg);color:#ff8fa3;border-color:rgba(244,63,94,.4)}
+.p-b{background:var(--b-bg);color:#fcd34d;border-color:rgba(245,158,11,.35)}
+.p-l{background:var(--up-bg);color:#86efac;border-color:rgba(34,197,94,.35)}
+.p-x{background:var(--x-bg);color:#93c5fd;border-color:rgba(59,130,246,.35)}
+
+/* 지표 스트립 */
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px}
+@media(max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:560px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kp{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 12px;display:grid;gap:3px;min-width:0}
+.kp .l{font-size:11.5px;color:var(--mu)}
+.kp .v{font-size:19px;font-weight:800;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kp .s{font-size:11px;color:var(--mu);line-height:1.35}
+.kp.hot{border-color:rgba(239,68,68,.45)}
+.kp.cool{border-color:rgba(34,197,94,.4)}
+
+/* 핵심 재료 */
+.news{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media(max-width:1000px){.news{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.news{grid-template-columns:1fr}}
+.nw{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:11px 13px;display:grid;gap:6px;align-content:start;min-width:0}
+.nw .h{display:flex;align-items:center;gap:8px;justify-content:space-between}
+.nw .h b{font-size:14px}
+.nw p{margin:0;font-size:12.5px;color:var(--tx2)}
+.nw .big{font-size:20px;font-weight:900}
+.nw .tks{display:flex;flex-wrap:wrap;gap:6px;font-size:12px}
+.imp{font-size:10.5px;font-weight:800;padding:1px 7px;border-radius:4px}
+.i-dn{background:var(--dn-bg);color:#fca5a5}.i-up{background:var(--up-bg);color:#86efac}.i-x{background:var(--x-bg);color:#93c5fd}
+
+/* 액션 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;align-content:start;position:relative;min-width:0}
+.card.A{border-top:3px solid var(--a)}.card.B{border-top:3px solid var(--b)}.card.L{border-top:3px solid var(--up)}
+.card.now::after{content:"";position:absolute;top:14px;right:14px;width:8px;height:8px;border-radius:50%;background:var(--a);box-shadow:0 0 0 3px rgba(244,63,94,.25);animation:pulse 1.8s infinite}
+.card.L.now::after{background:var(--up);box-shadow:0 0 0 3px rgba(34,197,94,.25)}
+@keyframes pulse{50%{opacity:.35}}
+@media(prefers-reduced-motion:reduce){.card.now::after{animation:none}}
+.c-h{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding-right:16px}
+.c-h a.tk{font-size:19px}
+.c-h .sub{font-size:11.5px;color:var(--mu)}
+.c-h .chip{margin-left:auto}
+.c-px{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.c-px .p{font-size:24px;font-weight:800}
+.c-px .gap{font-size:12px;font-weight:700;padding:2px 7px;border-radius:5px}
+.g-in{background:var(--a-bg);color:#ff8fa3}.g-wait{background:var(--w-bg);color:#cbd5e1}.g-l{background:var(--up-bg);color:#86efac}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.st{background:var(--card2);border-radius:7px;padding:6px 8px;display:grid;gap:2px}
+.st .k{font-size:10.5px;color:var(--mu)}
+.st .v{font-size:13.5px;font-weight:800}
+.gauge{height:4px;border-radius:2px;background:linear-gradient(90deg,rgba(245,158,11,.55) 0 30%,#30363d 30% 70%,rgba(34,197,94,.45) 70%);position:relative;margin-top:2px}
+.gauge i{position:absolute;top:-3px;width:3px;height:10px;border-radius:1px;background:var(--tx)}
+
+/* 가격 사다리 */
+.lad{display:grid;gap:6px}
+.track{position:relative;height:34px}
+.track .base{position:absolute;left:0;right:0;top:19px;height:6px;border-radius:3px;background:var(--line2)}
+.track .zone{position:absolute;top:19px;height:6px}
+.z-loss{background:rgba(239,68,68,.55)}
+.z-gain{background:rgba(34,197,94,.45)}
+.z-ent{top:15px!important;height:14px!important;border-radius:3px;background:repeating-linear-gradient(135deg,rgba(230,237,243,.55) 0 3px,rgba(230,237,243,.15) 3px 6px);outline:1px solid rgba(230,237,243,.6)}
+.tick{position:absolute;top:13px;width:2px;height:18px;border-radius:1px;transform:translateX(-1px)}
+.t-stop{background:var(--dn)}.t-tg{background:var(--up)}
+.cur{position:absolute;top:0;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;font-size:10px;font-weight:800;color:var(--tx);white-space:nowrap}
+.cur::after{content:"";width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid var(--tx);margin-top:1px}
+.lv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}
+.lv div{display:grid;gap:1px;min-width:0}
+.lv .k{font-size:10.5px;color:var(--mu);display:flex;align-items:center;gap:4px}
+.lv .k i{width:7px;height:7px;border-radius:2px;display:inline-block}
+.lv .v{font-size:12px;font-weight:800;white-space:nowrap}
+.lv .p{font-size:10.5px;color:var(--mu)}
+.c-note{font-size:12.5px;color:var(--tx2);margin:0;border-top:1px solid var(--line2);padding-top:9px}
+.c-foot{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:12px}
+.c-foot .st2{font-weight:700}
+.cbtn{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:700;color:var(--link);text-decoration:none;padding:4px 9px;border:1px solid rgba(121,184,255,.35);border-radius:6px}
+.cbtn:hover{background:rgba(121,184,255,.1)}
+
+/* 히트맵 */
+.heat{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:10px}
+.hb{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;align-content:start}
+.hb h4{margin:0;font-size:12px;color:var(--mu);font-weight:600}
+.tiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px}
+a.tile{border-radius:8px;padding:8px 9px;display:grid;gap:3px;text-decoration:none;border:1px solid rgba(255,255,255,.06);min-width:0}
+a.tile:hover{outline:1px solid var(--link)}
+a.tile b{font-size:12.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+a.tile .pc{font-size:15px;font-weight:800}
+a.tile .chip{justify-self:start;font-size:10px;padding:1px 6px}
+.legend{display:flex;gap:4px;align-items:center;font-size:11px;color:var(--mu)}
+.legend i{width:22px;height:9px;border-radius:2px;display:inline-block}
+
+/* 전 종목 표 */
+.filters{display:flex;gap:6px;flex-wrap:wrap}
+.filters button{background:var(--card);color:var(--tx2);border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.filters button[aria-pressed="true"]{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table.t{width:100%;border-collapse:collapse;min-width:1120px}
+table.t th{position:sticky;top:0;background:var(--card2);color:var(--mu);font-weight:600;font-size:11.5px;padding:8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t td{padding:7px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+table.t tr.grp td{background:var(--card2);font-weight:800;color:var(--tx2);font-size:12px;padding:6px 10px}
+table.t tbody tr:not(.grp):hover td{background:rgba(121,184,255,.05)}
+td.r{text-align:right;white-space:nowrap}
+td.tkc{white-space:nowrap}
+td.tkc small{display:block;font-size:11px;color:var(--mu);font-weight:400}
+.pc20{display:flex;align-items:center;gap:6px;justify-content:flex-end}
+.pc20 .bx{width:54px;height:6px;background:var(--line2);border-radius:3px;position:relative;overflow:hidden}
+.pc20 .bx i{position:absolute;top:0;bottom:0;right:0}
+.trd{display:inline-flex;gap:3px}
+.trd i{width:9px;height:9px;border-radius:2px;background:var(--line)}
+.trd i.on{background:var(--dn)}
+.rg{display:flex;align-items:center;gap:6px}
+.rg .gauge{width:46px;margin:0}
+.rng{font-size:11.5px;color:var(--mu);white-space:nowrap}
+.rngbar{width:84px;height:5px;background:var(--line2);border-radius:3px;position:relative;margin-top:3px}
+.rngbar i{position:absolute;top:-2px;width:3px;height:9px;background:var(--tx);border-radius:1px}
+td.note{font-size:12px;color:var(--tx2);min-width:220px}
+
+/* 하단 */
+.two{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+@media(max-width:1000px){.two{grid-template-columns:1fr}}
+.box{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:10px;align-content:start}
+.box h3{margin:0;font-size:14px;display:flex;gap:8px;align-items:center}
+.steps{display:grid;gap:8px;margin:0;padding:0;list-style:none;counter-reset:s}
+.steps li{display:grid;grid-template-columns:24px minmax(0,1fr);gap:8px;font-size:12.5px;color:var(--tx2);counter-increment:s}
+.steps li::before{content:counter(s);width:22px;height:22px;border-radius:6px;background:var(--card2);color:var(--tx);font-weight:800;font-size:12px;display:grid;place-items:center}
+.steps b{color:var(--tx)}
+.formula{font-family:var(--mono);font-size:12px;background:var(--card2);padding:8px 10px;border-radius:7px;color:var(--tx)}
+.risks{display:grid;gap:7px;margin:0;padding:0;list-style:none}
+.risks li{display:grid;grid-template-columns:72px minmax(0,1fr);gap:8px;font-size:12.5px;color:var(--tx2);align-items:start}
+.risks li .imp{justify-self:start;margin-top:2px}
+.tl{display:grid;gap:0;margin:0;padding:0;list-style:none}
+.tl li{display:grid;grid-template-columns:96px 14px minmax(0,1fr);gap:8px;align-items:start;font-size:12.5px;position:relative;padding-bottom:10px}
+.tl li .d{color:var(--mu);font-size:11.5px;white-space:nowrap;padding-top:1px}
+.tl li .d b{display:block;color:var(--tx);font-size:12.5px}
+.tl li .dot{width:10px;height:10px;border-radius:50%;margin-top:4px;position:relative}
+.tl li:not(:last-child) .dot::after{content:"";position:absolute;left:4px;top:12px;width:2px;height:calc(100% + 18px);background:var(--line)}
+.tl .stars{color:var(--b);letter-spacing:1px;font-size:10px;display:block}
+.foot{font-size:12px;color:var(--mu);border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px}
+.foot a{color:var(--link)}
+</style></head><body>
+<div class="wrap">
+<header class="top">
+ <div><a class="back" href="index.html">← MARKET DASHBOARD</a><h1>시황 · 롱/숏 진입 후보 <span class="mu" style="font-size:15px;font-weight:600">목표 5%</span></h1></div>
+ <div class="stamp">기준 <b>2026-10-31(토) 10:15 KST</b> · 미국장 금요일 마감 후 주말<br>시세 OKX 무기한선물 (일봉 UTC / 4H) · 32종목 · 종목명을 누르면 Trader_KIM Chart 15분봉</div>
+</header>
+
+<section class="hero" aria-label="오늘의 결론">
+ <div class="hero-l">
+  <div class="regime"><span class="dot"></span><span class="big">RISK-OFF 지속</span><i class="chip vb">반등 시 숏 우위</i></div>
+  <div class="one">10월은 반도체 투매로 마감. 숏은 반등에서, 과매도 종목은 반등 롱으로.</div>
+  <p class="why">나스닥 <b class="dn">−2.86%</b> · 필라델피아 반도체 <b class="dn">−7.2%</b> · 인텔 <b class="dn">−28.6%</b>(1974년 이후 최악). AI 투자의 수익 증명 요구가 본격화됐고, 크립토는 바이낸스 해킹 여진과 ETF 유출로 약세 횡보 중입니다. 주말이라 주식 선물 유동성이 얇아 월요일 갭에 주의하세요.</p>
+ </div>
+ <div class="hero-r">
+  <div class="act"><span class="k" style="color:#ff8fa3">숏 A등급<small>지금 진입 가능</small></span><span class="v"><a class="pill p-a" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener">AMD<span class="s">지금</span></a><a class="pill p-a" href="Trader_KIM_Chart.html?t=SPCX&amp;bar=15m" target="_blank" rel="noopener">SPCX<span class="s">지금</span></a><a class="pill p-a" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener">MSTR<span class="s">지금</span></a><a class="pill p-a" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener">CRCL<span class="s">지금</span></a></span></div>
+  <div class="act"><span class="k" style="color:#fcd34d">숏 B등급<small>반등 대기 지정가</small></span><span class="v"><a class="pill p-b" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener">SOXL<span class="s">대기</span></a><a class="pill p-b" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener">SNDK<span class="s">대기</span></a><a class="pill p-b" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener">BTC<span class="s">대기</span></a><a class="pill p-b" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener">ETH<span class="s">대기</span></a><a class="pill p-b" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener">TSM<span class="s">대기</span></a></span></div>
+  <div class="act"><span class="k" style="color:#86efac">롱 후보<small>비중 ½</small></span><span class="v"><a class="pill p-l" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener">AMZN<span class="s">대기</span></a><a class="pill p-l" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener">GOOGL<span class="s">대기</span></a><a class="pill p-l" href="Trader_KIM_Chart.html?t=ONDO&amp;bar=15m" target="_blank" rel="noopener">ONDO<span class="s">지금</span></a><a class="pill p-l" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener">CL<span class="s">대기</span></a></span></div>
+  <div class="act"><span class="k" style="color:#93c5fd">이벤트<small>진입 금지</small></span><span class="v"><a class="pill p-x" href="Trader_KIM_Chart.html?t=PLTR&amp;bar=15m" target="_blank" rel="noopener">PLTR<span class="s">11/3 06:00 실적</span></a></span></div>
+ </div>
+</section>
+
+<section class="kpis" aria-label="주요 지표">
+ <div class="kp hot"><span class="l">S&amp;P500 / 나스닥 · 10/30</span><span class="v n"><span class="dn">−1.82%</span> <span class="mu" style="font-weight:400">/</span> <span class="dn">−2.86%</span></span><span class="s">S&amp;P 7,580 · 나스닥 25,437 · 다우 −1.09%</span></div>
+ <div class="kp hot"><span class="l">BTC / ETH</span><span class="v n">77,459 <span class="mu" style="font-weight:400">/</span> 2,246</span><span class="s">5일 −3.3% / −3.3% · ETF 유출 BTC −$410M</span></div>
+ <div class="kp cool"><span class="l">WTI / 브렌트</span><span class="v n up">$103.2 <span class="mu" style="font-weight:400">/</span> ~$113</span><span class="s">호르무즈 유조선 피격 · 에너지 +1.9%</span></div>
+ <div class="kp hot"><span class="l">금 XAU</span><span class="v n dn">3,895.80</span><span class="s">1년 최저 · 은 $50 붕괴 · RSI 28</span></div>
+ <div class="kp"><span class="l">미 10년물 / VIX</span><span class="v n">4.94% <span class="mu" style="font-weight:400">/</span> <span class="dn">19.4</span></span><span class="s">금리 −4bp(안전자산) · VIX +12.9%</span></div>
+ <div class="kp hot"><span class="l">코스피 외국인 · 10/30</span><span class="v n dn">−1.62조</span><span class="s">삼성 −2,308억 · 하이닉스 −4,229억</span></div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-x"></span>핵심 재료</h2></div>
+ <div class="news">
+  <div class="nw"><div class="h"><b>인텔 쇼크</b><span class="imp i-dn">악재</span></div><span class="big dn n">−28.6%</span><p>Q4 가이던스 부진, 현금 소진 경고, 이스라엘 공장 사고. SOX −7.2%, 기술 섹터 −4.9%.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener" title="AMD Trader_KIM Chart 15분봉">AMD<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener" title="SOXL Trader_KIM Chart 15분봉">SOXL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener" title="TSM Trader_KIM Chart 15분봉">TSM<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=NVDA&amp;bar=15m" target="_blank" rel="noopener" title="NVDA Trader_KIM Chart 15분봉">NVDA<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+  <div class="nw"><div class="h"><b>빅테크 실적</b><span class="imp i-x">엇갈림</span></div><span class="big n"><span class="dn">FCF −$42.4B</span></span><p>아마존은 214까지 급락 후 금요일 +6.6% 양봉 반전. 알파벳 주간 −12.6%, 레딧 −29%.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener" title="AMZN Trader_KIM Chart 15분봉">AMZN<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener" title="GOOGL Trader_KIM Chart 15분봉">GOOGL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+  <div class="nw"><div class="h"><b>메모리 피크 우려</b><span class="imp i-dn">악재</span></div><span class="big dn">실적 비트에도 하락</span><p>샌디스크 실적 호조에도 메모리 가격 피크 우려로 메모리주 전반 압박.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener" title="SNDK Trader_KIM Chart 15분봉">SNDK<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=MU&amp;bar=15m" target="_blank" rel="noopener" title="MU Trader_KIM Chart 15분봉">MU<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=SKHY&amp;bar=15m" target="_blank" rel="noopener" title="SKHY Trader_KIM Chart 15분봉">SKHY<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=SAMSUNG&amp;bar=15m" target="_blank" rel="noopener" title="SAMSUNG Trader_KIM Chart 15분봉">SAMSUNG<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+  <div class="nw"><div class="h"><b>바이낸스 해킹</b><span class="imp i-dn">악재</span></div><span class="big dn n">$6.3B</span><p>출금 48시간 내 재개 예정. 재개·자금 회수 소식은 크립토 숏 스퀴즈 트리거.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener" title="BTC Trader_KIM Chart 15분봉">BTC<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener" title="ETH Trader_KIM Chart 15분봉">ETH<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener" title="CRCL Trader_KIM Chart 15분봉">CRCL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+  <div class="nw"><div class="h"><b>MSTR 평단</b><span class="imp i-x">지지선</span></div><span class="big n">~$75,446</span><p>누적 848,517 BTC. BTC가 평단 근처라 심리적 지지선 역할.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener" title="MSTR Trader_KIM Chart 15분봉">MSTR<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener" title="BTC Trader_KIM Chart 15분봉">BTC<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+  <div class="nw"><div class="h"><b>지정학 · 정치</b><span class="imp i-up">유가↑</span></div><span class="big n">11/3 중간선거</span><p>호르무즈 유조선 공격으로 유가 상승. 카타르 중재, 이란 협상 재개 시도.</p><div class="tks"><a class="tk" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener" title="CL Trader_KIM Chart 15분봉">CL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><a class="tk" href="Trader_KIM_Chart.html?t=XAU&amp;bar=15m" target="_blank" rel="noopener" title="XAU Trader_KIM Chart 15분봉">XAU<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a></div></div>
+ </div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-a"></span>숏 A등급 · 지금 진입 가능 <span class="cnt">목표 −5%</span></h2><p>진입 구간 안에서 분할 · 1차 목표 = 진입 중간값 대비 −5% · 손절은 MA5/직전 4H 고점 위</p></div>
+ <div class="cards"><article class="card A now">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener" title="AMD Trader_KIM Chart 15분봉">AMD<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip va">숏 진입</i></div>
+<div class="c-px"><span class="p n">510.93</span><span class="gap g-in">진입 구간까지 +1.6%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:62.6%;width:32.0%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:57.3%"></div>
+  <div class="zone z-ent" style="left:50.8%;width:23.6%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:18.9%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:49.0%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">512.00<br>~526.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">538.00</span><span class="p n">+3.7%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">493.05</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">485.00</span><span class="p n">−6.6%</span></div>
+ </div>
 </div>
-
-<h2>핵심 재료</h2>
-<div class="box"><ul class="news">
-<li><b>인텔</b> Q4 가이던스 부진·현금소진 경고·이스라엘 공장 사고 → -28.6%, 글로벌 반도체 매도 (SOX -7.2%, 기술 섹터 -4.9%)</li>
-<li><b>아마존</b> 12개월 FCF -$42.4B → 장 초반 214 급락 후 회복(OKX 기준 금요일 +6.6% 양봉) · <b>알파벳</b> 주간 -12.6% · <b>레딧</b> -29%(AI의 소프트웨어 잠식 우려)</li>
-<li><b>샌디스크</b> 실적 비트에도 "메모리 가격 피크" 우려로 하락 → 메모리주(MU·SNDK·하이닉스·삼성) 압박</li>
-<li><b>바이낸스 $6.3B 해킹</b> → 출금 48시간 내 재개 예정. 재개·자금 회수 소식은 크립토 숏 스퀴즈 트리거</li>
-<li><b>MSTR</b> 10/19 공시 267 BTC 매입, 누적 848,517 BTC(평단 ~$75,446) — BTC가 평단 근처라 심리적 지지선</li>
-<li><b>지정학·정치</b>: 호르무즈 유조선 공격으로 유가↑ · 카타르 중재·밴스 부통령 이란 협상 재개 시도 · 11/3 중간선거</li>
-</ul></div>
-
-<h2>⭐ 숏 A등급 — 지금 진입 가능 (목표 −5%)</h2>
-<p class="muted" style="margin-top:-4px">진입 구간 안에서 분할 진입 · 1차 목표 = 진입 중간값 대비 정확히 −5% · 손절은 MA5/직전 4H 고점 위</p>
-<div class="cards"><div class="card vab"><div class="ch"><div><b class="ct">AMD</b> <small></small></div><i class="chip va">숏 진입</i></div>
-<div class="px">현재 510.93 <span class="muted">· 진입중간값까지 +1.6% · ATR 5.0%/일 · RSI 39</span></div>
-<table class="lv"><tr><th>진입</th><td>512.00 ~ 526.00</td></tr><tr><th>손절</th><td class="dn">538.00 <small>(+3.7%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">493.05</td></tr><tr><th>2차 목표</th><td class="up">485.00 <small>(-6.6%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.4</td></tr></table><p class="cn">인텔 -29% 쇼크·필라델피아 반도체 -7.2%. MA5(536) 아래 역배열, 4H 반등 약함. 20일 저점 493 재시험 시나리오</p><p class="tag">지금 진입 가능(현재가~진입구간)</p></div><div class="card vab"><div class="ch"><div><b class="ct">SPCX</b> <small>SpaceX</small></div><i class="chip va">숏 진입</i></div>
-<div class="px">현재 136.95 <span class="muted">· 진입중간값까지 +1.3% · ATR 4.9%/일 · RSI 35</span></div>
-<table class="lv"><tr><th>진입</th><td>137.00 ~ 140.50</td></tr><tr><th>손절</th><td class="dn">143.50 <small>(+3.4%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">131.81</td></tr><tr><th>2차 목표</th><td class="up">129.00 <small>(-7.0%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.5</td></tr></table><p class="cn">5일 -7.7%, 이평 3개 모두 아래. 20일 저점 134.8 이탈 시 가속. 현재가가 진입 하단</p><p class="tag">지금 진입 가능(현재가~진입구간)</p></div><div class="card vab"><div class="ch"><div><b class="ct">MSTR</b> <small></small></div><i class="chip va">숏 진입</i></div>
-<div class="px">현재 133.14 <span class="muted">· 진입중간값까지 +1.6% · ATR 5.9%/일 · RSI 39</span></div>
-<table class="lv"><tr><th>진입</th><td>133.50 ~ 137.00</td></tr><tr><th>손절</th><td class="dn">140.50 <small>(+3.9%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">128.49</td></tr><tr><th>2차 목표</th><td class="up">125.00 <small>(-7.6%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.3</td></tr></table><p class="cn">BTC 7.7만 약세 + ETF 순유출(-$410M). MA5 137 저항. 금요일 고가 137.6 위로 가면 무효</p><p class="tag">지금 진입 가능(현재가~진입구간)</p></div><div class="card vab"><div class="ch"><div><b class="ct">CRCL</b> <small></small></div><i class="chip va">숏 진입</i></div>
-<div class="px">현재 73.36 <span class="muted">· 진입중간값까지 +2.2% · ATR 5.7%/일 · RSI 35</span></div>
-<table class="lv"><tr><th>진입</th><td>73.50 ~ 76.50</td></tr><tr><th>손절</th><td class="dn">78.50 <small>(+4.7%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">71.25</td></tr><tr><th>2차 목표</th><td class="up">69.00 <small>(-8.0%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.1</td></tr></table><p class="cn">바이낸스 해킹 후 USDC 동결 이슈, 모든 이평 아래. 20일 저점 71.2 이탈 시 목표 도달</p><p class="tag">지금 진입 가능(현재가~진입구간)</p></div></div>
-
-<h2>숏 B등급 — 반등 대기 지정가</h2>
-<p class="muted" style="margin-top:-4px">현재가가 과매도이거나 진입 구간보다 아래 → 추격 금지, 구간 도달 시에만</p>
-<div class="cards"><div class="card vbb"><div class="ch"><div><b class="ct">SOXL</b> <small></small></div><i class="chip vb">조건부 숏</i></div>
-<div class="px">현재 77.88 <span class="muted">· 진입중간값까지 +9.1% · ATR 13.9%/일 · RSI 33</span></div>
-<table class="lv"><tr><th>진입</th><td>83.00 ~ 87.00</td></tr><tr><th>손절</th><td class="dn">89.50 <small>(+5.3%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">80.75</td></tr><tr><th>2차 목표</th><td class="up">74.00 <small>(-12.9%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 0.9</td></tr></table><p class="cn">반도체 3배. 금요일 -11.8%, 20일 -45%. RSI 33이라 추격 금지 → MA5(89) 아래 반등 숏, 비중 절반</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vbb"><div class="ch"><div><b class="ct">SNDK</b> <small></small></div><i class="chip vb">조건부 숏</i></div>
-<div class="px">현재 1,160.10 <span class="muted">· 진입중간값까지 +6.5% · ATR 7.8%/일 · RSI 33</span></div>
-<table class="lv"><tr><th>진입</th><td>1,215.00 ~ 1,255.00</td></tr><tr><th>손절</th><td class="dn">1,295.00 <small>(+4.9%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">1,173.25</td></tr><tr><th>2차 목표</th><td class="up">1,120.00 <small>(-9.3%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.0</td></tr></table><p class="cn">실적 비트에도 '메모리 가격 피크' 우려로 -9.7%. 1,215~1,255(MA5) 되돌림 숏</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vbb"><div class="ch"><div><b class="ct">BTC</b> <small></small></div><i class="chip vb">조건부 숏</i></div>
-<div class="px">현재 77,459 <span class="muted">· 진입중간값까지 +2.1% · ATR 2.5%/일 · RSI 35</span></div>
-<table class="lv"><tr><th>진입</th><td>78,700 ~ 79,500</td></tr><tr><th>손절</th><td class="dn">80,900 <small>(+2.3%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">75,145</td></tr><tr><th>2차 목표</th><td class="up">74,000 <small>(-6.4%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 2.2</td></tr></table><p class="cn">ETF 3일 연속 순유출, 바이낸스 출금 재개 전. MA5 79.0k 반등 실패 시 숏. 출금 정상화되면 숏 취소</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vbb"><div class="ch"><div><b class="ct">ETH</b> <small></small></div><i class="chip vb">조건부 숏</i></div>
-<div class="px">현재 2,246.00 <span class="muted">· 진입중간값까지 +2.7% · ATR 3.7%/일 · RSI 30</span></div>
-<table class="lv"><tr><th>진입</th><td>2,285.00 ~ 2,330.00</td></tr><tr><th>손절</th><td class="dn">2,385.00 <small>(+3.4%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">2,192.12</td></tr><tr><th>2차 목표</th><td class="up">2,150.00 <small>(-6.8%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.5</td></tr></table><p class="cn">RSI 30 과매도 → 지금은 금지, MA5(2,290) 반등 확인 후 숏</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vbb"><div class="ch"><div><b class="ct">TSM</b> <small></small></div><i class="chip vb">조건부 숏</i></div>
-<div class="px">현재 409.99 <span class="muted">· 진입중간값까지 +2.7% · ATR 3.0%/일 · RSI 38</span></div>
-<table class="lv"><tr><th>진입</th><td>418.00 ~ 424.00</td></tr><tr><th>손절</th><td class="dn">431.00 <small>(+2.4%)</small></td></tr>
-<tr><th>1차 목표 −5%</th><td class="up">399.95</td></tr><tr><th>2차 목표</th><td class="up">395.00 <small>(-6.2%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 2.1</td></tr></table><p class="cn">반도체 동반 약세, MA5·MA20(422~423) 저항 숏. ATR 3%라 2~3일 필요</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div></div>
-
-<h2 class="lg">🟢 롱 후보 — 목표 +5%</h2>
-<p class="muted" style="margin-top:-4px">하락장 속 역추세/추세 롱이므로 숏보다 비중 작게(½) · 손절 엄수</p>
-<div class="cards"><div class="card vlb"><div class="ch"><div><b class="ct">AMZN</b> <small></small></div><i class="chip vl">조건부 롱</i></div>
-<div class="px">현재 241.55 <span class="muted">· 진입중간값까지 -1.5% · ATR 3.6%/일 · RSI 43</span></div>
-<table class="lv"><tr><th>진입</th><td>236.00 ~ 240.00</td></tr><tr><th>손절</th><td class="dn">229.50 <small>(-3.6%)</small></td></tr>
-<tr><th>1차 목표 +5%</th><td class="up">249.90</td></tr><tr><th>2차 목표</th><td class="up">255.00 <small>(+7.1%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.4</td></tr></table><p class="cn">실적 쇼크로 214까지 밀린 뒤 금요일 +6.6% 반전(장대양봉). 236~240 눌림 롱, 1차 목표 ≈ MA20(251)</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vlb"><div class="ch"><div><b class="ct">GOOGL</b> <small></small></div><i class="chip vl">조건부 롱</i></div>
-<div class="px">현재 282.21 <span class="muted">· 진입중간값까지 -1.3% · ATR 3.5%/일 · RSI 19</span></div>
-<table class="lv"><tr><th>진입</th><td>276.00 ~ 281.00</td></tr><tr><th>손절</th><td class="dn">269.00 <small>(-3.4%)</small></td></tr>
-<tr><th>1차 목표 +5%</th><td class="up">292.43</td></tr><tr><th>2차 목표</th><td class="up">300.00 <small>(+7.7%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.5</td></tr></table><p class="cn">RSI 19 극과매도(주간 -11.5%). 20일 저점 276 지지 확인 시 기술적 반등 롱 → MA5(293) 회귀. 비중 작게</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div><div class="card vlb"><div class="ch"><div><b class="ct">ONDO</b> <small></small></div><i class="chip vl">롱 진입</i></div>
-<div class="px">현재 0.4175 <span class="muted">· 진입중간값까지 -1.8% · ATR 6.9%/일 · RSI 46</span></div>
-<table class="lv"><tr><th>진입</th><td>0.4050 ~ 0.4150</td></tr><tr><th>손절</th><td class="dn">0.3920 <small>(-4.4%)</small></td></tr>
-<tr><th>1차 목표 +5%</th><td class="up">0.4305</td></tr><tr><th>2차 목표</th><td class="up">0.4490 <small>(+9.5%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.1</td></tr></table><p class="cn">금요일 +9.2% 반등, MA5(0.411) 회복·RSI 45. 4H 저점 상승 중. 저유동성 알트라 비중 작게</p><p class="tag">지금 진입 가능(현재가~진입구간)</p></div><div class="card vlb"><div class="ch"><div><b class="ct">CL</b> <small>WTI</small></div><i class="chip vl">조건부 롱</i></div>
-<div class="px">현재 103.16 <span class="muted">· 진입중간값까지 -1.9% · ATR 2.9%/일 · RSI 66</span></div>
-<table class="lv"><tr><th>진입</th><td>100.50 ~ 102.00</td></tr><tr><th>손절</th><td class="dn">98.40 <small>(-2.8%)</small></td></tr>
-<tr><th>1차 목표 +5%</th><td class="up">106.31</td></tr><tr><th>2차 목표</th><td class="up">108.00 <small>(+6.7%)</small></td></tr>
-<tr><th>손익비(1차)</th><td>1 : 1.8</td></tr></table><p class="cn">정배열 상승 추세(20일 +14%), 호르무즈 긴장. MA5~MA20 눌림 롱. 이란 협상 타결 시 급락 위험</p><p class="tag">지정가 대기 — 구간 도달 시만</p></div></div>
-
-<div class="two" style="margin-top:14px">
-<div class="box"><h4>💡 5% 수익 만드는 방법</h4><ol>
-<li><b>1배 기준</b>: 1차 목표 도달 = +5%. A등급 숏 4종목은 ATR 5~6%/일 → 1~3거래일 내 도달 가능 범위.</li>
-<li><b>2배 레버리지</b>: 가격 2.5%만 움직여도 계좌 +5%. 대신 손절폭도 2배 → 손절가는 그대로 두고 수량을 줄일 것.</li>
-<li><b>분할</b>: 진입 구간 하단 50%·상단 50% 지정가. 1차 목표에서 절반 익절 → 나머지는 손절을 본전으로 올려 2차 목표까지.</li>
-<li><b>수량 역산</b>: 수량 = (계좌 × 1%) ÷ |진입가 − 손절가|. 한 종목 손실 한도 계좌 1~1.5%.</li>
-<li><b>포트 균형</b>: 숏 A(AMD·SPCX·MSTR·CRCL) + 롱(ONDO/AMZN) 조합으로 방향성 리스크 일부 상쇄.</li>
-</ol></div>
-<div class="box"><h4>⚠️ 반드시 알아둘 리스크</h4><ul>
-<li><b>주말 갭</b>: 지금은 토요일. 주식 무기한선물은 주말 호가가 얇고 월요일 본장 개장 시 갭 가능 → 주말 신규 진입은 비중 ½.</li>
-<li><b>숏 스퀴즈</b>: RSI 30 이하(GOOGL 19·현대차 26·LG전자 27·금 27·ETH 30)는 추격 숏 금지. 아마존 214→241 같은 반전 가능.</li>
-<li><b>이벤트</b>: 11/2(월) ISM 제조업 · PLTR 실적(장 마감 후) · 11/3 중간선거 · 11/6 고용보고서. 이란 협상 타결 시 유가 급락·위험자산 급반등.</li>
-<li><b>크립토</b>: 바이낸스 출금 재개·해킹 자금 회수 뉴스 = 숏 손절 신호. 11/1 09:00 BTC 10월 월봉 마감.</li>
-<li>레버리지 선물은 손절 미설정 시 청산 위험 — 진입과 동시에 손절 주문.</li>
-</ul></div></div>
-
-<h2>한눈에 보기 — 5일 등락 히트맵</h2>
-<div class="heat"><div class="box"><h4>크립토</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.23)"><b>ETH</b><span>-3.3% <small>5D</small></span><i class="chip vb">조건부 숏</i></div><div class="tile" style="background:rgba(239,68,68,0.23)"><b>BTC</b><span>-3.3% <small>5D</small></span><i class="chip vb">조건부 숏</i></div><div class="tile" style="background:rgba(34,197,94,0.10)"><b>ONDO</b><span>+0.5% <small>5D</small></span><i class="chip vl">롱 진입</i></div><div class="tile" style="background:rgba(239,68,68,0.27)"><b>SOL</b><span>-4.2% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.49)"><b>CRCL</b><span>-8.9% <small>5D</small></span><i class="chip va">숏 진입</i></div><div class="tile" style="background:rgba(239,68,68,0.33)"><b>MSTR</b><span>-5.4% <small>5D</small></span><i class="chip va">숏 진입</i></div></div></div><div class="box"><h4>원자재</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.22)"><b>금</b><span>-3.0% <small>5D</small></span><i class="chip vw">숏 금지</i></div><div class="tile" style="background:rgba(34,197,94,0.15)"><b>WTI</b><span>+1.6% <small>5D</small></span><i class="chip vl">조건부 롱</i></div></div></div><div class="box"><h4>미국지수</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.13)"><b>SPY</b><span>-1.2% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.21)"><b>QQQ</b><span>-2.8% <small>5D</small></span><i class="chip vw">관망</i></div></div></div><div class="box"><h4>AI·반도체</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.32)"><b>NVDA</b><span>-5.3% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.30)"><b>AMD</b><span>-4.8% <small>5D</small></span><i class="chip va">숏 진입</i></div><div class="tile" style="background:rgba(239,68,68,0.17)"><b>AVGO</b><span>-1.9% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.63)"><b>SOXL</b><span>-16.2% <small>5D</small></span><i class="chip vb">조건부 숏</i></div><div class="tile" style="background:rgba(239,68,68,0.48)"><b>SNDK</b><span>-8.8% <small>5D</small></span><i class="chip vb">조건부 숏</i></div><div class="tile" style="background:rgba(34,197,94,0.24)"><b>SK하이닉스</b><span>+3.5% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.16)"><b>MU</b><span>-1.8% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.27)"><b>TSM</b><span>-4.2% <small>5D</small></span><i class="chip vb">조건부 숏</i></div></div></div><div class="box"><h4>빅테크</h4><div class="tiles"><div class="tile" style="background:rgba(34,197,94,0.16)"><b>TSLA</b><span>+1.6% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(34,197,94,0.10)"><b>AAPL</b><span>+0.4% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.61)"><b>GOOGL</b><span>-11.5% <small>5D</small></span><i class="chip vl">조건부 롱</i></div><div class="tile" style="background:rgba(239,68,68,0.40)"><b>PLTR</b><span>-7.1% <small>5D</small></span><i class="chip vx">이벤트</i></div><div class="tile" style="background:rgba(239,68,68,0.21)"><b>META</b><span>-2.8% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.23)"><b>AMZN</b><span>-3.4% <small>5D</small></span><i class="chip vl">조건부 롱</i></div><div class="tile" style="background:rgba(239,68,68,0.17)"><b>MSFT</b><span>-1.9% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.43)"><b>SpaceX</b><span>-7.7% <small>5D</small></span><i class="chip va">숏 진입</i></div></div></div><div class="box"><h4>한국지수</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.12)"><b>EWY</b><span>-0.9% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.34)"><b>KORU</b><span>-5.7% <small>5D</small></span><i class="chip vw">관망</i></div></div></div><div class="box"><h4>코스피</h4><div class="tiles"><div class="tile" style="background:rgba(239,68,68,0.19)"><b>삼성전자</b><span>-2.5% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.38)"><b>현대차</b><span>-6.5% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.45)"><b>LG전자</b><span>-8.1% <small>5D</small></span><i class="chip vw">관망</i></div><div class="tile" style="background:rgba(239,68,68,0.21)"><b>네이버</b><span>-2.9% <small>5D</small></span><i class="chip vw">관망</i></div></div></div></div>
-
-<h2>전 종목 데이터</h2>
-<p class="muted" style="margin-top:-4px">1D = 금요일(10/30 UTC) 일봉 등락 · 추세 ▼ = 현재가가 MA5·MA20·MA50 아래인 개수 · RSI(14,일봉) 30↓ 빨강 · ATR = 14일 평균 일변동폭 · 미니차트 = 최근 4H 종가 20개</p>
-<div class="tw"><table class="t"><thead><tr><th>종목</th><th>현재가</th><th>1D</th><th>5D</th><th>20D</th><th>추세</th><th>RSI</th><th>ATR</th><th>20일 저 ~ 고</th><th>4H 추이</th><th>판정</th><th>코멘트</th></tr></thead><tbody><tr class="grp"><td colspan="11">크립토</td></tr><tr><td class="tk">ETH<small></small></td><td class="num">2,246.00</td><td class="num"><span class="dn">-0.40%</span></td><td class="num"><span class="dn">-3.34%</span></td><td class="num"><span class="dn">-11.42%</span></td><td class="num">▼▼▼</td><td class="num ">30</td><td class="num">3.7%</td><td class="num">2,171.52 ~ 2,578.44</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.5 5.8,3.8 11.6,3.7 17.4,3.7 23.2,8.1 28.9,2.0 34.7,4.0 40.5,12.4 46.3,12.1 52.1,9.7 57.9,2.4 63.7,7.7 69.5,21.5 75.3,24.2 81.1,24.3 86.8,24.4 92.6,26.0 98.4,24.0 104.2,23.0 110.0,22.6"/></svg></td><td><i class="chip vb">조건부 숏</i></td><td class="note">RSI 30 과매도 → 지금은 금지, MA5(2,290) 반등 확인 후 숏</td></tr><tr><td class="tk">BTC<small></small></td><td class="num">77,459</td><td class="num"><span class="dn">-0.87%</span></td><td class="num"><span class="dn">-3.33%</span></td><td class="num"><span class="dn">-7.47%</span></td><td class="num">▼▼▼</td><td class="num ">35</td><td class="num">2.5%</td><td class="num">76,260 ~ 84,876</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.3 5.8,5.1 11.6,5.4 17.4,4.2 23.2,8.0 28.9,2.9 34.7,4.1 40.5,11.5 46.3,11.5 52.1,9.9 57.9,2.0 63.7,6.5 69.5,20.6 75.3,19.5 81.1,19.8 86.8,23.7 92.6,22.6 98.4,26.0 104.2,24.0 110.0,23.1"/></svg></td><td><i class="chip vb">조건부 숏</i></td><td class="note">ETF 3일 연속 순유출, 바이낸스 출금 재개 전. MA5 79.0k 반등 실패 시 숏. 출금 정상화되면 숏 취소</td></tr><tr><td class="tk">ONDO<small></small></td><td class="num">0.4175</td><td class="num"><span class="up">+9.24%</span></td><td class="num"><span class="up">+0.48%</span></td><td class="num"><span class="dn">-19.96%</span></td><td class="num">▼▼·</td><td class="num ">46</td><td class="num">6.9%</td><td class="num">0.3600 ~ 0.5322</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.5 5.8,6.8 11.6,7.8 17.4,6.8 23.2,7.3 28.9,4.3 34.7,6.0 40.5,13.9 46.3,14.1 52.1,10.5 57.9,2.0 63.7,8.7 69.5,26.0 75.3,22.7 81.1,21.8 86.8,21.0 92.6,16.8 98.4,14.4 104.2,9.2 110.0,8.0"/></svg></td><td><i class="chip vl">롱 진입</i></td><td class="note">금요일 +9.2% 반등, MA5(0.411) 회복·RSI 45. 4H 저점 상승 중. 저유동성 알트라 비중 작게</td></tr><tr><td class="tk">SOL<small></small></td><td class="num">96.63</td><td class="num"><span class="up">+0.72%</span></td><td class="num"><span class="dn">-4.24%</span></td><td class="num"><span class="dn">-13.16%</span></td><td class="num">▼▼▼</td><td class="num ">32</td><td class="num">4.0%</td><td class="num">92.26 ~ 113.36</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.9 5.8,4.9 11.6,4.1 17.4,2.9 23.2,7.7 28.9,2.0 34.7,3.8 40.5,11.7 46.3,11.5 52.1,9.7 57.9,3.0 63.7,11.3 69.5,23.4 75.3,19.0 81.1,18.6 86.8,20.7 92.6,25.7 98.4,26.0 104.2,21.4 110.0,20.4"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">RSI 32, 20일 저점 92.3 근접. 반등 시 99~101 숏 고려</td></tr><tr><td class="tk">CRCL<small></small></td><td class="num">73.36</td><td class="num"><span class="dn">-3.47%</span></td><td class="num"><span class="dn">-8.88%</span></td><td class="num"><span class="dn">-15.39%</span></td><td class="num">▼▼▼</td><td class="num ">35</td><td class="num">5.7%</td><td class="num">71.20 ~ 92.20</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.8 5.8,2.7 11.6,2.8 17.4,2.3 23.2,6.9 28.9,2.0 34.7,5.4 40.5,8.7 46.3,8.6 52.1,7.3 57.9,4.0 63.7,6.6 69.5,18.0 75.3,15.3 81.1,16.6 86.8,20.7 92.6,24.0 98.4,26.0 104.2,25.0 110.0,24.3"/></svg></td><td><i class="chip va">숏 진입</i></td><td class="note">바이낸스 해킹 후 USDC 동결 이슈, 모든 이평 아래. 20일 저점 71.2 이탈 시 목표 도달</td></tr><tr><td class="tk">MSTR<small></small></td><td class="num">133.14</td><td class="num"><span class="dn">-1.24%</span></td><td class="num"><span class="dn">-5.43%</span></td><td class="num"><span class="dn">-15.51%</span></td><td class="num">▼▼▼</td><td class="num ">39</td><td class="num">5.9%</td><td class="num">124.67 ~ 159.24</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,8.7 5.8,6.3 11.6,6.7 17.4,6.6 23.2,10.9 28.9,2.0 34.7,3.7 40.5,10.4 46.3,10.4 52.1,8.8 57.9,4.2 63.7,8.0 69.5,20.9 75.3,16.5 81.1,18.7 86.8,23.8 92.6,22.6 98.4,26.0 104.2,23.7 110.0,22.3"/></svg></td><td><i class="chip va">숏 진입</i></td><td class="note">BTC 7.7만 약세 + ETF 순유출(-$410M). MA5 137 저항. 금요일 고가 137.6 위로 가면 무효</td></tr><tr class="grp"><td colspan="11">원자재</td></tr><tr><td class="tk">XAU<small>금</small></td><td class="num">3,895.80</td><td class="num"><span class="dn">-3.05%</span></td><td class="num"><span class="dn">-2.98%</span></td><td class="num"><span class="dn">-7.14%</span></td><td class="num">▼▼▼</td><td class="num dn">28</td><td class="num">1.4%</td><td class="num">3,880.60 ~ 4,220.70</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.3 5.8,5.7 11.6,5.6 17.4,5.3 23.2,6.0 28.9,2.0 34.7,4.5 40.5,6.3 46.3,8.3 52.1,8.7 57.9,8.4 63.7,8.5 69.5,10.0 75.3,11.5 81.1,14.1 86.8,15.4 92.6,23.9 98.4,26.0 104.2,25.8 110.0,25.8"/></svg></td><td><i class="chip vw">숏 금지</i></td><td class="note">RSI 27 + 1년 최저. 안전자산 재매수 위험, 5%는 ATR 1.4%로 비현실적</td></tr><tr><td class="tk">CL<small>WTI</small></td><td class="num">103.16</td><td class="num"><span class="up">+0.30%</span></td><td class="num"><span class="up">+1.56%</span></td><td class="num"><span class="up">+14.14%</span></td><td class="num">···</td><td class="num ">66</td><td class="num">2.9%</td><td class="num">89.23 ~ 105.03</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--up)" stroke-width="1.6" points="0.0,26.0 5.8,18.8 11.6,18.0 17.4,15.5 23.2,7.2 28.9,16.3 34.7,15.8 40.5,18.3 46.3,14.7 52.1,14.5 57.9,22.9 63.7,10.2 69.5,9.7 75.3,7.0 81.1,3.6 86.8,2.0 92.6,2.1 98.4,7.8 104.2,7.8 110.0,8.2"/></svg></td><td><i class="chip vl">조건부 롱</i></td><td class="note">정배열 상승 추세(20일 +14%), 호르무즈 긴장. MA5~MA20 눌림 롱. 이란 협상 타결 시 급락 위험</td></tr><tr class="grp"><td colspan="11">미국지수</td></tr><tr><td class="tk">SPY<small></small></td><td class="num">758.68</td><td class="num"><span class="dn">-1.04%</span></td><td class="num"><span class="dn">-1.18%</span></td><td class="num"><span class="dn">-2.89%</span></td><td class="num">▼▼▼</td><td class="num ">39</td><td class="num">0.9%</td><td class="num">752.00 ~ 782.20</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.0 5.8,4.5 11.6,3.6 17.4,3.8 23.2,3.2 28.9,2.0 34.7,6.3 40.5,6.7 46.3,6.6 52.1,5.8 57.9,5.2 63.7,6.1 69.5,12.4 75.3,15.5 81.1,16.1 86.8,18.4 92.6,22.8 98.4,26.0 104.2,24.4 110.0,24.1"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">ATR 0.9% — 5% 목표 부적합, 헤지 용도만</td></tr><tr><td class="tk">QQQ<small></small></td><td class="num">695.46</td><td class="num"><span class="dn">-1.62%</span></td><td class="num"><span class="dn">-2.84%</span></td><td class="num"><span class="dn">-7.87%</span></td><td class="num">▼▼▼</td><td class="num ">35</td><td class="num">1.7%</td><td class="num">685.69 ~ 755.68</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.1 5.8,2.7 11.6,2.1 17.4,2.9 23.2,4.1 28.9,2.0 34.7,7.2 40.5,8.8 46.3,8.5 52.1,7.8 57.9,7.5 63.7,9.0 69.5,16.5 75.3,18.6 81.1,19.3 86.8,21.9 92.6,24.0 98.4,26.0 104.2,24.7 110.0,24.1"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">20일 저점 685.7 이탈 시 헤지 숏</td></tr><tr class="grp"><td colspan="11">AI·반도체</td></tr><tr><td class="tk">NVDA<small></small></td><td class="num">205.61</td><td class="num"><span class="dn">-2.36%</span></td><td class="num"><span class="dn">-5.28%</span></td><td class="num"><span class="dn">-11.11%</span></td><td class="num">▼▼▼</td><td class="num ">33</td><td class="num">2.7%</td><td class="num">201.31 ~ 231.30</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.5 5.8,3.6 11.6,2.7 17.4,2.0 23.2,5.8 28.9,9.0 34.7,11.4 40.5,12.5 46.3,12.7 52.1,10.9 57.9,10.6 63.7,11.7 69.5,17.4 75.3,19.8 81.1,20.2 86.8,22.3 92.6,24.2 98.4,26.0 104.2,25.4 110.0,25.4"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">ATR 2.7%로 5%까지 느림. 20일 저점 201.3 이탈 시 숏 고려</td></tr><tr><td class="tk">AMD<small></small></td><td class="num">510.93</td><td class="num"><span class="dn">-3.74%</span></td><td class="num"><span class="dn">-4.83%</span></td><td class="num"><span class="dn">-16.70%</span></td><td class="num">▼▼▼</td><td class="num ">39</td><td class="num">5.0%</td><td class="num">493.28 ~ 615.01</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.7 5.8,4.9 11.6,4.7 17.4,5.0 23.2,5.7 28.9,2.0 34.7,5.8 40.5,8.7 46.3,8.2 52.1,6.2 57.9,3.2 63.7,6.0 69.5,18.3 75.3,17.5 81.1,18.0 86.8,21.6 92.6,24.0 98.4,26.0 104.2,24.8 110.0,24.3"/></svg></td><td><i class="chip va">숏 진입</i></td><td class="note">인텔 -29% 쇼크·필라델피아 반도체 -7.2%. MA5(536) 아래 역배열, 4H 반등 약함. 20일 저점 493 재시험 시나리오</td></tr><tr><td class="tk">AVGO<small></small></td><td class="num">327.77</td><td class="num"><span class="dn">-2.38%</span></td><td class="num"><span class="dn">-1.88%</span></td><td class="num"><span class="dn">-10.23%</span></td><td class="num">▼▼▼</td><td class="num ">41</td><td class="num">3.0%</td><td class="num">319.63 ~ 365.70</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,10.6 5.8,7.2 11.6,6.2 17.4,5.5 23.2,7.1 28.9,2.0 34.7,9.6 40.5,12.1 46.3,12.7 52.1,10.3 57.9,7.7 63.7,8.4 69.5,17.4 75.3,20.6 81.1,20.5 86.8,21.2 92.6,25.9 98.4,26.0 104.2,24.9 110.0,25.1"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">20일 저점 319.6 근접, 방향성 약함</td></tr><tr><td class="tk">SOXL<small></small></td><td class="num">77.88</td><td class="num"><span class="dn">-11.81%</span></td><td class="num"><span class="dn">-16.20%</span></td><td class="num"><span class="dn">-45.24%</span></td><td class="num">▼▼▼</td><td class="num ">33</td><td class="num">13.9%</td><td class="num">70.43 ~ 143.23</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,7.2 5.8,4.9 11.6,4.3 17.4,4.5 23.2,4.5 28.9,2.0 34.7,7.2 40.5,9.5 46.3,9.3 52.1,7.5 57.9,3.8 63.7,6.0 69.5,16.9 75.3,18.7 81.1,19.1 86.8,21.6 92.6,25.6 98.4,26.0 104.2,25.2 110.0,25.5"/></svg></td><td><i class="chip vb">조건부 숏</i></td><td class="note">반도체 3배. 금요일 -11.8%, 20일 -45%. RSI 33이라 추격 금지 → MA5(89) 아래 반등 숏, 비중 절반</td></tr><tr><td class="tk">SNDK<small></small></td><td class="num">1,160.10</td><td class="num"><span class="dn">-9.70%</span></td><td class="num"><span class="dn">-8.79%</span></td><td class="num"><span class="dn">-27.95%</span></td><td class="num">▼▼▼</td><td class="num ">33</td><td class="num">7.8%</td><td class="num">1,117.10 ~ 1,610.30</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,11.0 5.8,6.0 11.6,5.6 17.4,5.6 23.2,4.4 28.9,2.0 34.7,5.7 40.5,7.7 46.3,7.2 52.1,5.5 57.9,5.0 63.7,8.9 69.5,13.6 75.3,11.3 81.1,12.7 86.8,20.3 92.6,23.6 98.4,26.0 104.2,25.3 110.0,25.3"/></svg></td><td><i class="chip vb">조건부 숏</i></td><td class="note">실적 비트에도 '메모리 가격 피크' 우려로 -9.7%. 1,215~1,255(MA5) 되돌림 숏</td></tr><tr><td class="tk">SKHY<small>SK하이닉스</small></td><td class="num">150.62</td><td class="num"><span class="dn">-3.03%</span></td><td class="num"><span class="up">+3.51%</span></td><td class="num"><span class="dn">-11.79%</span></td><td class="num">▼▼·</td><td class="num ">47</td><td class="num">5.7%</td><td class="num">127.64 ~ 171.51</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--up)" stroke-width="1.6" points="0.0,25.7 5.8,16.4 11.6,14.3 17.4,14.8 23.2,4.1 28.9,2.0 34.7,10.4 40.5,9.2 46.3,8.6 52.1,6.6 57.9,2.8 63.7,5.8 69.5,17.8 75.3,20.8 81.1,21.0 86.8,24.3 92.6,24.8 98.4,26.0 104.2,25.0 110.0,23.9"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">외국인 하이닉스 -4,229억 순매도. MA20 위 유지, 방향 대기</td></tr><tr><td class="tk">MU<small></small></td><td class="num">898.70</td><td class="num"><span class="dn">-1.49%</span></td><td class="num"><span class="dn">-1.79%</span></td><td class="num"><span class="dn">-13.58%</span></td><td class="num">▼▼▼</td><td class="num ">44</td><td class="num">4.8%</td><td class="num">818.58 ~ 1,041.25</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,11.7 5.8,6.3 11.6,5.3 17.4,6.4 23.2,4.7 28.9,2.0 34.7,7.6 40.5,10.2 46.3,10.5 52.1,8.0 57.9,9.4 63.7,13.3 69.5,20.5 75.3,20.2 81.1,21.4 86.8,26.0 92.6,24.6 98.4,24.7 104.2,23.6 110.0,21.9"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">MA20(906) 부근 공방, RSI 44 중립. 920 저항 확인 필요</td></tr><tr><td class="tk">TSM<small></small></td><td class="num">409.99</td><td class="num"><span class="dn">-2.56%</span></td><td class="num"><span class="dn">-4.20%</span></td><td class="num"><span class="dn">-10.00%</span></td><td class="num">▼▼▼</td><td class="num ">38</td><td class="num">3.0%</td><td class="num">401.28 ~ 461.92</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.0 5.8,4.8 11.6,2.5 17.4,3.0 23.2,2.5 28.9,2.0 34.7,8.0 40.5,10.8 46.3,10.7 52.1,7.8 57.9,4.5 63.7,7.5 69.5,16.1 75.3,16.4 81.1,17.3 86.8,19.4 92.6,23.9 98.4,26.0 104.2,24.0 110.0,23.9"/></svg></td><td><i class="chip vb">조건부 숏</i></td><td class="note">반도체 동반 약세, MA5·MA20(422~423) 저항 숏. ATR 3%라 2~3일 필요</td></tr><tr class="grp"><td colspan="11">빅테크</td></tr><tr><td class="tk">TSLA<small></small></td><td class="num">400.27</td><td class="num"><span class="up">+0.69%</span></td><td class="num"><span class="up">+1.64%</span></td><td class="num"><span class="up">+3.91%</span></td><td class="num">▼··</td><td class="num ">63</td><td class="num">3.7%</td><td class="num">347.52 ~ 413.18</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,7.0 5.8,7.0 11.6,2.0 17.4,4.3 23.2,16.2 28.9,12.4 34.7,15.9 40.5,19.7 46.3,17.8 52.1,14.7 57.9,10.1 63.7,13.7 69.5,21.9 75.3,23.0 81.1,25.1 86.8,26.0 92.6,16.6 98.4,18.6 104.2,18.1 110.0,18.9"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">정배열 상승. 20일 고점 413 돌파 시 롱(목표 ~434), 그 전엔 관망</td></tr><tr><td class="tk">AAPL<small></small></td><td class="num">345.42</td><td class="num"><span class="dn">-1.93%</span></td><td class="num"><span class="up">+0.43%</span></td><td class="num"><span class="up">+2.44%</span></td><td class="num">▼··</td><td class="num ">53</td><td class="num">1.6%</td><td class="num">337.00 ~ 353.92</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,14.5 5.8,16.0 11.6,16.9 17.4,17.9 23.2,18.8 28.9,22.9 34.7,18.3 40.5,16.8 46.3,16.9 52.1,12.1 57.9,9.6 63.7,10.2 69.5,2.0 75.3,7.0 81.1,4.2 86.8,26.0 92.6,14.8 98.4,20.2 104.2,19.2 110.0,19.9"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">ATR 1.6% 저변동, 방어주 성격</td></tr><tr><td class="tk">GOOGL<small></small></td><td class="num">282.21</td><td class="num"><span class="up">+0.27%</span></td><td class="num"><span class="dn">-11.50%</span></td><td class="num"><span class="dn">-20.07%</span></td><td class="num">▼▼▼</td><td class="num dn">19</td><td class="num">3.5%</td><td class="num">276.23 ~ 359.92</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.2 5.8,2.0 11.6,2.4 17.4,2.5 23.2,2.8 28.9,2.1 34.7,19.4 40.5,19.2 46.3,20.1 52.1,21.5 57.9,22.5 63.7,24.0 69.5,25.6 75.3,24.9 81.1,25.1 86.8,25.5 92.6,24.7 98.4,26.0 104.2,25.2 110.0,25.1"/></svg></td><td><i class="chip vl">조건부 롱</i></td><td class="note">RSI 19 극과매도(주간 -11.5%). 20일 저점 276 지지 확인 시 기술적 반등 롱 → MA5(293) 회귀. 비중 작게</td></tr><tr><td class="tk">PLTR<small></small></td><td class="num">185.16</td><td class="num"><span class="dn">-4.86%</span></td><td class="num"><span class="dn">-7.07%</span></td><td class="num"><span class="dn">-12.10%</span></td><td class="num">▼▼▼</td><td class="num ">39</td><td class="num">3.7%</td><td class="num">183.21 ~ 213.21</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.0 5.8,3.1 11.6,2.1 17.4,4.2 23.2,8.6 28.9,5.2 34.7,8.1 40.5,8.9 46.3,6.6 52.1,2.3 57.9,7.4 63.7,5.9 69.5,9.6 75.3,11.0 81.1,11.3 86.8,11.1 92.6,21.1 98.4,26.0 104.2,25.1 110.0,24.9"/></svg></td><td><i class="chip vx">이벤트</i></td><td class="note">11/2(월) 장 마감 후 실적 — 결과 확인 전 진입 금지</td></tr><tr><td class="tk">META<small></small></td><td class="num">615.85</td><td class="num"><span class="dn">-1.18%</span></td><td class="num"><span class="dn">-2.84%</span></td><td class="num"><span class="dn">-14.86%</span></td><td class="num">▼▼▼</td><td class="num ">30</td><td class="num">4.0%</td><td class="num">610.20 ~ 772.12</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,15.7 5.8,14.6 11.6,12.7 17.4,14.0 23.2,23.1 28.9,26.0 34.7,20.9 40.5,22.2 46.3,18.5 52.1,18.8 57.9,2.0 63.7,9.4 69.5,13.6 75.3,18.2 81.1,20.7 86.8,25.2 92.6,9.8 98.4,22.2 104.2,23.4 110.0,22.8"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">RSI 30, 20일 저점 610 바로 위. 이탈 시 숏 / 지지 시 반등 — 확인 후</td></tr><tr><td class="tk">AMZN<small></small></td><td class="num">241.55</td><td class="num"><span class="up">+6.56%</span></td><td class="num"><span class="dn">-3.38%</span></td><td class="num"><span class="dn">-8.32%</span></td><td class="num">▼▼▼</td><td class="num ">43</td><td class="num">3.6%</td><td class="num">214.66 ~ 266.43</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.7 5.8,2.2 11.6,2.2 17.4,2.9 23.2,3.8 28.9,2.0 34.7,2.9 40.5,3.9 46.3,3.3 52.1,5.9 57.9,8.0 63.7,10.7 69.5,25.8 75.3,25.7 81.1,26.0 86.8,24.7 92.6,15.0 98.4,13.8 104.2,13.4 110.0,13.3"/></svg></td><td><i class="chip vl">조건부 롱</i></td><td class="note">실적 쇼크로 214까지 밀린 뒤 금요일 +6.6% 반전(장대양봉). 236~240 눌림 롱, 1차 목표 ≈ MA20(251)</td></tr><tr><td class="tk">MSFT<small></small></td><td class="num">523.82</td><td class="num"><span class="dn">-1.18%</span></td><td class="num"><span class="dn">-1.87%</span></td><td class="num"><span class="dn">-2.37%</span></td><td class="num">▼▼·</td><td class="num ">48</td><td class="num">2.4%</td><td class="num">515.10 ~ 568.32</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,17.5 5.8,19.2 11.6,18.6 17.4,20.2 23.2,21.5 28.9,18.5 34.7,6.5 40.5,2.7 46.3,2.0 52.1,12.2 57.9,24.6 63.7,19.4 69.5,20.1 75.3,23.8 81.1,24.3 86.8,22.7 92.6,25.1 98.4,26.0 104.2,25.1 110.0,25.2"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">MA50(519) 지지 테스트, 중립</td></tr><tr><td class="tk">SPCX<small>SpaceX</small></td><td class="num">136.95</td><td class="num"><span class="dn">-3.10%</span></td><td class="num"><span class="dn">-7.70%</span></td><td class="num"><span class="dn">-16.72%</span></td><td class="num">▼▼▼</td><td class="num ">35</td><td class="num">4.9%</td><td class="num">134.81 ~ 167.28</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.3 5.8,2.3 11.6,2.0 17.4,3.5 23.2,10.4 28.9,9.6 34.7,12.1 40.5,12.5 46.3,12.7 52.1,13.1 57.9,11.1 63.7,11.8 69.5,17.0 75.3,16.9 81.1,18.1 86.8,20.4 92.6,20.3 98.4,26.0 104.2,23.9 110.0,23.0"/></svg></td><td><i class="chip va">숏 진입</i></td><td class="note">5일 -7.7%, 이평 3개 모두 아래. 20일 저점 134.8 이탈 시 가속. 현재가가 진입 하단</td></tr><tr class="grp"><td colspan="11">한국지수</td></tr><tr><td class="tk">EWY<small></small></td><td class="num">153.65</td><td class="num"><span class="dn">-2.01%</span></td><td class="num"><span class="dn">-0.86%</span></td><td class="num"><span class="dn">-13.72%</span></td><td class="num">▼▼▼</td><td class="num ">40</td><td class="num">3.9%</td><td class="num">146.40 ~ 178.99</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,16.7 5.8,7.8 11.6,6.9 17.4,7.7 23.2,4.5 28.9,2.0 34.7,8.0 40.5,12.3 46.3,11.8 52.1,11.3 57.9,8.7 63.7,9.6 69.5,19.8 75.3,22.6 81.1,21.2 86.8,25.0 92.6,25.8 98.4,26.0 104.2,25.8 110.0,25.4"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">코스피 외국인 -1.6조 순매도. 146~150 지지 확인 필요</td></tr><tr><td class="tk">KORU<small></small></td><td class="num">10.68</td><td class="num"><span class="dn">-7.14%</span></td><td class="num"><span class="dn">-5.65%</span></td><td class="num"><span class="dn">-41.03%</span></td><td class="num">▼▼▼</td><td class="num ">36</td><td class="num">12.3%</td><td class="num">9.60 ~ 18.33</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,15.5 5.8,7.5 11.6,6.6 17.4,7.3 23.2,4.3 28.9,2.0 34.7,8.0 40.5,12.6 46.3,12.1 52.1,11.4 57.9,8.9 63.7,9.8 69.5,19.7 75.3,22.7 81.1,21.0 86.8,24.7 92.6,25.7 98.4,26.0 104.2,25.9 110.0,25.8"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">3배 레버리지, 20일 -41%. 변동성 과다</td></tr><tr class="grp"><td colspan="11">코스피</td></tr><tr><td class="tk">SAMSUNG<small>삼성전자</small></td><td class="num">163.10</td><td class="num"><span class="dn">-2.32%</span></td><td class="num"><span class="dn">-2.50%</span></td><td class="num"><span class="dn">-15.61%</span></td><td class="num">▼▼▼</td><td class="num ">42</td><td class="num">5.8%</td><td class="num">146.11 ~ 195.88</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,13.2 5.8,6.1 11.6,4.9 17.4,5.5 23.2,3.7 28.9,2.0 34.7,7.0 40.5,15.2 46.3,15.5 52.1,15.2 57.9,13.5 63.7,14.8 69.5,21.7 75.3,22.8 81.1,20.9 86.8,24.0 92.6,25.2 98.4,25.2 104.2,26.0 110.0,25.8"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">외국인 -2,308억 순매도, MA20(165) 하회</td></tr><tr><td class="tk">HYUNDAI<small>현대차</small></td><td class="num">208.12</td><td class="num"><span class="dn">-2.43%</span></td><td class="num"><span class="dn">-6.49%</span></td><td class="num"><span class="dn">-13.41%</span></td><td class="num">▼▼▼</td><td class="num dn">26</td><td class="num">4.3%</td><td class="num">205.45 ~ 250.01</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.8 5.8,3.3 11.6,5.0 17.4,6.8 23.2,3.9 28.9,2.0 34.7,7.3 40.5,12.6 46.3,11.9 52.1,10.7 57.9,8.2 63.7,9.2 69.5,18.1 75.3,18.6 81.1,22.6 86.8,25.0 92.6,24.4 98.4,26.0 104.2,25.3 110.0,25.3"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">RSI 26 과매도, 20일 저점 205 근접 — 숏 금지</td></tr><tr><td class="tk">LGELECTRONICS<small>LG전자</small></td><td class="num">109.61</td><td class="num"><span class="dn">-3.43%</span></td><td class="num"><span class="dn">-8.10%</span></td><td class="num"><span class="dn">-27.26%</span></td><td class="num">▼▼·</td><td class="num dn">27</td><td class="num">4.6%</td><td class="num">109.13 ~ 150.51</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.7 5.8,4.2 11.6,4.7 17.4,5.0 23.2,4.0 28.9,2.0 34.7,6.2 40.5,17.1 46.3,15.1 52.1,13.4 57.9,14.2 63.7,13.9 69.5,18.7 75.3,21.3 81.1,21.5 86.8,22.9 92.6,24.3 98.4,25.4 104.2,25.7 110.0,26.0"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">RSI 27 과매도, 20일 -27%</td></tr><tr><td class="tk">NAVER<small>네이버</small></td><td class="num">128.60</td><td class="num"><span class="dn">-2.07%</span></td><td class="num"><span class="dn">-2.89%</span></td><td class="num"><span class="dn">-5.92%</span></td><td class="num">▼▼·</td><td class="num ">40</td><td class="num">3.2%</td><td class="num">126.57 ~ 139.69</td><td><svg width="110" height="28" viewBox="0 0 110 28"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.0 5.8,7.9 11.6,11.0 17.4,11.0 23.2,10.3 28.9,8.5 34.7,15.5 40.5,20.0 46.3,19.0 52.1,18.6 57.9,19.3 63.7,19.1 69.5,17.8 75.3,23.1 81.1,23.0 86.8,22.3 92.6,26.0 98.4,24.3 104.2,23.8 110.0,23.3"/></svg></td><td><i class="chip vw">관망</i></td><td class="note">20일 저점 126.6 근접 약세 횡보</td></tr></tbody></table></div>
-
-<h2>다가오는 일정 (KST)</h2>
-<div class="box"><table class="ev">
-<tr><td>11/1(일) 09:00</td><td>BTC 10월 월봉 마감</td><td>★★★</td></tr>
-<tr><td>11/1(일)~11/2(월)</td><td>바이낸스 출금 재개 예정(48시간 내)</td><td>★★★</td></tr>
-<tr><td>11/2(월) 09:00</td><td>코스피 개장 — 외국인 -1.6조 매도 이후 첫 거래</td><td>★★★</td></tr>
-<tr><td>11/3(화) 00:00</td><td>미 ISM 제조업 PMI</td><td>★★★</td></tr>
-<tr><td>11/3(화) 06:00</td><td>팔란티어(PLTR) Q3 실적</td><td>★★★★</td></tr>
-<tr><td>11/3(화)~11/4(수)</td><td>미국 중간선거 및 개표</td><td>★★★★★</td></tr>
-<tr><td>11/4(수) 00:00 · 11/4(수) 22:15</td><td>JOLTS · ADP 고용</td><td>★★★</td></tr>
-<tr><td>11/6(금) 22:30</td><td>10월 고용보고서</td><td>★★★★★</td></tr>
-</table></div>
-
-<div class="foot">
-※ 투자 조언이 아니며 참고용입니다. 가격은 OKX 무기한선물 기준(2026-10-31 10:15 KST 조회)이라 본주 시세와 차이가 있을 수 있고(특히 한국 종목·주말), 진입 전 반드시 실시간 차트로 확인하세요.<br>
-출처: <a href="https://cappnotes.substack.com/p/closing-look-friday-october-30-2026">Closing Look 10/30</a> ·
-<a href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-30-2026">TheStreet 10/30</a> ·
-<a href="https://finance.yahoo.com/markets/live/stock-market-today-friday-october-30-dow-sp-500-nasdaq-amazon-intel-ai-sell-off-191429143.html">Yahoo Finance 라이브</a> ·
-OKX API 시세 · 로컬 수집 데이터(ETF 플로우·외국인 수급·MSTR 공시)
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n ">1 : 1.4</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">5.0%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39.0% - 1px)"></i></div></div>
 </div>
-</div></body></html>
+<p class="c-note">인텔 -29% 쇼크·필라델피아 반도체 -7.2%. MA5(536) 아래 역배열, 4H 반등 약함. 20일 저점 493 재시험 시나리오</p>
+<div class="c-foot"><span class="st2 dn">지금 진입 가능</span><a class="cbtn" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card A now">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=SPCX&amp;bar=15m" target="_blank" rel="noopener" title="SPCX Trader_KIM Chart 15분봉">SPCX<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub">SpaceX</span><i class="chip va">숏 진입</i></div>
+<div class="c-px"><span class="p n">136.95</span><span class="gap g-in">진입 구간까지 +1.3%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:65.4%;width:29.2%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:60.0%"></div>
+  <div class="zone z-ent" style="left:54.6%;width:21.6%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:22.7%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:54.3%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">137.00<br>~140.50</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">143.50</span><span class="p n">+3.4%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">131.81</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">129.00</span><span class="p n">−7.0%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 1.5</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">4.9%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">5일 -7.7%, 이평 3개 모두 아래. 20일 저점 134.8 이탈 시 가속. 현재가가 진입 하단</p>
+<div class="c-foot"><span class="st2 dn">지금 진입 가능</span><a class="cbtn" href="Trader_KIM_Chart.html?t=SPCX&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card A now">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener" title="MSTR Trader_KIM Chart 15분봉">MSTR<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip va">숏 진입</i></div>
+<div class="c-px"><span class="p n">133.14</span><span class="gap g-in">진입 구간까지 +1.6%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:64.4%;width:30.2%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:59.0%"></div>
+  <div class="zone z-ent" style="left:54.3%;width:20.2%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:25.5%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:52.2%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">133.50<br>~137.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">140.50</span><span class="p n">+3.9%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">128.49</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">125.00</span><span class="p n">−7.6%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n ">1 : 1.3</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">5.9%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">BTC 7.7만 약세 + ETF 순유출(-$410M). MA5 137 저항. 금요일 고가 137.6 위로 가면 무효</p>
+<div class="c-foot"><span class="st2 dn">지금 진입 가능</span><a class="cbtn" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card A now">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener" title="CRCL Trader_KIM Chart 15분봉">CRCL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip va">숏 진입</i></div>
+<div class="c-px"><span class="p n">73.36</span><span class="gap g-in">진입 구간까지 +2.2%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:61.7%;width:32.9%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:56.4%"></div>
+  <div class="zone z-ent" style="left:47.7%;width:28.2%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:26.5%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:46.3%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">73.50<br>~76.50</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">78.50</span><span class="p n">+4.7%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">71.25</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">69.00</span><span class="p n">−8.0%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n ">1 : 1.1</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">5.7%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">바이낸스 해킹 후 USDC 동결 이슈, 모든 이평 아래. 20일 저점 71.2 이탈 시 목표 도달</p>
+<div class="c-foot"><span class="st2 dn">지금 진입 가능</span><a class="cbtn" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article></div>
+</section>
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-b"></span>숏 B등급 · 반등 대기 지정가</h2><p>과매도이거나 현재가가 진입 구간 아래 · 추격 금지, 구간 도달 시에만</p></div>
+ <div class="cards"><article class="card B">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener" title="SOXL Trader_KIM Chart 15분봉">SOXL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vb">조건부 숏</i></div>
+<div class="c-px"><span class="p n">77.88</span><span class="gap g-wait">진입 구간까지 +9.1%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:68.7%;width:25.9%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:63.4%"></div>
+  <div class="zone z-ent" style="left:57.2%;width:23.0%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:44.2%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:27.7%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">83.00<br>~87.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">89.50</span><span class="p n">+5.3%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">80.75</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">74.00</span><span class="p n">−12.9%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n dn">1 : 0.9</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">13.9%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">33</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(33.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">반도체 3배. 금요일 -11.8%, 20일 -45%. RSI 33이라 추격 금지 → MA5(89) 아래 반등 숏, 비중 절반</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card B">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener" title="SNDK Trader_KIM Chart 15분봉">SNDK<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vb">조건부 숏</i></div>
+<div class="c-px"><span class="p n">1,160.10</span><span class="gap g-wait">진입 구간까지 +6.5%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:64.0%;width:30.6%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:58.7%"></div>
+  <div class="zone z-ent" style="left:53.8%;width:20.4%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:32.5%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:25.8%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">1,215.00<br>~1,255.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">1,295.00</span><span class="p n">+4.9%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">1,173.25</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">1,120.00</span><span class="p n">−9.3%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n dn">1 : 1.0</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">7.8%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">33</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(33.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">실적 비트에도 &#x27;메모리 가격 피크&#x27; 우려로 -9.7%. 1,215~1,255(MA5) 되돌림 숏</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card B">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener" title="BTC Trader_KIM Chart 15분봉">BTC<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vb">조건부 숏</i></div>
+<div class="c-px"><span class="p n">77,459</span><span class="gap g-wait">진입 구간까지 +2.1%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:71.4%;width:23.3%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:66.0%"></div>
+  <div class="zone z-ent" style="left:66.2%;width:10.4%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:20.2%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:50.1%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">78,700<br>~79,500</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">80,900</span><span class="p n">+2.3%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">75,145</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">74,000</span><span class="p n">−6.4%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 2.2</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">2.5%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">ETF 3일 연속 순유출, 바이낸스 출금 재개 전. MA5 79.0k 반등 실패 시 숏. 출금 정상화되면 숏 취소</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card B">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener" title="ETH Trader_KIM Chart 15분봉">ETH<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vb">조건부 숏</i></div>
+<div class="c-px"><span class="p n">2,246.00</span><span class="gap g-wait">진입 구간까지 +2.7%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:65.2%;width:29.4%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:59.8%"></div>
+  <div class="zone z-ent" style="left:56.6%;width:17.1%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:21.4%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:41.8%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">2,285.00<br>~2,330.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">2,385.00</span><span class="p n">+3.4%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">2,192.12</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">2,150.00</span><span class="p n">−6.8%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 1.5</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">3.7%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n dn">30</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(30.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">RSI 30 과매도 → 지금은 금지, MA5(2,290) 반등 확인 후 숏</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card B">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener" title="TSM Trader_KIM Chart 15분봉">TSM<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vb">조건부 숏</i></div>
+<div class="c-px"><span class="p n">409.99</span><span class="gap g-wait">진입 구간까지 +2.7%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:69.8%;width:24.8%"></div>
+  <div class="zone z-gain" style="left:5.4%;width:64.5%"></div>
+  <div class="zone z-ent" style="left:62.4%;width:14.9%"></div>
+  <span class="tick t-stop" style="left:94.6%"></span>
+  <span class="tick t-tg" style="left:17.6%"></span>
+  <span class="tick t-tg" style="left:5.4%;opacity:.6"></span>
+  <span class="cur" style="left:42.5%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">418.00<br>~424.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">431.00</span><span class="p n">+2.4%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">399.95</span><span class="p n">−5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">395.00</span><span class="p n">−6.2%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 2.1</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">3.0%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">38</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(38.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">반도체 동반 약세, MA5·MA20(422~423) 저항 숏. ATR 3%라 2~3일 필요</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article></div>
+</section>
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-l"></span>롱 후보 <span class="cnt">목표 +5%</span></h2><p>하락장 속 역추세·추세 롱 · 숏보다 비중 작게(½) · 손절 엄수</p></div>
+ <div class="cards"><article class="card L">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener" title="AMZN Trader_KIM Chart 15분봉">AMZN<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vl go">조건부 롱</i></div>
+<div class="c-px"><span class="p n">241.55</span><span class="gap g-wait">진입 구간까지 −1.5%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:5.4%;width:29.8%"></div>
+  <div class="zone z-gain" style="left:35.1%;width:59.5%"></div>
+  <div class="zone z-ent" style="left:28.1%;width:14.0%"></div>
+  <span class="tick t-stop" style="left:5.4%"></span>
+  <span class="tick t-tg" style="left:76.8%"></span>
+  <span class="tick t-tg" style="left:94.6%;opacity:.6"></span>
+  <span class="cur" style="left:47.5%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">236.00<br>~240.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">229.50</span><span class="p n">−3.6%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">249.90</span><span class="p n">+5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">255.00</span><span class="p n">+7.1%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n ">1 : 1.4</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">3.6%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">43</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(43.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">실적 쇼크로 214까지 밀린 뒤 금요일 +6.6% 반전(장대양봉). 236~240 눌림 롱, 1차 목표 ≈ MA20(251)</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card L">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener" title="GOOGL Trader_KIM Chart 15분봉">GOOGL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vl go">조건부 롱</i></div>
+<div class="c-px"><span class="p n">282.21</span><span class="gap g-wait">진입 구간까지 −1.3%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:5.4%;width:27.4%"></div>
+  <div class="zone z-gain" style="left:32.7%;width:61.9%"></div>
+  <div class="zone z-ent" style="left:25.5%;width:14.4%"></div>
+  <span class="tick t-stop" style="left:5.4%"></span>
+  <span class="tick t-tg" style="left:72.8%"></span>
+  <span class="tick t-tg" style="left:94.6%;opacity:.6"></span>
+  <span class="cur" style="left:43.4%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">276.00<br>~281.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">269.00</span><span class="p n">−3.4%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">292.43</span><span class="p n">+5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">300.00</span><span class="p n">+7.7%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 1.5</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">3.5%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n dn">19</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(19.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">RSI 19 극과매도(주간 -11.5%). 20일 저점 276 지지 확인 시 기술적 반등 롱 → MA5(293) 회귀. 비중 작게</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card L now">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=ONDO&amp;bar=15m" target="_blank" rel="noopener" title="ONDO Trader_KIM Chart 15분봉">ONDO<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub"></span><i class="chip vl">롱 진입</i></div>
+<div class="c-px"><span class="p n">0.4175</span><span class="gap g-l">진입 구간까지 −1.8%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:5.4%;width:28.2%"></div>
+  <div class="zone z-gain" style="left:33.6%;width:61.1%"></div>
+  <div class="zone z-ent" style="left:25.7%;width:15.7%"></div>
+  <span class="tick t-stop" style="left:5.4%"></span>
+  <span class="tick t-tg" style="left:65.7%"></span>
+  <span class="tick t-tg" style="left:94.6%;opacity:.6"></span>
+  <span class="cur" style="left:45.3%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">0.4050<br>~0.4150</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">0.3920</span><span class="p n">−4.4%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">0.4305</span><span class="p n">+5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">0.4490</span><span class="p n">+9.5%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n ">1 : 1.1</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">6.9%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">46</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(46.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">금요일 +9.2% 반등, MA5(0.411) 회복·RSI 45. 4H 저점 상승 중. 저유동성 알트라 비중 작게</p>
+<div class="c-foot"><span class="st2 up">지금 진입 가능</span><a class="cbtn" href="Trader_KIM_Chart.html?t=ONDO&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article><article class="card L">
+<div class="c-h"><a class="tk" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener" title="CL Trader_KIM Chart 15분봉">CL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><span class="sub">WTI</span><i class="chip vl go">조건부 롱</i></div>
+<div class="c-px"><span class="p n">103.16</span><span class="gap g-wait">진입 구간까지 −1.9%</span></div>
+<div class="lad" aria-label="가격 사다리">
+ <div class="track">
+  <div class="base"></div>
+  <div class="zone z-loss" style="left:5.4%;width:26.5%"></div>
+  <div class="zone z-gain" style="left:31.9%;width:62.8%"></div>
+  <div class="zone z-ent" style="left:24.9%;width:14.0%"></div>
+  <span class="tick t-stop" style="left:5.4%"></span>
+  <span class="tick t-tg" style="left:78.9%"></span>
+  <span class="tick t-tg" style="left:94.6%;opacity:.6"></span>
+  <span class="cur" style="left:49.6%">현재</span>
+ </div>
+ <div class="lv">
+  <div><span class="k"><i style="background:rgba(230,237,243,.7)"></i>진입</span><span class="v n">100.50<br>~102.00</span></div>
+  <div><span class="k"><i style="background:var(--dn)"></i>손절</span><span class="v n dn">98.40</span><span class="p n">−2.8%</span></div>
+  <div><span class="k"><i style="background:var(--up)"></i>1차 목표</span><span class="v n up">106.31</span><span class="p n">+5.0%</span></div>
+  <div><span class="k"><i style="background:var(--up);opacity:.6"></i>2차 목표</span><span class="v n up">108.00</span><span class="p n">+6.7%</span></div>
+ </div>
+</div>
+<div class="stats">
+ <div class="st"><span class="k">손익비 (1차)</span><span class="v n up">1 : 1.8</span></div>
+ <div class="st"><span class="k">ATR / 일</span><span class="v n">2.9%</span></div>
+ <div class="st"><span class="k">RSI 일봉</span><span class="v n ">66</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(66.0% - 1px)"></i></div></div>
+</div>
+<p class="c-note">정배열 상승 추세(20일 +14%), 호르무즈 긴장. MA5~MA20 눌림 롱. 이란 협상 타결 시 급락 위험</p>
+<div class="c-foot"><span class="st2 mu">지정가 대기 · 구간 도달 시만</span><a class="cbtn" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener"><svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg>15분봉 차트</a></div>
+</article></div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-x"></span>5일 등락 히트맵</h2><div class="legend"><i style="background:rgba(239,68,68,.63)"></i>−12%<i style="background:rgba(239,68,68,.2)"></i>0<i style="background:rgba(34,197,94,.2)"></i><i style="background:rgba(34,197,94,.5)"></i>+</div></div>
+ <div class="heat"><div class="hb"><h4>크립토</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.23)" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener" title="ETH 차트"><b>ETH</b><span class="pc n">−3.3%</span><i class="chip vb">조건부 숏</i></a><a class="tile" style="background:rgba(239,68,68,0.23)" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener" title="BTC 차트"><b>BTC</b><span class="pc n">−3.3%</span><i class="chip vb">조건부 숏</i></a><a class="tile" style="background:rgba(34,197,94,0.10)" href="Trader_KIM_Chart.html?t=ONDO&amp;bar=15m" target="_blank" rel="noopener" title="ONDO 차트"><b>ONDO</b><span class="pc n">+0.5%</span><i class="chip vl">롱 진입</i></a><a class="tile" style="background:rgba(239,68,68,0.27)" href="Trader_KIM_Chart.html?t=SOL&amp;bar=15m" target="_blank" rel="noopener" title="SOL 차트"><b>SOL</b><span class="pc n">−4.2%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.49)" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener" title="CRCL 차트"><b>CRCL</b><span class="pc n">−8.9%</span><i class="chip va">숏 진입</i></a><a class="tile" style="background:rgba(239,68,68,0.33)" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener" title="MSTR 차트"><b>MSTR</b><span class="pc n">−5.4%</span><i class="chip va">숏 진입</i></a></div></div><div class="hb"><h4>원자재</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.22)" href="Trader_KIM_Chart.html?t=XAU&amp;bar=15m" target="_blank" rel="noopener" title="XAU 차트"><b>금</b><span class="pc n">−3.0%</span><i class="chip vw">숏 금지</i></a><a class="tile" style="background:rgba(34,197,94,0.15)" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener" title="CL 차트"><b>WTI</b><span class="pc n">+1.6%</span><i class="chip vl go">조건부 롱</i></a></div></div><div class="hb"><h4>미국지수</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.14)" href="Trader_KIM_Chart.html?t=SPY&amp;bar=15m" target="_blank" rel="noopener" title="SPY 차트"><b>SPY</b><span class="pc n">−1.2%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.21)" href="Trader_KIM_Chart.html?t=QQQ&amp;bar=15m" target="_blank" rel="noopener" title="QQQ 차트"><b>QQQ</b><span class="pc n">−2.8%</span><i class="chip vw">관망</i></a></div></div><div class="hb"><h4>AI·반도체</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.32)" href="Trader_KIM_Chart.html?t=NVDA&amp;bar=15m" target="_blank" rel="noopener" title="NVDA 차트"><b>NVDA</b><span class="pc n">−5.3%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.30)" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener" title="AMD 차트"><b>AMD</b><span class="pc n">−4.8%</span><i class="chip va">숏 진입</i></a><a class="tile" style="background:rgba(239,68,68,0.17)" href="Trader_KIM_Chart.html?t=AVGO&amp;bar=15m" target="_blank" rel="noopener" title="AVGO 차트"><b>AVGO</b><span class="pc n">−1.9%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.63)" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener" title="SOXL 차트"><b>SOXL</b><span class="pc n">−16.2%</span><i class="chip vb">조건부 숏</i></a><a class="tile" style="background:rgba(239,68,68,0.48)" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener" title="SNDK 차트"><b>SNDK</b><span class="pc n">−8.8%</span><i class="chip vb">조건부 숏</i></a><a class="tile" style="background:rgba(34,197,94,0.24)" href="Trader_KIM_Chart.html?t=SKHY&amp;bar=15m" target="_blank" rel="noopener" title="SKHY 차트"><b>SK하이닉스</b><span class="pc n">+3.5%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.16)" href="Trader_KIM_Chart.html?t=MU&amp;bar=15m" target="_blank" rel="noopener" title="MU 차트"><b>MU</b><span class="pc n">−1.8%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.27)" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener" title="TSM 차트"><b>TSM</b><span class="pc n">−4.2%</span><i class="chip vb">조건부 숏</i></a></div></div><div class="hb"><h4>빅테크</h4><div class="tiles"><a class="tile" style="background:rgba(34,197,94,0.15)" href="Trader_KIM_Chart.html?t=TSLA&amp;bar=15m" target="_blank" rel="noopener" title="TSLA 차트"><b>TSLA</b><span class="pc n">+1.6%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(34,197,94,0.10)" href="Trader_KIM_Chart.html?t=AAPL&amp;bar=15m" target="_blank" rel="noopener" title="AAPL 차트"><b>AAPL</b><span class="pc n">+0.4%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.61)" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener" title="GOOGL 차트"><b>GOOGL</b><span class="pc n">−11.5%</span><i class="chip vl go">조건부 롱</i></a><a class="tile" style="background:rgba(239,68,68,0.41)" href="Trader_KIM_Chart.html?t=PLTR&amp;bar=15m" target="_blank" rel="noopener" title="PLTR 차트"><b>PLTR</b><span class="pc n">−7.1%</span><i class="chip vx">이벤트</i></a><a class="tile" style="background:rgba(239,68,68,0.21)" href="Trader_KIM_Chart.html?t=META&amp;bar=15m" target="_blank" rel="noopener" title="META 차트"><b>META</b><span class="pc n">−2.8%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.24)" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener" title="AMZN 차트"><b>AMZN</b><span class="pc n">−3.4%</span><i class="chip vl go">조건부 롱</i></a><a class="tile" style="background:rgba(239,68,68,0.17)" href="Trader_KIM_Chart.html?t=MSFT&amp;bar=15m" target="_blank" rel="noopener" title="MSFT 차트"><b>MSFT</b><span class="pc n">−1.9%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.43)" href="Trader_KIM_Chart.html?t=SPCX&amp;bar=15m" target="_blank" rel="noopener" title="SPCX 차트"><b>SpaceX</b><span class="pc n">−7.7%</span><i class="chip va">숏 진입</i></a></div></div><div class="hb"><h4>한국지수</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.12)" href="Trader_KIM_Chart.html?t=EWY&amp;bar=15m" target="_blank" rel="noopener" title="EWY 차트"><b>EWY</b><span class="pc n">−0.9%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.34)" href="Trader_KIM_Chart.html?t=KORU&amp;bar=15m" target="_blank" rel="noopener" title="KORU 차트"><b>KORU</b><span class="pc n">−5.7%</span><i class="chip vw">관망</i></a></div></div><div class="hb"><h4>코스피</h4><div class="tiles"><a class="tile" style="background:rgba(239,68,68,0.19)" href="Trader_KIM_Chart.html?t=SAMSUNG&amp;bar=15m" target="_blank" rel="noopener" title="SAMSUNG 차트"><b>삼성전자</b><span class="pc n">−2.5%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.38)" href="Trader_KIM_Chart.html?t=HYUNDAI&amp;bar=15m" target="_blank" rel="noopener" title="HYUNDAI 차트"><b>현대차</b><span class="pc n">−6.5%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.45)" href="Trader_KIM_Chart.html?t=LGELECTRONICS&amp;bar=15m" target="_blank" rel="noopener" title="LGELECTRONICS 차트"><b>LG전자</b><span class="pc n">−8.1%</span><i class="chip vw">관망</i></a><a class="tile" style="background:rgba(239,68,68,0.21)" href="Trader_KIM_Chart.html?t=NAVER&amp;bar=15m" target="_blank" rel="noopener" title="NAVER 차트"><b>네이버</b><span class="pc n">−2.9%</span><i class="chip vw">관망</i></a></div></div></div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar-x"></span>전 종목 데이터 <span class="cnt">32종목</span></h2>
+  <div class="filters" role="group" aria-label="판정 필터"><button type="button" id="f-all" data-f="all" aria-pressed="true">전체</button><button type="button" id="f-s" data-f="숏 진입,조건부 숏" aria-pressed="false">숏</button><button type="button" id="f-l" data-f="롱 진입,조건부 롱" aria-pressed="false">롱</button><button type="button" id="f-w" data-f="관망,숏 금지,이벤트" aria-pressed="false">관망</button></div></div>
+ <div class="tw"><table class="t"><thead><tr><th>종목</th><th style="text-align:right">현재가</th><th style="text-align:right">1D</th><th style="text-align:right">5D</th><th style="text-align:right">20D</th><th>추세</th><th>RSI</th><th style="text-align:right">ATR</th><th>20일 저 ~ 고 · 위치</th><th>4H 추이</th><th>판정</th><th>코멘트</th></tr></thead>
+ <tbody id="tb"><tr class="grp" data-g="크립토"><td colspan="12">크립토</td></tr><tr data-g="크립토" data-c="조건부 숏">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=ETH&amp;bar=15m" target="_blank" rel="noopener" title="ETH Trader_KIM Chart 15분봉">ETH<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>2,246.00</b></td>
+<td class="r n dn">-0.40%</td>
+<td class="r n dn">-3.34%</td>
+<td class="r n"><div class="pc20"><span class="dn">-11.42%</span><span class="bx"><i style="width:25%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">30</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(30% - 1px)"></i></div></div></td>
+<td class="r n">3.7%</td>
+<td><div class="rng n">2,171.52 ~ 2,578.44</div><div class="rngbar" title="20일 범위 내 위치 18%"><i style="left:calc(18% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.5 5.8,3.8 11.6,3.7 17.4,3.7 23.2,8.1 28.9,2.0 34.7,4.0 40.5,12.4 46.3,12.1 52.1,9.7 57.9,2.4 63.7,7.7 69.5,21.5 75.3,24.2 81.1,24.3 86.8,24.4 92.6,26.0 98.4,24.0 104.2,23.0 110.0,22.6"/></svg></td>
+<td><i class="chip vb">조건부 숏</i></td>
+<td class="note">RSI 30 과매도 → 지금은 금지, MA5(2,290) 반등 확인 후 숏</td></tr><tr data-g="크립토" data-c="조건부 숏">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=BTC&amp;bar=15m" target="_blank" rel="noopener" title="BTC Trader_KIM Chart 15분봉">BTC<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>77,459</b></td>
+<td class="r n dn">-0.87%</td>
+<td class="r n dn">-3.33%</td>
+<td class="r n"><div class="pc20"><span class="dn">-7.47%</span><span class="bx"><i style="width:17%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35% - 1px)"></i></div></div></td>
+<td class="r n">2.5%</td>
+<td><div class="rng n">76,260 ~ 84,876</div><div class="rngbar" title="20일 범위 내 위치 14%"><i style="left:calc(14% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.3 5.8,5.1 11.6,5.4 17.4,4.2 23.2,8.0 28.9,2.9 34.7,4.1 40.5,11.5 46.3,11.5 52.1,9.9 57.9,2.0 63.7,6.5 69.5,20.6 75.3,19.5 81.1,19.8 86.8,23.7 92.6,22.6 98.4,26.0 104.2,24.0 110.0,23.1"/></svg></td>
+<td><i class="chip vb">조건부 숏</i></td>
+<td class="note">ETF 3일 연속 순유출, 바이낸스 출금 재개 전. MA5 79.0k 반등 실패 시 숏. 출금 정상화되면 숏 취소</td></tr><tr data-g="크립토" data-c="롱 진입">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=ONDO&amp;bar=15m" target="_blank" rel="noopener" title="ONDO Trader_KIM Chart 15분봉">ONDO<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>0.4175</b></td>
+<td class="r n up">+9.24%</td>
+<td class="r n up">+0.48%</td>
+<td class="r n"><div class="pc20"><span class="dn">-19.96%</span><span class="bx"><i style="width:44%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 2/3"><i class="on"></i><i class="on"></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">46</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(46% - 1px)"></i></div></div></td>
+<td class="r n">6.9%</td>
+<td><div class="rng n">0.3600 ~ 0.5322</div><div class="rngbar" title="20일 범위 내 위치 33%"><i style="left:calc(33% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.5 5.8,6.8 11.6,7.8 17.4,6.8 23.2,7.3 28.9,4.3 34.7,6.0 40.5,13.9 46.3,14.1 52.1,10.5 57.9,2.0 63.7,8.7 69.5,26.0 75.3,22.7 81.1,21.8 86.8,21.0 92.6,16.8 98.4,14.4 104.2,9.2 110.0,8.0"/></svg></td>
+<td><i class="chip vl">롱 진입</i></td>
+<td class="note">금요일 +9.2% 반등, MA5(0.411) 회복·RSI 45. 4H 저점 상승 중. 저유동성 알트라 비중 작게</td></tr><tr data-g="크립토" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SOL&amp;bar=15m" target="_blank" rel="noopener" title="SOL Trader_KIM Chart 15분봉">SOL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>96.63</b></td>
+<td class="r n up">+0.72%</td>
+<td class="r n dn">-4.24%</td>
+<td class="r n"><div class="pc20"><span class="dn">-13.16%</span><span class="bx"><i style="width:29%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">32</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(32% - 1px)"></i></div></div></td>
+<td class="r n">4.0%</td>
+<td><div class="rng n">92.26 ~ 113.36</div><div class="rngbar" title="20일 범위 내 위치 21%"><i style="left:calc(21% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.9 5.8,4.9 11.6,4.1 17.4,2.9 23.2,7.7 28.9,2.0 34.7,3.8 40.5,11.7 46.3,11.5 52.1,9.7 57.9,3.0 63.7,11.3 69.5,23.4 75.3,19.0 81.1,18.6 86.8,20.7 92.6,25.7 98.4,26.0 104.2,21.4 110.0,20.4"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">RSI 32, 20일 저점 92.3 근접. 반등 시 99~101 숏 고려</td></tr><tr data-g="크립토" data-c="숏 진입">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=CRCL&amp;bar=15m" target="_blank" rel="noopener" title="CRCL Trader_KIM Chart 15분봉">CRCL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>73.36</b></td>
+<td class="r n dn">-3.47%</td>
+<td class="r n dn">-8.88%</td>
+<td class="r n"><div class="pc20"><span class="dn">-15.39%</span><span class="bx"><i style="width:34%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35% - 1px)"></i></div></div></td>
+<td class="r n">5.7%</td>
+<td><div class="rng n">71.20 ~ 92.20</div><div class="rngbar" title="20일 범위 내 위치 10%"><i style="left:calc(10% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.8 5.8,2.7 11.6,2.8 17.4,2.3 23.2,6.9 28.9,2.0 34.7,5.4 40.5,8.7 46.3,8.6 52.1,7.3 57.9,4.0 63.7,6.6 69.5,18.0 75.3,15.3 81.1,16.6 86.8,20.7 92.6,24.0 98.4,26.0 104.2,25.0 110.0,24.3"/></svg></td>
+<td><i class="chip va">숏 진입</i></td>
+<td class="note">바이낸스 해킹 후 USDC 동결 이슈, 모든 이평 아래. 20일 저점 71.2 이탈 시 목표 도달</td></tr><tr data-g="크립토" data-c="숏 진입">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=MSTR&amp;bar=15m" target="_blank" rel="noopener" title="MSTR Trader_KIM Chart 15분봉">MSTR<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>133.14</b></td>
+<td class="r n dn">-1.24%</td>
+<td class="r n dn">-5.43%</td>
+<td class="r n"><div class="pc20"><span class="dn">-15.51%</span><span class="bx"><i style="width:34%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39% - 1px)"></i></div></div></td>
+<td class="r n">5.9%</td>
+<td><div class="rng n">124.67 ~ 159.24</div><div class="rngbar" title="20일 범위 내 위치 25%"><i style="left:calc(25% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,8.7 5.8,6.3 11.6,6.7 17.4,6.6 23.2,10.9 28.9,2.0 34.7,3.7 40.5,10.4 46.3,10.4 52.1,8.8 57.9,4.2 63.7,8.0 69.5,20.9 75.3,16.5 81.1,18.7 86.8,23.8 92.6,22.6 98.4,26.0 104.2,23.7 110.0,22.3"/></svg></td>
+<td><i class="chip va">숏 진입</i></td>
+<td class="note">BTC 7.7만 약세 + ETF 순유출(-$410M). MA5 137 저항. 금요일 고가 137.6 위로 가면 무효</td></tr><tr class="grp" data-g="원자재"><td colspan="12">원자재</td></tr><tr data-g="원자재" data-c="숏 금지">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=XAU&amp;bar=15m" target="_blank" rel="noopener" title="XAU Trader_KIM Chart 15분봉">XAU<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>금</small></td>
+<td class="r n"><b>3,895.80</b></td>
+<td class="r n dn">-3.05%</td>
+<td class="r n dn">-2.98%</td>
+<td class="r n"><div class="pc20"><span class="dn">-7.14%</span><span class="bx"><i style="width:16%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">28</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(28% - 1px)"></i></div></div></td>
+<td class="r n">1.4%</td>
+<td><div class="rng n">3,880.60 ~ 4,220.70</div><div class="rngbar" title="20일 범위 내 위치 4%"><i style="left:calc(4% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.3 5.8,5.7 11.6,5.6 17.4,5.3 23.2,6.0 28.9,2.0 34.7,4.5 40.5,6.3 46.3,8.3 52.1,8.7 57.9,8.4 63.7,8.5 69.5,10.0 75.3,11.5 81.1,14.1 86.8,15.4 92.6,23.9 98.4,26.0 104.2,25.8 110.0,25.8"/></svg></td>
+<td><i class="chip vw">숏 금지</i></td>
+<td class="note">RSI 27 + 1년 최저. 안전자산 재매수 위험, 5%는 ATR 1.4%로 비현실적</td></tr><tr data-g="원자재" data-c="조건부 롱">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=CL&amp;bar=15m" target="_blank" rel="noopener" title="CL Trader_KIM Chart 15분봉">CL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>WTI</small></td>
+<td class="r n"><b>103.16</b></td>
+<td class="r n up">+0.30%</td>
+<td class="r n up">+1.56%</td>
+<td class="r n"><div class="pc20"><span class="up">+14.14%</span><span class="bx"><i style="width:31%;background:var(--up)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 0/3"><i class=""></i><i class=""></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">66</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(66% - 1px)"></i></div></div></td>
+<td class="r n">2.9%</td>
+<td><div class="rng n">89.23 ~ 105.03</div><div class="rngbar" title="20일 범위 내 위치 88%"><i style="left:calc(88% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--up)" stroke-width="1.6" points="0.0,26.0 5.8,18.8 11.6,18.0 17.4,15.5 23.2,7.2 28.9,16.3 34.7,15.8 40.5,18.3 46.3,14.7 52.1,14.5 57.9,22.9 63.7,10.2 69.5,9.7 75.3,7.0 81.1,3.6 86.8,2.0 92.6,2.1 98.4,7.8 104.2,7.8 110.0,8.2"/></svg></td>
+<td><i class="chip vl go">조건부 롱</i></td>
+<td class="note">정배열 상승 추세(20일 +14%), 호르무즈 긴장. MA5~MA20 눌림 롱. 이란 협상 타결 시 급락 위험</td></tr><tr class="grp" data-g="미국지수"><td colspan="12">미국지수</td></tr><tr data-g="미국지수" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SPY&amp;bar=15m" target="_blank" rel="noopener" title="SPY Trader_KIM Chart 15분봉">SPY<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>758.68</b></td>
+<td class="r n dn">-1.04%</td>
+<td class="r n dn">-1.18%</td>
+<td class="r n"><div class="pc20"><span class="dn">-2.89%</span><span class="bx"><i style="width:6%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39% - 1px)"></i></div></div></td>
+<td class="r n">0.9%</td>
+<td><div class="rng n">752.00 ~ 782.20</div><div class="rngbar" title="20일 범위 내 위치 22%"><i style="left:calc(22% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.0 5.8,4.5 11.6,3.6 17.4,3.8 23.2,3.2 28.9,2.0 34.7,6.3 40.5,6.7 46.3,6.6 52.1,5.8 57.9,5.2 63.7,6.1 69.5,12.4 75.3,15.5 81.1,16.1 86.8,18.4 92.6,22.8 98.4,26.0 104.2,24.4 110.0,24.1"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">ATR 0.9% — 5% 목표 부적합, 헤지 용도만</td></tr><tr data-g="미국지수" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=QQQ&amp;bar=15m" target="_blank" rel="noopener" title="QQQ Trader_KIM Chart 15분봉">QQQ<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>695.46</b></td>
+<td class="r n dn">-1.62%</td>
+<td class="r n dn">-2.84%</td>
+<td class="r n"><div class="pc20"><span class="dn">-7.87%</span><span class="bx"><i style="width:17%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35% - 1px)"></i></div></div></td>
+<td class="r n">1.7%</td>
+<td><div class="rng n">685.69 ~ 755.68</div><div class="rngbar" title="20일 범위 내 위치 14%"><i style="left:calc(14% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.1 5.8,2.7 11.6,2.1 17.4,2.9 23.2,4.1 28.9,2.0 34.7,7.2 40.5,8.8 46.3,8.5 52.1,7.8 57.9,7.5 63.7,9.0 69.5,16.5 75.3,18.6 81.1,19.3 86.8,21.9 92.6,24.0 98.4,26.0 104.2,24.7 110.0,24.1"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">20일 저점 685.7 이탈 시 헤지 숏</td></tr><tr class="grp" data-g="AI·반도체"><td colspan="12">AI·반도체</td></tr><tr data-g="AI·반도체" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=NVDA&amp;bar=15m" target="_blank" rel="noopener" title="NVDA Trader_KIM Chart 15분봉">NVDA<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>205.61</b></td>
+<td class="r n dn">-2.36%</td>
+<td class="r n dn">-5.28%</td>
+<td class="r n"><div class="pc20"><span class="dn">-11.11%</span><span class="bx"><i style="width:25%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">33</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(33% - 1px)"></i></div></div></td>
+<td class="r n">2.7%</td>
+<td><div class="rng n">201.31 ~ 231.30</div><div class="rngbar" title="20일 범위 내 위치 14%"><i style="left:calc(14% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.5 5.8,3.6 11.6,2.7 17.4,2.0 23.2,5.8 28.9,9.0 34.7,11.4 40.5,12.5 46.3,12.7 52.1,10.9 57.9,10.6 63.7,11.7 69.5,17.4 75.3,19.8 81.1,20.2 86.8,22.3 92.6,24.2 98.4,26.0 104.2,25.4 110.0,25.4"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">ATR 2.7%로 5%까지 느림. 20일 저점 201.3 이탈 시 숏 고려</td></tr><tr data-g="AI·반도체" data-c="숏 진입">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=AMD&amp;bar=15m" target="_blank" rel="noopener" title="AMD Trader_KIM Chart 15분봉">AMD<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>510.93</b></td>
+<td class="r n dn">-3.74%</td>
+<td class="r n dn">-4.83%</td>
+<td class="r n"><div class="pc20"><span class="dn">-16.70%</span><span class="bx"><i style="width:37%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39% - 1px)"></i></div></div></td>
+<td class="r n">5.0%</td>
+<td><div class="rng n">493.28 ~ 615.01</div><div class="rngbar" title="20일 범위 내 위치 14%"><i style="left:calc(14% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,6.7 5.8,4.9 11.6,4.7 17.4,5.0 23.2,5.7 28.9,2.0 34.7,5.8 40.5,8.7 46.3,8.2 52.1,6.2 57.9,3.2 63.7,6.0 69.5,18.3 75.3,17.5 81.1,18.0 86.8,21.6 92.6,24.0 98.4,26.0 104.2,24.8 110.0,24.3"/></svg></td>
+<td><i class="chip va">숏 진입</i></td>
+<td class="note">인텔 -29% 쇼크·필라델피아 반도체 -7.2%. MA5(536) 아래 역배열, 4H 반등 약함. 20일 저점 493 재시험 시나리오</td></tr><tr data-g="AI·반도체" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=AVGO&amp;bar=15m" target="_blank" rel="noopener" title="AVGO Trader_KIM Chart 15분봉">AVGO<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>327.77</b></td>
+<td class="r n dn">-2.38%</td>
+<td class="r n dn">-1.88%</td>
+<td class="r n"><div class="pc20"><span class="dn">-10.23%</span><span class="bx"><i style="width:23%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">41</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(41% - 1px)"></i></div></div></td>
+<td class="r n">3.0%</td>
+<td><div class="rng n">319.63 ~ 365.70</div><div class="rngbar" title="20일 범위 내 위치 18%"><i style="left:calc(18% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,10.6 5.8,7.2 11.6,6.2 17.4,5.5 23.2,7.1 28.9,2.0 34.7,9.6 40.5,12.1 46.3,12.7 52.1,10.3 57.9,7.7 63.7,8.4 69.5,17.4 75.3,20.6 81.1,20.5 86.8,21.2 92.6,25.9 98.4,26.0 104.2,24.9 110.0,25.1"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">20일 저점 319.6 근접, 방향성 약함</td></tr><tr data-g="AI·반도체" data-c="조건부 숏">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SOXL&amp;bar=15m" target="_blank" rel="noopener" title="SOXL Trader_KIM Chart 15분봉">SOXL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>77.88</b></td>
+<td class="r n dn">-11.81%</td>
+<td class="r n dn">-16.20%</td>
+<td class="r n"><div class="pc20"><span class="dn">-45.24%</span><span class="bx"><i style="width:100%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">33</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(33% - 1px)"></i></div></div></td>
+<td class="r n">13.9%</td>
+<td><div class="rng n">70.43 ~ 143.23</div><div class="rngbar" title="20일 범위 내 위치 10%"><i style="left:calc(10% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,7.2 5.8,4.9 11.6,4.3 17.4,4.5 23.2,4.5 28.9,2.0 34.7,7.2 40.5,9.5 46.3,9.3 52.1,7.5 57.9,3.8 63.7,6.0 69.5,16.9 75.3,18.7 81.1,19.1 86.8,21.6 92.6,25.6 98.4,26.0 104.2,25.2 110.0,25.5"/></svg></td>
+<td><i class="chip vb">조건부 숏</i></td>
+<td class="note">반도체 3배. 금요일 -11.8%, 20일 -45%. RSI 33이라 추격 금지 → MA5(89) 아래 반등 숏, 비중 절반</td></tr><tr data-g="AI·반도체" data-c="조건부 숏">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SNDK&amp;bar=15m" target="_blank" rel="noopener" title="SNDK Trader_KIM Chart 15분봉">SNDK<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>1,160.10</b></td>
+<td class="r n dn">-9.70%</td>
+<td class="r n dn">-8.79%</td>
+<td class="r n"><div class="pc20"><span class="dn">-27.95%</span><span class="bx"><i style="width:62%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">33</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(33% - 1px)"></i></div></div></td>
+<td class="r n">7.8%</td>
+<td><div class="rng n">1,117.10 ~ 1,610.30</div><div class="rngbar" title="20일 범위 내 위치 9%"><i style="left:calc(9% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,11.0 5.8,6.0 11.6,5.6 17.4,5.6 23.2,4.4 28.9,2.0 34.7,5.7 40.5,7.7 46.3,7.2 52.1,5.5 57.9,5.0 63.7,8.9 69.5,13.6 75.3,11.3 81.1,12.7 86.8,20.3 92.6,23.6 98.4,26.0 104.2,25.3 110.0,25.3"/></svg></td>
+<td><i class="chip vb">조건부 숏</i></td>
+<td class="note">실적 비트에도 &#x27;메모리 가격 피크&#x27; 우려로 -9.7%. 1,215~1,255(MA5) 되돌림 숏</td></tr><tr data-g="AI·반도체" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SKHY&amp;bar=15m" target="_blank" rel="noopener" title="SKHY Trader_KIM Chart 15분봉">SKHY<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>SK하이닉스</small></td>
+<td class="r n"><b>150.62</b></td>
+<td class="r n dn">-3.03%</td>
+<td class="r n up">+3.51%</td>
+<td class="r n"><div class="pc20"><span class="dn">-11.79%</span><span class="bx"><i style="width:26%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 2/3"><i class="on"></i><i class="on"></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">47</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(47% - 1px)"></i></div></div></td>
+<td class="r n">5.7%</td>
+<td><div class="rng n">127.64 ~ 171.51</div><div class="rngbar" title="20일 범위 내 위치 52%"><i style="left:calc(52% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--up)" stroke-width="1.6" points="0.0,25.7 5.8,16.4 11.6,14.3 17.4,14.8 23.2,4.1 28.9,2.0 34.7,10.4 40.5,9.2 46.3,8.6 52.1,6.6 57.9,2.8 63.7,5.8 69.5,17.8 75.3,20.8 81.1,21.0 86.8,24.3 92.6,24.8 98.4,26.0 104.2,25.0 110.0,23.9"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">외국인 하이닉스 -4,229억 순매도. MA20 위 유지, 방향 대기</td></tr><tr data-g="AI·반도체" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=MU&amp;bar=15m" target="_blank" rel="noopener" title="MU Trader_KIM Chart 15분봉">MU<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>898.70</b></td>
+<td class="r n dn">-1.49%</td>
+<td class="r n dn">-1.79%</td>
+<td class="r n"><div class="pc20"><span class="dn">-13.58%</span><span class="bx"><i style="width:30%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">44</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(44% - 1px)"></i></div></div></td>
+<td class="r n">4.8%</td>
+<td><div class="rng n">818.58 ~ 1,041.25</div><div class="rngbar" title="20일 범위 내 위치 36%"><i style="left:calc(36% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,11.7 5.8,6.3 11.6,5.3 17.4,6.4 23.2,4.7 28.9,2.0 34.7,7.6 40.5,10.2 46.3,10.5 52.1,8.0 57.9,9.4 63.7,13.3 69.5,20.5 75.3,20.2 81.1,21.4 86.8,26.0 92.6,24.6 98.4,24.7 104.2,23.6 110.0,21.9"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">MA20(906) 부근 공방, RSI 44 중립. 920 저항 확인 필요</td></tr><tr data-g="AI·반도체" data-c="조건부 숏">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=TSM&amp;bar=15m" target="_blank" rel="noopener" title="TSM Trader_KIM Chart 15분봉">TSM<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>409.99</b></td>
+<td class="r n dn">-2.56%</td>
+<td class="r n dn">-4.20%</td>
+<td class="r n"><div class="pc20"><span class="dn">-10.00%</span><span class="bx"><i style="width:22%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">38</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(38% - 1px)"></i></div></div></td>
+<td class="r n">3.0%</td>
+<td><div class="rng n">401.28 ~ 461.92</div><div class="rngbar" title="20일 범위 내 위치 14%"><i style="left:calc(14% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.0 5.8,4.8 11.6,2.5 17.4,3.0 23.2,2.5 28.9,2.0 34.7,8.0 40.5,10.8 46.3,10.7 52.1,7.8 57.9,4.5 63.7,7.5 69.5,16.1 75.3,16.4 81.1,17.3 86.8,19.4 92.6,23.9 98.4,26.0 104.2,24.0 110.0,23.9"/></svg></td>
+<td><i class="chip vb">조건부 숏</i></td>
+<td class="note">반도체 동반 약세, MA5·MA20(422~423) 저항 숏. ATR 3%라 2~3일 필요</td></tr><tr class="grp" data-g="빅테크"><td colspan="12">빅테크</td></tr><tr data-g="빅테크" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=TSLA&amp;bar=15m" target="_blank" rel="noopener" title="TSLA Trader_KIM Chart 15분봉">TSLA<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>400.27</b></td>
+<td class="r n up">+0.69%</td>
+<td class="r n up">+1.64%</td>
+<td class="r n"><div class="pc20"><span class="up">+3.91%</span><span class="bx"><i style="width:9%;background:var(--up)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 1/3"><i class="on"></i><i class=""></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">63</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(63% - 1px)"></i></div></div></td>
+<td class="r n">3.7%</td>
+<td><div class="rng n">347.52 ~ 413.18</div><div class="rngbar" title="20일 범위 내 위치 80%"><i style="left:calc(80% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,7.0 5.8,7.0 11.6,2.0 17.4,4.3 23.2,16.2 28.9,12.4 34.7,15.9 40.5,19.7 46.3,17.8 52.1,14.7 57.9,10.1 63.7,13.7 69.5,21.9 75.3,23.0 81.1,25.1 86.8,26.0 92.6,16.6 98.4,18.6 104.2,18.1 110.0,18.9"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">정배열 상승. 20일 고점 413 돌파 시 롱(목표 ~434), 그 전엔 관망</td></tr><tr data-g="빅테크" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=AAPL&amp;bar=15m" target="_blank" rel="noopener" title="AAPL Trader_KIM Chart 15분봉">AAPL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>345.42</b></td>
+<td class="r n dn">-1.93%</td>
+<td class="r n up">+0.43%</td>
+<td class="r n"><div class="pc20"><span class="up">+2.44%</span><span class="bx"><i style="width:5%;background:var(--up)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 1/3"><i class="on"></i><i class=""></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">53</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(53% - 1px)"></i></div></div></td>
+<td class="r n">1.6%</td>
+<td><div class="rng n">337.00 ~ 353.92</div><div class="rngbar" title="20일 범위 내 위치 50%"><i style="left:calc(50% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,14.5 5.8,16.0 11.6,16.9 17.4,17.9 23.2,18.8 28.9,22.9 34.7,18.3 40.5,16.8 46.3,16.9 52.1,12.1 57.9,9.6 63.7,10.2 69.5,2.0 75.3,7.0 81.1,4.2 86.8,26.0 92.6,14.8 98.4,20.2 104.2,19.2 110.0,19.9"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">ATR 1.6% 저변동, 방어주 성격</td></tr><tr data-g="빅테크" data-c="조건부 롱">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=GOOGL&amp;bar=15m" target="_blank" rel="noopener" title="GOOGL Trader_KIM Chart 15분봉">GOOGL<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>282.21</b></td>
+<td class="r n up">+0.27%</td>
+<td class="r n dn">-11.50%</td>
+<td class="r n"><div class="pc20"><span class="dn">-20.07%</span><span class="bx"><i style="width:45%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">19</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(19% - 1px)"></i></div></div></td>
+<td class="r n">3.5%</td>
+<td><div class="rng n">276.23 ~ 359.92</div><div class="rngbar" title="20일 범위 내 위치 7%"><i style="left:calc(7% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.2 5.8,2.0 11.6,2.4 17.4,2.5 23.2,2.8 28.9,2.1 34.7,19.4 40.5,19.2 46.3,20.1 52.1,21.5 57.9,22.5 63.7,24.0 69.5,25.6 75.3,24.9 81.1,25.1 86.8,25.5 92.6,24.7 98.4,26.0 104.2,25.2 110.0,25.1"/></svg></td>
+<td><i class="chip vl go">조건부 롱</i></td>
+<td class="note">RSI 19 극과매도(주간 -11.5%). 20일 저점 276 지지 확인 시 기술적 반등 롱 → MA5(293) 회귀. 비중 작게</td></tr><tr data-g="빅테크" data-c="이벤트">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=PLTR&amp;bar=15m" target="_blank" rel="noopener" title="PLTR Trader_KIM Chart 15분봉">PLTR<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>185.16</b></td>
+<td class="r n dn">-4.86%</td>
+<td class="r n dn">-7.07%</td>
+<td class="r n"><div class="pc20"><span class="dn">-12.10%</span><span class="bx"><i style="width:27%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">39</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(39% - 1px)"></i></div></div></td>
+<td class="r n">3.7%</td>
+<td><div class="rng n">183.21 ~ 213.21</div><div class="rngbar" title="20일 범위 내 위치 6%"><i style="left:calc(6% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.0 5.8,3.1 11.6,2.1 17.4,4.2 23.2,8.6 28.9,5.2 34.7,8.1 40.5,8.9 46.3,6.6 52.1,2.3 57.9,7.4 63.7,5.9 69.5,9.6 75.3,11.0 81.1,11.3 86.8,11.1 92.6,21.1 98.4,26.0 104.2,25.1 110.0,24.9"/></svg></td>
+<td><i class="chip vx">이벤트</i></td>
+<td class="note">11/2(월) 장 마감 후 실적 — 결과 확인 전 진입 금지</td></tr><tr data-g="빅테크" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=META&amp;bar=15m" target="_blank" rel="noopener" title="META Trader_KIM Chart 15분봉">META<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>615.85</b></td>
+<td class="r n dn">-1.18%</td>
+<td class="r n dn">-2.84%</td>
+<td class="r n"><div class="pc20"><span class="dn">-14.86%</span><span class="bx"><i style="width:33%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">30</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(30% - 1px)"></i></div></div></td>
+<td class="r n">4.0%</td>
+<td><div class="rng n">610.20 ~ 772.12</div><div class="rngbar" title="20일 범위 내 위치 3%"><i style="left:calc(3% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,15.7 5.8,14.6 11.6,12.7 17.4,14.0 23.2,23.1 28.9,26.0 34.7,20.9 40.5,22.2 46.3,18.5 52.1,18.8 57.9,2.0 63.7,9.4 69.5,13.6 75.3,18.2 81.1,20.7 86.8,25.2 92.6,9.8 98.4,22.2 104.2,23.4 110.0,22.8"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">RSI 30, 20일 저점 610 바로 위. 이탈 시 숏 / 지지 시 반등 — 확인 후</td></tr><tr data-g="빅테크" data-c="조건부 롱">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=AMZN&amp;bar=15m" target="_blank" rel="noopener" title="AMZN Trader_KIM Chart 15분봉">AMZN<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>241.55</b></td>
+<td class="r n up">+6.56%</td>
+<td class="r n dn">-3.38%</td>
+<td class="r n"><div class="pc20"><span class="dn">-8.32%</span><span class="bx"><i style="width:18%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">43</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(43% - 1px)"></i></div></div></td>
+<td class="r n">3.6%</td>
+<td><div class="rng n">214.66 ~ 266.43</div><div class="rngbar" title="20일 범위 내 위치 52%"><i style="left:calc(52% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.7 5.8,2.2 11.6,2.2 17.4,2.9 23.2,3.8 28.9,2.0 34.7,2.9 40.5,3.9 46.3,3.3 52.1,5.9 57.9,8.0 63.7,10.7 69.5,25.8 75.3,25.7 81.1,26.0 86.8,24.7 92.6,15.0 98.4,13.8 104.2,13.4 110.0,13.3"/></svg></td>
+<td><i class="chip vl go">조건부 롱</i></td>
+<td class="note">실적 쇼크로 214까지 밀린 뒤 금요일 +6.6% 반전(장대양봉). 236~240 눌림 롱, 1차 목표 ≈ MA20(251)</td></tr><tr data-g="빅테크" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=MSFT&amp;bar=15m" target="_blank" rel="noopener" title="MSFT Trader_KIM Chart 15분봉">MSFT<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>523.82</b></td>
+<td class="r n dn">-1.18%</td>
+<td class="r n dn">-1.87%</td>
+<td class="r n"><div class="pc20"><span class="dn">-2.37%</span><span class="bx"><i style="width:5%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 2/3"><i class="on"></i><i class="on"></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">48</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(48% - 1px)"></i></div></div></td>
+<td class="r n">2.4%</td>
+<td><div class="rng n">515.10 ~ 568.32</div><div class="rngbar" title="20일 범위 내 위치 16%"><i style="left:calc(16% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,17.5 5.8,19.2 11.6,18.6 17.4,20.2 23.2,21.5 28.9,18.5 34.7,6.5 40.5,2.7 46.3,2.0 52.1,12.2 57.9,24.6 63.7,19.4 69.5,20.1 75.3,23.8 81.1,24.3 86.8,22.7 92.6,25.1 98.4,26.0 104.2,25.1 110.0,25.2"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">MA50(519) 지지 테스트, 중립</td></tr><tr data-g="빅테크" data-c="숏 진입">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SPCX&amp;bar=15m" target="_blank" rel="noopener" title="SPCX Trader_KIM Chart 15분봉">SPCX<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>SpaceX</small></td>
+<td class="r n"><b>136.95</b></td>
+<td class="r n dn">-3.10%</td>
+<td class="r n dn">-7.70%</td>
+<td class="r n"><div class="pc20"><span class="dn">-16.72%</span><span class="bx"><i style="width:37%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">35</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(35% - 1px)"></i></div></div></td>
+<td class="r n">4.9%</td>
+<td><div class="rng n">134.81 ~ 167.28</div><div class="rngbar" title="20일 범위 내 위치 7%"><i style="left:calc(7% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,3.3 5.8,2.3 11.6,2.0 17.4,3.5 23.2,10.4 28.9,9.6 34.7,12.1 40.5,12.5 46.3,12.7 52.1,13.1 57.9,11.1 63.7,11.8 69.5,17.0 75.3,16.9 81.1,18.1 86.8,20.4 92.6,20.3 98.4,26.0 104.2,23.9 110.0,23.0"/></svg></td>
+<td><i class="chip va">숏 진입</i></td>
+<td class="note">5일 -7.7%, 이평 3개 모두 아래. 20일 저점 134.8 이탈 시 가속. 현재가가 진입 하단</td></tr><tr class="grp" data-g="한국지수"><td colspan="12">한국지수</td></tr><tr data-g="한국지수" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=EWY&amp;bar=15m" target="_blank" rel="noopener" title="EWY Trader_KIM Chart 15분봉">EWY<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>153.65</b></td>
+<td class="r n dn">-2.01%</td>
+<td class="r n dn">-0.86%</td>
+<td class="r n"><div class="pc20"><span class="dn">-13.72%</span><span class="bx"><i style="width:30%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">40</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(40% - 1px)"></i></div></div></td>
+<td class="r n">3.9%</td>
+<td><div class="rng n">146.40 ~ 178.99</div><div class="rngbar" title="20일 범위 내 위치 22%"><i style="left:calc(22% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,16.7 5.8,7.8 11.6,6.9 17.4,7.7 23.2,4.5 28.9,2.0 34.7,8.0 40.5,12.3 46.3,11.8 52.1,11.3 57.9,8.7 63.7,9.6 69.5,19.8 75.3,22.6 81.1,21.2 86.8,25.0 92.6,25.8 98.4,26.0 104.2,25.8 110.0,25.4"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">코스피 외국인 -1.6조 순매도. 146~150 지지 확인 필요</td></tr><tr data-g="한국지수" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=KORU&amp;bar=15m" target="_blank" rel="noopener" title="KORU Trader_KIM Chart 15분봉">KORU<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small></small></td>
+<td class="r n"><b>10.68</b></td>
+<td class="r n dn">-7.14%</td>
+<td class="r n dn">-5.65%</td>
+<td class="r n"><div class="pc20"><span class="dn">-41.03%</span><span class="bx"><i style="width:91%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">36</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(36% - 1px)"></i></div></div></td>
+<td class="r n">12.3%</td>
+<td><div class="rng n">9.60 ~ 18.33</div><div class="rngbar" title="20일 범위 내 위치 12%"><i style="left:calc(12% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,15.5 5.8,7.5 11.6,6.6 17.4,7.3 23.2,4.3 28.9,2.0 34.7,8.0 40.5,12.6 46.3,12.1 52.1,11.4 57.9,8.9 63.7,9.8 69.5,19.7 75.3,22.7 81.1,21.0 86.8,24.7 92.6,25.7 98.4,26.0 104.2,25.9 110.0,25.8"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">3배 레버리지, 20일 -41%. 변동성 과다</td></tr><tr class="grp" data-g="코스피"><td colspan="12">코스피</td></tr><tr data-g="코스피" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=SAMSUNG&amp;bar=15m" target="_blank" rel="noopener" title="SAMSUNG Trader_KIM Chart 15분봉">SAMSUNG<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>삼성전자</small></td>
+<td class="r n"><b>163.10</b></td>
+<td class="r n dn">-2.32%</td>
+<td class="r n dn">-2.50%</td>
+<td class="r n"><div class="pc20"><span class="dn">-15.61%</span><span class="bx"><i style="width:35%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">42</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(42% - 1px)"></i></div></div></td>
+<td class="r n">5.8%</td>
+<td><div class="rng n">146.11 ~ 195.88</div><div class="rngbar" title="20일 범위 내 위치 34%"><i style="left:calc(34% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,13.2 5.8,6.1 11.6,4.9 17.4,5.5 23.2,3.7 28.9,2.0 34.7,7.0 40.5,15.2 46.3,15.5 52.1,15.2 57.9,13.5 63.7,14.8 69.5,21.7 75.3,22.8 81.1,20.9 86.8,24.0 92.6,25.2 98.4,25.2 104.2,26.0 110.0,25.8"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">외국인 -2,308억 순매도, MA20(165) 하회</td></tr><tr data-g="코스피" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=HYUNDAI&amp;bar=15m" target="_blank" rel="noopener" title="HYUNDAI Trader_KIM Chart 15분봉">HYUNDAI<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>현대차</small></td>
+<td class="r n"><b>208.12</b></td>
+<td class="r n dn">-2.43%</td>
+<td class="r n dn">-6.49%</td>
+<td class="r n"><div class="pc20"><span class="dn">-13.41%</span><span class="bx"><i style="width:30%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 3/3"><i class="on"></i><i class="on"></i><i class="on"></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">26</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(26% - 1px)"></i></div></div></td>
+<td class="r n">4.3%</td>
+<td><div class="rng n">205.45 ~ 250.01</div><div class="rngbar" title="20일 범위 내 위치 6%"><i style="left:calc(6% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,5.8 5.8,3.3 11.6,5.0 17.4,6.8 23.2,3.9 28.9,2.0 34.7,7.3 40.5,12.6 46.3,11.9 52.1,10.7 57.9,8.2 63.7,9.2 69.5,18.1 75.3,18.6 81.1,22.6 86.8,25.0 92.6,24.4 98.4,26.0 104.2,25.3 110.0,25.3"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">RSI 26 과매도, 20일 저점 205 근접 — 숏 금지</td></tr><tr data-g="코스피" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=LGELECTRONICS&amp;bar=15m" target="_blank" rel="noopener" title="LGELECTRONICS Trader_KIM Chart 15분봉">LGELECTRONICS<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>LG전자</small></td>
+<td class="r n"><b>109.61</b></td>
+<td class="r n dn">-3.43%</td>
+<td class="r n dn">-8.10%</td>
+<td class="r n"><div class="pc20"><span class="dn">-27.26%</span><span class="bx"><i style="width:61%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 2/3"><i class="on"></i><i class="on"></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n dn" style="width:20px;text-align:right;font-weight:700">27</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(27% - 1px)"></i></div></div></td>
+<td class="r n">4.6%</td>
+<td><div class="rng n">109.13 ~ 150.51</div><div class="rngbar" title="20일 범위 내 위치 1%"><i style="left:calc(1% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,4.7 5.8,4.2 11.6,4.7 17.4,5.0 23.2,4.0 28.9,2.0 34.7,6.2 40.5,17.1 46.3,15.1 52.1,13.4 57.9,14.2 63.7,13.9 69.5,18.7 75.3,21.3 81.1,21.5 86.8,22.9 92.6,24.3 98.4,25.4 104.2,25.7 110.0,26.0"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">RSI 27 과매도, 20일 -27%</td></tr><tr data-g="코스피" data-c="관망">
+<td class="tkc"><a class="tk" href="Trader_KIM_Chart.html?t=NAVER&amp;bar=15m" target="_blank" rel="noopener" title="NAVER Trader_KIM Chart 15분봉">NAVER<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a><small>네이버</small></td>
+<td class="r n"><b>128.60</b></td>
+<td class="r n dn">-2.07%</td>
+<td class="r n dn">-2.89%</td>
+<td class="r n"><div class="pc20"><span class="dn">-5.92%</span><span class="bx"><i style="width:13%;background:var(--dn)"></i></span></div></td>
+<td><span class="trd" title="MA5·MA20·MA50 아래 개수 2/3"><i class="on"></i><i class="on"></i><i class=""></i></span></td>
+<td><div class="rg"><span class="n " style="width:20px;text-align:right;font-weight:700">40</span><div class="gauge" title="RSI 30·70 구간"><i style="left:calc(40% - 1px)"></i></div></div></td>
+<td class="r n">3.2%</td>
+<td><div class="rng n">126.57 ~ 139.69</div><div class="rngbar" title="20일 범위 내 위치 15%"><i style="left:calc(15% - 1px)"></i></div></td>
+<td><svg width="110" height="28" viewBox="0 0 110 28" aria-hidden="true"><polyline fill="none" stroke="var(--dn)" stroke-width="1.6" points="0.0,2.0 5.8,7.9 11.6,11.0 17.4,11.0 23.2,10.3 28.9,8.5 34.7,15.5 40.5,20.0 46.3,19.0 52.1,18.6 57.9,19.3 63.7,19.1 69.5,17.8 75.3,23.1 81.1,23.0 86.8,22.3 92.6,26.0 98.4,24.3 104.2,23.8 110.0,23.3"/></svg></td>
+<td><i class="chip vw">관망</i></td>
+<td class="note">20일 저점 126.6 근접 약세 횡보</td></tr></tbody></table></div>
+ <p class="mu" style="margin:0;font-size:11.5px">추세 칸 = MA5·MA20·MA50 중 현재가가 아래인 개수(빨강 칸) · RSI 14 일봉, 30 이하 빨강 · ATR = 14일 평균 일변동폭 · 4H 추이 = 최근 4시간봉 종가 20개</p>
+</section>
+
+<section class="two">
+ <div class="box"><h3><span class="bar-l"></span>5% 수익 만드는 법</h3><ol class="steps">
+  <li><span><b>1배 기준</b> · 1차 목표 도달 = +5%. A등급 숏은 ATR 5~6%/일이라 1~3거래일 범위.</span></li>
+  <li><span><b>2배 레버리지</b> · 가격 2.5%로 계좌 +5%. 손절가는 그대로, 수량을 줄입니다.</span></li>
+  <li><span><b>분할</b> · 진입 구간 하단 50%·상단 50%. 1차 목표에서 절반 익절, 나머지는 손절을 본전으로.</span></li>
+  <li><span><b>수량 역산</b> · 한 종목 손실 한도 계좌 1~1.5%.</span></li>
+  <li><span><b>포트 균형</b> · 숏 A(AMD·SPCX·MSTR·CRCL) + 롱(ONDO·AMZN)으로 방향 리스크 일부 상쇄.</span></li>
+ </ol><div class="formula">수량 = (계좌 × 1%) ÷ |진입가 − 손절가|</div></div>
+ <div class="box"><h3><span class="bar-a"></span>반드시 알아둘 리스크</h3><ul class="risks">
+  <li><span class="imp i-dn">주말 갭</span><span>주식 무기한선물은 주말 호가가 얇고 월요일 개장 시 갭 가능 → 주말 신규 진입은 비중 ½.</span></li>
+  <li><span class="imp i-dn">숏 스퀴즈</span><span>RSI 30 이하(GOOGL 19 · 현대차 26 · LG전자 27 · 금 27 · ETH 30)는 추격 숏 금지. 아마존 214→241 같은 반전 가능.</span></li>
+  <li><span class="imp i-x">이벤트</span><span>ISM 제조업 · PLTR 실적 · 중간선거 · 고용보고서. 이란 협상 타결 시 유가 급락, 위험자산 급반등.</span></li>
+  <li><span class="imp i-dn">크립토</span><span>바이낸스 출금 재개·해킹 자금 회수 뉴스 = 숏 손절 신호. 11/1 09:00 BTC 10월 월봉 마감.</span></li>
+  <li><span class="imp i-dn">청산</span><span>레버리지 선물은 진입과 동시에 손절 주문.</span></li>
+ </ul></div>
+ <div class="box"><h3><span class="bar-b"></span>다가오는 일정 <span class="mu" style="font-size:11px;font-weight:500">KST</span></h3><ol class="tl">
+  <li><span class="d"><b>11/1(일)</b>09:00</span><span class="dot" style="background:var(--b)"></span><span>BTC 10월 월봉 마감<span class="stars">★★★</span></span></li>
+  <li><span class="d"><b>11/1~11/2</b>48시간 내</span><span class="dot" style="background:var(--b)"></span><span>바이낸스 출금 재개 예정<span class="stars">★★★</span></span></li>
+  <li><span class="d"><b>11/2(월)</b>09:00</span><span class="dot" style="background:var(--b)"></span><span>코스피 개장 · 외국인 −1.6조 매도 이후 첫 거래<span class="stars">★★★</span></span></li>
+  <li><span class="d"><b>11/3(화)</b>00:00</span><span class="dot" style="background:var(--b)"></span><span>미 ISM 제조업 PMI<span class="stars">★★★</span></span></li>
+  <li><span class="d"><b>11/3(화)</b>06:00</span><span class="dot" style="background:var(--x)"></span><span><a class="tk" href="Trader_KIM_Chart.html?t=PLTR&amp;bar=15m" target="_blank" rel="noopener" title="PLTR Trader_KIM Chart 15분봉">팔란티어 PLTR<svg class="ci" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M2 13.5h12"/><path d="M3 10.5l3-3.5 2.5 2L13 3.5"/><path d="M10 3.5h3v3"/></svg></a> Q3 실적<span class="stars">★★★★</span></span></li>
+  <li><span class="d"><b>11/3~11/4</b>개표</span><span class="dot" style="background:var(--a)"></span><span>미국 중간선거<span class="stars">★★★★★</span></span></li>
+  <li><span class="d"><b>11/4(수)</b>00:00 · 22:15</span><span class="dot" style="background:var(--b)"></span><span>JOLTS · ADP 고용<span class="stars">★★★</span></span></li>
+  <li><span class="d"><b>11/6(금)</b>22:30</span><span class="dot" style="background:var(--a)"></span><span>10월 고용보고서<span class="stars">★★★★★</span></span></li>
+ </ol></div>
+</section>
+
+<footer class="foot">
+ <div>※ 투자 조언이 아니며 참고용입니다. 가격은 OKX 무기한선물 기준(2026-10-31 10:15 KST 조회)이라 본주 시세와 차이가 있을 수 있고(특히 한국 종목·주말), 진입 전 반드시 실시간 차트로 확인하세요.</div>
+ <div>출처: <a href="https://cappnotes.substack.com/p/closing-look-friday-october-30-2026" target="_blank" rel="noopener">Closing Look 10/30</a> · <a href="https://www.thestreet.com/stock-market-today/stock-market-today-dow-jones-sp-500-nasdaq-updates-oct-30-2026" target="_blank" rel="noopener">TheStreet 10/30</a> · <a href="https://finance.yahoo.com/markets/live/stock-market-today-friday-october-30-dow-sp-500-nasdaq-amazon-intel-ai-sell-off-191429143.html" target="_blank" rel="noopener">Yahoo Finance 라이브</a> · OKX API 시세 · 로컬 수집 데이터(ETF 플로우·외국인 수급·MSTR 공시)</div>
+</footer>
+</div>
+<script>
+(function(){
+ const bs=document.querySelectorAll('.filters button'),rows=[...document.querySelectorAll('#tb tr')];
+ bs.forEach(b=>b.addEventListener('click',()=>{
+  bs.forEach(x=>x.setAttribute('aria-pressed',x===b));
+  const f=b.dataset.f==='all'?null:b.dataset.f.split(',');
+  const vis={};
+  rows.forEach(r=>{ if(r.classList.contains('grp'))return; const on=!f||f.includes(r.dataset.c); r.hidden=!on; if(on)vis[r.dataset.g]=1; });
+  rows.forEach(r=>{ if(r.classList.contains('grp')) r.hidden=!vis[r.dataset.g]; });
+ }));
+})();
+</script>
+</body></html>
