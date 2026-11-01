@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>매크로 지수 결과 · 9월 FOMC 이후 · 10/29 FOMC 직전</title>
+<title>매크로 지수 결과 · 10/28 FOMC 동결 이후 · 12월 FOMC 앞</title>
 <style>
   :root{
     --bg:#0f1115; --card:#181b22; --card-2:#1e222c; --text:#eef0f4; --soft:#9aa2b1; --muted:#6b7280;
-    --border:#2a2e38; --grid:#242833; --accent:#4ea1ff; --gold:#ffc94d;
+    --border:#2a2e38; --grid:#242833; --accent:#4ea1ff; --gold:#ffc94d; --dec:#b48cff;
     --dove:#5fd188; --dove-bg:rgba(95,209,136,.12); --hawk:#ff6b6b; --hawk-bg:rgba(255,107,107,.12);
     --mix:#c9cdd6; --mix-bg:rgba(201,205,214,.10);
   }
@@ -32,7 +32,7 @@
   .stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px;}
   .stat{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:14px 16px;}
   .stat .lbl{font-size:12.5px;color:var(--soft);}
-  .stat .val{font-size:28px;font-weight:900;letter-spacing:-.5px;margin:2px 0;font-variant-numeric:tabular-nums;}
+  .stat .val{font-size:26px;font-weight:900;letter-spacing:-.5px;margin:2px 0;font-variant-numeric:tabular-nums;}
   .stat .desc{font-size:12px;color:var(--soft);}
 
   .chart-card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px 16px 10px;position:relative;}
@@ -41,7 +41,8 @@
   .legend{display:flex;gap:14px;font-size:12px;color:var(--soft);flex-wrap:wrap;}
   .legend span{display:inline-flex;align-items:center;gap:6px;}
   .lg-dot{width:10px;height:10px;border-radius:50%;background:var(--accent);display:inline-block;}
-  .lg-dot.hollow{background:var(--card);border:2px solid var(--accent);}
+  .lg-dot.dec{background:var(--dec);}
+  .lg-dot.hollow{background:var(--card);border:2px solid var(--soft);}
   svg{display:block;width:100%;height:auto;overflow:visible;}
   .tip{position:absolute;pointer-events:none;background:#0b0d12;border:1px solid var(--border);border-radius:10px;
     padding:9px 11px;font-size:12.5px;min-width:170px;max-width:240px;box-shadow:0 6px 20px rgba(0,0,0,.5);opacity:0;transition:opacity .12s;}
@@ -55,7 +56,7 @@
     padding:6px 14px;font-size:13px;cursor:pointer;font-family:inherit;}
   .filters button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);font-weight:700;}
   .tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:12px;}
-  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px;min-width:940px;}
+  table{width:100%;border-collapse:collapse;background:var(--card);font-size:13.5px;min-width:960px;}
   th,td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;}
   th{background:#1a1e26;color:var(--soft);font-size:12.5px;font-weight:600;white-space:nowrap;}
   tr:last-child td{border-bottom:none;}
@@ -74,9 +75,13 @@
   .pb{display:flex;align-items:center;gap:8px;}
   .pb .bar{width:64px;height:6px;border-radius:3px;background:var(--grid);overflow:hidden;}
   .pb .bar i{display:block;height:100%;background:var(--accent);border-radius:3px;}
+  .pb .bar i.dec{background:var(--dec);}
   .pb b{font-size:14px;}
   .pb .na{color:var(--muted);font-size:12px;}
   .pb .arrow{font-size:11.5px;font-weight:700;}
+  .ser{font-size:10.5px;font-weight:800;border-radius:4px;padding:0 5px;}
+  .ser.oct{color:var(--accent);border:1px solid rgba(78,161,255,.5);}
+  .ser.dec{color:var(--dec);border:1px solid rgba(180,140,255,.5);}
   .arrow.dn{color:var(--dove);} .arrow.up{color:var(--hawk);}
   tr.key td{background:rgba(78,161,255,.05);}
   tr.key td:first-child{box-shadow:inset 3px 0 0 var(--accent);}
@@ -109,35 +114,36 @@
 <div class="wrap">
   <a class="back" href="index.html">← MARKET DASHBOARD</a>
 
-  <div class="eyebrow">2026.10.25 (일) 20:30 KST 기준 · 9/16 FOMC(25bp 인상, 3.75~4.00%) 이후 발표 지표 · 10/23 (금) 美 마감 반영 · 표의 날짜는 美 현지 발표일, 일정은 KST</div>
-  <h1>매크로 지수 결과 — 9월 FOMC 이후</h1>
-  <p class="sub">한 줄 요약: <b>물가는 더 뜨거워졌는데, 연준은 10월엔 쉬어간다.</b> 9월 PPI가 전월 <b>+1.3%</b>·근원 <b>+0.7%</b>로 CPI보다 더 크게 튀었지만, 워시 의장이 신호를 주지 않았고 10/22 'AI 투자 공포'로 채권이 급등하면서 10월 인상 확률은 <b>5~8%</b>까지 내려왔습니다. 대신 <b>12월 인상 약 71%</b>, 브렌트유 <b>$116.7</b>가 새 부담입니다. 다음 분수령은 <b>10/29 (목) 03:00 FOMC</b>.</p>
+  <div class="eyebrow">2026.11.01 (일) 12:00 KST 기준 · 9/16 FOMC(25bp 인상) → 10/28 FOMC 동결(3.75~4.00%) · 10/30 (금) 美 마감 반영 · 표의 날짜는 美 현지 발표일, 일정은 KST</div>
+  <h1>매크로 지수 결과 — 10월 FOMC 동결 이후</h1>
+  <p class="sub">한 줄 요약: <b>연준은 10월에 '매파적 동결'을 했고, 이제 승부처는 12월 인상.</b> 10-2 동결이었지만 2명이 인상을 주장했고, 다음 날 9월 PCE <b>3.6%</b>(근원 3.1%)·3분기 GDP <b>+3.4%</b>로 '경기 강하고 물가 높음'이 재확인됐습니다. 12월 인상 확률은 <b>75~82%</b>. 반면 AI 매도에 따른 안전자산 수요로 10년물은 <b>4.91%</b>(10월 -36bp)까지 내려왔고, 브렌트는 <b>$117.6</b>로 더 올랐습니다. 다음 분수령은 <b>11/6 고용 → 11/10 CPI</b>.</p>
 
   <div class="alert">
-    <b>🔥 10/15~10/23 흐름: PPI 쇼크 → 워시 침묵 → AI 공포에 채권 랠리 → 유가 $116</b> — 9월 PPI 전월 +1.3%(예상 0.5~0.6%)·전년 6.3%, 근원 +0.7%(예상 0.3%). 에너지 +10.8%에 서비스도 +0.8% 올라 원가 압력이 넓게 번졌습니다. 소매판매는 +0.8%로 강했지만 주유소 제외 +0.2%, 통제그룹 +0.1%로 실질 소비는 약했습니다.
-    <div class="w">10월 인상 확률: PPI 직후 약 27% → 10/16 워시 '회의 결과를 예단하지 않는다' 발언 후 15% 아래 → 10/22 기술주 폭락·10년물 하루 -18bp(4.95%, 2년 만에 최대 하락) → 10/23 Bloomberg 약 5%·Kalshi 8%. 같은 날 CME 기준 12월 인상 확률은 약 71%. 10/23엔 후티의 사우디 공격으로 브렌트가 $116.72(4월 말 이후 최고)로 마감했고, 10년물은 4.999%로 5% 바로 아래까지 되돌아왔습니다.</div>
+    <b>🔥 10/26~10/30 흐름: 매파적 동결 → PCE·GDP 뜨거움 → 12월 인상 80% 안팎 → 기술주 급락·채권 랠리</b> — FOMC는 10-2로 동결했고, 쿡 이사(2022년 취임 후 첫 반대표)와 해맥 클리블랜드 총재가 25bp 인상을 주장했습니다. 성명은 경기 평가를 'solid'에서 'strong'으로 올렸고, 정보를 더 모아 정책 기조를 판단하겠다는 문구를 새로 넣었습니다.
+    <div class="w">12월 인상 확률: FOMC 전날 78% → FOMC 당일 85%(CME) → 10/29 PCE 전후 장중 74~88% 출렁 → 10/30 75~82%(출처별). 워시 의장은 내년 가을부터 연 8회 회의 중 1회(2028년 2회)를 금리 결정 없는 전략회의로 돌리겠다고 발표. 10/30 나스닥 -2.86%·S&amp;P500 -1.82%, 10년물 4.913%(10월 -36bp, 2023년 12월 이후 최대 월간 하락), WTI $104.12(10월 +15%, 4개월 연속↑)·브렌트 $117.64(4/29 이후 최고).</div>
   </div>
 
   <div class="stats">
-    <div class="stat"><div class="lbl">근원 PPI (9월)</div><div class="val" style="color:var(--hawk)">+0.7%</div><div class="desc">전월비 · 예상 0.3% · 전년비 5.0%</div></div>
-    <div class="stat"><div class="lbl">10월 인상 확률 (10/23)</div><div class="val" style="color:var(--dove)">5~8%</div><div class="desc">Bloomberg·Kalshi · 9월 말 37% → 사실상 동결</div></div>
-    <div class="stat"><div class="lbl">12월 인상 확률 (10/23)</div><div class="val" style="color:var(--hawk)">약 71%</div><div class="desc">CME FedWatch · 인상 시점이 12월로 이동</div></div>
-    <div class="stat"><div class="lbl">브렌트유 (10/23)</div><div class="val" style="color:var(--hawk)">$116.7</div><div class="desc">4월 말 이후 최고 · WTI $103.3 · 3주 연속↑</div></div>
+    <div class="stat"><div class="lbl">10월 FOMC 결과</div><div class="val" style="color:var(--hawk)">동결 10-2</div><div class="desc">3.75~4.00% 유지 · 인상 소수의견 2명</div></div>
+    <div class="stat"><div class="lbl">12월 인상 확률 (10/30)</div><div class="val" style="color:var(--hawk)">75~82%</div><div class="desc">CME 등 출처별 · FOMC 당일 85%</div></div>
+    <div class="stat"><div class="lbl">근원 PCE (9월)</div><div class="val" style="color:var(--hawk)">3.1%</div><div class="desc">전년비 · 헤드라인 3.6% · 전월비 0.5%</div></div>
+    <div class="stat"><div class="lbl">브렌트유 (10/30)</div><div class="val" style="color:var(--hawk)">$117.6</div><div class="desc">4월 말 이후 최고 · WTI $104.1</div></div>
   </div>
 
-  <h2><span class="num">1</span>10월 금리 인상 확률 추이</h2>
+  <h2><span class="num">1</span>금리 인상 확률 추이 — 10월 → 12월</h2>
   <div class="chart-card" id="chartCard">
     <div class="chart-head">
-      <div class="chart-title">10월 FOMC(10/27~28) 25bp 인상 확률</div>
+      <div class="chart-title">FOMC 25bp 인상 확률 (10월 회의 · 12월 회의)</div>
       <div class="legend">
-        <span><i class="lg-dot"></i>보도로 확인된 수치</span>
-        <span><i class="lg-dot hollow"></i>근사치 (시점·범위 추정)</span>
+        <span><i class="lg-dot"></i>10월 인상 (10/28 동결 확정)</span>
+        <span><i class="lg-dot dec"></i>12월 인상</span>
+        <span><i class="lg-dot hollow"></i>근사치</span>
       </div>
     </div>
-    <svg id="chart" viewBox="0 0 900 320" role="img" aria-label="9월 15일부터 10월 23일까지 10월 금리 인상 확률 추이. 9월 말 약 70% 고점 후 고용 쇼크로 20%대, 10월 14일 CPI 상회로 장중 50%대, PPI 이후 약 27%, 10월 16일 워시 발언 후 15% 아래, 10월 23일 5~8%."></svg>
+    <svg id="chart" viewBox="0 0 900 340" role="img" aria-label="9월 15일부터 10월 30일까지 금리 인상 확률 추이. 10월 인상 확률은 9월 말 약 70% 고점 후 하락해 10월 23일 5~8%, 10월 28일 동결로 0%. 12월 인상 확률은 10월 중순 약 71~72%에서 FOMC 당일 85%, 10월 30일 75~82%."></svg>
     <div class="tip" id="tip"></div>
   </div>
-  <p class="note">※ CME FedWatch 기준(9/15는 Polymarket, 10/16 이후 일부는 Bloomberg 연방기금 선물·Kalshi). 범위로 보도된 값은 중간값으로 표시했습니다. 10/14는 CPI 직후 장중 보도치 41.5~54%의 중간값, 10/15는 PPI 이후·워시 발언 전 약 27%, 10/16은 '15% 미만' 보도를 근사, 10/22는 '이번 주 초 15%' 보도 기준, 10/23은 Bloomberg 5%·Kalshi 8%의 중간값입니다.</p>
+  <p class="note">※ 10월 회의: CME FedWatch 기준(9/15는 Polymarket, 10/16 이후 일부는 Bloomberg·Kalshi). 12월 회의: 10/13은 '약 70~75%' 보도의 근사, 10/23은 CME 약 71%, 10/27·10/28은 CNN 인용 CME 78%·85%, 10/29는 PCE 발표 전후 장중 74~88% 범위의 근사, 10/30은 출처별 75%·80%·82%의 근사입니다.</p>
 
   <h2><span class="num">2</span>지표별 결과 &amp; 발표 후 인상 확률</h2>
   <div class="filters" id="filters">
@@ -150,68 +156,78 @@
   <div class="tbl-wrap">
     <table id="tbl">
       <thead><tr>
-        <th>발표일</th><th>지표</th><th>결과</th><th>예상 · 전월</th><th>판정</th><th>시장 해석</th><th>발표 후 10월 인상 확률</th>
+        <th>발표일</th><th>지표</th><th>결과</th><th>예상 · 전월</th><th>판정</th><th>시장 해석</th><th>발표 후 인상 확률</th>
       </tr></thead>
       <tbody></tbody>
     </table>
   </div>
-  <p class="note">판정: <span class="pill dove">🕊 비둘기</span> = 인상 부담을 줄이는 결과(성장주 우호) · <span class="pill hawk">🦅 매파</span> = 인상 부담을 키우는 결과 · <span class="pill mix">⚖ 혼조</span> · <span class="newtag" style="margin-left:0">NEW</span> = 10/15 이후 추가</p>
+  <p class="note">판정: <span class="pill dove">🕊 비둘기</span> = 인상 부담을 줄이는 결과(성장주 우호) · <span class="pill hawk">🦅 매파</span> = 인상 부담을 키우는 결과 · <span class="pill mix">⚖ 혼조</span> · 확률 태그 <span class="ser oct">10월</span> <span class="ser dec">12월</span> = 어느 회의의 인상 확률인지 · <span class="newtag" style="margin-left:0">NEW</span> = 10/26 이후 추가</p>
 
   <h2><span class="num">3</span>정리하면</h2>
   <div class="take">
-    <div class="tk"><h4>💵 물가 — CPI에 이어 PPI도 '뜨거움'</h4><p>9월 CPI 3.7%에 이어 PPI가 전월 <b>+1.3%</b>(15년 내 두 번째로 큰 월간 상승), 근원 <b>+0.7%</b>. 에너지뿐 아니라 <b>서비스 +0.8%·유통마진 +1.4%</b>까지 올라 원가가 소비자가격으로 넘어갈 위험이 커졌습니다. 브렌트 <b>$116.7</b>(이란 긴장·후티 공격)를 보면 10월 물가도 높게 나올 가능성이 큽니다.</p></div>
-    <div class="tk"><h4>👷 고용 — 채용은 멈췄지만 해고는 없음</h4><p>9월 비농업 <b>+2.9만</b>으로 채용은 식었지만, 실업수당 청구는 <b>19.9만 → 19.4만(3개월 최저)</b>. '새로 안 뽑지만 있는 사람은 지킨다' 구도가 이어져 연준이 경기 걱정으로 인상을 접을 명분은 약합니다.</p></div>
-    <div class="tk"><h4>🛒 경기·심리 — 버티는 경기, 높은 기대인플레</h4><p>10월 S&amp;P 제조업 PMI 예비치 <b>56.0(53개월 최고)</b>, 미시간 심리 확정치 <b>48.0</b>(예상 46.3 상회). 반면 기대인플레는 <b>1년 4.7%·5년 3.5%</b>로 높은 수준. 소매판매도 휘발유를 빼면 +0.2%에 그쳐 '물가는 오르고 실질 소비는 약한' 모습입니다.</p></div>
-    <div class="tk"><h4>🏛 연준 — '10월 재검토'에서 '12월 인상'으로 복귀</h4><p>워시 의장은 10/16 "회의 결과를 미리 판단하지 않는다"며 신호를 주지 않았고, 골드만은 <b>10월 동결·12월 마지막 인상</b>을 전망했습니다. 10/22 AI 공포로 10년물이 하루 18bp 급락하며 10월 인상 베팅이 무너졌고, 지금은 <b>10월 5~8% · 12월 약 71%</b>. 관전 포인트는 FOMC 성명·기자회견이 12월 인상을 얼마나 예고하느냐, 그리고 <b>10년물 5%선</b>입니다.</p></div>
+    <div class="tk"><h4>💵 물가 — CPI·PPI에 이어 PCE까지 가속</h4><p>9월 CPI 3.7%, PPI 전월 +1.3%에 이어 PCE도 <b>3.6%</b>(8월 3.4%), 근원 <b>3.1%</b>(8월 3.0%). 전월비 0.5%는 6개월 내 최대입니다. 브렌트 <b>$117.6</b>, WTI는 10월에만 <b>+15%</b> 올라 11/10 발표될 10월 CPI도 높게 나올 가능성이 큽니다.</p></div>
+    <div class="tk"><h4>👷 고용 — 해고 없고, 임금 압력은 진정</h4><p>3분기 ECI <b>+0.8%</b>(임금 +0.7%, 전년비 3.4%)로 2분기보다 둔화. 실업수당 청구는 <b>19.4만</b>(10/17 주간)으로 낮은 수준. 지금 인플레는 <b>임금보다 에너지발</b>이라는 해석이 힘을 얻고, 11/6 10월 고용이 12월 인상의 첫 관문입니다.</p></div>
+    <div class="tk"><h4>🛒 경기·심리 — 성장은 강하지만 소비 탄력은 약화</h4><p>3분기 GDP <b>+3.4%</b>(2분기 2.2%), 민간 최종판매 +4.9%로 AI 설비투자·소비가 견인. 컨퍼런스보드 신뢰지수도 <b>91.7</b>로 반등했지만 기대지수는 72.6으로 경고선(80) 아래, 9월 실질소비는 0.0%, 시카고 PMI는 55.3으로 둔화했습니다.</p></div>
+    <div class="tk"><h4>🏛 연준 — '쉬어간 것이지 끝난 것이 아님'</h4><p>10-2 동결에 인상 소수의견 2명, 경기 판단 'strong' 상향 → <b>매파적 동결</b>. 워시는 정치가 결정에 영향을 주지 않았다고 밝혔고, 2027년부터 금리 결정 회의를 줄이는 개편을 발표했습니다. 시장은 <b>12월(현지 12/8~9) 인상 75~82%</b>를 반영. 10년물이 5% 아래(4.91%)로 내려온 점은 성장주에 숨통이지만, 원인은 AI 매도에 따른 안전자산 선호입니다.</p></div>
   </div>
 
-  <h2><span class="num">4</span>다음 분수령 (KST)</h2>
+  <h2><span class="num">4</span>다음 분수령 (KST · 美 서머타임 종료 반영)</h2>
   <div class="next">
-    <div class="nx hot"><span class="t">10/29 (목) 03:00</span><div><b>🔥 FOMC 금리결정</b> (현지 10/27~28) — 동결 92%(Kalshi)<div class="w">동결 자체보다 '추가 인상 필요' 문구와 워시 기자회견의 12월 언급이 핵심. 같은 날 05:00경 구글·MS 실적이 이어져 새벽 변동성이 겹칩니다.</div></div></div>
-    <div class="nx"><span class="t">10/29 (목) 21:30</span><div><b>美 9월 PCE 물가</b> (현지 10/29 발표 예정)<div class="w">FOMC 직후 나오는 연준 선호 물가 — CPI·PPI가 모두 뜨거웠던 만큼 근원 PCE가 12월 인상 확률을 좌우</div></div></div>
-    <div class="nx"><span class="t">11/1 (일)</span><div><b>美 서머타임 종료</b><div class="w">11/2 (월)부터 美 경제지표 22:30, 정규장 23:30~06:00 (KST)로 한 시간씩 늦어집니다.</div></div></div>
-    <div class="nx hot"><span class="t">11/4 (수)</span><div><b>🔥 美 중간선거</b> (현지 11/3)<div class="w">선거 후 美·이스라엘의 대이란 재공격 가능성이 보도된 상태 — 유가를 통해 물가 기대에 직접 영향</div></div></div>
-    <div class="nx"><span class="t">11/6 (금) 22:30</span><div><b>美 10월 고용보고서</b><div class="w">9월 +2.9만 쇼크 이후 첫 고용 — 다시 약하면 12월 인상론 약화</div></div></div>
-    <div class="nx hot"><span class="t">11/10 (화) 22:30</span><div><b>美 10월 CPI</b> (예정)<div class="w">12월 FOMC 앞 마지막 물가. 유가 $110+가 반영되는 첫 달</div></div></div>
+    <div class="nx"><span class="t">11/3 (화) 00:00</span><div><b>美 10월 ISM 제조업 PMI</b> (현지 11/2)<div class="w">9월 가격지수 77.9 — 유가 반영으로 가격지수가 더 오르면 12월 인상론 강화</div></div></div>
+    <div class="nx hot"><span class="t">11/4 (수) 오전~</span><div><b>🔥 美 중간선거 개표</b> (현지 11/3 투표)<div class="w">선거 후 美·이스라엘의 대이란 재공격 가능성이 보도된 상태 — 유가·물가 기대에 직접 영향</div></div></div>
+    <div class="nx"><span class="t">11/5 (목) 00:00</span><div><b>美 10월 ISM 서비스 PMI</b> (현지 11/4, 예정)<div class="w">9월 가격지수 74.0 — 서비스 물가 재가속 여부</div></div></div>
+    <div class="nx"><span class="t">11/5 (목) 22:30</span><div><b>美 3분기 생산성·단위노동비용 · 실업수당 청구</b><div class="w">ECI 둔화에 이어 단위노동비용도 안정적이면 '임금발 인플레' 우려 완화</div></div></div>
+    <div class="nx hot"><span class="t">11/6 (금) 22:30</span><div><b>🔥 美 10월 고용보고서</b><div class="w">9월 +2.9만 쇼크 이후 — 다시 약하면 12월 인상 확률이 크게 낮아질 수 있는 유일한 변수</div></div></div>
+    <div class="nx hot"><span class="t">11/10 (화) 22:30</span><div><b>🔥 美 10월 CPI</b><div class="w">유가 $110+가 본격 반영되는 첫 달. 근원이 다시 0.3% 이상이면 12월 인상 사실상 확정 분위기</div></div></div>
+    <div class="nx"><span class="t">11/13 (금) 22:30</span><div><b>美 10월 PPI</b><div class="w">9월 +1.3% 쇼크 이후 — 원가 압력 지속 여부</div></div></div>
+    <div class="nx"><span class="t">11/25 (수) 22:30</span><div><b>美 10월 PCE · 3분기 GDP 2차 추정</b><div class="w">12월 FOMC 앞 마지막 연준 선호 물가</div></div></div>
+    <div class="nx hot"><span class="t">12/10 (목) 04:00</span><div><b>🔥 12월 FOMC 금리결정 + 점도표</b> (현지 12/8~9)<div class="w">현재 25bp 인상(3.75~4.00% → 4.00~4.25%) 75~82% 반영. 새 경제전망(SEP)으로 2027년 경로 확인</div></div></div>
   </div>
 
   <footer>
-    ※ 투자 조언이 아닙니다. 지표 수치는 각 기관 발표 및 보도 기준이며, 인상 확률은 보도 시점의 CME FedWatch(일부 Polymarket·Kalshi·Bloomberg) 값으로 같은 날에도 시점·출처에 따라 차이가 있습니다. 9/25 전후 약 70%는 "1주 전 약 70%" 보도를 근거로 한 근사치입니다. 10/14·10/15·10/16·10/22 확률은 보도 표현('장중 41.5~54%', '약 27%', '15% 미만', '이번 주 초 15%')을 근사한 값입니다. PPI 예상치는 제공처별로 0.5~0.6%로 차이가 있습니다. 9월 PCE 발표일은 기존 일정 보도 기준입니다.<br>
-    참고(10/25 추가): <a href="https://www.zacks.com/stock/news/3008652/ppi-retail-sales-jump-claims-stay-resilient" target="_blank" rel="noopener">Zacks (PPI·소매판매)</a> ·
+    ※ 투자 조언이 아닙니다. 지표 수치는 각 기관 발표 및 보도 기준이며, 인상 확률은 보도 시점의 CME FedWatch(일부 Polymarket·Kalshi·Bloomberg·연방기금 선물) 값으로 같은 날에도 시점·출처에 따라 차이가 큽니다(특히 10/29~10/30의 12월 확률은 74~88% 범위). 9/25 전후 약 70%는 "1주 전 약 70%" 보도를 근거로 한 근사치이며, 10/14·10/15·10/16·10/22 확률도 보도 표현을 근사한 값입니다. 10/29(주간 10/24) 실업수당 청구는 확인된 수치가 없어 표에서 제외했습니다. ISM 서비스 발표일은 통상 일정 기준입니다.<br>
+    참고(11/1 추가): <a href="https://federalreserve.gov/newsevents/pressreleases/monetary20261028a.htm" target="_blank" rel="noopener">Fed (10/28 성명)</a> ·
+    <a href="https://www.federalreserve.gov/mediacenter/files/FOMCpresconf20261028.pdf" target="_blank" rel="noopener">워시 기자회견 전문</a> ·
+    <a href="https://investinglive.com/central-banks/fomc-decision-oct-28/" target="_blank" rel="noopener">FOMC 성명 변경점</a> ·
+    <a href="https://www.cnn.com/2026/10/28/business/live-news/federal-reserve-interest-rate-october" target="_blank" rel="noopener">CNN (12월 78%→85%)</a> ·
+    <a href="https://www.bloomberg.com/news/articles/2026-10-28/warsh-says-fomc-schedule-will-change-as-of-next-fall" target="_blank" rel="noopener">Bloomberg (회의 개편)</a> ·
+    <a href="https://www.morningstar.com/economy/september-pce-report-pce-inflation-index-up-36-line-with-expectations" target="_blank" rel="noopener">Morningstar (9월 PCE)</a> ·
+    <a href="https://fattail.ai/september-pce-inflation-2026/" target="_blank" rel="noopener">PCE 전후 12월 확률</a> ·
+    <a href="https://www.bea.gov/news/2026/gdp-advance-estimate-3rd-quarter-2026" target="_blank" rel="noopener">BEA (3분기 GDP)</a> ·
+    <a href="https://www.indexbox.io/blog/us-gdp-accelerates-to-34-in-third-quarter-of-2026/" target="_blank" rel="noopener">GDP 세부</a> ·
+    <a href="https://investinglive.com/news/us-employment-cost-index-for-q3-0-8-vs-0-8-expected/" target="_blank" rel="noopener">ECI</a> ·
+    <a href="https://helious.io/news/rel-ev-0e3a1a799ee33380/chicago-pmi-55-3" target="_blank" rel="noopener">시카고 PMI</a> ·
+    <a href="https://pro.thestreet.com/market-commentary/consumer-confidence-rebounds-to-highest-since-june" target="_blank" rel="noopener">컨퍼런스보드 10월</a> ·
+    <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/cb-consumer-confidence-october-2026" target="_blank" rel="noopener">기대지수 72.6</a> ·
+    <a href="https://investrade.com/market-review-october-30-2026/" target="_blank" rel="noopener">Investrade (10/30 마감·유가·10년물)</a> ·
+    <a href="https://www.nasdaq.com/economic-institute/chartstopper-103026" target="_blank" rel="noopener">Nasdaq (12월 75%)</a> ·
+    <a href="https://fedratecalc.com/us-economic-calendar/" target="_blank" rel="noopener">11월 지표 일정</a><br>
+    참고(10/25): <a href="https://www.zacks.com/stock/news/3008652/ppi-retail-sales-jump-claims-stay-resilient" target="_blank" rel="noopener">Zacks (PPI·소매판매)</a> ·
     <a href="https://www.babypips.com/news/headline-us-ppi-retail-sales-september-2026-gasoline-prices-fed-outlook-2026-10-15" target="_blank" rel="noopener">BabyPips (소매판매 세부)</a> ·
-    <a href="https://stockhub.kr/en/timeline/news_225506606d1e" target="_blank" rel="noopener">10/15 지표 일람</a> ·
     <a href="https://www.chinadailyhk.com/article/641233" target="_blank" rel="noopener">워시 발언·확률 27%→15%↓</a> ·
     <a href="https://www.thestar.com.my/business/business-news/2026/10/16/fed039s-warsh-gives-no-hint-on-october-policy-decision" target="_blank" rel="noopener">Reuters (워시)</a> ·
-    <a href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-22-dow-sp-500-nasdaq-tesla-meta-112217857.html" target="_blank" rel="noopener">Yahoo (10/22 실업수당·채권)</a> ·
-    <a href="https://finance.yahoo.com/markets/live/stock-market-today-dow-sp-500-drop-nasdaq-rises-after-sharp-tech-sell-off-160940864.html" target="_blank" rel="noopener">Yahoo (10/23 유가·10월 확률 5%)</a> ·
-    <a href="https://cappnotes.substack.com/p/closing-look-friday-october-23-2026" target="_blank" rel="noopener">CappNotes (PMI·미시간·Kalshi·12월 71%)</a> ·
-    <a href="https://investrade.com/morning-preview-october-23-2026/" target="_blank" rel="noopener">Investrade (10년물 -18bp)</a><br>
-    참고(이전): <a href="https://www.benzinga.com/markets/economic-data/26/10/62358014/hot-inflation-fed-october-hike-odds-debasement-risk-september-cpi" target="_blank" rel="noopener">Benzinga (CPI·54%)</a> ·
-    <a href="https://finance.yahoo.com/economy/policy/articles/traders-warsh-42-chance-doing-082651946.html" target="_blank" rel="noopener">Yahoo (41.5%)</a> ·
-    <a href="https://www.fxstreet.com/news/dow-jones-futures-gains-ahead-of-us-ppi-retail-sales-data-202610150833" target="_blank" rel="noopener">FXStreet (31.6%)</a> ·
+    <a href="https://finance.yahoo.com/markets/live/stock-market-today-thursday-october-22-dow-sp-500-nasdaq-tesla-meta-112217857.html" target="_blank" rel="noopener">Yahoo (10/22)</a> ·
+    <a href="https://finance.yahoo.com/markets/live/stock-market-today-dow-sp-500-drop-nasdaq-rises-after-sharp-tech-sell-off-160940864.html" target="_blank" rel="noopener">Yahoo (10/23)</a> ·
+    <a href="https://cappnotes.substack.com/p/closing-look-friday-october-23-2026" target="_blank" rel="noopener">CappNotes (10/23)</a><br>
+    참고(이전): <a href="https://www.benzinga.com/markets/economic-data/26/10/62358014/hot-inflation-fed-october-hike-odds-debasement-risk-september-cpi" target="_blank" rel="noopener">Benzinga (CPI)</a> ·
     <a href="https://www.cnn.com/2026/10/14/economy/us-cpi-inflation-september" target="_blank" rel="noopener">CNN (9월 CPI)</a> ·
-    <a href="https://www.morningstar.com/economy/cpi-forecasts-show-moderated-inflation-september-keeping-fed-hold" target="_blank" rel="noopener">Morningstar</a> ·
-    <a href="https://www.tradingkey.com/analysis/stocks/us-stocks/262172696-fed-rate-hike-october-dot-plot-median-one-more-2026-tradingkey" target="_blank" rel="noopener">TradingKey (점도표)</a> ·
-    <a href="https://finance.yahoo.com/economy/policy/article/pce-inflation-eases-to-34--cooling-the-case-for-another-fed-rate-hike-125513195.html" target="_blank" rel="noopener">Yahoo (PCE)</a> ·
-    <a href="https://www.fxstreet.com/analysis/the-october-fed-hike-just-died-heres-what-the-29k-jobs-report-really-means-for-rates-202610021806" target="_blank" rel="noopener">FXStreet (고용)</a> ·
+    <a href="https://finance.yahoo.com/economy/policy/article/pce-inflation-eases-to-34--cooling-the-case-for-another-fed-rate-hike-125513195.html" target="_blank" rel="noopener">Yahoo (8월 PCE)</a> ·
     <a href="https://www.ftportfolios.com/Commentary/EconomicResearch/2026/10/2/nonfarm-payrolls-increased-29,000-in-september" target="_blank" rel="noopener">First Trust (고용)</a> ·
     <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/ism-manufacturing-september-2026" target="_blank" rel="noopener">ISM 제조업</a> ·
     <a href="https://verifiedinvesting.com/blogs/us-economic-metrics/ism-services-september-2026" target="_blank" rel="noopener">ISM 서비스</a> ·
-    <a href="https://dca-calculator.com/en/guides/jolts-august-2026" target="_blank" rel="noopener">JOLTS</a> ·
-    <a href="https://gvwire.com/2026/09/29/us-consumer-confidence-dives-to-more-than-12-year-low-in-september/" target="_blank" rel="noopener">컨퍼런스보드</a> ·
-    <a href="https://www.babypips.com/news/headline-sept-fomc-minutes-support-hawkish-stance-2026-10-08" target="_blank" rel="noopener">FOMC 의사록</a>
+    <a href="https://www.babypips.com/news/headline-sept-fomc-minutes-support-hawkish-stance-2026-10-08" target="_blank" rel="noopener">9월 FOMC 의사록</a>
   </footer>
 </div>
 
 <script>
-/* ---- 지표 데이터 ---- */
+/* ---- 지표 데이터 (s: 'oct' = 10월 회의 인상 확률, 'dec' = 12월 회의 인상 확률) ---- */
 const ROWS = [
   {d:"9/15",k:"FOMC 직전",cat:"fed",name:"(기준점) FOMC 전날",sub:"Polymarket",res:"—",exp:"",j:"mix",why:"인상 결정 전 10월 추가 인상 확률",p:37.5,pTxt:"37.5%",approx:false},
   {d:"9/17",k:"9/18 03:00 KST",cat:"biz",name:"필라델피아 연준 제조업지수",sub:"9월",res:"+37.8",exp:"예상 +30.5 · 8월 +47.4",j:"hawk",why:"제조업 여전히 강함 · 같은 날 점도표(연내 1회 추가) 소화",p:53,pTxt:"51~55%",approx:false,key:true},
   {d:"9/25",k:"",cat:"biz",name:"내구재 주문",sub:"8월",res:"0.0%",exp:"예상 -0.3% · 운송 제외 +0.3%",j:"hawk",why:"설비투자 견조 (전년비 +11%)",p:70,pTxt:"약 70%",approx:true},
   {d:"9/25",k:"",cat:"biz",name:"미시간 소비자심리 확정",sub:"9월",res:"48.1",exp:"예비 47.8 · 기대인플레 1년 4.6%·5년 3.4%",j:"mix",why:"심리는 바닥권, 기대인플레는 상승",p:null},
   {d:"9/29",k:"",cat:"job",name:"JOLTS 구인건수",sub:"8월",res:"707.9만",exp:"예상 약 723만 · 7월 733.5만",j:"dove",why:"구인 감소 — 노동 수요 둔화",p:50,pTxt:"약 50%",approx:false},
-  {d:"9/29",k:"",cat:"biz",name:"컨퍼런스보드 소비자신뢰",sub:"9월",res:"81.9",exp:"예상 89.2 · 8월 약 88.6",j:"dove",why:"2014년 이후 최저 — 소비 둔화 우려",p:null,same:"9/29"},
+  {d:"9/29",k:"",cat:"biz",name:"컨퍼런스보드 소비자신뢰",sub:"9월",res:"81.9",exp:"예상 89.2 · 8월 약 88.6 · (10/27 84.2로 상향 수정)",j:"dove",why:"2014년 이후 최저 — 소비 둔화 우려",p:null,same:"9/29"},
   {d:"9/30",k:"",cat:"job",name:"ADP 민간고용",sub:"9월",res:"+9.0만",exp:"8월 3.6만(하향 수정)",j:"hawk",why:"민간 고용 예상 상회",p:null,same:"9/30"},
   {d:"9/30",k:"",cat:"price",name:"PCE 물가",sub:"8월 · 연준 선호 지표",res:"3.4% / 근원 3.0%",exp:"예상 3.7% / 3.3% · 근원 전월비 0.2%",j:"dove",why:"예상 크게 하회 (산정 방식 변경 효과 약 0.3%p 포함)",p:35,pTxt:"약 35%",approx:false,key:true},
   {d:"9/30",k:"",cat:"biz",name:"2분기 GDP 확정치",sub:"",res:"+2.2%",exp:"1분기 2.1%",j:"mix",why:"성장 견조 — 중립",p:null,same:"9/30"},
@@ -225,29 +241,40 @@ const ROWS = [
   {d:"10/14",k:"21:30 KST",cat:"price",name:"CPI 소비자물가",sub:"9월",res:"3.7% / 근원 2.6%",exp:"예상 3.6% / 2.5% · 전월비 0.6%(부합) / 근원 0.3%(예상 0.2%) · 8월 3.4% / 2.4%",j:"hawk",why:"근원까지 예상 상회. 중고차·항공료·의료·의류 등 근원 전반이 올라 유가가 근원 물가로 번지는 신호",p:48,pTxt:"장중 41.5~54%",approx:true,key:true},
   {d:"10/14",k:"10/15 03:00 KST",cat:"fed",name:"연준 베이지북",sub:"10월",res:"성장 둔화 + 고유가",exp:"지역별 세부 문구는 미확인",j:"mix",why:"경기는 식고 비용 압박은 남은 스태그플레이션형 진단",p:null,same:"10/14"},
   {d:"10/15",k:"PPI 직전",cat:"fed",name:"(기준점) PPI 발표 직전",sub:"CME FedWatch · 유럽장",res:"—",exp:"",j:"mix",why:"CPI 쇼크 당일 장중 50%대 → 31.6%로 되돌림 (국채금리 반락)",p:null,same:"10/15"},
-  {d:"10/15",k:"21:30 KST",cat:"price",name:"PPI 생산자물가",sub:"9월",res:"+1.3% / 근원 +0.7%",exp:"예상 +0.5~0.6% / 근원 +0.3% · 전년비 6.3%(예상 5.4%) · 근원 전년비 5.0%",j:"hawk",why:"15년 내 두 번째로 큰 월간 상승. 에너지 +10.8%에 서비스 +0.8%·유통마진 +1.4%까지 올라 원가 압력이 광범위",p:27,pTxt:"약 27%",approx:true,key:true,isNew:true},
-  {d:"10/15",k:"21:30 KST",cat:"biz",name:"소매판매",sub:"9월",res:"+0.8%",exp:"예상 +0.3% · 주유소 제외 +0.2% · 통제그룹 +0.1% · 8월 +1.1%(수정)",j:"mix",why:"헤드라인은 강하지만 휘발유 효과 — 휘발유를 빼면 실질 소비는 약함",p:null,same:"10/15",isNew:true},
-  {d:"10/15",k:"21:30 KST",cat:"job",name:"신규 실업수당 청구",sub:"10/10 주간",res:"19.9만",exp:"예상 20만 · 연속청구 171만",j:"hawk",why:"해고는 여전히 적음",p:null,same:"10/15",isNew:true},
-  {d:"10/15",k:"21:30 KST",cat:"biz",name:"뉴욕·필라델피아 제조업지수",sub:"10월",res:"25.5 / 20.9",exp:"뉴욕 9월 7.6 · 필라델피아 예상 28.0",j:"mix",why:"뉴욕은 급반등, 필라델피아는 예상 하회 — 두 지수 모두 가격지수는 하락",p:null,same:"10/15",isNew:true},
-  {d:"10/16",k:"10/16 12:30 KST",cat:"fed",name:"워시 의장 IMF 대담",sub:"방콕 · 블랙아웃 전 마지막",res:"\"회의 결과 예단 안 해\"",exp:"정책 힌트 없음 · \"9월에 완화 한 스푼을 걷어냈다\" · AI는 생애 최대 혁신",j:"dove",why:"인상 신호를 주지 않음 → 골드만 '10월 동결·12월 마지막 인상' 전망",p:14,pTxt:"15% 미만",approx:true,key:true,isNew:true},
-  {d:"10/22",k:"21:30 KST",cat:"job",name:"신규 실업수당 청구",sub:"10/17 주간",res:"19.4만",exp:"3개월 만에 최저",j:"hawk",why:"해고는 거의 없음. 같은 날 기술주 폭락으로 10년물 -18bp(4.95%) → 인상 베팅 급감",p:15,pTxt:"약 15%",approx:true,isNew:true},
-  {d:"10/23",k:"22:45 KST",cat:"biz",name:"S&P 글로벌 제조업 PMI 예비",sub:"10월",res:"56.0",exp:"53개월 만에 최고",j:"hawk",why:"제조업은 강함 — 가격 압력 우려를 키움",p:null,same:"10/23",isNew:true},
-  {d:"10/23",k:"23:00 KST",cat:"biz",name:"미시간 소비자심리 확정",sub:"10월",res:"48.0",exp:"예비·예상 46.3 · 기대인플레 1년 4.7%·5년 3.5%",j:"mix",why:"심리는 소폭 개선, 기대인플레는 높은 수준 유지",p:null,same:"10/23",isNew:true},
-  {d:"10/23",k:"FOMC 직전 거래일",cat:"fed",name:"(기준점) FOMC 직전",sub:"Bloomberg · Kalshi",res:"—",exp:"",j:"mix",why:"10월 인상 약 5%(Bloomberg)·8%(Kalshi) — 사실상 동결. 대신 12월 인상 약 71%(CME). 브렌트 $116.7로 물가 부담 재부각",p:6.5,pTxt:"5~8%",approx:false,key:true,isNew:true}
+  {d:"10/15",k:"21:30 KST",cat:"price",name:"PPI 생산자물가",sub:"9월",res:"+1.3% / 근원 +0.7%",exp:"예상 +0.5~0.6% / 근원 +0.3% · 전년비 6.3%(예상 5.4%) · 근원 전년비 5.0%",j:"hawk",why:"15년 내 두 번째로 큰 월간 상승. 에너지 +10.8%에 서비스 +0.8%·유통마진 +1.4%까지 올라 원가 압력이 광범위",p:27,pTxt:"약 27%",approx:true,key:true},
+  {d:"10/15",k:"21:30 KST",cat:"biz",name:"소매판매",sub:"9월",res:"+0.8%",exp:"예상 +0.3% · 주유소 제외 +0.2% · 통제그룹 +0.1% · 8월 +1.1%(수정)",j:"mix",why:"헤드라인은 강하지만 휘발유 효과 — 휘발유를 빼면 실질 소비는 약함",p:null,same:"10/15"},
+  {d:"10/15",k:"21:30 KST",cat:"job",name:"신규 실업수당 청구",sub:"10/10 주간",res:"19.9만",exp:"예상 20만 · 연속청구 171만",j:"hawk",why:"해고는 여전히 적음",p:null,same:"10/15"},
+  {d:"10/15",k:"21:30 KST",cat:"biz",name:"뉴욕·필라델피아 제조업지수",sub:"10월",res:"25.5 / 20.9",exp:"뉴욕 9월 7.6 · 필라델피아 예상 28.0",j:"mix",why:"뉴욕은 급반등, 필라델피아는 예상 하회 — 두 지수 모두 가격지수는 하락",p:null,same:"10/15"},
+  {d:"10/16",k:"10/16 12:30 KST",cat:"fed",name:"워시 의장 IMF 대담",sub:"방콕 · 블랙아웃 전 마지막",res:"\"회의 결과 예단 안 해\"",exp:"정책 힌트 없음 · \"9월에 완화 한 스푼을 걷어냈다\" · AI는 생애 최대 혁신",j:"dove",why:"인상 신호를 주지 않음 → 골드만 '10월 동결·12월 마지막 인상' 전망",p:14,pTxt:"15% 미만",approx:true,key:true},
+  {d:"10/22",k:"21:30 KST",cat:"job",name:"신규 실업수당 청구",sub:"10/17 주간",res:"19.4만",exp:"3개월 만에 최저",j:"hawk",why:"해고는 거의 없음. 같은 날 기술주 폭락으로 10년물 -18bp(4.95%) → 인상 베팅 급감",p:15,pTxt:"약 15%",approx:true},
+  {d:"10/23",k:"22:45 KST",cat:"biz",name:"S&P 글로벌 제조업 PMI 예비",sub:"10월",res:"56.0",exp:"53개월 만에 최고",j:"hawk",why:"제조업은 강함 — 가격 압력 우려를 키움",p:null,same:"10/23"},
+  {d:"10/23",k:"23:00 KST",cat:"biz",name:"미시간 소비자심리 확정",sub:"10월",res:"48.0",exp:"예비·예상 46.3 · 기대인플레 1년 4.7%·5년 3.5%",j:"mix",why:"심리는 소폭 개선, 기대인플레는 높은 수준 유지",p:null,same:"10/23"},
+  {d:"10/23",k:"FOMC 직전 거래일",cat:"fed",name:"(기준점) FOMC 직전",sub:"Bloomberg · Kalshi",res:"—",exp:"",j:"mix",why:"10월 인상 약 5%(Bloomberg)·8%(Kalshi) — 사실상 동결. 대신 12월 인상 약 71%(CME). 브렌트 $116.7로 물가 부담 재부각",p:6.5,pTxt:"5~8%",approx:false,key:true},
+  /* ---- 10/26 이후 추가 ---- */
+  {d:"10/27",k:"23:00 KST",cat:"biz",name:"컨퍼런스보드 소비자신뢰",sub:"10월",res:"91.7",exp:"예상 81.0 · 9월 84.2(수정) · 기대지수 72.6 · 12개월 기대인플레 5.8%",j:"mix",why:"6월 이후 최고로 크게 반등했지만 기대지수는 경기침체 경고선(80) 아래. 조사 기간 10/1~21",p:78,pTxt:"78%",s:"dec",approx:false,isNew:true},
+  {d:"10/28",k:"10/29 03:00 KST",cat:"fed",name:"FOMC 금리결정",sub:"10-2 동결 · 10월 인상 0% 확정",res:"동결 3.75~4.00%",exp:"쿡 이사·해맥 총재 25bp 인상 소수의견 · 경기 'solid'→'strong' 상향 · 2027년부터 연 8회 중 1회(2028년 2회)는 금리 결정 없는 전략회의",j:"hawk",why:"예상대로 쉬어갔지만 인상 소수의견 2명·경기 판단 상향으로 '매파적 동결'. 워시 \"정치는 결정에 영향 없었다\"",p:85,pTxt:"85%",s:"dec",approx:false,key:true,isNew:true},
+  {d:"10/29",k:"21:30 KST",cat:"price",name:"PCE 물가",sub:"9월 · 연준 선호 지표",res:"3.6% / 근원 3.1%",exp:"예상 3.6~3.7% / 3.1% · 전월비 0.5% / 근원 0.32%(예상 0.30%) · 8월 3.4% / 3.0% · 실질소비 0.0%",j:"hawk",why:"대체로 예상 부합이지만 전월비 0.5%는 6개월 내 최대, 근원도 소폭 상회 — 12월 인상 근거 유지",p:80,pTxt:"장중 74~88%",s:"dec",approx:true,key:true,isNew:true},
+  {d:"10/29",k:"21:30 KST",cat:"biz",name:"3분기 GDP 속보치",sub:"연율",res:"+3.4%",exp:"2분기 2.2% · GDPNow 3.3% · 민간 최종판매 +4.9% · 국내구매 물가 3.0%",j:"hawk",why:"투자(AI 설비)·소비·정부지출이 모두 늘어 경기 견조 — 인상 여력 확인",p:null,same:"10/29",isNew:true},
+  {d:"10/30",k:"21:30 KST",cat:"job",name:"고용비용지수(ECI)",sub:"3분기",res:"+0.8%",exp:"예상 0.8% · 2분기 0.9% · 임금 0.7% · 복리후생 0.9% · 전년비 3.4%(임금 3.1%)",j:"dove",why:"임금 상승 둔화 — 임금발 2차 인플레 우려는 제한적",p:null,same:"10/30",isNew:true},
+  {d:"10/30",k:"22:45 KST",cat:"biz",name:"시카고 PMI",sub:"10월",res:"55.3",exp:"예상 56.1 · 9월 58.8",j:"dove",why:"확장 국면은 유지했지만 예상 하회 · 둔화",p:null,same:"10/30",isNew:true},
+  {d:"10/30",k:"10월 마지막 거래일",cat:"fed",name:"(기준점) 10월 마감",sub:"CME 등 출처별",res:"—",exp:"",j:"mix",why:"12월 인상 75~82%. 10년물 4.913%(10월 -36bp) · 브렌트 $117.64·WTI $104.12 · 나스닥 -2.86%·S&P500 -1.82% (AI 매도)",p:78,pTxt:"75~82%",s:"dec",approx:true,key:true,isNew:true}
 ];
 const JL = {dove:"🕊 비둘기",hawk:"🦅 매파",mix:"⚖ 혼조"};
+const SL = {oct:"10월",dec:"12월"};
 const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 
 /* ---- 표 ---- */
 function renderTable(f){
-  let prev = null;
+  const prev = {oct:null, dec:null};
   const rows = ROWS.filter(r => f==="all" || r.cat===f);
   document.querySelector("#tbl tbody").innerHTML = rows.map(r => {
+    const s = r.s || "oct";
     let probCell;
     if (r.p != null){
-      const dir = prev==null ? "" : (Math.abs(r.p - prev) < 2 ? "" : r.p < prev ? `<span class="arrow dn">▼ ${Math.round(prev - r.p)}%p</span>` : `<span class="arrow up">▲ ${Math.round(r.p - prev)}%p</span>`);
-      probCell = `<div class="pb"><span class="bar"><i style="width:${r.p}%"></i></span><b>${r.pTxt}</b>${r.approx?'<small style="color:var(--muted)">근사</small>':''}${f==="all"?dir:""}</div>`;
-      prev = r.p;
+      const pv = prev[s];
+      const dir = pv==null ? "" : (Math.abs(r.p - pv) < 2 ? "" : r.p < pv ? `<span class="arrow dn">▼ ${Math.round(pv - r.p)}%p</span>` : `<span class="arrow up">▲ ${Math.round(r.p - pv)}%p</span>`);
+      probCell = `<div class="pb"><span class="ser ${s}">${SL[s]}</span><span class="bar"><i class="${s}" style="width:${r.p}%"></i></span><b>${r.pTxt}</b>${r.approx?'<small style="color:var(--muted)">근사</small>':''}${f==="all"?dir:""}</div>`;
+      prev[s] = r.p;
     } else if (r.same){
       probCell = `<span class="pb"><span class="na">같은 날 묶음 반영</span></span>`;
     } else {
@@ -274,25 +301,30 @@ document.getElementById("filters").addEventListener("click", e => {
 
 /* ---- 차트 ---- */
 (function(){
-  const pts = ROWS.filter(r => r.p != null).map(r => {
-    const [m, d] = r.d.split("/").map(Number);
-    const date = new Date(2026, m-1, d);
-    const sameDay = ROWS.filter(x => x.d === r.d).map(x => x.name);
-    return {...r, date, events: sameDay};
-  });
-  const W=900, H=320, L=44, R=24, T=24, B=40;
-  const x0 = new Date(2026,8,14).getTime(), x1 = new Date(2026,9,27).getTime();
+  const toDate = d => { const [m, dd] = d.split("/").map(Number); return new Date(2026, m-1, dd); };
+  const evts = d => ROWS.filter(x => x.d === d).map(x => x.name);
+  const OCT = ROWS.filter(r => r.p != null && (r.s||"oct") === "oct")
+    .concat([{d:"10/28",p:0,pTxt:"0% · 동결 확정",approx:false}])
+    .map(r => ({...r, ser:"oct", date:toDate(r.d), events:evts(r.d)}));
+  const DEC = [
+    {d:"10/13",p:72,pTxt:"약 70~75%",approx:true},
+    {d:"10/23",p:71,pTxt:"약 71%",approx:false}
+  ].concat(ROWS.filter(r => r.p != null && r.s === "dec"))
+    .map(r => ({...r, ser:"dec", date:toDate(r.d), events:evts(r.d)}));
+
+  const W=900, H=340, L=44, R=24, T=24, B=40;
+  const x0 = new Date(2026,8,14).getTime(), x1 = new Date(2026,10,2).getTime();
   const X = t => L + (t - x0) / (x1 - x0) * (W - L - R);
-  const Y = v => T + (1 - v/80) * (H - T - B);
+  const Y = v => T + (1 - v/100) * (H - T - B);
   const svg = document.getElementById("chart");
   let h = "";
-  [0,20,40,60,80].forEach(v => {
+  [0,20,40,60,80,100].forEach(v => {
     h += `<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="var(--grid)" stroke-width="1"/>`;
     h += `<text x="${L-8}" y="${Y(v)+4}" fill="var(--muted)" font-size="11" text-anchor="end">${v}%</text>`;
   });
   h += `<line x1="${L}" x2="${W-R}" y1="${Y(50)}" y2="${Y(50)}" stroke="var(--soft)" stroke-width="1" stroke-dasharray="3 4" opacity=".6"/>`;
   h += `<text x="${X(new Date(2026,9,5).getTime())}" y="${Y(50)-6}" fill="var(--soft)" font-size="11" text-anchor="middle">50% · 인상/동결 분기선</text>`;
-  [[8,15],[8,22],[8,29],[9,6],[9,13],[9,20]].forEach(([m,d]) => {
+  [[8,15],[8,22],[8,29],[9,6],[9,13],[9,20],[9,27]].forEach(([m,d]) => {
     const t = new Date(2026,m,d).getTime();
     h += `<text x="${X(t)}" y="${H-B+20}" fill="var(--muted)" font-size="11" text-anchor="middle">${m+1}/${d}</text>`;
     h += `<line x1="${X(t)}" x2="${X(t)}" y1="${H-B}" y2="${H-B+5}" stroke="var(--grid)"/>`;
@@ -305,30 +337,47 @@ document.getElementById("filters").addEventListener("click", e => {
   vmark(8,16,"var(--gold)","9/16 FOMC 인상",T+10,"start",6);
   vmark(9,14,"var(--hawk)","10/14 CPI·10/15 PPI 상회",T+10,"end",-6);
   vmark(9,22,"var(--accent)","10/22 반도체 -6.7%",T+26,"end",-6);
-  const path = pts.map((p,i) => `${i?"L":"M"}${X(p.date.getTime()).toFixed(1)},${Y(p.p).toFixed(1)}`).join(" ");
-  h += `<path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
-  const labelCfg = {
-    "9/25":{t:"고점 약 70%",dy:-12,a:"middle",dx:0},
-    "9/30":{t:"PCE 하회",dy:-12,a:"middle",dx:0},
-    "10/2":{t:"고용 쇼크",dy:-12,a:"middle",dx:0},
-    "10/14":{t:"CPI 직후 장중 50%대",dy:4,a:"end",dx:-12},
-    "10/16":{t:"워시 침묵 → 15%↓",dy:-12,a:"start",dx:8},
-    "10/23":{t:"FOMC 직전 5~8%",dy:-12,a:"end",dx:-4}
+  vmark(9,28,"var(--gold)","10/28 FOMC 동결",T+10,"end",-6);
+
+  const line = (pts, color) => {
+    const d = pts.map((p,i) => `${i?"L":"M"}${X(p.date.getTime()).toFixed(1)},${Y(p.p).toFixed(1)}`).join(" ");
+    h += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>`;
   };
-  pts.forEach((p,i) => {
+  line(OCT, "var(--accent)");
+  line(DEC, "var(--dec)");
+
+  const labels = {
+    oct:{
+      "9/25":{t:"고점 약 70%",dy:-12,a:"middle",dx:0},
+      "9/30":{t:"PCE 하회",dy:-12,a:"middle",dx:0},
+      "10/2":{t:"고용 쇼크",dy:-12,a:"middle",dx:0},
+      "10/14":{t:"CPI 직후 장중 50%대",dy:4,a:"end",dx:-12},
+      "10/16":{t:"워시 침묵 → 15%↓",dy:-12,a:"start",dx:8},
+      "10/23":{t:"FOMC 직전 5~8%",dy:-12,a:"end",dx:-4},
+      "10/28":{t:"동결 확정",dy:-12,a:"end",dx:-4}
+    },
+    dec:{
+      "10/13":{t:"12월 인상 약 72%",dy:-12,a:"middle",dx:0},
+      "10/28":{t:"FOMC 후 85%",dy:-12,a:"middle",dx:0},
+      "10/30":{t:"75~82%",dy:20,a:"end",dx:-2}
+    }
+  };
+  const all = OCT.concat(DEC);
+  all.forEach((p,i) => {
     const cx = X(p.date.getTime()), cy = Y(p.p);
-    h += `<circle cx="${cx}" cy="${cy}" r="5" fill="${p.approx?'var(--card)':'var(--accent)'}" stroke="${p.approx?'var(--accent)':'var(--card)'}" stroke-width="2"/>`;
-    const c = labelCfg[p.d];
+    const col = p.ser === "dec" ? "var(--dec)" : "var(--accent)";
+    h += `<circle cx="${cx}" cy="${cy}" r="5" fill="${p.approx?'var(--card)':col}" stroke="${p.approx?col:'var(--card)'}" stroke-width="2"/>`;
+    const c = labels[p.ser][p.d];
     if (c) h += `<text x="${cx + c.dx}" y="${cy + c.dy}" fill="var(--text)" font-size="11.5" font-weight="700" text-anchor="${c.a}">${c.t}</text>`;
-    h += `<circle class="hit" data-i="${i}" cx="${cx}" cy="${cy}" r="16" fill="transparent" style="cursor:pointer"/>`;
+    h += `<circle class="hit" data-i="${i}" cx="${cx}" cy="${cy}" r="14" fill="transparent" style="cursor:pointer"/>`;
   });
   svg.innerHTML = h;
 
   const tip = document.getElementById("tip"), card = document.getElementById("chartCard");
   svg.querySelectorAll(".hit").forEach(el => {
     const show = () => {
-      const p = pts[+el.dataset.i];
-      tip.innerHTML = `<div class="t-d">${p.d} 발표 후${p.approx?' · 근사치':''}</div><div class="t-v">${p.pTxt}</div><div class="t-e">${p.events.map(esc).join("<br>")}</div>`;
+      const p = all[+el.dataset.i];
+      tip.innerHTML = `<div class="t-d">${p.d} · ${SL[p.ser]} 회의 인상 확률${p.approx?' · 근사치':''}</div><div class="t-v" style="color:${p.ser==='dec'?'var(--dec)':'var(--accent)'}">${p.pTxt}</div><div class="t-e">${p.events.map(esc).join("<br>")}</div>`;
       const sb = svg.getBoundingClientRect(), cb = card.getBoundingClientRect();
       const sx = sb.width / 900;
       let left = sb.left - cb.left + (+el.getAttribute("cx")) * sx + 12;
