@@ -306,6 +306,9 @@ aside#panel{display:none;background:var(--bg);border:1px solid var(--line);borde
 /* 범례 */
 #legend{top:6px;left:10px;font-size:13px;line-height:1.75;text-shadow:0 0 3px var(--bg),0 0 3px var(--bg)}
 #legend .lg-l1{display:flex;align-items:center;gap:7px}
+#lgInv{display:none;font-size:11px;font-weight:700;color:#131722;background:var(--warn);border-radius:3px;padding:0 6px;line-height:17px}
+body.inv #lgInv{display:inline-block}
+#btnInv.on{color:var(--warn)!important}
 #legend .sym{font-weight:600;color:#ececec;font-size:14px;margin:0}
 .lg-dot{width:8px;height:8px;border-radius:50%;background:#555}
 .lg-dot.on{background:var(--green);box-shadow:0 0 5px var(--green)}
@@ -672,7 +675,7 @@ html.embed #layWrap{display:none}
       <div id="chart"></div>
       <div id="brand" aria-hidden="true"><svg viewBox="0 0 36 36" width="30" height="30"><rect x="1" y="1" width="34" height="34" rx="8" fill="#e3e3e3"/><path d="M8 10h13v4.2h-4.4V27h-4.2V14.2H8z" fill="#0f0f0f"/><path d="M22.2 10h4.3v6.4L31 10h4.9l-5.6 7.6L36 27h-5l-4.5-7.1V27h-4.3z" fill="#2962ff" transform="translate(-2 0)"/></svg><span>Trader_KIM</span></div>
       <div id="legend">
-        <div class="lg-l1"><span class="lg-dot" id="lgDot"></span><span class="sym" id="lgSym">—</span></div>
+        <div class="lg-l1"><span class="lg-dot" id="lgDot"></span><span class="sym" id="lgSym">—</span><span id="lgInv" title="가격축이 뒤집혀 있습니다 (Alt+I로 해제)">⇅ 반전됨</span></div>
         <div class="lg-l2" id="lgOHLC"></div>
         <div id="lgMA"></div>
       </div>
@@ -686,7 +689,7 @@ html.embed #layWrap{display:none}
     </div>
     <div id="bottombar">
       <div id="ranges"></div>
-      <div class="bb-r"><span id="clock"></span><span class="bsep"></span><button id="btnLog" title="로그 스케일">로그</button><button id="btnAuto" class="on" title="자동 맞춤">자동</button></div>
+      <div class="bb-r"><span id="clock"></span><span class="bsep"></span><button id="btnInv" title="차트 반전 — 가격축 위아래 뒤집기 (Alt+I)">반전</button><button id="btnLog" title="로그 스케일">로그</button><button id="btnAuto" class="on" title="자동 맞춤">자동</button></div>
     </div>
   </section>
   <aside id="panel">
@@ -834,6 +837,7 @@ html.embed #layWrap{display:none}
     <li><b>💾 화면 저장</b> Ctrl+S 이 종목의 시간 간격·차트 유형·이평선·로그·보이는 구간·RSI 테이블 저장 → 종목 전환 시 자동 적용</li>
     <li><b>📌 이미지 붙이기</b> 캡처(📷·Win+Shift+S 등) 후 차트에서 <b>Ctrl+V</b> → 마우스 위치에 붙음 · 몸통 드래그 이동 · 우하단 점 드래그 크기 조절 · 이미지 파일 끌어다 놓기도 가능</li>
     <li><b>📤 백업</b> 💾 메뉴 → 전체 백업 내보내기(.json) · 다른 브라우저/PC에서 「백업 파일 불러오기」 또는 파일을 차트에 끌어다 놓기</li>
+    <li><b>차트 반전</b> Alt+I 또는 하단 「반전」 — 가격축 위아래를 뒤집어 반대 관점으로 봄 (켜져 있으면 범례에 ⇅ 반전됨 표시, 새로고침하면 해제)</li>
     <li><b>자석</b> 켜면 봉의 시가·고가·저가·종가에 붙음 · <b>Alt+R</b> 차트 초기화</li>
   </ul>
   <div style="margin-top:10px;font-size:11px;color:var(--muted)">차트 엔진: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener" style="color:var(--muted)">TradingView Lightweight Charts™</a> (Copyright © TradingView, Inc. · Apache-2.0)</div>
@@ -1526,7 +1530,7 @@ function bindMouse(el){
     const vis = visiblePrices(); if (!vis) return;
     const T = tf(), a = T.f(vis.top), b = T.f(vis.bot);
     const k = Math.exp(Math.max(-100, Math.min(100, e.deltaY)) * 0.002);
-    const anchor = a - (y / H) * (a - b);
+    const st = isInv() ? b : a, sb = isInv() ? a : b, anchor = st - (y / H) * (st - sb);   // 화면 위쪽 값 기준 (반전 대응)
     setManual({ top:T.i(anchor + (a - anchor) * k), bot:T.i(anchor - (anchor - b) * k) });
     axMove();
   }, { capture:true, passive:false });
@@ -1564,7 +1568,7 @@ function bindMouse(el){
       vDrag.moved = true;
       const T = tf(), a = T.f(vDrag.top), b = T.f(vDrag.bot), span = a - b;
       if (vDrag.axis){ const k = Math.exp(dy * 0.006), mid = (a + b) / 2, half = span * k / 2; setManual({ top:T.i(mid + half), bot:T.i(mid - half) }); }
-      else { const d = dy / paneH() * span; setManual({ top:T.i(a + d), bot:T.i(b + d) }); }
+      else { const d = (isInv() ? -dy : dy) / paneH() * span; setManual({ top:T.i(a + d), bot:T.i(b + d) }); }
       return;
     }
     if (!inside) return;
@@ -1960,18 +1964,28 @@ function closePops(){ document.querySelectorAll('.pop.open').forEach(p => p.clas
 
 /* ───────────────── 수동 가격 범위 ───────────────── */
 const isLog = () => $('btnLog').classList.contains('on');
+/* ── 차트 반전 (TradingView '스케일 반전', Alt+I): 가격축 위아래를 뒤집어 롱/숏 관점을 바꿔 봄 ── */
+const isInv = () => $('btnInv').classList.contains('on');
+function setInvert(on, quiet){
+  on = !!on; if (on === isInv() && quiet) return;
+  $('btnInv').classList.toggle('on', on); document.body.classList.toggle('inv', on);
+  chart.priceScale('right').applyOptions({ invertScale: on });
+  applyManual(); overlay && overlay.update(); placeCd();
+  if (!quiet) toast(on ? '⇅ 차트 반전 켜짐 — 위아래가 뒤집혀 보입니다 (Alt+I 해제)' : '차트 반전 해제');
+}
 const tf = () => isLog() ? { f:Math.log10, i:v => Math.pow(10, v) } : { f:v => v, i:v => v };
 function visiblePrices(){
   if (manual) return { ...manual };
-  const top = priceAt(0), bot = priceAt(paneH());
-  return top == null || bot == null ? null : { top, bot };
+  const p0 = priceAt(0), p1 = priceAt(paneH());
+  return p0 == null || p1 == null ? null : { top: Math.max(p0, p1), bot: Math.min(p0, p1) };
 }
 function applyManual(){
   const T = tf();
   series.applyOptions({ autoscaleInfoProvider: orig => {
     if (!manual) return orig();
     const a = T.f(manual.top), b = T.f(manual.bot), span = a - b;
-    return { priceRange:{ maxValue:T.i(a - MARGIN_TOP * span), minValue:T.i(b + MARGIN_BOT * span) } };
+    const mMax = isInv() ? MARGIN_BOT : MARGIN_TOP, mMin = isInv() ? MARGIN_TOP : MARGIN_BOT;   // 반전 시 화면 위쪽 여백 = 최저가 쪽
+    return { priceRange:{ maxValue:T.i(a - mMax * span), minValue:T.i(b + mMin * span) } };
   }});
   maSeries.forEach(s => s.applyOptions({ autoscaleInfoProvider: orig => manual ? null : orig() }));
   chart.priceScale('right').applyOptions({ autoScale:true });
@@ -3256,6 +3270,7 @@ function buildUI(){
 
   $('btnRT').onclick = () => chart.timeScale().scrollToRealTime();
   $('btnAuto').onclick = () => setManual(null);
+  $('btnInv').onclick = () => setInvert(!isInv());
   $('btnLog').onclick = () => {
     const on = !$('btnLog').classList.contains('on'); $('btnLog').classList.toggle('on', on);
     chart.priceScale('right').applyOptions({ mode: on ? LW.PriceScaleMode.Logarithmic : LW.PriceScaleMode.Normal });
@@ -3280,6 +3295,7 @@ function buildUI(){
     if (kc && (e.ctrlKey || e.metaKey) && e.shiftKey){ snapCopy(); e.preventDefault(); return; }     // Ctrl+Shift+S 이미지 복사
     if (kc && (e.ctrlKey || e.metaKey)){ if (!EMBED) layoutSave(); e.preventDefault(); return; }     // Ctrl+S 종목 화면 저장
     if (kc && e.altKey && !e.shiftKey){ snapCopy(); e.preventDefault(); return; }                    // Alt+S 이미지 복사 (TradingView)
+    if (e.altKey && e.code === 'KeyI'){ setInvert(!isInv()); e.preventDefault(); return; }   // Alt+I 차트 반전
     if (e.altKey){
       if (k === 'a'){ const p = mouse ? snapPrice(mouse.x, mouse.y) : (S.last ? roundTick(S.last) : null); if (p){ const a = addAlert(S.ticker, p, 'cross'); sel = 'al:' + a.id; refreshSel(); } }
       else if (k === 'r') resetView(); else if (k === 'h'){ if (mouse) hlineAt(snapPrice(mouse.x, mouse.y)); else setTool('hline'); } else if (k === 't') setTool('trend'); else if (k === 'j') setTool('hray'); else if (k === 'f') setTool('fibret'); else if (k === 'e') setTool('fibext'); else if (k === 'm') setTool('prange'); else if (k === 'n') setTool('drange'); else return;
@@ -3783,6 +3799,7 @@ async function snapCanvas(){
   c.textAlign = 'left'; let x = 12;
   const put = (t, font, color) => { c.font = font; const w = c.measureText(t).width; if (x + w > lim) return false; c.fillStyle = color; c.fillText(t, x, HEAD / 2); x += w; return true; };
   put(dispName(S.ticker), `700 15px ${SNAP_FONT}`, '#f5f5f5'); x += 10;
+  if (isInv()){ put('⇅ 반전', `700 13px ${SNAP_FONT}`, '#ff9800'); x += 10; }
   put(`${TF_FULL[S.bar]} · ${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}`, `500 13px ${SNAP_FONT}`, '#a6a6a6'); x += 16;
   const chg = (lb.c - lb.o) / lb.o * 100;
   for (const [l, v] of [['시', lb.o], ['고', lb.h], ['저', lb.l], ['종', lb.c]]){
@@ -4032,7 +4049,7 @@ const layAutoSave = () => store.get('layAutoSave') === true;
 function layList(){ try { return Object.keys(localStorage).filter(k => k.startsWith('possize_lay_')).map(k => k.slice(12)).sort(); } catch(e){ return []; } }
 function layoutSnap(){
   const r = chart.timeScale().getVisibleLogicalRange(), n = bars.length;
-  const L = { v:1, bar:S.bar, ctype:chartType, mas: mas.map(({ vals, _n, ...x }) => x), log: isLog(), manual: manual ? { ...manual } : null, rsi: { ...rtCfg() }, ts: Date.now() };
+  const L = { v:1, bar:S.bar, ctype:chartType, mas: mas.map(({ vals, _n, ...x }) => x), log: isLog(), inv: isInv(), manual: manual ? { ...manual } : null, rsi: { ...rtCfg() }, ts: Date.now() };
   if (r && n){ L.span = r.to - r.from; L.off = r.to - (n - 1); L.atEnd = L.off > -3; L.fromT = logicalToTime(Math.round(r.from)); }
   return L;
 }
@@ -4054,6 +4071,7 @@ function layoutPre(L){
     chart.priceScale('right').applyOptions({ mode: L.log ? LW.PriceScaleMode.Logarithmic : LW.PriceScaleMode.Normal });
     applyManual();
   }
+  setInvert(!!L.inv, true);
   if (L.rsi){ Object.assign(rtCfg(), L.rsi); rtSave(); rtSyncUI(); rtStyle(); }
 }
 /* 캔들 로드 후 적용: 보이는 구간 · 가격 범위 */
