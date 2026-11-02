@@ -111,6 +111,17 @@ main.panel-open{grid-template-columns:1fr 330px}
 .al-vol{grid-column:1/-1}
 .al-vol input{width:100%;accent-color:var(--blue)}
 .al-snd.off .al-snd-g{opacity:.4;pointer-events:none}
+.al-cloud{margin-top:12px;padding:10px 12px;background:var(--bg);border:1px solid var(--line);border-radius:6px}
+.al-cloud label{display:flex;flex-direction:column;gap:3px;color:var(--text);font-size:11px;margin-top:7px}
+.al-cloud input{width:100%;padding:5px 7px;font-size:12px}
+.al-cloud .cg-btns{display:flex;gap:6px;margin-top:9px}
+.al-cloud .cg-btns button{flex:1;background:var(--panel2);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:5px 8px;font-size:12px}
+.al-cloud .cg-btns button:hover{border-color:var(--blue)}
+.al-cloud .cg-btns button.pri{background:var(--blue);border-color:var(--blue);color:#fff}
+.cg-st{font-size:11px;color:var(--muted);display:flex;align-items:center;gap:5px}
+.cg-st i{width:7px;height:7px;border-radius:50%;background:#666;display:inline-block}
+.cg-st.ok i{background:var(--green)}.cg-st.err i{background:var(--red)}.cg-st.ing i{background:var(--warn)}
+.cg-err{color:var(--red);font-size:11px;margin-top:6px;word-break:break-all}
 .al-card .stop{margin-top:8px;margin-left:6px;background:var(--warn);border:none;color:#131722;border-radius:4px;padding:4px 10px;font-size:12px;font-weight:700}
 .al-note{margin-top:8px;color:var(--muted);font-size:11px}
 #alarmStack{position:fixed;top:56px;right:16px;z-index:80;display:flex;flex-direction:column;gap:8px;width:320px}
@@ -349,6 +360,24 @@ body.inv #lgInv{display:inline-block}
 .wl-row .rm{position:absolute;right:-4px;top:50%;transform:translateY(-50%);display:none;background:var(--panel2);border:none;color:var(--muted);border-radius:4px;font-size:11px;padding:1px 5px}
 .wl-row:hover .rm{display:block}
 .wl-row .rm:hover{color:var(--red)}
+#wlEdit.on{color:#fff;background:var(--blue)}
+.wl-ed .wl-row{grid-template-columns:18px minmax(0,1fr) 92px 24px;cursor:grab}
+.wl-ed .wl-row .rm{display:block;position:static;transform:none;padding:2px 6px;font-size:12px}
+.wl-row .hd{color:var(--muted);font-size:13px;text-align:left!important;cursor:grab;user-select:none}
+.wl-row select{width:100%;background:var(--panel2);color:var(--text);border:1px solid var(--line2);border-radius:4px;font-size:12px;padding:2px 3px}
+.wl-row.drag{opacity:.4}
+.wl-ed .wl-row span.s{text-align:left}
+.wl-grp.ed{align-items:center;gap:4px;padding:12px 2px 4px}
+.wl-grp.ed input{flex:1;min-width:0;background:var(--panel2);color:#ececec;border:1px solid var(--line2);border-radius:4px;font-size:12px;font-weight:600;padding:3px 6px}
+.wl-grp.ed input:focus{outline:none;border-color:var(--blue)}
+.wl-grp .gb{background:transparent;border:none;color:var(--muted);font-size:12px;padding:2px 5px;border-radius:4px;cursor:pointer}
+.wl-grp .gb:hover{color:#fff;background:var(--panel2)}
+.wl-grp .gb.del:hover{color:var(--red)}
+.wl-grp.dropon,.wl-empty.dropon{background:rgba(41,98,255,.18);border-radius:4px}
+.wl-empty{color:var(--muted);font-size:11px;padding:8px 6px;border:1px dashed var(--line2);border-radius:4px;margin:2px 0;text-align:center}
+.wl-newg{width:100%;margin:12px 0 6px;background:transparent;border:1px dashed var(--line2);color:var(--muted);border-radius:6px;padding:8px;font-size:12px;cursor:pointer}
+.wl-newg:hover{color:#fff;border-color:var(--blue)}
+.wl-tip{color:var(--muted);font-size:11px;padding:6px 4px 2px;line-height:1.5}
 /* 알림 패널 */
 #vAlerts .al-form{grid-template-columns:minmax(0,1fr) minmax(0,1fr);}
 #vAlerts .al-form #alNote{grid-column:1/-1}
@@ -694,7 +723,7 @@ html.embed #layWrap{display:none}
   </section>
   <aside id="panel">
     <div class="pview" id="vWatch">
-      <div class="ph"><b>관심 종목</b><span class="ph-r"><button class="wl-add" id="wlAdd" title="종목 추가">＋</button><button class="pclose" title="닫기">✕</button></span></div>
+      <div class="ph"><b>관심 종목</b><span class="ph-r"><button class="wl-add" id="wlEdit" title="관심 종목·섹터 편집">✎</button><button class="wl-add" id="wlAdd" title="종목 추가">＋</button><button class="pclose" title="닫기">✕</button></span></div>
       <div class="wl-head"><span>심볼</span><span>현재가</span><span>변동</span><span>변동%</span></div>
       <div id="wlList"></div>
     </div>
@@ -725,7 +754,14 @@ html.embed #layWrap{display:none}
       <label class="al-vol">볼륨 <span id="sndVolTxt">70%</span><input type="range" id="sndVol" min="5" max="100" step="5" value="70"></label>
     </div>
   </div>
-  <div class="al-note">알람은 이 페이지가 열려 있는 동안에만 감시됩니다 (다른 탭에 있어도 동작).</div>
+  <div class="al-cloud">
+    <div class="al-snd-h"><b>☁ 알람 동기화 · 텔레그램</b><span class="cg-st" id="cgSt"><i></i><span>꺼짐</span></span></div>
+    <label>GitHub 토큰 (classic · gist 권한만)<input id="cgTok" type="password" autocomplete="off" placeholder="ghp_…"></label>
+    <label>Gist ID<input id="cgGist" autocomplete="off" placeholder="처음이면 비워 두고 ‘연결’ → 새로 만듭니다"></label>
+    <div class="cg-btns"><button id="cgSave" class="pri">연결</button><button id="cgNow">지금 동기화</button><button id="cgOff">연결 해제</button></div>
+    <div class="cg-err" id="cgErr"></div>
+  </div>
+  <div class="al-note" id="alNote2">알람은 이 페이지가 열려 있는 동안에만 감시됩니다 (다른 탭에 있어도 동작). 위 동기화를 연결하면 모든 브라우저가 같은 알람을 쓰고, GitHub Actions가 페이지를 닫아도 감시해 텔레그램으로 보냅니다.</div>
 </div>
     <div class="pview" id="vOrder">
       <div class="ph"><b>거래</b><span class="ph-r"><span class="br-st" id="brSt"><i></i><span>확인 중…</span></span><button class="pclose" title="닫기">✕</button></span></div>
@@ -2515,7 +2551,7 @@ const hms = t => { const d = new Date(t + KST * 1000), p2 = x => String(x).padSt
 const COND_TXT = { cross:'교차', up:'상향 돌파', down:'하향 돌파' };
 let wsAlertSubs = new Set();
 const alertsHere = () => hideDraw ? [] : alerts.filter(a => a.tk === S.ticker);
-function saveAlerts(){ store.set('alerts', alerts); syncAlertSubs(); updateBadge(); renderAlertList(); overlay && overlay.update(); }
+function saveAlerts(){ alStamp(); store.set('alerts', alerts); cloudSoon(1200); syncAlertSubs(); updateBadge(); renderAlertList(); overlay && overlay.update(); }
 function addAlert(tk, p, cond, note, silent){
   const a = { id: uid(), tk, p: +p, cond: cond || 'cross', repeat:false, note: note || '', on:true, fired:null, firedPx:null, ct: Date.now() };
   alerts.push(a); saveAlerts(); ensureAudio(); askNotify();
@@ -2702,6 +2738,119 @@ function drawAlerts(ctx, W){
 }
 
 /* 알람 관리 창 */
+
+/* ───────────────── 알람 클라우드 동기화 (GitHub Gist) ─────────────────
+   - 알람 목록을 비공개 Gist의 alerts.json에 저장 → 어떤 브라우저·PC에서 열어도 같은 알람
+   - GitHub Actions(alert_watcher/watch.py)가 같은 Gist를 읽어 24시간 감시하고 텔레그램으로 전송
+   - 병합 규칙: 알람마다 mt(수정 시각)가 더 최근인 쪽이 이김, 삭제는 tomb(삭제 시각)로 전파 */
+const CLOUD = { gist: store.get('cgGist') || '', token: store.get('cgTok') || '', st:'off', err:'', last:0, busy:false, again:false, timer:null };
+let alSnap = new Map(), alTomb = store.get('alTomb') || {};
+const alKey = a => { const { mt, ...r } = a; return JSON.stringify(r); };
+function alSnapshot(){ alSnap = new Map(alerts.map(a => [a.id, alKey(a)])); }
+function alStamp(){
+  const now = Date.now(), ids = new Set();
+  for (const a of alerts){ ids.add(a.id); if (alSnap.get(a.id) !== alKey(a)) a.mt = now; else if (a.mt == null) a.mt = a.ct || 0; }
+  for (const id of alSnap.keys()) if (!ids.has(id)) alTomb[id] = now;
+  alSnapshot(); store.set('alTomb', alTomb);
+}
+function alMerge(remote){
+  const tomb = { ...alTomb };
+  for (const [k, v] of Object.entries(remote.tomb || {})) tomb[k] = Math.max(tomb[k] || 0, +v || 0);
+  const m = new Map();
+  for (const a of [...(Array.isArray(remote.alerts) ? remote.alerts : []), ...alerts]){
+    if (!a || !a.id) continue;
+    const o = m.get(a.id); if (!o || (a.mt || 0) > (o.mt || 0)) m.set(a.id, a);
+  }
+  const out = [...m.values()].filter(a => !(tomb[a.id] >= (a.mt || 0)));
+  const cut = Date.now() - 30 * 864e5; for (const k of Object.keys(tomb)) if (tomb[k] < cut) delete tomb[k];
+  return { alerts: out, tomb };
+}
+function alApply(list, tomb){
+  const before = JSON.stringify(alerts);
+  alerts = list; alTomb = tomb; store.set('alTomb', tomb); alSnapshot();
+  if (JSON.stringify(alerts) !== before){
+    store.set('alerts', alerts); syncAlertSubs(); updateBadge(); renderAlertList(); overlay && overlay.update();
+    if (sel && String(sel).startsWith('al:') && !alerts.some(a => 'al:' + a.id === sel)){ sel = null; refreshSel(); }
+  }
+}
+async function gh(method, path, body){
+  const r = await fetch('https://api.github.com' + path, {
+    method, cache:'no-store',
+    headers: { Authorization: 'Bearer ' + CLOUD.token, Accept: 'application/vnd.github+json', ...(body ? { 'Content-Type':'application/json' } : {}) },
+    body: body ? JSON.stringify(body) : undefined
+  });
+  if (!r.ok){
+    const t = await r.text().catch(() => '');
+    throw new Error(r.status === 401 ? '토큰이 올바르지 않습니다 (401)' : r.status === 404 ? 'Gist를 찾을 수 없습니다 — ID와 토큰의 gist 권한을 확인하세요 (404)' : `GitHub ${r.status} ${t.slice(0, 100)}`);
+  }
+  return r.json();
+}
+async function cloudRead(){
+  const g = await gh('GET', '/gists/' + CLOUD.gist);
+  const f = g.files && g.files['alerts.json'];
+  if (!f) return { alerts: [], tomb: {} };
+  let txt = f.content;
+  if (f.truncated) txt = await fetch(f.raw_url, { cache:'no-store' }).then(r => r.text());
+  try { const j = JSON.parse(txt || '{}'); return j && typeof j === 'object' ? j : { alerts: [], tomb: {} }; } catch(e){ return { alerts: [], tomb: {} }; }
+}
+function cloudSoon(ms){
+  if (!CLOUD.gist || !CLOUD.token || EMBED) return;
+  clearTimeout(CLOUD.timer); CLOUD.timer = setTimeout(() => cloudSync(), ms == null ? 800 : ms);
+}
+async function cloudSync(){
+  if (!CLOUD.gist || !CLOUD.token || EMBED) return;
+  if (CLOUD.busy){ CLOUD.again = true; return; }
+  if (drag){ cloudSoon(1500); return; }                       // 알람선 드래그 중에는 덮어쓰지 않음
+  CLOUD.busy = true; if (CLOUD.st !== 'ok') { CLOUD.st = 'ing'; cloudStatus(); }
+  try {
+    const remote = await cloudRead();
+    const m = alMerge(remote);
+    alApply(m.alerts, m.tomb);
+    const rStr = JSON.stringify({ a: remote.alerts || [], t: remote.tomb || {} }), mStr = JSON.stringify({ a: m.alerts, t: m.tomb });
+    if (mStr !== rStr) await gh('PATCH', '/gists/' + CLOUD.gist, { files: { 'alerts.json': { content: JSON.stringify({ v:1, updated: Date.now(), by:'browser', alerts: m.alerts, tomb: m.tomb }, null, 1) } } });
+    CLOUD.st = 'ok'; CLOUD.err = ''; CLOUD.last = Date.now();
+  } catch(e){ CLOUD.st = 'err'; CLOUD.err = String(e && e.message || e); }
+  finally {
+    CLOUD.busy = false; cloudStatus();
+    if (CLOUD.again){ CLOUD.again = false; cloudSoon(300); }
+  }
+}
+function cloudStatus(){
+  const st = $('cgSt'); if (!st) return;
+  const on = CLOUD.gist && CLOUD.token;
+  const cls = !on ? '' : CLOUD.st === 'ok' ? 'ok' : CLOUD.st === 'err' ? 'err' : 'ing';
+  st.className = 'cg-st ' + cls;
+  st.querySelector('span').textContent = !on ? '꺼짐' : CLOUD.st === 'ok' ? `동기화됨 ${hms(CLOUD.last)}` : CLOUD.st === 'err' ? '오류' : '연결 중…';
+  $('cgErr').textContent = on && CLOUD.st === 'err' ? CLOUD.err : '';
+}
+function cloudInit(){
+  if (!$('cgTok')) return;
+  $('cgTok').value = CLOUD.token; $('cgGist').value = CLOUD.gist;
+  $('cgSave').onclick = async () => {
+    const tok = $('cgTok').value.trim(); let id = $('cgGist').value.trim().replace(/^.*gist\.github\.com\/(?:[^/]+\/)?/, '').replace(/[/#?].*$/, '');
+    if (!tok) return toast('GitHub 토큰을 입력하세요');
+    CLOUD.token = tok;
+    try {
+      if (!id){
+        const g = await gh('POST', '/gists', { description:'Trader_KIM alerts (chart ↔ GitHub Actions)', public:false,
+          files: { 'alerts.json': { content: JSON.stringify({ v:1, updated: Date.now(), by:'browser', alerts: [], tomb: {} }) } } });
+        id = g.id; toast('새 비공개 Gist를 만들었습니다 — Gist ID를 GitHub Secrets의 GIST_ID에 넣으세요');
+      } else await gh('GET', '/gists/' + id);
+    } catch(e){ CLOUD.st = 'err'; CLOUD.err = String(e.message || e); CLOUD.gist = id || ''; cloudStatus(); return; }
+    CLOUD.gist = id; $('cgGist').value = id; store.set('cgTok', tok); store.set('cgGist', id);
+    CLOUD.st = 'ing'; cloudStatus(); await cloudSync();
+    if (CLOUD.st === 'ok') toast(`☁ 알람 ${alerts.length}개 동기화됨`);
+  };
+  $('cgNow').onclick = () => { if (!CLOUD.gist || !CLOUD.token) return toast('먼저 연결하세요'); cloudSync(); };
+  $('cgOff').onclick = () => { CLOUD.gist = CLOUD.token = ''; store.set('cgTok', ''); store.set('cgGist', ''); $('cgTok').value = ''; $('cgGist').value = ''; CLOUD.st = 'off'; cloudStatus(); toast('이 브라우저의 동기화를 해제했습니다 (알람은 그대로 남습니다)'); };
+  cloudStatus();
+  if (!EMBED){
+    setInterval(() => { if (!document.hidden) cloudSync(); else if (Date.now() - CLOUD.last > 60000) cloudSync(); }, 15000);
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) cloudSoon(200); });
+    cloudSoon(500);
+  }
+}
+
 function renderAlertList(){
   const box = $('alList'); if (!box) return;
   const list = alerts.slice().sort((a, b) => (b.on - a.on) || (a.tk.localeCompare(b.tk)) || (a.p - b.p));
@@ -2712,7 +2861,7 @@ function renderAlertList(){
     const row = document.createElement('div'); row.className = 'al-row' + (a.on ? '' : ' off');
     row.innerHTML = `<span class="dot"></span><span class="tk" title="차트로 이동">${esc(parseKey(a.tk).ex === 'okx' ? a.tk : dispName(a.tk))}</span>
       <span>${COND_TXT[a.cond]} <b>${fP(a.p)}</b>${a.repeat ? ' · 매번' : ''}${a.note ? ` <span class="ds">${esc(a.note)}</span>` : ''}</span>
-      <span class="ds">${a.on ? (dist != null ? `${dist >= 0 ? '+' : ''}${f(dist, 2)}%` : '') : (a.fired ? '발동 ' + hms(a.fired) : '꺼짐')}</span>
+      <span class="ds">${a.on ? (dist != null ? `${dist >= 0 ? '+' : ''}${f(dist, 2)}%` : '') : (a.fired ? '발동 ' + hms(a.fired) + (a.tgSent && Math.abs(a.fired - a.tgSent) <= 60000 ? ' · 📨 텔레그램' : '') : '꺼짐')}</span>
       <button title="${a.on ? '끄기' : '다시 켜기'}">${a.on ? '⏸' : '▶'}</button><button title="삭제">✕</button>`;
     const [bOn, bDel] = row.querySelectorAll('button');
     row.querySelector('.tk').onclick = () => { if (a.tk !== S.ticker) switchTicker(a.tk); };
@@ -2739,14 +2888,15 @@ window.addEventListener('storage', e => {
   if (!e.key || !e.key.startsWith('possize_')) return;
   const k = e.key.slice(8);
   try {
-    if (k === 'alerts'){ const v = JSON.parse(e.newValue); alerts = Array.isArray(v) ? v : []; updateBadge(); syncAlertSubs(); if (panelView === 'alerts') renderAlertList(); overlay.update(); }
+    if (k === 'alerts'){ const v = JSON.parse(e.newValue); alerts = Array.isArray(v) ? v : []; alTomb = store.get('alTomb') || {}; alSnapshot(); updateBadge(); syncAlertSubs(); if (panelView === 'alerts') renderAlertList(); overlay.update(); }
     else if (k === 'lv_' + S.ticker){ loadLevels(); calc(); fpRow(); if (sel === 'pos' && S.entry == null){ sel = null; } refreshSel(); overlay.update(); }
     else if (k === 'dw_' + S.ticker){ const v = JSON.parse(e.newValue); drawings = Array.isArray(v) ? v : []; pending = []; if (sel && sel !== 'pos' && !String(sel).startsWith('al:')) sel = null; refreshSel(); overlay.update(); }
   } catch(err){}
 });
 function initAlerts(){
   const saved = store.get('alerts'); alerts = Array.isArray(saved) ? saved : [];
-  loadSnd(); bindSnd();
+  alerts.forEach(a => { if (a.mt == null) a.mt = a.ct || 0; }); alSnapshot();
+  loadSnd(); bindSnd(); cloudInit();
   $('btnAlerts').onclick = e => { e.stopPropagation(); openAlertPop(); };
   $('alTk').onchange = () => { const tk = $('alTk').value; const c = tk === S.ticker ? S.last : alPrev[tk]; $('alPrice').value = c ? c : ''; };
   const doAdd = () => {
@@ -3226,7 +3376,8 @@ function buildUI(){
     showPanel(panelView === v ? null : v);
   });
   document.querySelectorAll('.pclose').forEach(b => { if (b.id !== 'btnClosePanel') b.onclick = () => showPanel(null); });
-  $('wlAdd').onclick = () => openSymSearch('', true);
+  $('wlAdd').onclick = () => { wlTarget = null; openSymSearch('', true); };
+  $('wlEdit').onclick = () => { wlEditMode = !wlEditMode; $('wlEdit').classList.toggle('on', wlEditMode); renderWatch(); };
   $('btnUndo').onclick = undo; $('btnRedo').onclick = redo;
   initSymSearch();
 
@@ -3388,27 +3539,105 @@ async function wlFetch(){
   await Promise.all(jobs);
   if (panelView === 'watch') renderWatch();
 }
+let wlEditMode = false, wlTarget = null, wlDrag = null;
+const wlEsc = t => String(t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c]));
+function wlUniqName(base){ let n = base, i = 2; while (wl[n]) n = `${base} ${i++}`; return n; }
+function wlRebuild(entries){ wl = Object.fromEntries(entries); wlSave(); renderWatch(); }
+function wlRename(g, nm){
+  nm = String(nm || '').trim();
+  if (!nm || nm === g){ const i = $('wlList').querySelector(`input[data-g="${CSS.escape(g)}"]`); if (i) i.value = g; return; }
+  if (wl[nm]){ toast(`'${nm}' 섹터가 이미 있습니다`); return renderWatch(); }
+  wlRebuild(Object.entries(wl).map(([k, v]) => [k === g ? nm : k, v]));
+}
+function wlMoveGroup(g, dir){
+  const e = Object.entries(wl), i = e.findIndex(([k]) => k === g), j = i + dir;
+  if (i < 0 || j < 0 || j >= e.length) return;
+  [e[i], e[j]] = [e[j], e[i]]; wlRebuild(e);
+}
+function wlDelGroup(g){
+  const n = wl[g].length;
+  if (n && !confirm(`'${g}' 섹터와 종목 ${n}개를 관심 종목에서 삭제할까요?`)) return;
+  delete wl[g]; wlSave(); renderWatch(); toast(`'${g}' 섹터를 삭제했습니다`);
+}
+function wlNewGroup(){
+  const nm = wlUniqName('새 섹터'); wl[nm] = []; wlSave(); renderWatch();
+  const inp = $('wlList').querySelector(`input[data-g="${CSS.escape(nm)}"]`); if (inp){ inp.focus(); inp.select(); }
+}
+function wlMoveTicker(tk, from, to, beforeTk){
+  if (!wl[from] || !wl[to]) return;
+  wl[from] = wl[from].filter(x => x !== tk);
+  const l = wl[to], i = beforeTk ? l.indexOf(beforeTk) : -1;
+  if (i >= 0) l.splice(i, 0, tk); else l.push(tk);
+  wlSave(); renderWatch();
+}
+function wlDropZone(el, to, beforeTk){
+  el.addEventListener('dragover', e => { if (!wlDrag) return; e.preventDefault(); el.classList.add('dropon'); });
+  el.addEventListener('dragleave', () => el.classList.remove('dropon'));
+  el.addEventListener('drop', e => { e.preventDefault(); el.classList.remove('dropon'); if (wlDrag && wlDrag.tk !== beforeTk) wlMoveTicker(wlDrag.tk, wlDrag.g, to, beforeTk); wlDrag = null; });
+}
 function renderWatch(){
   const box = $('wlList'); if (!box || !wl) return;
-  box.innerHTML = '';
-  Object.entries(wl).forEach(([g, list]) => {
-    if (!list.length) return;
-    box.insertAdjacentHTML('beforeend', `<div class="wl-grp"><span>${g}</span><span>${list.length}</span></div>`);
+  const ed = wlEditMode, groups = Object.keys(wl);
+  box.classList.toggle('wl-ed', ed);
+  const wh = document.querySelector('.wl-head'); if (wh) wh.style.display = ed ? 'none' : '';
+  box.innerHTML = ed ? '<div class="wl-tip">섹터 이름을 바로 고칠 수 있습니다. 종목은 ⠿를 끌거나 오른쪽 목록에서 골라 다른 섹터로 옮기세요.</div>' : '';
+  Object.entries(wl).forEach(([g, list], gi) => {
+    if (!list.length && !ed) return;
+    const gh = document.createElement('div');
+    if (ed){
+      gh.className = 'wl-grp ed';
+      gh.innerHTML = `<input data-g="${wlEsc(g)}" value="${wlEsc(g)}" maxlength="20" title="섹터 이름">` +
+        `<button class="gb" data-a="up" title="위로" ${gi === 0 ? 'disabled' : ''}>▲</button>` +
+        `<button class="gb" data-a="dn" title="아래로" ${gi === groups.length - 1 ? 'disabled' : ''}>▼</button>` +
+        `<button class="gb" data-a="add" title="이 섹터에 종목 추가">＋</button>` +
+        `<button class="gb del" data-a="del" title="섹터 삭제">🗑</button>`;
+      const inp = gh.querySelector('input');
+      inp.onkeydown = e => { if (e.key === 'Enter') inp.blur(); else if (e.key === 'Escape'){ inp.value = g; inp.blur(); } };
+      inp.onblur = () => wlRename(g, inp.value);
+      gh.querySelectorAll('.gb').forEach(b => b.onclick = () => {
+        const a = b.dataset.a;
+        if (a === 'up') wlMoveGroup(g, -1); else if (a === 'dn') wlMoveGroup(g, 1);
+        else if (a === 'del') wlDelGroup(g); else if (a === 'add'){ wlTarget = g; openSymSearch('', true); }
+      });
+      wlDropZone(gh, g, null);
+    } else {
+      gh.className = 'wl-grp';
+      gh.innerHTML = `<span>${wlEsc(g)}</span><span>${list.length}</span>`;
+    }
+    box.appendChild(gh);
+    if (ed && !list.length){ const em = document.createElement('div'); em.className = 'wl-empty'; em.textContent = '종목을 여기로 끌어오거나 ＋로 추가하세요'; wlDropZone(em, g, null); box.appendChild(em); }
     list.forEach(tk => {
       const t = wlTk[tk], last = tk === S.ticker && S.last ? S.last : t && t.last, pk = parseKey(tk);
       const ch = t && last && t.open ? last - t.open : null, pct = ch != null ? ch / t.open * 100 : null, cls = ch == null ? '' : ch >= 0 ? 'up' : 'dn';
       const dec = last ? (last >= 1000 ? 1 : last >= 10 ? 2 : last >= 1 ? 3 : 5) : 2;
       const row = document.createElement('div'); row.className = 'wl-row' + (tk === S.ticker ? ' cur' : '');
-      row.innerHTML = `<span class="s">${pk.ex === 'okx' ? tk : dispName(tk)}${pk.ex !== 'okx' ? `<em class="exb ${pk.ex}">${EX_SHORT[pk.ex]}</em>` : ''}</span><span>${last ? f(last, dec) : '—'}</span><span class="${cls}">${ch != null ? (ch >= 0 ? '+' : '') + f(ch, dec) : ''}</span><span class="${cls}">${pct != null ? (pct >= 0 ? '+' : '') + f(pct, 2) + '%' : ''}</span><button class="rm" title="관심 종목에서 제거">✕</button>`;
-      row.onclick = e => { if (e.target.closest('.rm')){ wl[g] = wl[g].filter(x => x !== tk); wlSave(); renderWatch(); return; } if (tk !== S.ticker) switchTicker(tk); };
+      const name = `<span class="s">${pk.ex === 'okx' ? tk : dispName(tk)}${pk.ex !== 'okx' ? `<em class="exb ${pk.ex}">${EX_SHORT[pk.ex]}</em>` : ''}</span>`;
+      if (ed){
+        row.draggable = true;
+        row.innerHTML = `<span class="hd" title="끌어서 이동">⠿</span>${name}<span><select title="섹터 이동">${groups.map(x => `<option value="${wlEsc(x)}"${x === g ? ' selected' : ''}>${wlEsc(x)}</option>`).join('')}</select></span><button class="rm" title="관심 종목에서 제거">✕</button>`;
+        row.querySelector('select').onchange = e => wlMoveTicker(tk, g, e.target.value, null);
+        row.querySelector('select').onclick = e => e.stopPropagation();
+        row.ondragstart = e => { wlDrag = { tk, g }; row.classList.add('drag'); e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', tk); } catch(_){} };
+        row.ondragend = () => { row.classList.remove('drag'); wlDrag = null; box.querySelectorAll('.dropon').forEach(x => x.classList.remove('dropon')); };
+        wlDropZone(row, g, tk);
+      } else {
+        row.innerHTML = `${name}<span>${last ? f(last, dec) : '—'}</span><span class="${cls}">${ch != null ? (ch >= 0 ? '+' : '') + f(ch, dec) : ''}</span><span class="${cls}">${pct != null ? (pct >= 0 ? '+' : '') + f(pct, 2) + '%' : ''}</span><button class="rm" title="관심 종목에서 제거">✕</button>`;
+      }
+      row.onclick = e => {
+        if (e.target.closest('.rm')){ wl[g] = wl[g].filter(x => x !== tk); wlSave(); renderWatch(); return; }
+        if (ed || e.target.closest('select')) return;
+        if (tk !== S.ticker) switchTicker(tk);
+      };
       box.appendChild(row);
     });
   });
+  if (ed){ const nb = document.createElement('button'); nb.className = 'wl-newg'; nb.textContent = '＋ 새 섹터 추가'; nb.onclick = wlNewGroup; box.appendChild(nb); }
 }
 function wlAddTicker(tk){
-  const nm = dispName(tk);
-  if (Object.values(wl).some(l => l.includes(tk))) return toast(`${nm}는 이미 관심 종목에 있습니다`);
-  (wl['내 종목'] = wl['내 종목'] || []).push(tk); wlSave(); wlFetch(); renderWatch(); toast(`${nm}를 관심 종목에 추가했습니다`);
+  const nm = dispName(tk), g = wlTarget && wl[wlTarget] ? wlTarget : '내 종목'; wlTarget = null;
+  const cur = Object.keys(wl).find(k => wl[k].includes(tk));
+  if (cur) return toast(`${nm}는 이미 '${cur}' 섹터에 있습니다`);
+  (wl[g] = wl[g] || []).push(tk); wlSave(); wlFetch(); renderWatch(); toast(`${nm}를 '${g}'에 추가했습니다`);
 }
 
 /* ───────────────── 심볼 검색 ───────────────── */
