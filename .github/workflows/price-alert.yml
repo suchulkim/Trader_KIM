@@ -1,0 +1,40 @@
+name: price-alert
+
+# 차트 알람(Gist alerts.json)을 감시해 텔레그램으로 보냅니다.
+# 한 번 실행되면 약 5시간 50분 동안 15초마다 시세를 확인하고 종료합니다.
+# 30분마다 예약 실행이 대기열에 들어가므로, 앞 실행이 끝나면 바로 다음 실행이 이어서 감시합니다.
+on:
+  schedule:
+    - cron: '7,37 * * * *'
+  workflow_dispatch:
+    inputs:
+      test:
+        description: '시작할 때 텔레그램 테스트 메시지 보내기'
+        type: boolean
+        default: true
+
+concurrency:
+  group: price-alert
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: alert_watcher
+      - name: Watch prices
+        run: python3 alert_watcher/watch.py
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_TOKEN }}
+          GIST_ID: ${{ secrets.GIST_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          RUN_MINUTES: '350'
+          POLL_SEC: '15'
+          TEST_MESSAGE: ${{ github.event_name == 'workflow_dispatch' && inputs.test && '1' || '0' }}
