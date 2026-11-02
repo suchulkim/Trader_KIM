@@ -1109,7 +1109,10 @@ function pill(ctx, cx, y, lines, bg, fg, anchor){
   ctx.fillStyle = bg; ctx.fill();
   ctx.fillStyle = fg; ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   lines.forEach((s, i) => ctx.fillText(s, cx, top + padY + lh/2 + i*lh - 1));
+  return { x: cx - w/2, y: top, w, h };
 }
+const LBL = new WeakMap();   // 가격/날짜 범위 그림별 라벨 위치 (라벨 클릭 선택용)
+let POS_LBL = [];            // 포지션 박스 라벨 위치 (박스가 화면 밖이어도 라벨로 선택)
 
 /* 선택 미니 툴바를 차트 상단(오른쪽)에 고정 — 그림을 가리지 않도록 */
 function placeSelbar(W, H){
@@ -1312,7 +1315,7 @@ function drawPRange(ctx, d, P, sel_){
   const l1 = `${sg}${fP(Math.abs(m.dp))} (${sg}${f(Math.abs(m.pct), 2)}%)`;
   const l2 = m.ticks != null ? `${Math.abs(m.ticks).toLocaleString()}틱` : '';
   const lines = [l1 + (l2 ? '  ' + l2 : '')];
-  if (up) pill(ctx, mx, B.y1 - 6, lines, col, '#fff', 'bottom'); else pill(ctx, mx, B.y2 + 6, lines, col, '#fff', 'top');
+  LBL.set(d, up ? pill(ctx, mx, B.y1 - 6, lines, col, '#fff', 'bottom') : pill(ctx, mx, B.y2 + 6, lines, col, '#fff', 'top'));
   if (sel_) P.forEach(p => handle(ctx, p.x, p.y, col));
 }
 function rangeVol(d){
@@ -1336,7 +1339,7 @@ function drawDRange(ctx, d, P, sel_){
   const vol = rangeVol(d), ccy = S.inst ? S.inst.ctValCcy || '' : '';
   const lines = [`${fw ? '' : '−'}${Math.abs(m.nb)}봉, ${fDur(m.dur)}`, `${rangeDate(Math.min(d.pts[0].t, d.pts[1].t))} → ${rangeDate(Math.max(d.pts[0].t, d.pts[1].t))}`];
   if (vol != null) lines.push(`거래량 ${fK(vol)}${ccy ? ' ' + ccy : ''}`);
-  pill(ctx, (B.x1 + B.x2) / 2, B.y2 + 6, lines, col, '#fff', 'top');
+  LBL.set(d, pill(ctx, (B.x1 + B.x2) / 2, B.y2 + 6, lines, col, '#fff', 'top'));
   if (sel_) P.forEach(p => handle(ctx, p.x, p.y, col));
 }
 function drawMeasure(ctx, d, P){
@@ -1362,7 +1365,7 @@ function posGeom(){
   return { x0, x1, yE: yOf(S.entry), yS: yOf(S.stop), yT: yOf(S.target) };
 }
 function drawPosition(ctx, W, H){
-  const g = posGeom(); if (!g || g.yE == null) return;
+  const g = posGeom(); if (!g || g.yE == null){ POS_LBL = []; return; }
   const { x0, x1, yE, yS, yT } = g, w = x1 - x0, cx = (x0 + x1) / 2;
   ctx.save();
   if (yS != null){ ctx.fillStyle = 'rgba(242,54,69,.2)'; ctx.fillRect(x0, Math.min(yE, yS), w, Math.abs(yS - yE)); }
@@ -1371,10 +1374,11 @@ function drawPosition(ctx, W, H){
   if (yS != null){ ctx.strokeStyle = C_DN; line(ctx, x0, Math.round(yS)+.5, x1, Math.round(yS)+.5); }
   if (yT != null){ ctx.strokeStyle = C_UP; line(ctx, x0, Math.round(yT)+.5, x1, Math.round(yT)+.5); }
   ctx.strokeStyle = C_ENTRY; line(ctx, x0, Math.round(yE)+.5, x1, Math.round(yE)+.5);
+  POS_LBL = [];
   if (posInfo){
-    if (yT != null && posInfo.target) pill(ctx, cx, yT < yE ? yT - 4 : yT + 4, [posInfo.target], C_UP, '#fff', yT < yE ? 'bottom' : 'top');
-    if (yS != null && posInfo.stop) pill(ctx, cx, yS < yE ? yS - 4 : yS + 4, [posInfo.stop], C_DN, '#fff', yS < yE ? 'bottom' : 'top');
-    pill(ctx, cx, yE, posInfo.center, '#363a45', '#e8eaf0', 'middle');
+    if (yT != null && posInfo.target) POS_LBL.push(pill(ctx, cx, yT < yE ? yT - 4 : yT + 4, [posInfo.target], C_UP, '#fff', yT < yE ? 'bottom' : 'top'));
+    if (yS != null && posInfo.stop) POS_LBL.push(pill(ctx, cx, yS < yE ? yS - 4 : yS + 4, [posInfo.stop], C_DN, '#fff', yS < yE ? 'bottom' : 'top'));
+    POS_LBL.push(pill(ctx, cx, yE, posInfo.center, '#363a45', '#e8eaf0', 'middle'));
   }
   if (sel === 'pos'){
     [yE, yS, yT].forEach(y => { if (y != null) handle(ctx, x0, y, '#2962ff'); });
@@ -1397,6 +1401,7 @@ function hitTest(x, y){
       for (let j = 0; j < P.length; j++) if (P[j].x != null && P[j].y != null && Math.hypot(P[j].x - x, P[j].y - y) <= T + 2) return { kind:'pt', d, j };
     }
   }
+  for (const r of POS_LBL) if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) return { kind:'pos-move' };
   const g = posGeom();
   if (g && g.yE != null){
     const inX = x >= Math.min(g.x0, g.x1) - T && x <= Math.max(g.x0, g.x1) + T;
@@ -1409,6 +1414,8 @@ function hitTest(x, y){
   if (!hideDraw){
     for (let i = drawings.length - 1; i >= 0; i--){
       const d = drawings[i]; if (d.ephemeral || d.type === 'image' || !visOn(d)) continue;
+      const lr = (d.type === 'prange' || d.type === 'drange') && LBL.get(d);
+      if (lr && x >= lr.x && x <= lr.x + lr.w && y >= lr.y && y <= lr.y + lr.h) return { kind:'move', d };
       const P = d.pts.map(toXY);
       if (d.type === 'hline'){ if (near(P[0].y, y)) return { kind:'move', d }; }
       else if (d.type === 'hray'){ if (P[0].x != null && x >= P[0].x - T && near(P[0].y, y)) return { kind:'move', d }; }
