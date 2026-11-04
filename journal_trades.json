@@ -2125,5 +2125,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 336.62
+ },
+ {
+  "id": "4069879617471336448-1793794264438-1793800066052",
+  "ex": "OKX",
+  "instId": "SPX-USDT-SWAP",
+  "sym": "SPX",
+  "side": "short",
+  "lever": 3.0,
+  "openPx": 0.3745,
+  "closePx": 0.3713131683731513,
+  "size": 3516.0,
+  "notional": 1316.742,
+  "openTime": 1793794264438,
+  "closeTime": 1793800066052,
+  "holdMin": 96.7,
+  "pnl": 11.2049,
+  "fee": -0.91611695,
+  "funding": 0.0,
+  "realized": 10.28878305,
+  "pnlRatio": 0.00851,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 0.381
  }
 ]
