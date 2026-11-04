@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>포지션 사이즈 계산기</title>
 <script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-10-31.1';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
+<script src="trader_kim_local.js"></script><!-- PC 전용: order_bridge.py 가 .env 에서 만든 토큰 파일 (없으면 무시) -->
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -760,6 +761,7 @@ html.embed #layWrap{display:none}
     <label>Gist ID<input id="cgGist" autocomplete="off" placeholder="처음이면 비워 두고 ‘연결’ → 새로 만듭니다"></label>
     <div class="cg-btns"><button id="cgSave" class="pri">연결</button><button id="cgNow">지금 동기화</button><button id="cgOff">연결 해제</button></div>
     <div class="cg-err" id="cgErr"></div>
+    <div class="cg-src" id="cgSrc" style="display:none;margin-top:6px;font-size:11px;color:var(--muted,#8a8f98)"></div>
   </div>
   <div class="al-note" id="alNote2">알람은 이 페이지가 열려 있는 동안에만 감시됩니다 (다른 탭에 있어도 동작). 위 동기화를 연결하면 모든 브라우저가 같은 알람을 쓰고, GitHub Actions가 페이지를 닫아도 감시해 텔레그램으로 보냅니다.</div>
 </div>
@@ -1021,6 +1023,8 @@ const store = {
   get(k){ try { return JSON.parse(localStorage.getItem('possize_'+k)); } catch(e){ return null; } },
   set(k,v){ try { localStorage.setItem('possize_'+k, JSON.stringify(v)); } catch(e){} }
 };
+/* .env 값 (trader_kim_local.js) — 있으면 localStorage 보다 우선. 재부팅·브라우저 데이터 삭제 후에도 다시 입력할 필요 없음 */
+const LOC = (window.TK_LOCAL && typeof window.TK_LOCAL === 'object') ? window.TK_LOCAL : {};
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 
@@ -2743,7 +2747,7 @@ function drawAlerts(ctx, W){
    - 알람 목록을 비공개 Gist의 alerts.json에 저장 → 어떤 브라우저·PC에서 열어도 같은 알람
    - GitHub Actions(alert_watcher/watch.py)가 같은 Gist를 읽어 24시간 감시하고 텔레그램으로 전송
    - 병합 규칙: 알람마다 mt(수정 시각)가 더 최근인 쪽이 이김, 삭제는 tomb(삭제 시각)로 전파 */
-const CLOUD = { gist: store.get('cgGist') || '', token: store.get('cgTok') || '', st:'off', err:'', last:0, busy:false, again:false, timer:null };
+const CLOUD = { gist: LOC.gistId || store.get('cgGist') || '', token: LOC.gistToken || store.get('cgTok') || '', st:'off', err:'', last:0, busy:false, again:false, timer:null };
 let alSnap = new Map(), alTomb = store.get('alTomb') || {};
 const alKey = a => { const { mt, ...r } = a; return JSON.stringify(r); };
 function alSnapshot(){ alSnap = new Map(alerts.map(a => [a.id, alKey(a)])); }
@@ -2826,6 +2830,8 @@ function cloudStatus(){
 function cloudInit(){
   if (!$('cgTok')) return;
   $('cgTok').value = CLOUD.token; $('cgGist').value = CLOUD.gist;
+  const src = [LOC.gistToken && '토큰', LOC.gistId && 'Gist ID'].filter(Boolean);
+  if (src.length){ $('cgSrc').style.display = ''; $('cgSrc').textContent = `🔑 ${src.join('·')}: .env에서 자동으로 불러옴 (D:\\GPTBITCOIN\\BULLKING\\.env)`; }
   $('cgSave').onclick = async () => {
     const tok = $('cgTok').value.trim(); let id = $('cgGist').value.trim().replace(/^.*gist\.github\.com\/(?:[^/]+\/)?/, '').replace(/[/#?].*$/, '');
     if (!tok) return toast('GitHub 토큰을 입력하세요');
@@ -2834,7 +2840,7 @@ function cloudInit(){
       if (!id){
         const g = await gh('POST', '/gists', { description:'Trader_KIM alerts (chart ↔ GitHub Actions)', public:false,
           files: { 'alerts.json': { content: JSON.stringify({ v:1, updated: Date.now(), by:'browser', alerts: [], tomb: {} }) } } });
-        id = g.id; toast('새 비공개 Gist를 만들었습니다 — Gist ID를 GitHub Secrets의 GIST_ID에 넣으세요');
+        id = g.id; toast('새 비공개 Gist를 만들었습니다 — Gist ID를 GitHub Secrets와 .env의 GIST_ID에 넣으세요', 8000);
       } else await gh('GET', '/gists/' + id);
     } catch(e){ CLOUD.st = 'err'; CLOUD.err = String(e.message || e); CLOUD.gist = id || ''; cloudStatus(); return; }
     CLOUD.gist = id; $('cgGist').value = id; store.set('cgTok', tok); store.set('cgGist', id);
@@ -2842,7 +2848,7 @@ function cloudInit(){
     if (CLOUD.st === 'ok') toast(`☁ 알람 ${alerts.length}개 동기화됨`);
   };
   $('cgNow').onclick = () => { if (!CLOUD.gist || !CLOUD.token) return toast('먼저 연결하세요'); cloudSync(); };
-  $('cgOff').onclick = () => { CLOUD.gist = CLOUD.token = ''; store.set('cgTok', ''); store.set('cgGist', ''); $('cgTok').value = ''; $('cgGist').value = ''; CLOUD.st = 'off'; cloudStatus(); toast('이 브라우저의 동기화를 해제했습니다 (알람은 그대로 남습니다)'); };
+  $('cgOff').onclick = () => { CLOUD.gist = CLOUD.token = ''; store.set('cgTok', ''); store.set('cgGist', ''); $('cgTok').value = ''; $('cgGist').value = ''; CLOUD.st = 'off'; cloudStatus(); toast(LOC.gistToken || LOC.gistId ? '동기화를 해제했습니다 — .env에 GIST_TOKEN·GIST_ID가 있으면 새로고침 시 다시 연결됩니다' : '이 브라우저의 동기화를 해제했습니다 (알람은 그대로 남습니다)'); };
   cloudStatus();
   if (!EMBED){
     setInterval(() => { if (!document.hidden) cloudSync(); else if (Date.now() - CLOUD.last > 60000) cloudSync(); }, 15000);
@@ -3098,7 +3104,7 @@ function calc(){
    브라우저는 API 키를 갖지 않습니다. PC에서 실행되는 order_bridge.py(127.0.0.1)가 .env 키로 서명해 주문합니다.
    포지션 사이즈 계산기와는 연동하지 않는 독립 주문창입니다. */
 const OEX = ['okx', 'binance', 'bitget'], OEX_NAME = { okx:'OKX', binance:'Binance', bitget:'Bitget' };
-const BR = { url: store.get('brUrl') || 'http://127.0.0.1:8765', token: store.get('brTok') || '', status: null, err: '' };
+const BR = { url: store.get('brUrl') || LOC.bridgeUrl || 'http://127.0.0.1:8765', token: LOC.bridgeToken || store.get('brTok') || '', status: null, err: '' };
 const BR_AUTO = () => store.get('brAuto') !== false;
 const ORD = { ex: store.get('ordEx') || 'okx', type: store.get('ordType') || 'limit', mm: store.get('ordMm') || 'cross',
               lev: store.get('ordLev') || 10, unit: store.get('ordUnit') || 'coin', tab: 'pos', all: !!store.get('ordAll'),
@@ -3353,7 +3359,7 @@ function initOrder(){
 }
 
 /* ───────────────── UI ───────────────── */
-function toast(msg){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800); }
+function toast(msg, ms){ const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove('show'), 1800); }
 
 function buildUI(){
   // 시간 간격 드롭다운
