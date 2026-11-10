@@ -2217,5 +2217,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 348.0
+ },
+ {
+  "id": "4087463720051757056-1794318311532-1794322499974",
+  "ex": "OKX",
+  "instId": "AMD-USDT-SWAP",
+  "sym": "AMD",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 497.88,
+  "closePx": 526.3771287128712,
+  "size": 1.01,
+  "notional": 502.8588,
+  "openTime": 1794318311532,
+  "closeTime": 1794322499974,
+  "holdMin": 69.8,
+  "pnl": -28.7821,
+  "fee": -0.36639221,
+  "funding": 0.0,
+  "realized": -29.14849221,
+  "pnlRatio": -0.057237,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 526.32
  }
 ]
