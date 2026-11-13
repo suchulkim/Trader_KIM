@@ -856,6 +856,9 @@ html.embed #layWrap{display:none}
     <div class="ck-row"><select id="ckType"><option value="SMA">SMA</option><option value="EMA">EMA</option></select>
       <select id="ckLook"><option value="1">터치: 현재 봉</option><option value="2">터치: 최근 2봉</option><option value="3">터치: 최근 3봉</option></select>
       <select id="ckSens"><option value="strict">패턴 엄격</option><option value="normal">패턴 보통</option><option value="loose">패턴 느슨</option></select></div>
+    <label class="ck-row" style="cursor:pointer;font-size:12.5px"><input type="checkbox" id="ckMark"> 차트에 감지 표시 <span class="muted">(패널을 닫아도 유지)</span></label>
+    <div class="ck-row" id="ckMkOpt" style="font-size:12px;gap:10px"><select id="ckMkSt"><option value="touch">터치만</option><option value="near">근접만</option><option value="both">터치+근접</option></select>
+      <label><input type="checkbox" data-tf="D"> 일</label><label><input type="checkbox" data-tf="12H"> 12H</label><label><input type="checkbox" data-tf="4H"> 4H</label><label><input type="checkbox" data-tf="1H"> 1H</label></div>
     <div class="ck-sec">15분봉 쌍바닥 / 쌍봉</div>
     <div id="ckPat"></div>
     <div class="ck-sec">메모</div>
@@ -1255,6 +1258,7 @@ function renderOverlay(ctx, W, H){
   if (axGuide && !mouse && axY != null && !drag){ ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#9598a1'; ctx.lineWidth = 1; const gy = Math.round(axY) + .5; line(ctx, 0, gy, W, gy); ctx.restore(); }
   drawPosition(ctx, W, H);
   drawAlerts(ctx, W);
+  drawCk(ctx, W, H);
   if (!hideDraw) for (const d of drawings) if (visOn(d)) drawShape(ctx, d, W, d.id === sel, false);
   if (S.tool === 'vline' && mouse){ const vx = Math.round(mouse.x) + .5; ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#2962ff'; ctx.lineWidth = 1; line(ctx, vx, 0, vx, H); ctx.restore(); }
   if (S.tool !== 'cursor' && NEED[S.tool] > 1 && pending.length){
@@ -3956,7 +3960,7 @@ function switchTicker(tk, forceLay){
   layMark();
   loadLevels(); loadDrawings(); saveSettings(); setTool('cursor'); histReset(); fpRow();
   if (panelView === 'order') ordSyncSym(true);
-  if (panelView === 'check') ckOpen();
+  if (panelView === 'check') ckOpen(); else setTimeout(ckBgKick, 1500);
   $('ranges').querySelectorAll('button').forEach(x => x.classList.remove('on'));
   if (panelView === 'watch') renderWatch();
   const seq0 = loadSeq + 1;
@@ -4888,9 +4892,9 @@ function ckCells(raw, cfg, px, now){
       const ma = (cfg.type === 'EMA' ? aEMA : aSMA)(cl, len), m = ma[n - 1];
       if (m == null){ cells[tf + ':' + len] = null; continue; }
       const d = (last - m) / m * 100;
-      let touch = false;
-      for (let k = 0; k < cfg.look && n - 1 - k >= 0; k++){ const i = n - 1 - k, mi = ma[i]; if (mi != null && bs[i].l <= mi && bs[i].h >= mi){ touch = true; break; } }
-      cells[tf + ':' + len] = { m, d, s: touch ? 'touch' : Math.abs(d) <= cfg.th[tf] ? 'near' : '' };
+      let touch = false, di = n - 1;
+      for (let k = 0; k < cfg.look && n - 1 - k >= 0; k++){ const i = n - 1 - k, mi = ma[i]; if (mi != null && bs[i].l <= mi && bs[i].h >= mi){ touch = true; di = i; break; } }
+      cells[tf + ':' + len] = { m, d, s: touch ? 'touch' : Math.abs(d) <= cfg.th[tf] ? 'near' : '', t: bs[di].t, bh: bs[di].h, bl: bs[di].l, mv: ma[di] != null ? ma[di] : m };   // t·bh·bl·mv = 감지된 봉의 시각·고가·저가와 그 봉의 이평선 값
     }
   }
   return cells;
@@ -4958,13 +4962,13 @@ function ckPattern(bars, cfg){
 }
 /* CK-END */
 
-const CK = { cfg:null, key:null, seq:0, raw:{}, cells:null, pat:null, loading:false, ts:0, tick:null };
+const CK = { mark:(() => { const v = store.get('ckMark'); return v == null ? true : !!v; })(), cfg:null, key:null, seq:0, raw:{}, cells:null, pat:null, loading:false, ts:0, tick:null };
 const CK_TFN = { 'D':'일봉', '12H':'12시간', '4H':'4시간', '1H':'1시간' };
 const CK_ST = kd => ({ broke: kd === 'bottom' ? '넥라인 돌파' : '넥라인 이탈', retest:'돌파 후 되돌림', forming:'형성 중 · 넥라인 대기', pending2: kd === 'bottom' ? '2차 저점 형성 중' : '2차 고점 형성 중' });
 function ckCfg(){
   if (!CK.cfg){
     const s = store.get('ckCfg') || {};
-    CK.cfg = { th: { ...CK_DEF_TH, ...(s.th || {}) }, look: [1, 2, 3].includes(+s.look) ? +s.look : 2, type: s.type === 'EMA' ? 'EMA' : 'SMA', sens: ['strict', 'normal', 'loose'].includes(s.sens) ? s.sens : 'normal' };
+    CK.cfg = { th: { ...CK_DEF_TH, ...(s.th || {}) }, look: [1, 2, 3].includes(+s.look) ? +s.look : 2, type: s.type === 'EMA' ? 'EMA' : 'SMA', sens: ['strict', 'normal', 'loose'].includes(s.sens) ? s.sens : 'normal', mk: s.mk && s.mk.tf ? s.mk : null };
   }
   return CK.cfg;
 }
@@ -5053,10 +5057,11 @@ function ckUpdate(){
   $('ckStat').textContent = !C && CK.loading ? '불러오는 중…' : `현재가 ${fP(S.last)}${CK.ts ? ' · ' + hms(CK.ts) + ' 갱신' : ''}`;
   const box = $('ckPat'), html = ckPatHtml('bottom', d) + ckPatHtml('top', d);
   if (box._h !== html){ box.innerHTML = html; box._h = html; }
+  if (typeof overlay !== 'undefined' && overlay) overlay.update();   // 차트 표시 갱신 (패널이 닫혀 있어도)
 }
 function ckTick(){   // showLast()에서 호출 — 현재가 변화를 1.5초 간격으로 반영
-  if (panelView !== 'check' || CK.tick) return;
-  CK.tick = setTimeout(() => { CK.tick = null; if (panelView === 'check' && CK.key === S.ticker){ ckRecompute(); ckUpdate(); } }, 1500);
+  if (CK.tick || EMBED || (panelView !== 'check' && !CK.mark)) return;
+  CK.tick = setTimeout(() => { CK.tick = null; if (CK.key === S.ticker && CK.raw && Object.keys(CK.raw).length){ ckRecompute(); ckUpdate(); } }, 1500);
 }
 function ckSummary(r){
   const sg = x => (x >= 0 ? '+' : '') + x.toFixed(2) + '%';
@@ -5104,6 +5109,40 @@ function ckDraw(kd){
   saveDrawings(); if (hideDraw){ hideDraw = false; refreshToolbar(); }
   overlay.update(); toast(`${bt ? '쌍바닥' : '쌍봉'}을 차트에 표시했습니다 (추세선 · 넥라인 · 라벨)`);
 }
+/* 터치·근접이 감지된 이평선을 차트에 작게 표시 (패널이 닫혀 있어도): 이평선 가는 실선 + 작은 라벨 */
+function ckMk(){ const c = ckCfg(); if (!c.mk) c.mk = { st:'touch', tf:{ 'D':1, '12H':1, '4H':1, '1H':1 } }; return c.mk; }
+function drawCk(ctx, W, H){
+  if (!CK.mark || EMBED || !CK.cells || CK.key !== S.ticker) return;
+  const mk = ckMk(), it = [];
+  for (const [k, c] of Object.entries(CK.cells)){
+    if (!c || !c.s) continue;
+    const [tf, len] = k.split(':');
+    if (!mk.tf[tf] || (mk.st === 'touch' && c.s !== 'touch') || (mk.st === 'near' && c.s !== 'near')) continue;
+    const x1 = timeToX(Math.floor(c.t / 1000) + KST), yM = yOf(c.mv);
+    if (x1 == null || yM == null || x1 > W || yM < 0 || yM > H) continue;
+    it.push({ tf, len:+len, c, x1, yM, col: ckColor(+len) });
+  }
+  if (!it.length) return;
+  for (const o of it){
+    ctx.save();
+    const y = Math.round(o.yM) + .5, xs = Math.max(o.x1, 0);
+    ctx.globalAlpha = .55; ctx.strokeStyle = o.col; ctx.lineWidth = 1; ctx.setLineDash(o.c.s === 'touch' ? [] : [2, 3]);
+    line(ctx, xs, y, W, y);
+    ctx.restore();
+  }
+  it.sort((a, b) => a.yM - b.yM);
+  let prev = -1e9;
+  ctx.save(); ctx.font = '600 11px "Segoe UI","Malgun Gothic",sans-serif'; ctx.textBaseline = 'middle';
+  for (const o of it){
+    const y = Math.max(o.yM, prev + 17); prev = y;
+    if (y < 8 || y > H - 8) continue;
+    const t = `${CK_TFN[o.tf].replace('시간', 'H').replace('일봉', '일')} ${o.len}${o.c.s === 'touch' ? '' : ' 근접'}`, w = ctx.measureText(t).width + 12, x = W - w - 4;
+    ctx.globalAlpha = .88; rr(ctx, Math.round(x), Math.round(y - 8), Math.round(w), 16, 3); ctx.fillStyle = o.col; ctx.fill();
+    ctx.globalAlpha = 1; ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.fillText(t, Math.round(x + 6), Math.round(y) + .5);
+  }
+  ctx.restore();
+}
+function ckBgKick(){ if (CK.mark && !EMBED && panelView !== 'check') ckLoad(); }
 function ckInit(){
   if (!$('ckTbl')) return;
   const cfg = ckCfg();
@@ -5136,7 +5175,13 @@ function ckInit(){
   $('ckClear').onclick = () => { const d = ckData(); if (!Object.keys(d.m).length) return toast('체크 표시가 없습니다'); d.m = {}; ckPut(d); ckUpdate(); toast('✓ 체크 표시를 모두 지웠습니다'); };
   $('ckRf').onclick = () => { ckLoad(); toast('다시 불러오는 중…'); };
   $('vCheck').addEventListener('keydown', e => e.stopPropagation());
-  setInterval(() => { if (panelView === 'check' && !document.hidden) ckLoad(); }, 60000);
+  setInterval(() => { if ((panelView === 'check' || (CK.mark && !EMBED)) && !document.hidden) ckLoad(); }, 60000);   // 패널이 닫혀 있어도 감지 표시가 켜져 있으면 1분마다 갱신
+  $('ckMark').checked = CK.mark;
+  const mkc = ckMk(); $('ckMkSt').value = mkc.st;
+  $('ckMkOpt').querySelectorAll('input[data-tf]').forEach(i => { i.checked = !!mkc.tf[i.dataset.tf]; });
+  $('ckMkOpt').onchange = () => { mkc.st = $('ckMkSt').value; $('ckMkOpt').querySelectorAll('input[data-tf]').forEach(i => { mkc.tf[i.dataset.tf] = i.checked ? 1 : 0; }); ckCfgSave(); ckUpdate(); };
+  $('ckMark').onchange = () => { CK.mark = $('ckMark').checked; store.set('ckMark', CK.mark); if (CK.mark && panelView !== 'check') ckLoad(); ckUpdate(); };
+  if (CK.mark && !EMBED) setTimeout(ckBgKick, 2500);
 }
 
 /* ───────────────── 시작 ───────────────── */
