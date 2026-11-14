@@ -3,9 +3,20 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>포지션 사이즈 계산기</title>
+<title>Market Desk</title>
 <script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-11-13.1';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
-<script src="trader_kim_local.js"></script><!-- PC 전용: order_bridge.py 가 .env 에서 만든 토큰 파일 (없으면 무시) -->
+<script>/* TK_DESKTOP_BRIDGE: 데스크톱 프로그램(MarketDesk.py) 안에서만 동작. 브라우저에서는 아무 일도 하지 않음 */
+(function(){
+  function go(){
+    var A = window.pywebview && window.pywebview.api; if (!A || window.__tkBridge) return; window.__tkBridge = 1;
+    function N(title, opts){ try { A.notify(String(title || ''), String((opts && opts.body) || '')); } catch(e){} this.close = function(){}; }
+    N.permission = 'granted'; N.requestPermission = function(cb){ if (cb) cb('granted'); return Promise.resolve('granted'); };
+    window.Notification = N;
+    setInterval(function(){ try { A.sync(location.href, document.title); } catch(e){} }, 2000);
+  }
+  window.addEventListener('pywebviewready', go); if (window.pywebview) go();
+})();</script>
+<script src="marketdesk_local.js"></script><script src="trader_kim_local.js"></script><!-- PC 전용: order_bridge.py 가 .env 에서 만든 토큰 파일 (없으면 무시). marketdesk_local.js 신규명 / trader_kim_local.js 구명(호환) -->
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -782,7 +793,7 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
   <section id="chartPane">
     <div id="chartWrap">
       <div id="chart"></div>
-      <div id="brand" aria-hidden="true"><svg viewBox="0 0 36 36" width="30" height="30"><rect x="1" y="1" width="34" height="34" rx="8" fill="#e3e3e3"/><path d="M8 10h13v4.2h-4.4V27h-4.2V14.2H8z" fill="#0f0f0f"/><path d="M22.2 10h4.3v6.4L31 10h4.9l-5.6 7.6L36 27h-5l-4.5-7.1V27h-4.3z" fill="#2962ff" transform="translate(-2 0)"/></svg><span>Trader_KIM</span></div>
+      <div id="brand" aria-hidden="true"><svg viewBox="0 0 36 36" width="30" height="30"><rect x="1" y="1" width="34" height="34" rx="8" fill="#e3e3e3"/><text x="18" y="24.5" text-anchor="middle" font-family="Segoe UI,Arial,sans-serif" font-weight="800" font-size="16" fill="#0f0f0f" letter-spacing="-.5">M<tspan fill="#2962ff">D</tspan></text></svg><span>Market Desk</span></div>
       <div id="legend">
         <div class="lg-l1"><span class="lg-dot" id="lgDot"></span><span class="sym" id="lgSym">—</span><span id="lgInv" title="가격축이 뒤집혀 있습니다 (Alt+I로 해제)">⇅ 반전됨</span></div>
         <div class="lg-l2" id="lgOHLC"></div>
@@ -1137,7 +1148,7 @@ const store = {
   get(k){ try { return JSON.parse(localStorage.getItem('possize_'+k)); } catch(e){ return null; } },
   set(k,v){ try { localStorage.setItem('possize_'+k, JSON.stringify(v)); } catch(e){} }
 };
-/* .env 값 (trader_kim_local.js) — 있으면 localStorage 보다 우선. 재부팅·브라우저 데이터 삭제 후에도 다시 입력할 필요 없음 */
+/* .env 값 (marketdesk_local.js 또는 구명 trader_kim_local.js) — 있으면 localStorage 보다 우선. 재부팅·브라우저 데이터 삭제 후에도 다시 입력할 필요 없음 */
 const LOC = (window.TK_LOCAL && typeof window.TK_LOCAL === 'object') ? window.TK_LOCAL : {};
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
@@ -3048,7 +3059,7 @@ function askNotify(){ try { if ('Notification' in window && Notification.permiss
 let titleFlash = false;
 const BASE_TITLE_FN = () => {
   const o = wlTk[S.ticker] && wlTk[S.ticker].open, l = S.last;
-  if (!l) return `${dispName(S.ticker)} · Trader_KIM Chart`;
+  if (!l) return `${dispName(S.ticker)} · Market Desk`;
   const pct = o ? (l - o) / o * 100 : null;
   return `${dispName(S.ticker)} ${fP(l)}${pct != null ? ` ${pct >= 0 ? '▲' : '▼'} ${pct >= 0 ? '+' : ''}${pct.toFixed(2)}%` : ''}`;
 };
@@ -3174,7 +3185,7 @@ function cloudInit(){
     CLOUD.token = tok;
     try {
       if (!id){
-        const g = await gh('POST', '/gists', { description:'Trader_KIM alerts (chart ↔ GitHub Actions)', public:false,
+        const g = await gh('POST', '/gists', { description:'Market Desk alerts (chart ↔ GitHub Actions)', public:false,
           files: { 'alerts.json': { content: JSON.stringify({ v:1, updated: Date.now(), by:'browser', alerts: [], tomb: {} }) } } });
         id = g.id; toast('새 비공개 Gist를 만들었습니다 — Gist ID를 GitHub Secrets와 .env의 GIST_ID에 넣으세요', 8000);
       } else await gh('GET', '/gists/' + id);
@@ -4080,7 +4091,7 @@ function switchTicker(tk, forceLay){
   S.ticker = tk; prevLast = null;
   const pk = parseKey(tk);
   $('symTxt').innerHTML = dispName(tk) + (pk.ex !== 'okx' ? ` <em class="exb ${pk.ex}">${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}</em>` : '');
-  document.title = `${dispName(tk)} · Trader_KIM Chart`;
+  document.title = `${dispName(tk)} · Market Desk`;
   const u = new URL(location.href); u.searchParams.set('t', tk);
   if (!window.__QS) try { history.replaceState(null, '', u); } catch(e){}
   if (fdl) closeFibDlg(false);
@@ -4409,7 +4420,7 @@ async function snapCanvas(){
   const pk = parseKey(S.ticker), lb = lastBar(), col = lb.c >= lb.o ? C_UP : C_DN;
   c.fillStyle = '#161616'; c.fillRect(0, 0, cw, HEAD); c.fillStyle = '#2a2a2a'; c.fillRect(0, HEAD - 1, cw, 1);
   c.textBaseline = 'middle'; c.textAlign = 'right'; c.font = `500 12px ${SNAP_FONT}`; c.fillStyle = '#a6a6a6';
-  const rt = `${kstStr(Date.now())} UTC+9 · Trader_KIM`; c.fillText(rt, cw - 12, HEAD / 2);
+  const rt = `${kstStr(Date.now())} UTC+9 · Market Desk`; c.fillText(rt, cw - 12, HEAD / 2);
   const lim = cw - 12 - c.measureText(rt).width - 20;
   c.textAlign = 'left'; let x = 12;
   const put = (t, font, color) => { c.font = font; const w = c.measureText(t).width; if (x + w > lim) return false; c.fillStyle = color; c.fillText(t, x, HEAD / 2); x += w; return true; };
@@ -4445,8 +4456,8 @@ async function snapCanvas(){
   // ── 워터마크
   const by = HEAD + pH - 24;
   c.globalAlpha = .6; rr(c, 12, by - 11, 22, 22, 5); c.fillStyle = '#e3e3e3'; c.fill();
-  c.fillStyle = '#0f0f0f'; c.font = `800 11px ${SNAP_FONT}`; c.textAlign = 'center'; c.fillText('TK', 23, by);
-  c.fillStyle = '#e3e3e3'; c.font = `700 14px ${SNAP_FONT}`; c.textAlign = 'left'; c.fillText('Trader_KIM', 40, by);
+  c.fillStyle = '#0f0f0f'; c.font = `800 11px ${SNAP_FONT}`; c.textAlign = 'center'; c.fillText('MD', 23, by);
+  c.fillStyle = '#e3e3e3'; c.font = `700 14px ${SNAP_FONT}`; c.textAlign = 'left'; c.fillText('Market Desk', 40, by);
   c.globalAlpha = 1;
   return out;
 }
@@ -4525,7 +4536,7 @@ async function snapRegionCanvas(r){
   let x = 8 + c.measureText(t1).width + 8;
   c.font = `500 11px ${SNAP_FONT}`; c.fillStyle = '#a6a6a6';
   const t2 = `${TF_FULL[S.bar]} · ${EXA[pk.ex] ? EXA[pk.ex].label : pk.ex}`; c.fillText(t2, x, STRIP / 2); x += c.measureText(t2).width;
-  const t3 = `${kstStr(Date.now())} UTC+9 · Trader_KIM`;
+  const t3 = `${kstStr(Date.now())} UTC+9 · Market Desk`;
   if (x + c.measureText(t3).width + 20 < r.w){ c.textAlign = 'right'; c.fillText(t3, r.w - 8, STRIP / 2); }
   return out;
 }
@@ -4779,10 +4790,10 @@ async function backupExport(){
   } catch(e){ toast('스냅샷 보관함을 읽지 못해 설정만 백업합니다'); }
   let imgs = [];
   try { for (const r of ((await sdbTx('readonly', st => st.getAll(), 'imgs')) || [])){ const { blob, ...m } = r; imgs.push({ ...m, data: blob ? await blobToDataURL(blob) : null }); } } catch(e){}
-  const bk = { app:'Trader_KIM_Chart', v:2, ts: Date.now(), ls, snaps, imgs };
+  const bk = { app:'MarketDesk', v:2, ts: Date.now(), ls, snaps, imgs };
   const blob = new Blob([JSON.stringify(bk)], { type:'application/json' });
   const a = document.createElement('a'), u = URL.createObjectURL(blob);
-  a.href = u; a.download = `Trader_KIM_backup_${kstStr(bk.ts).replace(/[-:]/g, '').replace(' ', '_')}.json`;
+  a.href = u; a.download = `MarketDesk_backup_${kstStr(bk.ts).replace(/[-:]/g, '').replace(' ', '_')}.json`;
   document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 5000);
   const nLay = Object.keys(ls).filter(k => k.startsWith('possize_lay_')).length;
   toast(`📤 백업 완료 — 화면 ${nLay}개 · 스냅샷 ${snaps.length}장 · ${f(blob.size / 1048576, 1)} MB`);
@@ -4791,7 +4802,7 @@ async function backupImport(file){
   if (!file) return;
   let bk;
   try { bk = JSON.parse(await file.text()); } catch(e){ return toast('백업 파일을 읽지 못했습니다 (JSON 형식 아님)'); }
-  if (!bk || bk.app !== 'Trader_KIM_Chart' || typeof bk.ls !== 'object') return toast('Trader_KIM 백업 파일이 아닙니다');
+  if (!bk || !['MarketDesk', 'Trader_KIM_Chart'].includes(bk.app) || typeof bk.ls !== 'object') return toast('Market Desk 백업 파일이 아닙니다');
   const keys = Object.keys(bk.ls).filter(k => k.startsWith('possize_') && !BK_SKIP.has(k));
   const snaps = Array.isArray(bk.snaps) ? bk.snaps : [];
   const nLay = keys.filter(k => k.startsWith('possize_lay_')).length, nDw = keys.filter(k => k.startsWith('possize_dw_')).length;

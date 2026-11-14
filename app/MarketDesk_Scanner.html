@@ -1,0 +1,434 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>이평 이격도 스캐너 · 집중 종목</title>
+<style>
+/* 레이아웃: 시황 요약 → 집중 종목 TOP 5 카드 → 전 종목 이격도 히트맵 → 계산 기준 */
+:root{
+  --bg:#0d1117;--card:#161b22;--card2:#1c2128;--line:#30363d;--line2:#21262d;
+  --tx:#e6edf3;--tx2:#c9d1d9;--mu:#8b949e;
+  --up:#22c55e;--dn:#ef4444;
+  --s:#f43f5e;--l:#22c55e;--v:#a78bfa;--w:#f59e0b;--link:#79b8ff;
+  --sans:-apple-system,"Segoe UI","Malgun Gothic","맑은 고딕",sans-serif;
+  color-scheme:dark
+}
+*{box-sizing:border-box}[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.5 var(--sans)}
+a{color:inherit}
+.wrap{max-width:1320px;margin:0 auto;padding:18px 16px 60px;display:grid;gap:24px}
+.n{font-variant-numeric:tabular-nums}
+.up{color:#4ade80}.dn{color:#f87171}.mu{color:var(--mu)}
+h2{font-size:16px;margin:0;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.sec{display:grid;gap:12px}
+.sec-h{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap}
+.sec-h p{margin:0;font-size:12.5px;color:var(--mu)}
+.bar{width:4px;height:16px;border-radius:2px;background:var(--link)}
+
+/* 헤더 */
+.top{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px 20px;align-items:flex-end}
+.top h1{font-size:22px;margin:2px 0 2px}
+.back{color:var(--mu);text-decoration:none;font-size:13px}.back:hover{color:var(--link)}
+.stamp{font-size:12px;color:var(--mu);text-align:right;display:grid;gap:4px;justify-items:end}
+.stamp b{color:var(--tx2);font-weight:600}
+.rbtn{background:var(--card);color:var(--tx);border:1px solid var(--line);border-radius:8px;padding:5px 12px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.rbtn:hover{border-color:var(--link);color:var(--link)}
+.prog{height:3px;width:220px;background:var(--line2);border-radius:2px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:var(--link);transition:width .2s}
+
+/* 시황 */
+.mkt{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:12px}
+@media(max-width:900px){.mkt{grid-template-columns:1fr}}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:10px;align-content:start}
+.regime{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.regime .big{font-size:24px;font-weight:900;letter-spacing:.02em}
+.regime .dot{width:12px;height:12px;border-radius:50%}
+.r-off .big{color:var(--s)}.r-off .dot{background:var(--s);box-shadow:0 0 0 4px rgba(244,63,94,.2)}
+.r-on .big{color:var(--l)}.r-on .dot{background:var(--l);box-shadow:0 0 0 4px rgba(34,197,94,.2)}
+.r-mix .big{color:var(--w)}.r-mix .dot{background:var(--w);box-shadow:0 0 0 4px rgba(245,158,11,.2)}
+.stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.stat{background:var(--card2);border-radius:10px;padding:8px 10px;display:grid;gap:1px}
+.stat .k{font-size:11px;color:var(--mu)}.stat .v{font-size:20px;font-weight:800}.stat .v small{font-size:12px;color:var(--mu);font-weight:500}
+.cm{margin:0;padding:0;list-style:none;display:grid;gap:5px;font-size:13px;color:var(--tx2)}
+.cm li::before{content:"· ";color:var(--mu)}
+.cm b{color:var(--tx)}
+.sect{display:grid;gap:7px}
+.sc{display:grid;grid-template-columns:78px minmax(0,1fr) 56px;gap:8px;align-items:center;font-size:12.5px}
+.sc .axis{position:relative;height:10px;background:var(--card2);border-radius:5px}
+.sc .axis::after{content:"";position:absolute;left:50%;top:-2px;bottom:-2px;width:1px;background:var(--line)}
+.sc .axis i{position:absolute;top:0;bottom:0;border-radius:5px}
+.sc .val{text-align:right;font-weight:700}
+
+/* 판정 칩 */
+.vc{display:inline-flex;align-items:center;gap:5px;font-size:12px;font-weight:800;padding:3px 10px;border-radius:99px;white-space:nowrap;border:1px solid transparent}
+.vc.short{background:rgba(244,63,94,.16);color:#ff8fa3;border-color:rgba(244,63,94,.5)}
+.vc.long{background:rgba(34,197,94,.16);color:#86efac;border-color:rgba(34,197,94,.5)}
+.vc.rebound,.vc.pullback{background:rgba(167,139,250,.16);color:#c4b5fd;border-color:rgba(167,139,250,.5)}
+.vc.watch{background:rgba(245,158,11,.14);color:#fcd34d;border-color:rgba(245,158,11,.4)}
+.vc.none{background:transparent;color:var(--mu);border-color:var(--line)}
+
+/* 이격도 셀 (글자색 = 가격이 이평 위/아래, 배경 = 터치/근접) */
+.hc{display:grid;place-items:center;height:22px;min-width:34px;font-size:11px;border-radius:4px;background:var(--card2);font-variant-numeric:tabular-nums;color:var(--mu)}
+.hc.up{color:#4ade80;opacity:.8}.hc.dn{color:#f87171;opacity:.8}
+.hc.near{background:rgba(245,158,11,.3);outline:1px solid rgba(245,158,11,.85);font-weight:800;opacity:1}
+.hc.touch{background:var(--w);color:#111;font-weight:900;outline:2px solid #fde68a;opacity:1}
+.hc.na{opacity:.35}
+
+/* 집중 종목 카드 */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-left:6px solid var(--c);border-radius:14px;padding:14px;display:grid;gap:10px;align-content:start;min-width:0;background-image:linear-gradient(120deg,var(--cb),transparent 55%)}
+.card.short{--c:var(--s);--cb:rgba(244,63,94,.10)}
+.card.long{--c:var(--l);--cb:rgba(34,197,94,.09)}
+.card.rebound,.card.pullback{--c:var(--v);--cb:rgba(167,139,250,.10)}
+.card.watch{--c:var(--w);--cb:rgba(245,158,11,.08)}
+.c-h{display:flex;align-items:center;gap:10px}
+.rk{font-size:13px;font-weight:900;width:26px;height:26px;border-radius:8px;display:grid;place-items:center;background:var(--c);color:#111;flex:none}
+.c-h a.tk{font-size:22px;font-weight:900;text-decoration:none;display:block;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.c-h a.tk:hover{color:var(--link)}
+.c-h .sub{font-size:11.5px;color:var(--mu)}
+.c-h .px{margin-left:auto;text-align:right;line-height:1.25;white-space:nowrap}
+.c-h .px b{font-size:18px;display:block}.c-h .px span{font-size:12px;font-weight:700}
+.vbig{font-size:15.5px;font-weight:900;color:var(--c);line-height:1.3}
+.lvl{font-size:12.5px;color:var(--tx2);display:flex;flex-wrap:wrap;gap:5px 6px}
+.lvl .ch{background:var(--card2);border-radius:6px;padding:2px 8px;font-weight:600}
+.lvl .ch b{color:var(--tx)}
+.mini{display:grid;grid-template-columns:34px repeat(4,minmax(0,1fr));gap:3px;align-items:center}
+.mini .hd{font-size:10.5px;color:var(--mu);text-align:center}
+.mini .rl{font-size:10.5px;color:var(--mu)}
+.c-f{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:12px;color:var(--mu);border-top:1px solid var(--line2);padding-top:9px}
+.flag{font-weight:700;padding:1px 7px;border-radius:5px;background:var(--card2);color:var(--tx2)}
+.flag.bad{background:rgba(239,68,68,.16);color:#fca5a5}
+.cbtn{margin-left:auto;font-size:12px;font-weight:700;color:var(--link);text-decoration:none;padding:3px 9px;border:1px solid rgba(121,184,255,.35);border-radius:6px}
+.cbtn:hover{background:rgba(121,184,255,.1)}
+.empty{padding:22px;text-align:center;color:var(--mu);background:var(--card);border:1px dashed var(--line);border-radius:12px}
+
+/* 표 */
+.filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filters button{background:var(--card);color:var(--tx2);border:1px solid var(--line);border-radius:99px;padding:4px 11px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.filters button[aria-pressed="true"]{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.filters .sp{width:1px;height:18px;background:var(--line);margin:0 4px}
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+table.t{width:100%;border-collapse:collapse;min-width:1080px}
+table.t th{background:var(--card2);color:var(--mu);font-weight:600;font-size:11.5px;padding:7px 8px;text-align:left;border-bottom:1px solid var(--line);white-space:nowrap}
+table.t th .sub{display:flex;gap:3px;margin-top:3px}
+table.t th .sub i{font-style:normal;min-width:34px;text-align:center;font-size:10px}
+table.t td{padding:6px 8px;border-bottom:1px solid var(--line2);vertical-align:middle}
+table.t tr.grp td{background:var(--card2);font-weight:800;color:var(--tx2);font-size:12px;padding:5px 10px}
+table.t tr.dim td.tkc,table.t tr.dim td.r{opacity:.55}
+table.t tbody tr:not(.grp):hover td{background:rgba(121,184,255,.05)}
+td.r{text-align:right;white-space:nowrap}
+td.tkc{white-space:nowrap}
+td.tkc a{text-decoration:none;font-weight:800}td.tkc a:hover{color:var(--link)}
+td.tkc small{display:block;font-size:11px;color:var(--mu);font-weight:400}
+td.g .row{display:flex;gap:3px}
+.legend{font-size:12px;color:var(--mu);display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.legend .hc{display:inline-grid;min-width:34px;height:18px}
+.foot{font-size:12px;color:var(--mu);border-top:1px solid var(--line);padding-top:14px;display:grid;gap:6px}
+.foot b{color:var(--tx2)}
+.err{background:rgba(239,68,68,.12);border:1px solid rgba(239,68,68,.45);color:#fca5a5;border-radius:10px;padding:10px 14px;font-size:13px}
+</style></head><body>
+<div class="wrap">
+<header class="top">
+ <div><a class="back" href="index.html">← MARKET DASHBOARD</a><h1>이평 이격도 스캐너 <span class="mu" style="font-size:15px;font-weight:600">집중 종목 필터</span></h1></div>
+ <div class="stamp">
+  <div id="stamp">OKX 무기한선물 시세를 불러오는 중…</div>
+  <div class="prog"><i id="prog"></i></div>
+  <button class="rbtn" id="rb" type="button">↻ 새로고침</button>
+ </div>
+</header>
+
+<div id="err" class="err" hidden></div>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar"></span>한 줄 시황 <span class="mu" style="font-size:12px;font-weight:500">32종목 일봉 이평 위치로 자동 계산</span></h2></div>
+ <div class="mkt" id="mkt"><div class="panel"><div class="mu">계산 중…</div></div></div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar" style="background:var(--w)"></span>지금 집중할 종목 <span class="mu" style="font-size:12px;font-weight:500" id="topcnt"></span></h2>
+  <p>이평선(20·60·100·200)에 터치·근접했거나 과이격인 종목만 · 높은 시간대·긴 이평일수록 가중</p></div>
+ <div class="cards" id="top"></div>
+</section>
+
+<section class="sec">
+ <div class="sec-h"><h2><span class="bar"></span>전 종목 이격도 히트맵 <span class="mu" style="font-size:12px;font-weight:500" id="allcnt"></span></h2>
+  <div class="filters" role="group" aria-label="필터" id="flt">
+   <button type="button" data-f="all" aria-pressed="true">전체</button>
+   <button type="button" data-f="short" aria-pressed="false">숏 후보</button>
+   <button type="button" data-f="long" aria-pressed="false">롱 후보</button>
+   <button type="button" data-f="wait" aria-pressed="false">반등·눌림 대기</button>
+   <button type="button" data-f="near" aria-pressed="false">이평 근접만</button>
+   <span class="sp"></span>
+   <button type="button" data-s="score" aria-pressed="true">집중도순</button>
+   <button type="button" data-s="group" aria-pressed="false">그룹순</button>
+  </div></div>
+ <div class="legend"><span><span class="hc touch">터치</span> 최신 봉 고저가 이평선 통과</span><span><span class="hc near">근접</span> 이평 ±기준% 이내 (일 1% · 12H 0.8% · 4H 0.5% · 1H 0.3%)</span><span>숫자 = 현재가의 이평 대비 이격 %, <span class="up">초록</span> = 이평 위, <span class="dn">빨강</span> = 이평 아래</span></div>
+ <div class="tw"><table class="t"><thead><tr>
+  <th>종목</th><th style="text-align:right">현재가</th><th style="text-align:right">1D</th><th style="text-align:right">5D</th><th>판정</th>
+  <th>일봉<span class="sub"><i>20</i><i>60</i><i>100</i><i>200</i></span></th>
+  <th>12시간<span class="sub"><i>20</i><i>60</i><i>100</i><i>200</i></span></th>
+  <th>4시간<span class="sub"><i>20</i><i>60</i><i>100</i><i>200</i></span></th>
+  <th>1시간<span class="sub"><i>20</i><i>60</i><i>100</i><i>200</i></span></th>
+  <th style="text-align:right">RSI(일)</th><th style="text-align:right">일 20MA 이격</th></tr></thead>
+ <tbody id="tb"></tbody></table></div>
+</section>
+
+<footer class="foot">
+ <div><b>계산 기준</b> · OKX 무기한선물(USDT) · 일봉·12시간은 UTC 기준 · SMA 20/60/100/200 · 이격 = (현재가 − 이평) ÷ 이평 · 터치/근접 기준은 Market Desk 차트의 '기술적 분석 체크리스트' 기본값과 동일합니다.</div>
+ <div><b>판정 규칙</b> · 핵심 구간 = 일·12H·4H 중 점수(시간대 가중 × 이평 길이 가중 × 근접도)가 가장 높은 터치/근접 칸. 가격이 이평 아래면 '저항', 위면 '지지'로 보고, 일봉 추세(20·60·100·200 중 가격이 위인 개수: 0~1 하락 · 2 혼조 · 3~4 상승)와 맞으면 롱/숏 후보, 반대면 '관찰'입니다. 일봉 RSI 27~33 구간은 '롱 금지', 67~73 구간은 '숏 금지'(완브로 규칙)로 후보에서 제외합니다. 과이격 = 일봉 20MA 이격이 일 ATR(14)의 3배 이상.</div>
+ <div>※ 규칙 기반 참고용이며 투자 조언이 아닙니다. 선물 가격은 본주 시세와 다를 수 있으니 진입 전 15분봉 차트에서 반전 확인과 손절 설정을 하세요.</div>
+</footer>
+</div>
+
+<script>
+const API='https://www.okx.com';
+const GROUPS=[
+ ['크립토',['BTC','ETH','SOL','ONDO','CRCL','MSTR']],
+ ['원자재',['XAU','CL']],
+ ['미국지수',['SPY','QQQ']],
+ ['AI·반도체',['NVDA','AMD','AVGO','SOXL','SNDK','SKHY','MU','TSM']],
+ ['빅테크',['TSLA','AAPL','GOOGL','PLTR','META','AMZN','MSFT','SPCX']],
+ ['한국',['EWY','KORU','SAMSUNG','HYUNDAI','LGELECTRONICS','NAVER']]
+];
+const NAMES={XAU:'금',CL:'WTI',SKHY:'SK하이닉스',SPCX:'SpaceX',SAMSUNG:'삼성전자',HYUNDAI:'현대차',LGELECTRONICS:'LG전자',NAVER:'네이버'};
+const GRP_OF={};GROUPS.forEach(([g,a])=>a.forEach(t=>GRP_OF[t]=g));
+const ALL=GROUPS.flatMap(g=>g[1]);
+const TFS=[{k:'D',n:'일봉',bar:'1Dutc',th:1.0,w:4},{k:'12H',n:'12시간',bar:'12Hutc',th:.8,w:3},{k:'4H',n:'4시간',bar:'4H',th:.5,w:2},{k:'1H',n:'1시간',bar:'1H',th:.3,w:1}];
+const LENS=[20,60,100,200], LW={20:1,60:1.15,100:1.15,200:1.3};
+const TYPE_RANK={short:1,long:1,rebound:.9,pullback:.9,watch:.7,none:0};
+const TOP_N=5;
+
+const $=id=>document.getElementById(id);
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const nm=t=>NAMES[t]||t;
+
+/* ── 시세 조회: OKX 공개 REST (초당 ~15건으로 페이싱, 429면 재시도) ── */
+let nextAt=0;
+async function gate(){const now=Date.now(),at=Math.max(now,nextAt);nextAt=at+65;if(at>now)await sleep(at-now)}
+async function fetchCandles(t,bar){
+ for(let i=0;i<4;i++){
+  await gate();
+  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
+  try{
+   const r=await fetch(`${API}/api/v5/market/candles?instId=${t}-USDT-SWAP&bar=${bar}&limit=300`,{signal:ctl.signal});
+   const j=await r.json().catch(()=>({}));
+   if(j.code==='0')return (j.data||[]).map(c=>({t:+c[0],o:+c[1],h:+c[2],l:+c[3],c:+c[4]})).reverse();
+   if(r.status===429||j.code==='50011'){await sleep(800*(i+1));continue}
+   return null;                       // 상장 안 된 심볼 등
+  }catch(e){await sleep(500*(i+1))}
+  finally{clearTimeout(to)}
+ }
+ return null;
+}
+
+/* ── 계산 ── */
+const sma=(c,n)=>{if(c.length<n)return null;let s=0;for(let i=c.length-n;i<c.length;i++)s+=c[i];return s/n};
+function rsi(c,n=14){
+ if(!c||c.length<=n)return null;let g=0,l=0;
+ for(let i=1;i<=n;i++){const d=c[i]-c[i-1];if(d>0)g+=d;else l-=d}
+ g/=n;l/=n;
+ for(let i=n+1;i<c.length;i++){const d=c[i]-c[i-1];g=(g*(n-1)+Math.max(d,0))/n;l=(l*(n-1)+Math.max(-d,0))/n}
+ return l===0?100:g===0?0:100-100/(1+g/l);
+}
+function atrPct(b,n=14){
+ if(!b||b.length<n+1)return null;let a=0;
+ for(let i=b.length-n;i<b.length;i++){const pc=b[i-1].c;a+=Math.max(b[i].h-b[i].l,Math.abs(b[i].h-pc),Math.abs(b[i].l-pc))}
+ return a/n/b[b.length-1].c*100;
+}
+function analyze(tk,raw){
+ const D=raw.D;
+ if(!D||D.length<25)return{tk,ok:false};
+ const cells={};
+ for(const tf of TFS){
+  const b=raw[tf.k];
+  for(const L of LENS){
+   const key=tf.k+':'+L;
+   if(!b||b.length<L){cells[key]=null;continue}
+   const cl=b.map(x=>x.c),m=sma(cl,L),lb=b[b.length-1],d=(lb.c-m)/m*100;
+   const touch=lb.l<=m&&lb.h>=m;
+   const st=touch?'touch':Math.abs(d)<=tf.th?'near':'';
+   const close=touch?1:Math.max(0,1-Math.abs(d)/(2.5*tf.th));
+   cells[key]={m,d,st,sc:tf.w*LW[L]*close,tf:tf.k,L};
+  }
+ }
+ const dc=D.map(x=>x.c),n=dc.length;
+ const px=(raw['1H']&&raw['1H'].length?raw['1H'][raw['1H'].length-1].c:dc[n-1]);
+ const r={tk,ok:true,cells,px,
+  d1:(dc[n-1]/dc[n-2]-1)*100, d5:n>=6?(dc[n-1]/dc[n-6]-1)*100:null,
+  rsiD:rsi(dc), rsi4:raw['4H']?rsi(raw['4H'].map(x=>x.c)):null, atr:atrPct(D)};
+ r.ext=(cells['D:20']&&r.atr)?cells['D:20'].d/r.atr:null;
+ judge(r);
+ return r;
+}
+function judge(r){
+ const cells=Object.values(r.cells).filter(Boolean);
+ const flagged=cells.filter(c=>c.st);
+ r.nFlag=flagged.length;
+ r.hot=flagged.slice().sort((a,b)=>b.sc-a.sc);
+ r.score=cells.reduce((s,c)=>s+c.sc,0);
+ const big=r.hot.filter(c=>c.tf!=='1H');
+ const key=big[0]||r.hot[0]||null;
+ r.key=key;
+ const dAbove=['20','60','100','200'].map(L=>r.cells['D:'+L]).filter(Boolean).filter(c=>c.d>0).length;
+ r.trend=dAbove<=1?'down':dAbove>=3?'up':'mix';
+ const rs=r.rsiD;
+ r.noLong=rs!=null&&((rs>=27&&rs<=33)||rs>73);
+ r.noShort=rs!=null&&((rs>=67&&rs<=73)||rs<27);
+ r.flags=[];
+ if(rs!=null&&rs>=27&&rs<=33)r.flags.push(['일봉 RSI 27~33 · 롱 금지',1]);
+ if(rs!=null&&rs>=67&&rs<=73)r.flags.push(['일봉 RSI 67~73 · 숏 금지',1]);
+ if(rs!=null&&rs<27)r.flags.push(['극단 과매도 · 급반등 주의',1]);
+ if(rs!=null&&rs>73)r.flags.push(['극단 과매수 · 급락 주의',1]);
+ const extBig=r.ext!=null&&Math.abs(r.ext)>=3;
+ if(extBig)r.flags.push([`과이격 ${r.ext>0?'+':'−'}${Math.abs(r.ext).toFixed(1)} ATR`,0]);
+
+ let type='none',label='관망 · 이평 근접 없음',side=null;
+ if(key){
+  side=key.d<0?'below':'above';
+  const short=key.tf==='1H'?'단기 ':'';
+  if(side==='below'){
+   if(r.trend==='up'){type='watch';label=short+'회복 대기 · 이평 재탈환 확인'}
+   else if(r.noShort){type='watch';label=short+(rs<27?'저항 시험 · 극단 과매도, 숏 보류':'저항 시험 · RSI 숏 금지 구간')}
+   else{type='short';label=short+'숏 후보 · 반등 저항 구간'}
+  }else{
+   if(r.trend==='down'){type='watch';label=short+'지지 시험 · 이탈 시 하락 가속'}
+   else if(r.noLong){type='watch';label=short+(rs>73?'지지 시험 · 극단 과매수, 롱 보류':'지지 시험 · RSI 롱 금지 구간')}
+   else{type='long';label=short+'롱 후보 · 눌림 지지 구간'}
+  }
+ }else if(extBig){
+  if(r.ext<0){type='rebound';label='과매도 이격 · 반등 대기 (추격 진입 주의)'}
+  else{type='pullback';label='과열 이격 · 눌림 대기 (추격 진입 주의)'}
+ }
+ if(key&&extBig&&type==='watch')r.flags.push(['이평 근접 + 과이격',0]);
+ r.type=type;r.label=label;r.side=side;
+ r.rank=(key?r.score:0)+(extBig?Math.min(6,Math.abs(r.ext))*1.2:0);
+ r.rank*=TYPE_RANK[type];
+ r.focus=type!=='none'&&!(key&&key.tf==='1H'&&!extBig);
+ r.cat=type==='short'?'short':type==='long'?'long':(type==='rebound'||type==='pullback')?'wait':type;
+}
+
+/* ── 표시 ── */
+const fp=p=>p==null?'—':p>=1000?p.toLocaleString('en-US',{maximumFractionDigits:1}):p>=100?p.toFixed(2):p>=10?p.toFixed(3):p>=1?p.toFixed(3):p.toFixed(4);
+const fs=(x,d=1)=>x==null?'—':(x>=0?'+':'−')+Math.abs(x).toFixed(d)+'%';
+const fd=d=>d==null?'—':(d>=0?'+':'−')+(Math.abs(d)>=10?Math.abs(d).toFixed(0):Math.abs(d).toFixed(1));
+const cls=x=>x==null?'':x>=0?'up':'dn';
+function cell(c){
+ if(!c)return '<span class="hc na">—</span>';
+ return `<span class="hc ${c.d>=0?'up':'dn'} ${c.st}" title="${c.tf} MA${c.L} = ${fp(c.m)} · ${fs(c.d,2)}${c.st==='touch'?' · 터치':c.st==='near'?' · 근접':''}">${fd(c.d)}</span>`;
+}
+const link=tk=>`MarketDesk_Chart.html?t=${tk}&bar=15m`;
+const TFN={D:'일봉','12H':'12시간','4H':'4시간','1H':'1시간'};
+const hotName=c=>`${TFN[c.tf]} MA${c.L}`;
+
+function card(r,i){
+ const lvl=r.hot.slice(0,3).map(c=>`<span class="ch">${hotName(c)} <b class="${cls(c.d)}">${fs(c.d,2)}</b> ${c.st==='touch'?'터치':'근접'}</span>`).join('');
+ const level=r.key?`<span class="ch">${r.side==='below'?'저항':'지지'} <b>${fp(r.key.m)}</b></span>`:'';
+ const rows=TFS.map(tf=>`<span class="rl">${tf.k}</span>${LENS.map(L=>cell(r.cells[tf.k+':'+L])).join('')}`).join('');
+ const flags=r.flags.map(f=>`<span class="flag ${f[1]?'bad':''}">${f[0]}</span>`).join('');
+ return `<article class="card ${r.type}">
+  <div class="c-h"><span class="rk">${i+1}</span><div><a class="tk" href="${link(r.tk)}" target="_blank" rel="noopener">${r.tk}</a><div class="sub">${nm(r.tk)!==r.tk?nm(r.tk)+' · ':''}${GRP_OF[r.tk]}</div></div>
+   <div class="px"><b class="n">${fp(r.px)}</b><span class="n ${cls(r.d1)}">${fs(r.d1)}</span> <span class="n mu">5D ${fs(r.d5)}</span></div></div>
+  <div class="vbig">${r.label}</div>
+  <div class="lvl">${level}${lvl}</div>
+  <div class="mini"><span></span><span class="hd">20</span><span class="hd">60</span><span class="hd">100</span><span class="hd">200</span>${rows}</div>
+  <div class="c-f"><span>RSI 일 <b class="n" style="color:var(--tx)">${r.rsiD==null?'—':r.rsiD.toFixed(1)}</b> · 4H <b class="n" style="color:var(--tx)">${r.rsi4==null?'—':r.rsi4.toFixed(1)}</b></span>${flags}<a class="cbtn" href="${link(r.tk)}" target="_blank" rel="noopener">15분봉 →</a></div>
+ </article>`;
+}
+
+function marketPanel(res){
+ const v=res.filter(r=>r.ok);
+ if(v.length<5){$('mkt').innerHTML='<div class="panel"><div class="mu">데이터가 부족합니다 (불러온 종목 '+v.length+'개)</div></div>';return}
+ const cnt=L=>{const a=v.map(r=>r.cells['D:'+L]).filter(Boolean);return{below:a.filter(c=>c.d<0).length,n:a.length}};
+ const b20=cnt(20),b60=cnt(60),b200=cnt(200);
+ const p20=b20.below/b20.n,p60=b60.below/b60.n;
+ const reg=(p20>=.7&&p60>=.6)?['r-off','RISK-OFF · 하락 추세 지배']:p20<=.3?['r-on','RISK-ON · 상승 추세 지배']:['r-mix','혼조 · 방향 탐색'];
+ const os=v.filter(r=>r.rsiD!=null&&r.rsiD<=33).sort((a,b)=>a.rsiD-b.rsiD),ob=v.filter(r=>r.rsiD!=null&&r.rsiD>=67).sort((a,b)=>b.rsiD-a.rsiD);
+ const near=v.filter(r=>r.hot.some(c=>c.tf!=='1H')).length;
+ const sector=GROUPS.map(([g,a])=>{const x=v.filter(r=>a.includes(r.tk)&&r.cells['D:20']).map(r=>r.cells['D:20'].d);return{g,avg:x.length?x.reduce((s,y)=>s+y,0)/x.length:null,n:x.length}}).filter(s=>s.avg!=null);
+ const srt=sector.slice().sort((a,b)=>a.avg-b.avg),weak=srt[0],strong=srt[srt.length-1];
+ const btc=v.find(r=>r.tk==='BTC');
+ const list=a=>a.slice(0,8).map(r=>r.tk).join('·')+(a.length>8?' 외 '+(a.length-8):'');
+ const act=reg[0]==='r-off'?'하락 추세가 우세하므로 <b>반등이 이평 저항에 닿은 종목의 숏</b>이 우선이고, 롱은 지지가 확인된 소수만 봅니다. 과매도·과이격 종목은 추격 진입보다 반등 확인 뒤 접근.'
+  :reg[0]==='r-on'?'상승 추세가 우세하므로 <b>이평 눌림 지지 종목의 롱</b>이 우선이고, 과열·과이격 종목은 추격보다 눌림 대기.'
+  :'방향이 갈려 있어 <b>종목별 이평 반응 구간</b>만 선별해서 접근합니다. 비중은 평소보다 줄이는 쪽이 안전합니다.';
+ const bars=sector.map(s=>{const w=Math.min(50,Math.abs(s.avg)/15*50),left=s.avg>=0?50:50-w;
+  return `<div class="sc"><span>${s.g}</span><div class="axis"><i style="left:${left}%;width:${w}%;background:${s.avg>=0?'#22c55e':'#ef4444'}"></i></div><span class="val n ${cls(s.avg)}">${fs(s.avg)}</span></div>`}).join('');
+ $('mkt').innerHTML=`<div class="panel ${reg[0]}">
+   <div class="regime"><span class="dot"></span><span class="big">${reg[1]}</span></div>
+   <div class="stats">
+    <div class="stat"><span class="k">일봉 20MA 아래</span><span class="v n">${b20.below}<small> / ${b20.n}</small></span></div>
+    <div class="stat"><span class="k">일봉 200MA 아래</span><span class="v n">${b200.below}<small> / ${b200.n}</small></span></div>
+    <div class="stat"><span class="k">이평 근접(일·12H·4H)</span><span class="v n">${near}<small> 종목</small></span></div>
+   </div>
+   <ul class="cm">
+    <li>일봉 60MA 아래 <b>${b60.below}/${b60.n}</b> · 일봉 RSI 과매도(≤33) <b>${os.length}</b>${os.length?` (${list(os)})`:''} · 과매수(≥67) <b>${ob.length}</b>${ob.length?` (${list(ob)})`:''}</li>
+    ${btc?`<li>BTC 일봉 RSI <b>${btc.rsiD==null?'—':btc.rsiD.toFixed(1)}</b> · 20MA ${fs(btc.cells['D:20']&&btc.cells['D:20'].d)} · 200MA ${fs(btc.cells['D:200']&&btc.cells['D:200'].d)} <span class="mu">(크립토 선행 지표)</span></li>`:''}
+    ${weak&&strong?`<li>가장 약한 섹터 <b>${weak.g}</b> (${fs(weak.avg)}) · 가장 강한 섹터 <b>${strong.g}</b> (${fs(strong.avg)})</li>`:''}
+    <li>${act}</li>
+   </ul></div>
+  <div class="panel"><div class="mu" style="font-size:12px">섹터별 평균 · 일봉 20MA 이격도</div><div class="sect">${bars}</div></div>`;
+}
+
+let RES=[],FILTER='all',SORT='score';
+function table(){
+ let rows=RES.filter(r=>r.ok);
+ const f=FILTER;
+ rows=rows.filter(r=>f==='all'||(f==='near'?r.hot.some(c=>c.tf!=='1H'):r.cat===f));
+ const line=r=>`<tr class="${r.focus?'':'dim'}">
+  <td class="tkc"><a href="${link(r.tk)}" target="_blank" rel="noopener">${r.tk}</a><small>${nm(r.tk)!==r.tk?nm(r.tk):GRP_OF[r.tk]}</small></td>
+  <td class="r n"><b>${fp(r.px)}</b></td><td class="r n ${cls(r.d1)}">${fs(r.d1,2)}</td><td class="r n ${cls(r.d5)}">${fs(r.d5,2)}</td>
+  <td><span class="vc ${r.type}" title="${r.label}">${r.type==='none'?'관망':r.label.split(' · ')[0]}</span></td>
+  ${TFS.map(tf=>`<td class="g"><div class="row">${LENS.map(L=>cell(r.cells[tf.k+':'+L])).join('')}</div></td>`).join('')}
+  <td class="r n">${r.rsiD==null?'—':r.rsiD.toFixed(1)}</td>
+  <td class="r n ${cls(r.cells['D:20']&&r.cells['D:20'].d)}">${r.cells['D:20']?fs(r.cells['D:20'].d):'—'}</td></tr>`;
+ let html='';
+ if(SORT==='group'){
+  GROUPS.forEach(([g,a])=>{const x=rows.filter(r=>a.includes(r.tk));if(!x.length)return;
+   html+=`<tr class="grp"><td colspan="11">${g}</td></tr>`+x.map(line).join('')});
+ }else{
+  html=rows.slice().sort((a,b)=>(b.focus-a.focus)||(b.rank-a.rank)||(b.score-a.score)).map(line).join('');
+ }
+ $('tb').innerHTML=html||'<tr><td colspan="11" class="mu" style="padding:18px;text-align:center">해당 조건의 종목이 없습니다</td></tr>';
+ const failed=ALL.length-RES.filter(r=>r.ok).length;
+ $('allcnt').textContent=`${rows.length}종목 표시`+(failed>0&&RES.length>=ALL.length?` · 조회 실패 ${failed}`:'');
+}
+function render(){
+ const ok=RES.filter(r=>r.ok);
+ const tops=ok.filter(r=>r.focus).sort((a,b)=>b.rank-a.rank).slice(0,TOP_N);
+ $('top').innerHTML=tops.length?tops.map(card).join(''):`<div class="empty" style="grid-column:1/-1">${ok.length?'지금은 이평선에 닿았거나 과이격인 종목이 없습니다 — 관망 구간':'데이터를 불러오는 중…'}</div>`;
+ $('topcnt').textContent=ok.length?`${ok.filter(r=>r.focus).length}종목 중 상위 ${tops.length}개`:'';
+ marketPanel(RES);table();
+}
+
+/* ── 실행 ── */
+let running=false;
+async function run(){
+ if(running)return;running=true;
+ $('rb').disabled=true;$('err').hidden=true;
+ const out=[];RES=out;let done=0;
+ const jobs=ALL.map(tk=>async()=>{
+  const raw={};
+  await Promise.all(TFS.map(async tf=>{raw[tf.k]=await fetchCandles(tk,tf.bar)}));
+  out.push(analyze(tk,raw));done++;
+  $('prog').style.width=(done/ALL.length*100)+'%';
+  $('stamp').textContent=`OKX 시세 분석 중… ${done}/${ALL.length}`;
+  if(done%4===0||done===ALL.length)render();
+ });
+ let i=0;
+ await Promise.all(Array.from({length:3},async()=>{while(i<jobs.length){const j=jobs[i++];await j()}}));
+ render();
+ const ok=out.filter(r=>r.ok).length;
+ const t=new Date();
+ $('stamp').innerHTML=`<b>${t.toLocaleString('ko-KR',{hour12:false})}</b> 기준 · OKX 무기한선물 · ${ok}/${ALL.length}종목`;
+ if(ok===0){$('err').textContent='OKX 시세를 불러오지 못했습니다. 네트워크·방화벽(okx.com)을 확인하고 새로고침하세요.';$('err').hidden=false}
+ else if(ok<ALL.length){const miss=out.filter(r=>!r.ok).map(r=>r.tk).join(', ');$('err').textContent='일부 종목은 데이터가 없어 제외했습니다: '+miss;$('err').hidden=false}
+ running=false;$('rb').disabled=false;
+}
+$('rb').onclick=run;
+$('flt').addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.f){FILTER=b.dataset.f;$('flt').querySelectorAll('[data-f]').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+ if(b.dataset.s){SORT=b.dataset.s;$('flt').querySelectorAll('[data-s]').forEach(x=>x.setAttribute('aria-pressed',x===b))}
+ table();
+});
+run();
+setInterval(()=>{if(!document.hidden)run()},5*60*1000);   // 5분마다 자동 갱신
+</script>
+</body></html>
