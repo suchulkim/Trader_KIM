@@ -16,7 +16,7 @@
   }
   window.addEventListener('pywebviewready', go); if (window.pywebview) go();
 })();</script>
-<script src="marketdesk_local.js"></script><script src="trader_kim_local.js"></script><!-- PC 전용: order_bridge.py 가 .env 에서 만든 토큰 파일 (없으면 무시). marketdesk_local.js 신규명 / trader_kim_local.js 구명(호환) -->
+<script src="trader_kim_local.js"></script><script>window.__TK_LOCAL_A=window.TK_LOCAL;window.TK_LOCAL=undefined;</script><script src="marketdesk_local.js"></script><!-- PC 전용 로컬 설정 (없으면 무시). trader_kim_local.js = order_bridge.py 가 .env 로 자동 생성 / marketdesk_local.js = 직접 만드는 파일(GitHub 토큰·Gist ID 등). 같은 항목이면 marketdesk_local.js 가 우선 -->
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -1149,7 +1149,7 @@ const store = {
   set(k,v){ try { localStorage.setItem('possize_'+k, JSON.stringify(v)); } catch(e){} }
 };
 /* .env 값 (marketdesk_local.js 또는 구명 trader_kim_local.js) — 있으면 localStorage 보다 우선. 재부팅·브라우저 데이터 삭제 후에도 다시 입력할 필요 없음 */
-const LOC = (window.TK_LOCAL && typeof window.TK_LOCAL === 'object') ? window.TK_LOCAL : {};
+const LOC = Object.assign({}, (window.__TK_LOCAL_A && typeof window.__TK_LOCAL_A === 'object') ? window.__TK_LOCAL_A : {}, (window.TK_LOCAL && typeof window.TK_LOCAL === 'object') ? window.TK_LOCAL : {});
 const uid = () => Math.random().toString(36).slice(2, 10);
 const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' })[c]);
 
@@ -3178,7 +3178,7 @@ function cloudInit(){
   if (!$('cgTok')) return;
   $('cgTok').value = CLOUD.token; $('cgGist').value = CLOUD.gist;
   const src = [LOC.gistToken && '토큰', LOC.gistId && 'Gist ID'].filter(Boolean);
-  if (src.length){ $('cgSrc').style.display = ''; $('cgSrc').textContent = `🔑 ${src.join('·')}: .env에서 자동으로 불러옴 (D:\\GPTBITCOIN\\BULLKING\\.env)`; }
+  if (src.length){ $('cgSrc').style.display = ''; $('cgSrc').textContent = `🔑 ${src.join('·')}: 로컬 설정 파일(marketdesk_local.js 또는 .env)에서 자동으로 불러옴`; }
   $('cgSave').onclick = async () => {
     const tok = $('cgTok').value.trim(); let id = $('cgGist').value.trim().replace(/^.*gist\.github\.com\/(?:[^/]+\/)?/, '').replace(/[/#?].*$/, '');
     if (!tok) return toast('GitHub 토큰을 입력하세요');
