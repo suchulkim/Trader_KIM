@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>포지션 사이즈 계산기</title>
-<script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-10-31.1';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
+<script>/* 워치리스트 등에 끼워졌을 때 '외부 파일 차트가 열렸다'고 알림 */window.TK_BUILD='2026-11-13.1';try{if(window.parent!==window)window.parent.postMessage({tkChart:'ready',v:window.TK_BUILD},'*');}catch(e){}</script>
 <script src="trader_kim_local.js"></script><!-- PC 전용: order_bridge.py 가 .env 에서 만든 토큰 파일 (없으면 무시) -->
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
@@ -482,6 +482,7 @@ table.out td:first-child{font-size:13px}
 #ckTbl td.th input{width:100%;box-sizing:border-box;text-align:center;font-size:11px;padding:3px 0}
 #ckTbl td.c{border:1px solid var(--line);border-radius:6px;padding:6px 0;cursor:pointer;background:rgba(255,255,255,.02);color:var(--muted);user-select:none}
 #ckTbl td.c b{display:block;font-size:13px;font-weight:700}
+#ckTbl td.c i u{text-decoration:none;color:#ffd54f;margin-right:2px}
 #ckTbl td.c i{display:block;font-style:normal;font-size:10.5px;opacity:.8;margin-top:1px}
 #ckTbl td.c.touch{background:rgba(242,54,69,.18);border-color:#f23645;color:#ff7480}
 #ckTbl td.c.near{background:rgba(255,152,0,.15);border-color:#ff9800;color:#ffb74d}
@@ -852,9 +853,8 @@ html.embed #layWrap{display:none}
     <div class="ph"><b>기술적 분석 체크리스트 · <span id="ckName"></span></b><span class="ph-r"><button class="wl-add" id="ckRf" title="다시 불러오기">⟳</button><button class="pclose" title="닫기">✕</button></span></div>
     <div class="muted" id="ckStat" style="font-size:11.5px;margin-bottom:6px"></div>
     <table id="ckTbl"></table>
-    <div class="muted" style="font-size:11px;margin:4px 0">🔴 터치 = 최근 봉의 고저가 이평선을 통과 · 🟠 근접 = 현재가가 이평선 ±기준% 이내 · 칸을 클릭하면 ✓ 수동 체크</div>
+    <div class="muted" style="font-size:11px;margin:4px 0">🔴 터치 = 최신 봉의 고저가 이평선을 통과 · 🟠 근접 = 현재가가 이평선 ±기준% 이내 · 칸을 클릭하면 ✓ 수동 체크</div>
     <div class="ck-row"><select id="ckType"><option value="SMA">SMA</option><option value="EMA">EMA</option></select>
-      <select id="ckLook"><option value="1">터치: 현재 봉</option><option value="2">터치: 최근 2봉</option><option value="3">터치: 최근 3봉</option></select>
       <select id="ckSens"><option value="strict">패턴 엄격</option><option value="normal">패턴 보통</option><option value="loose">패턴 느슨</option></select></div>
     <label class="ck-row" style="cursor:pointer;font-size:12.5px"><input type="checkbox" id="ckMark"> 차트에 감지 표시 <span class="muted">(패널을 닫아도 유지)</span></label>
     <div class="ck-row" id="ckMkOpt" style="font-size:12px;gap:10px"><select id="ckMkSt"><option value="touch">터치만</option><option value="near">근접만</option><option value="both">터치+근접</option></select>
@@ -4894,7 +4894,7 @@ function ckCells(raw, cfg, px, now){
       const d = (last - m) / m * 100;
       let touch = false, di = n - 1;
       for (let k = 0; k < cfg.look && n - 1 - k >= 0; k++){ const i = n - 1 - k, mi = ma[i]; if (mi != null && bs[i].l <= mi && bs[i].h >= mi){ touch = true; di = i; break; } }
-      cells[tf + ':' + len] = { m, d, s: touch ? 'touch' : Math.abs(d) <= cfg.th[tf] ? 'near' : '', t: bs[di].t, bh: bs[di].h, bl: bs[di].l, mv: ma[di] != null ? ma[di] : m };   // t·bh·bl·mv = 감지된 봉의 시각·고가·저가와 그 봉의 이평선 값
+      cells[tf + ':' + len] = { m, d, s: touch ? 'touch' : Math.abs(d) <= cfg.th[tf] ? 'near' : '', t: bs[di].t, bh: bs[di].h, bl: bs[di].l, mv: ma[di] != null ? ma[di] : m, ago: n - 1 - di };   // t·bh·bl·mv = 감지된 봉의 시각·고가·저가와 그 봉의 이평선 값
     }
   }
   return cells;
@@ -4965,10 +4965,11 @@ function ckPattern(bars, cfg){
 const CK = { mark:(() => { const v = store.get('ckMark'); return v == null ? true : !!v; })(), cfg:null, key:null, seq:0, raw:{}, cells:null, pat:null, loading:false, ts:0, tick:null };
 const CK_TFN = { 'D':'일봉', '12H':'12시간', '4H':'4시간', '1H':'1시간' };
 const CK_ST = kd => ({ broke: kd === 'bottom' ? '넥라인 돌파' : '넥라인 이탈', retest:'돌파 후 되돌림', forming:'형성 중 · 넥라인 대기', pending2: kd === 'bottom' ? '2차 저점 형성 중' : '2차 고점 형성 중' });
+/* 터치 판정은 최신 봉 하나(look:1)로 고정 */
 function ckCfg(){
   if (!CK.cfg){
     const s = store.get('ckCfg') || {};
-    CK.cfg = { th: { ...CK_DEF_TH, ...(s.th || {}) }, look: [1, 2, 3].includes(+s.look) ? +s.look : 2, type: s.type === 'EMA' ? 'EMA' : 'SMA', sens: ['strict', 'normal', 'loose'].includes(s.sens) ? s.sens : 'normal', mk: s.mk && s.mk.tf ? s.mk : null };
+    CK.cfg = { th: { ...CK_DEF_TH, ...(s.th || {}) }, look: 1, type: s.type === 'EMA' ? 'EMA' : 'SMA', sens: ['strict', 'normal', 'loose'].includes(s.sens) ? s.sens : 'normal', mk: s.mk && s.mk.tf ? s.mk : null };
   }
   return CK.cfg;
 }
@@ -4998,7 +4999,7 @@ async function ckLoad(){
     }
     return null;
   };
-  const tfs = ['D', '12H', '4H', '1H', '15m'], res = await Promise.all(tfs.map(get));
+  const tfs = EMBED ? ['D', '12H', '4H', '1H'] : ['D', '12H', '4H', '1H', '15m'], res = await Promise.all(tfs.map(get));
   if (seq !== CK.seq || tk !== S.ticker) return;
   tfs.forEach((tf, i) => { if (res[i]) CK.raw[tf] = res[i]; });
   CK.loading = false; CK.ts = Date.now(); ckRecompute(); ckUpdate();
@@ -5043,8 +5044,9 @@ function ckUpdate(){
       else if (c === null){ b = 'n/a'; cls += ' na'; td.title = '봉 수가 부족합니다'; }
       else {
         b = c.s === 'touch' ? '터치' : c.s === 'near' ? '근접' : '—'; i = (c.d >= 0 ? '+' : '') + f(c.d, 2) + '%';
+        if (c.s === 'touch' && c.ago > 0) i = `<u>${c.ago}봉전</u> ${i}`;   // 지금 봉이 아니라 이전 봉에서 닿은 경우 표시
         if (c.s){ cls += ' ' + c.s; if (c.s === 'touch') tc++; else nc++; }
-        td.title = `${CK_TFN[tf]} MA${len} = ${fP(c.m)} (현재가 대비 ${i})`;
+        td.title = `${CK_TFN[tf]} MA${len} = ${fP(c.m)} (현재가 대비 ${(c.d >= 0 ? '+' : '') + f(c.d, 2)}%)` + (c.s === 'touch' && c.ago > 0 ? ` · ${c.ago}봉 전 봉이 이평선(${fP(c.mv)})에 닿음` : '');
       }
       if (d.m[k]) cls += ' mk';
       const h = cls + '|' + b + '|' + i;
@@ -5060,7 +5062,7 @@ function ckUpdate(){
   if (typeof overlay !== 'undefined' && overlay) overlay.update();   // 차트 표시 갱신 (패널이 닫혀 있어도)
 }
 function ckTick(){   // showLast()에서 호출 — 현재가 변화를 1.5초 간격으로 반영
-  if (CK.tick || EMBED || (panelView !== 'check' && !CK.mark)) return;
+  if (CK.tick || (panelView !== 'check' && !CK.mark)) return;
   CK.tick = setTimeout(() => { CK.tick = null; if (CK.key === S.ticker && CK.raw && Object.keys(CK.raw).length){ ckRecompute(); ckUpdate(); } }, 1500);
 }
 function ckSummary(r){
@@ -5112,7 +5114,7 @@ function ckDraw(kd){
 /* 터치·근접이 감지된 이평선을 차트에 작게 표시 (패널이 닫혀 있어도): 이평선 가는 실선 + 작은 라벨 */
 function ckMk(){ const c = ckCfg(); if (!c.mk) c.mk = { st:'touch', tf:{ 'D':1, '12H':1, '4H':1, '1H':1 } }; return c.mk; }
 function drawCk(ctx, W, H){
-  if (!CK.mark || EMBED || !CK.cells || CK.key !== S.ticker) return;
+  if (!CK.mark || !CK.cells || CK.key !== S.ticker) return;
   const mk = ckMk(), it = [];
   for (const [k, c] of Object.entries(CK.cells)){
     if (!c || !c.s) continue;
@@ -5136,13 +5138,13 @@ function drawCk(ctx, W, H){
   for (const o of it){
     const y = Math.max(o.yM, prev + 17); prev = y;
     if (y < 8 || y > H - 8) continue;
-    const t = `${CK_TFN[o.tf].replace('시간', 'H').replace('일봉', '일')} ${o.len}${o.c.s === 'touch' ? '' : ' 근접'}`, w = ctx.measureText(t).width + 12, x = W - w - 4;
+    const t = `${CK_TFN[o.tf].replace('시간', 'H').replace('일봉', '일')} ${o.len}${o.c.s === 'touch' ? '' : ' 근접'}${o.c.ago > 0 ? ' ' + o.c.ago + '봉전' : ''}`, w = ctx.measureText(t).width + 12, x = W - w - 4;
     ctx.globalAlpha = .88; rr(ctx, Math.round(x), Math.round(y - 8), Math.round(w), 16, 3); ctx.fillStyle = o.col; ctx.fill();
     ctx.globalAlpha = 1; ctx.fillStyle = '#111'; ctx.textAlign = 'left'; ctx.fillText(t, Math.round(x + 6), Math.round(y) + .5);
   }
   ctx.restore();
 }
-function ckBgKick(){ if (CK.mark && !EMBED && panelView !== 'check') ckLoad(); }
+function ckBgKick(){ if (CK.mark && panelView !== 'check') ckLoad(); }
 function ckInit(){
   if (!$('ckTbl')) return;
   const cfg = ckCfg();
@@ -5155,8 +5157,8 @@ function ckInit(){
     inp.value = cfg.th[inp.dataset.th];
     inp.onchange = () => { const v = parseFloat(inp.value); cfg.th[inp.dataset.th] = v > 0 ? v : CK_DEF_TH[inp.dataset.th]; inp.value = cfg.th[inp.dataset.th]; ckCfgSave(); ckRecompute(); ckUpdate(); };
   });
-  $('ckType').value = cfg.type; $('ckLook').value = String(cfg.look); $('ckSens').value = cfg.sens;
-  ['ckType', 'ckLook', 'ckSens'].forEach(id => $(id).onchange = () => { cfg.type = $('ckType').value; cfg.look = +$('ckLook').value; cfg.sens = $('ckSens').value; ckCfgSave(); ckRecompute(); ckUpdate(); });
+  $('ckType').value = cfg.type; $('ckSens').value = cfg.sens;
+  ['ckType', 'ckSens'].forEach(id => $(id).onchange = () => { cfg.type = $('ckType').value; cfg.sens = $('ckSens').value; ckCfgSave(); ckRecompute(); ckUpdate(); });
   const toggle = k => { const d = ckData(); if (d.m[k]) delete d.m[k]; else d.m[k] = 1; ckPut(d); ckUpdate(); };
   $('ckTbl').addEventListener('click', e => { const td = e.target.closest('td.c'); if (td) toggle(td.dataset.k); });
   $('ckPat').addEventListener('click', e => {
@@ -5175,13 +5177,14 @@ function ckInit(){
   $('ckClear').onclick = () => { const d = ckData(); if (!Object.keys(d.m).length) return toast('체크 표시가 없습니다'); d.m = {}; ckPut(d); ckUpdate(); toast('✓ 체크 표시를 모두 지웠습니다'); };
   $('ckRf').onclick = () => { ckLoad(); toast('다시 불러오는 중…'); };
   $('vCheck').addEventListener('keydown', e => e.stopPropagation());
-  setInterval(() => { if ((panelView === 'check' || (CK.mark && !EMBED)) && !document.hidden) ckLoad(); }, 60000);   // 패널이 닫혀 있어도 감지 표시가 켜져 있으면 1분마다 갱신
+  // 워치리스트 속 작은 차트(EMBED)는 요청이 몰리지 않게 시작·주기를 분산하고 15분봉(패턴용)은 받지 않음
+  setInterval(() => { if ((panelView === 'check' || CK.mark) && !document.hidden) ckLoad(); }, EMBED ? 90000 + Math.random() * 30000 : 60000);   // 패널이 닫혀 있어도 감지 표시가 켜져 있으면 1분마다 갱신
   $('ckMark').checked = CK.mark;
   const mkc = ckMk(); $('ckMkSt').value = mkc.st;
   $('ckMkOpt').querySelectorAll('input[data-tf]').forEach(i => { i.checked = !!mkc.tf[i.dataset.tf]; });
   $('ckMkOpt').onchange = () => { mkc.st = $('ckMkSt').value; $('ckMkOpt').querySelectorAll('input[data-tf]').forEach(i => { mkc.tf[i.dataset.tf] = i.checked ? 1 : 0; }); ckCfgSave(); ckUpdate(); };
   $('ckMark').onchange = () => { CK.mark = $('ckMark').checked; store.set('ckMark', CK.mark); if (CK.mark && panelView !== 'check') ckLoad(); ckUpdate(); };
-  if (CK.mark && !EMBED) setTimeout(ckBgKick, 2500);
+  if (CK.mark) setTimeout(ckBgKick, EMBED ? 3000 + Math.random() * 12000 : 2500);
 }
 
 /* ───────────────── 시작 ───────────────── */
