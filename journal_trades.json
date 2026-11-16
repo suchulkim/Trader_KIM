@@ -2240,5 +2240,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 526.32
+ },
+ {
+  "id": "4100570684633862144-1794708929516-1794831704385",
+  "ex": "OKX",
+  "instId": "GOOGL-USDT-SWAP",
+  "sym": "GOOGL",
+  "side": "long",
+  "lever": 5.0,
+  "openPx": 290.51,
+  "closePx": 294.1042572944297,
+  "size": 7.54,
+  "notional": 2190.4454,
+  "openTime": 1794708929516,
+  "closeTime": 1794831704385,
+  "holdMin": 2046.2,
+  "pnl": 27.1007,
+  "fee": -1.54686213,
+  "funding": -1.9602106,
+  "realized": 23.59362727,
+  "pnlRatio": 0.012372,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 282.03
  }
 ]
