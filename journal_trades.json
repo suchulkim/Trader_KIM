@@ -2286,5 +2286,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "bn-MSFTUSDT-SHORT-13995260-14001557",
+  "ex": "BINANCE",
+  "instId": "MSFTUSDT",
+  "sym": "MSFT",
+  "side": "short",
+  "lever": null,
+  "openPx": 525.6091318327974,
+  "closePx": 523.6722508038584,
+  "size": 3.11,
+  "notional": 1634.6444,
+  "openTime": 1794839586610,
+  "closeTime": 1794840472708,
+  "holdMin": 14.8,
+  "pnl": 6.02369993,
+  "fee": -1.30530604,
+  "funding": 0,
+  "realized": 4.71839389,
+  "pnlRatio": 0.003685,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
