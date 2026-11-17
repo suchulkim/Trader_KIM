@@ -2309,5 +2309,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "4107432707309129728-1794913433728-1794915833955",
+  "ex": "OKX",
+  "instId": "AVGO-USDT-SWAP",
+  "sym": "AVGO",
+  "side": "long",
+  "lever": 5.0,
+  "openPx": 332.89,
+  "closePx": 338.86,
+  "size": 4.9,
+  "notional": 1631.161,
+  "openTime": 1794913433728,
+  "closeTime": 1794915833955,
+  "holdMin": 40.0,
+  "pnl": 29.253,
+  "fee": -1.1564392,
+  "funding": 0.0,
+  "realized": 28.0965608,
+  "pnlRatio": 0.017934,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 336.0
  }
 ]
