@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>매크로 현황 · 12월 인상 확실시 · AI 변수</title>
+<title>매크로 현황 · 12월 인상 확실시 · 소비 견조</title>
 <style>
   :root{
     --bg:#0f1115; --card:#181b22; --card-2:#1e222c; --text:#eef0f4; --soft:#9aa2b1; --muted:#6b7280;
@@ -50,6 +50,7 @@
   .pill.dove{background:var(--dove-bg);color:var(--dove);}
   .pill.hawk{background:var(--hawk-bg);color:var(--hawk);}
   .pill.mix{background:var(--mix-bg);color:var(--mix);}
+  .newtag{display:inline-block;font-size:10px;font-weight:900;color:#0f1115;background:var(--gold);border-radius:4px;padding:0 5px;margin-left:5px;vertical-align:1px;}
 
   .next{display:flex;flex-direction:column;gap:8px;}
   .nx{display:grid;grid-template-columns:150px 1fr;gap:12px;background:var(--card);border:1px solid var(--border);
@@ -69,30 +70,31 @@
 <body>
 <div class="wrap">
   <a class="back" href="index.html">← MARKET DASHBOARD</a>
-  <div class="eyebrow">2026.11.17 (화) 20:05 KST 기준 · 美 11/16(월) 마감까지 반영 · 일정은 모두 KST</div>
-  <h1>매크로 현황 — 12월 인상은 확실시, 변수는 ‘폭’과 AI 쇼크</h1>
+  <div class="eyebrow">2026.11.17 (화) 23:35 KST 기준 · 美 11/17 10월 소매판매(22:30)까지 반영 · 일정은 모두 KST</div>
+  <h1>매크로 현황 — 소매판매 통제그룹 예상 상회, 12월 인상 확실시 유지</h1>
 
   <ul class="sum">
+    <li><b>소비:</b> 10월 소매판매 <b>+0.2%</b>(예상 +0.1%)·통제그룹 <b>+0.6%</b>(예상 0.3~0.4%) — 자동차 부진 빼면 견조. 수입물가도 +1.1%(예상 0.7%)로 매파적.</li>
     <li><b>물가:</b> 10월 CPI 근원 +0.3%(3개월 연속)·PPI 전년비 6.5%(2022.11 이후 최고) — 인플레 압력 지속.</li>
-    <li><b>연준:</b> 12월 25bp 인상 확률 <b>93.7%</b>(CME, 11/16). 월러 이사는 근원 0.3% 이상이면 50bp도 검토, 로건 총재도 매파 발언.</li>
-    <li><b>시장:</b> 10년물 5%대·달러 19개월 고점에 더해, 11/16 엔비디아 CEO 사임 여파로 <b>S&amp;P500 -1.9%·SOX -5.3%</b>. 이번 주 엔비디아 실적·FOMC 의사록이 분수령.</li>
+    <li><b>연준:</b> 12월 25bp 인상 확률 <b>93.7%</b>(CME, 11/16) → 11/17 Trading Economics 보도 <b>약 95%</b>(나머지 50bp). 소매판매 발표 후 CME 값은 미확인. 무살렘 총재 “봄까지 여러 차례 인상 필요”.</li>
+    <li><b>시장:</b> 10년물 5%대·달러 19개월 고점에 더해, 11/16 엔비디아 CEO 사임 여파로 <b>S&amp;P500 -1.9%·SOX -5.3%</b>. 소매판매 직후 10년물 약 5.13%로 상승분 반납, 선물은 보합 — 오늘 밤 엔비디아 실적·내일 FOMC 의사록이 분수령.</li>
   </ul>
 
   <div class="stats">
-    <div class="stat"><div class="lbl">12월 인상 확률 (25bp)</div><div class="val hawk">93.7%</div><div class="desc">CME · 11/16 · 11/14엔 25bp 88.5% + 50bp 11.5%</div></div>
-    <div class="stat"><div class="lbl">美 10년물 · 2년물</div><div class="val hawk">5.1% · 4.87%</div><div class="desc">11/13 · 2년물 주간 +35bp(2024.9 이후 최대)</div></div>
-    <div class="stat"><div class="lbl">달러지수 · 금</div><div class="val hawk">103.4 · $3,900</div><div class="desc">11/13 · 달러 19개월 고점 · 금은 10월 종가 하회</div></div>
-    <div class="stat"><div class="lbl">11/16 S&amp;P500 · 나스닥</div><div class="val hawk">-1.9% · -2.5%</div><div class="desc">다우 -1.4% · SOX -5.3% · 엔비디아 -4.1%</div></div>
+    <div class="stat"><div class="lbl">12월 인상 확률 (25bp)</div><div class="val hawk">93.7%</div><div class="desc">CME · 11/16 · 11/17 TE 보도 약 95%(발표 후 CME 미확인)</div></div>
+    <div class="stat"><div class="lbl">美 10년물 · 2년물</div><div class="val hawk">5.13% · 4.86%</div><div class="desc">11/17 · 10년물은 소매판매 직후(Blye) · 2년물은 TE 스냅샷(시각 미확인)</div></div>
+    <div class="stat"><div class="lbl">달러지수 · 금</div><div class="val hawk">103.6 · $3,860</div><div class="desc">11/17 TE 스냅샷 · 소매판매 후 달러 보합·금 약 $3,850 보합</div></div>
+    <div class="stat"><div class="lbl">10월 소매판매 · 통제그룹</div><div class="val hawk">+0.2% · +0.6%</div><div class="desc">예상 +0.1% · 0.3~0.4% · 9월 +0.8%(수정 없음)</div></div>
   </div>
 
   <h2><span class="num">1</span>12월 인상 확률 추이</h2>
   <div class="chart-card">
     <div class="chart-title">FOMC 12월 회의 인상 확률 (10/28 동결 이후, 인상 전체)</div>
-    <svg id="chart" viewBox="0 0 900 270" role="img" aria-label="10월 28일 85퍼센트에서 11월 6일 고용 직전 68퍼센트까지 낮아졌다가, 11월 10일 CPI 후 100퍼센트, 11월 16일 25bp 기준 93.7퍼센트"></svg>
+    <svg id="chart" viewBox="0 0 900 270" role="img" aria-label="10월 28일 85퍼센트에서 11월 6일 고용 직전 68퍼센트까지 낮아졌다가, 11월 10일 CPI 후 100퍼센트, 11월 16일 25bp 기준 93.7퍼센트, 11월 17일 소매판매 당일 약 95퍼센트(근사)"></svg>
   </div>
-  <p class="note">※ 속이 빈 점은 출처별 범위의 근사치. 11/10·11/14는 25bp+50bp 합산(인상 전체), 11/16은 CME가 보도한 25bp 단독 값(50bp 별도 값은 미확인). 11/3 값은 출처 미표기 스냅샷.</p>
+  <p class="note">※ 속이 빈 점은 출처별 범위의 근사치. 11/10·11/14는 25bp+50bp 합산(인상 전체), 11/16은 CME가 보도한 25bp 단독 값(50bp 별도 값은 미확인). 11/3 값은 출처 미표기 스냅샷. 11/17은 Trading Economics 보도의 “약 95%”(25bp, 발표 전후 여부 불명확) — 소매판매 발표 후 CME FedWatch 값은 미확인. 참고로 CryptoTicker는 11/16 저녁 CME 25bp 90.7%·50bp 9.3%로 보도(출처별 차이).</p>
 
-  <h2><span class="num">2</span>11/10 이후 핵심 지표·시장</h2>
+  <h2><span class="num">2</span>11/10 이후 핵심 지표·시장 <span class="newtag">NEW</span> <span style="font-size:12px;color:var(--soft);font-weight:500">= 11/17 23:35 KST 실행에서 추가</span></h2>
   <div class="tbl-wrap">
     <table>
       <thead><tr><th>날짜</th><th>지표</th><th>결과</th><th>예상 · 전월</th><th>판정</th><th>핵심</th></tr></thead>
@@ -103,15 +105,17 @@
         <tr><td class="d">11/13<small>22:30</small></td><td><b>10월 PPI</b></td><td class="res">+0.3% / 전년비 6.5%</td><td class="exp">예상 0.4% / 6.6% · 9월 +1.4%(상향)</td><td><span class="pill mix">⚖ 혼조</span></td><td class="why">헤드라인은 하회, 근원(식품·에너지 제외) +0.3% 부합. 식품·에너지·무역 제외는 +0.5%로 2개월 연속 → 기저 압력 지속.</td></tr>
         <tr><td class="d">11/13<small>美 마감</small></td><td><b>주간 증시·금리</b></td><td class="res">S&amp;P +2.5% · 나스닥 +2.3%</td><td class="exp">11/13 하루 S&amp;P -0.4% · 나스닥 -0.9%</td><td><span class="pill mix">⚖ 혼조</span></td><td class="why">증시는 주간 반등했지만 2년물 +35bp, 10년물 5% 돌파, 달러 강세, 금 약세.</td></tr>
         <tr><td class="d">11/16<small>美 마감</small></td><td><b>AI 쇼크</b></td><td class="res">S&amp;P -1.9% · SOX -5.3%</td><td class="exp">엔비디아 -4.1%(11월 누적 약 -24%) · 브렌트 약 $93</td><td><span class="pill hawk">🦅 악재</span></td><td class="why">젠슨 황 CEO 사임 여파 + 엔비디아 실적·앤트로픽 상장 앞둔 경계. 연준 금융안정보고서도 AI를 최대 위험요인(응답 87%)으로 지목.</td></tr>
+        <tr><td class="d">11/16<small>22:30</small></td><td><b>11월 NY 엠파이어 제조업</b><span class="newtag">NEW</span></td><td class="res">7.8</td><td class="exp">예상 18.0 · 10월 25.5</td><td><span class="pill dove">🕊 비둘기</span></td><td class="why">신규주문 23.2→3.0 급감. 지불가격 59.5→45.9, 수취가격 30.6→27.2로 가격 압력도 둔화. (이전 실행에서 ‘미확인’ → 이번에 확인)</td></tr>
+        <tr><td class="d">11/17<small>22:30</small></td><td><b>10월 수입물가</b><span class="newtag">NEW</span></td><td class="res">+1.1%</td><td class="exp">예상 +0.7% · 9월 +1.1%</td><td><span class="pill hawk">🦅 매파</span></td><td class="why">연료 +3.6%, 비연료 +0.8%. 수출물가도 +1.1%(예상 0.3%). 전년비는 셧다운 공백으로 미발표.</td></tr>
+        <tr><td class="d">11/17<small>22:30</small></td><td><b>10월 소매판매</b><span class="newtag">NEW</span></td><td class="res">+0.2% / 통제그룹 +0.6%</td><td class="exp">헤드라인 예상 +0.1%(일부 0.2%) · 9월 +0.8%(수정 없음)<br>자동차 제외 +0.6%(예상 0.4%·9월 1.1%) · 자동차·주유소 제외 +0.5%(9월 0.5%, 예상 미확인) · 통제그룹 예상 0.3~0.4%(9월 0.5%)</td><td><span class="pill hawk">🦅 매파</span></td><td class="why">헤드라인은 자동차(-1.6~-1.8%)가 끌어내렸지만 GDP 반영분인 통제그룹이 예상 2배 → 소비 견조. 직후 10년물 약 5.13%로 장초 랠리 반납, S&amp;P 선물 보합·나스닥 선물 +0.3%, 달러 보합, 금 약 $3,850.</td></tr>
       </tbody>
     </table>
   </div>
-  <p class="note">판정: 🕊 비둘기 = 인상 부담 완화 · 🦅 매파 = 인상 부담 확대 · ⚖ 혼조. 11/16 NY 엠파이어 지수(예상 19.0, 전월 25.5) 결과는 확인하지 못했습니다.</p>
+  <p class="note">판정: 🕊 비둘기 = 인상 부담 완화 · 🦅 매파 = 인상 부담 확대 · ⚖ 혼조. 11/17 산업생산(23:15)·NAHB 주택시장지수(00:00)·월러 발언 내용은 이번 실행 시점에 미확인.</p>
 
   <h2><span class="num">3</span>다음 일정 (KST)</h2>
   <div class="next">
-    <div class="nx hot"><span class="t">11/17 (화) 22:30</span><div><b>🔥 美 10월 소매판매</b><div class="w">예상 +0.2%(9월 +0.8%), 자동차·휘발유 제외 +0.3%. 지금 시점에선 발표 전 — 강하면 50bp 논쟁 재점화</div></div></div>
-    <div class="nx"><span class="t">11/17 (화) 23:10</span><div><b>월러 이사 발언</b> (주제: 지급결제)<div class="w">주제는 통화정책이 아니지만 질의응답에서 12월 인상 폭 언급 가능성</div></div></div>
+    <div class="nx"><span class="t">11/17 (화) 23:15 · 00:00</span><div><b>美 10월 산업생산 · 11월 NAHB 주택지수</b><div class="w">산업생산 예상 +0.1%(9월 +0.7%) · 결과는 다음 실행에서 반영</div></div></div>
     <div class="nx hot"><span class="t">11/18 (수) 06:20</span><div><b>🔥 엔비디아 3분기 실적</b> (콘퍼런스콜 07:00)<div class="w">CEO 교체 후 첫 실적 — AI 투자 심리와 나스닥 방향을 가를 변수</div></div></div>
     <div class="nx hot"><span class="t">11/19 (목) 04:00</span><div><b>🔥 10월 FOMC 의사록</b><div class="w">10-2 동결(쿡·해맥 인상 소수의견) 논의 내용, 12월 25bp vs 50bp 힌트 확인</div></div></div>
     <div class="nx"><span class="t">11/19 (목) 22:30</span><div><b>美 주간 실업수당 청구</b><div class="w">20만 안팎 유지 여부 · 같은 날 23:25 제퍼슨 부의장 발언</div></div></div>
@@ -122,7 +126,7 @@
   </div>
 
   <footer>
-    ※ 투자 조언이 아닙니다. 확률은 CME FedWatch 보도 기준이며 출처·시점별 차이가 큽니다. 11/16 이후 10년물·달러·금 종가와 11/16 NY 엠파이어 결과는 미확인, 11/13 금리·달러·금 수치는 Kitco·보도 인용입니다. 소매판매 예상치는 TD 컨센서스 기준(출처별 상이).<br>
+    ※ 투자 조언이 아닙니다. 확률은 CME FedWatch 보도 기준이며 출처·시점별 차이가 큽니다. 11/17 금리·달러·금은 소매판매 직후 보도(Blye Sheet)와 Trading Economics 스냅샷(시각 미확인) 기준이며 종가가 아닙니다. 소매판매 예상치는 출처별 상이(헤드라인 0.1~0.2%, 통제그룹 0.3~0.4%). 발표 후 CME FedWatch·Polymarket·Kalshi 값은 미확인.<br>
     출처:
     <a href="https://www.stocktitan.net/articles/october-2026-ppi-report" target="_blank" rel="noopener">StockTitan (PPI)</a> ·
     <a href="https://www.babypips.com/news/headline-us-ppi-october-2026-producer-prices-annual-inflation-fed" target="_blank" rel="noopener">BabyPips (PPI)</a> ·
@@ -133,7 +137,15 @@
     <a href="https://www.koreatimes.co.kr/world/20261117/wall-street-slumps-on-ai-jitters-ahead-of-nvidia-results-anthropic-ipo" target="_blank" rel="noopener">Korea Times (CME 93.7%)</a> ·
     <a href="https://news.bitcoin.com/fed-rate-hike-odds-reach-near-certainty-as-bitcoin-price-falls-to-65k/" target="_blank" rel="noopener">Bitcoin.com (11/14 확률)</a> ·
     <a href="https://stockhub.kr/insights/macro-weekly-20261116" target="_blank" rel="noopener">StockHub (주간 일정)</a> ·
-    <a href="https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-13/upcoming.htm" target="_blank" rel="noopener">TD (예상치)</a>
+    <a href="https://economics.td.com/domains/economics.td.com/documents/reports/bottom-line/tables/2026-11-13/upcoming.htm" target="_blank" rel="noopener">TD (예상치)</a> ·
+    <a href="https://www.breitbart.com/economy/2026/11/17/retail-sales-oct-2026/" target="_blank" rel="noopener">Breitbart (소매판매)</a> ·
+    <a href="https://www.newsquawk.com/headlines/us-retail-sales-control-group-oct-mm-06-vs-exp-04-prev-05" target="_blank" rel="noopener">Newsquawk (통제그룹·수입물가)</a> ·
+    <a href="https://finimize.com/content/october-retail-sales-show-us-shoppers-still-spending" target="_blank" rel="noopener">Finimize (소매판매)</a> ·
+    <a href="https://theblyesheet.substack.com/p/the-blye-sheet-before-the-bell-november-51c" target="_blank" rel="noopener">Blye Sheet (발표 후 시장)</a> ·
+    <a href="https://tradingeconomics.com/united-states/ny-empire-state-manufacturing-index" target="_blank" rel="noopener">TE (엠파이어)</a> ·
+    <a href="https://tradingeconomics.com/united-states/import-prices-mom" target="_blank" rel="noopener">TE (수입물가)</a> ·
+    <a href="https://tradingeconomics.com/united-states/government-bond-yield" target="_blank" rel="noopener">TE (금리·확률 보도)</a> ·
+    <a href="https://cryptoticker.io/en/bitcoin-price-waller-rate-hike-november-17-2026/" target="_blank" rel="noopener">CryptoTicker (11/16 CME)</a>
   </footer>
 </div>
 
@@ -151,7 +163,8 @@
     ["11/9","월러 전",85,false],
     ["11/10","CPI·월러",100,false],
     ["11/14","PPI 후",100,false],
-    ["11/16","AI 급락",94,true]
+    ["11/16","AI 급락",94,true],
+    ["11/17","소매판매",95,true]
   ];
   const W=900,H=270,L=44,R=24,T=26,B=52, lo=50, hi=100;
   const X = i => L + i*(W-L-R)/(P.length-1);
