@@ -2401,5 +2401,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 491.33
+ },
+ {
+  "id": "4110431121923854342-1795002793447-1795012218175",
+  "ex": "OKX",
+  "instId": "TSLA-USDT-SWAP",
+  "sym": "TSLA",
+  "side": "long",
+  "lever": 5.0,
+  "openPx": 384.26,
+  "closePx": 388.39281967213117,
+  "size": 6.1,
+  "notional": 2343.986,
+  "openTime": 1795002793447,
+  "closeTime": 1795012218175,
+  "holdMin": 157.1,
+  "pnl": 25.2102,
+  "fee": -1.6533953,
+  "funding": 0.0,
+  "realized": 23.5568047,
+  "pnlRatio": 0.010755,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 380.2
  }
 ]
