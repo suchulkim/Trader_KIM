@@ -2470,5 +2470,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 549.36
+ },
+ {
+  "id": "4122094585142530049-1795350391738-1795370785541",
+  "ex": "OKX",
+  "instId": "AMZN-USDT-SWAP",
+  "sym": "AMZN",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 255.29,
+  "closePx": 255.07708530805687,
+  "size": 8.44,
+  "notional": 2154.6476,
+  "openTime": 1795350391738,
+  "closeTime": 1795370785541,
+  "holdMin": 339.9,
+  "pnl": 1.797,
+  "fee": -1.55330702,
+  "funding": 0.0,
+  "realized": 0.24369298,
+  "pnlRatio": 0.000834,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
