@@ -2539,5 +2539,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 50522.4
+ },
+ {
+  "id": "bn-MSTRUSDT-LONG-94568794-94599136",
+  "ex": "BINANCE",
+  "instId": "MSTRUSDT",
+  "sym": "MSTR",
+  "side": "long",
+  "lever": null,
+  "openPx": 82.21,
+  "closePx": 81.16,
+  "size": 8.850000000000001,
+  "notional": 727.5585,
+  "openTime": 1795521548464,
+  "closeTime": 1795525823255,
+  "holdMin": 71.2,
+  "pnl": -9.2925,
+  "fee": -0.5783298,
+  "funding": 0,
+  "realized": -9.8708298,
+  "pnlRatio": -0.012772,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
