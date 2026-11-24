@@ -2562,5 +2562,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "4043734091969548288-1795504995806-1795530725771",
+  "ex": "OKX",
+  "instId": "AAPL-USDT-SWAP",
+  "sym": "AAPL",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 351.2290378006873,
+  "closePx": 347.77206185567013,
+  "size": 5.82,
+  "notional": 2044.153,
+  "openTime": 1795504995806,
+  "closeTime": 1795530725771,
+  "holdMin": 428.8,
+  "pnl": 20.1196,
+  "fee": -2.0340932,
+  "funding": 0.0,
+  "realized": 18.0855068,
+  "pnlRatio": 0.009843,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": null
  }
 ]
