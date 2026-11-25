@@ -2585,5 +2585,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": null
+ },
+ {
+  "id": "4128184987213844480-1795531899864-1795533726586",
+  "ex": "OKX",
+  "instId": "NVDA-USDT-SWAP",
+  "sym": "NVDA",
+  "side": "long",
+  "lever": 5.0,
+  "openPx": 157.12,
+  "closePx": 152.74,
+  "size": 6.78,
+  "notional": 1065.2736,
+  "openTime": 1795531899864,
+  "closeTime": 1795533726586,
+  "holdMin": 30.4,
+  "pnl": -29.6964,
+  "fee": -1.0504254,
+  "funding": 0.0,
+  "realized": -30.7468254,
+  "pnlRatio": -0.027877,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 141.77
  }
 ]
