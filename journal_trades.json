@@ -2608,5 +2608,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 141.77
+ },
+ {
+  "id": "4040441768280018944-1795689845761-1795706772293",
+  "ex": "OKX",
+  "instId": "BTC-USDT-SWAP",
+  "sym": "BTC",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 60510.2,
+  "closePx": 60350.0,
+  "size": 1.61,
+  "notional": 974.2142,
+  "openTime": 1795689845761,
+  "closeTime": 1795706772293,
+  "holdMin": 282.1,
+  "pnl": 2.57922,
+  "fee": -0.97292461,
+  "funding": 0.0,
+  "realized": 1.60629539,
+  "pnlRatio": 0.002647,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 62266.0
  }
 ]
