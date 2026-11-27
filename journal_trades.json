@@ -2631,5 +2631,28 @@
   "typeTxt": "청산",
   "ccy": "USDT",
   "slAuto": 62266.0
+ },
+ {
+  "id": "4136352700918624257-1795775316701-1795781468898",
+  "ex": "OKX",
+  "instId": "SOL-USDT-SWAP",
+  "sym": "SOL",
+  "side": "short",
+  "lever": 5.0,
+  "openPx": 73.37,
+  "closePx": 73.2,
+  "size": 27.13,
+  "notional": 1990.5281,
+  "openTime": 1795775316701,
+  "closeTime": 1795781468898,
+  "holdMin": 102.5,
+  "pnl": 4.6121,
+  "fee": -1.39106362,
+  "funding": 0.0,
+  "realized": 3.22103638,
+  "pnlRatio": 0.002317,
+  "typeTxt": "청산",
+  "ccy": "USDT",
+  "slAuto": 74.2
  }
 ]
