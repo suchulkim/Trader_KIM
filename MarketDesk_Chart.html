@@ -16,7 +16,24 @@
   }
   window.addEventListener('pywebviewready', go); if (window.pywebview) go();
 })();</script>
-<script src="trader_kim_local.js"></script><script>window.__TK_LOCAL_A=window.TK_LOCAL;window.TK_LOCAL=undefined;</script><script src="marketdesk_local.js"></script><!-- PC 전용 로컬 설정 (없으면 무시). trader_kim_local.js = order_bridge.py 가 .env 로 자동 생성 / marketdesk_local.js = 직접 만드는 파일(GitHub 토큰·Gist ID 등). 같은 항목이면 marketdesk_local.js 가 우선 -->
+<script src="trader_kim_local.js"></script><script>window.__TK_LOCAL_A=window.TK_LOCAL;window.TK_LOCAL=undefined;</script><script src="md_pattern.js"></script><script src="marketdesk_local.js"></script><!-- PC 전용 로컬 설정 (없으면 무시). trader_kim_local.js = order_bridge.py 가 .env 로 자동 생성 / marketdesk_local.js = 직접 만드는 파일(GitHub 토큰·Gist ID 등). 같은 항목이면 marketdesk_local.js 가 우선 -->
+<script>
+/* 렌더링 해상도 조절 (큰 화면·고배율 모니터에서 차트가 무거운 문제 완화)
+   차트 캔버스의 픽셀 수는 (창 크기 × 화면 배율²)에 비례하고, 마우스를 움직일 때마다 전체가 다시 그려지므로
+   '자동'은 캔버스 픽셀 수가 일정 수준(약 450만)을 넘으면 배율을 낮춰 그린다. 작은 모니터에서는 영향 없음.
+   possize_gfx: auto(기본) · full(원본 선명) · low(항상 1배) */
+(function(){ try {
+  const mode = localStorage.getItem('possize_gfx') || 'auto'; if (mode === 'full') return;
+  const d = Object.getOwnPropertyDescriptor(window, 'devicePixelRatio'); if (!d || !d.get) return;
+  const real = () => d.get.call(window) || 1, MAXPX = 4.5e6;
+  Object.defineProperty(window, 'devicePixelRatio', { configurable:true, get(){
+    const r = real(); if (mode === 'low') return 1;
+    const a = Math.max(1, innerWidth * innerHeight); return Math.max(1, Math.min(r, Math.sqrt(MAXPX / a)));
+  } });
+  const o = ResizeObserver.prototype.observe;      // 라이브러리가 '실제 장치 픽셀 크기'를 직접 받지 않고 위 배율로 계산하게 함
+  ResizeObserver.prototype.observe = function(t, op){ if (op && op.box === 'device-pixel-content-box') op = { box:'content-box' }; return o.call(this, t, op); };
+} catch(e){} })();
+</script>
 <script src="https://unpkg.com/lightweight-charts@4.2.0/dist/lightweight-charts.standalone.production.js"></script>
 <style>
 :root{
@@ -176,11 +193,12 @@ main.panel-open{grid-template-columns:1fr 330px}
 /* ── 선택된 그림 미니 툴바 ── */
 #selbar{position:absolute;top:10px;left:50%;transform:translateX(-50%);transition:none;z-index:12;display:none;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;padding:4px 6px;box-shadow:0 6px 20px rgba(0,0,0,.45)}
 .fly-help{color:#40C4FF;cursor:pointer;font-size:12px;display:inline-block;margin-top:5px}.fly-help:hover{text-decoration:underline}
+.fly-help2{color:#40C4FF;cursor:pointer;font-size:12px;display:inline-block;margin-top:5px}.fly-help2:hover{text-decoration:underline}
 #setupHelp{position:fixed;inset:0;z-index:300;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.55)}
-#setupHelp .sh-box{width:min(560px,94vw);max-height:90vh;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line2);border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6);color:var(--text)}
+#setupHelp .sh-box{width:min(640px,94vw);max-height:90vh;display:flex;flex-direction:column;background:var(--panel);border:1px solid var(--line2);border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.6);color:var(--text)}
 #setupHelp .sh-head{display:flex;justify-content:space-between;align-items:center;padding:12px 16px 8px;font-size:15px}
 #setupHelp .sh-x{background:none;border:0;color:var(--muted);font-size:15px;cursor:pointer}
-#setupHelp .sh-tabs{display:flex;gap:4px;padding:0 12px;border-bottom:1px solid var(--line2)}
+#setupHelp .sh-tabs{display:flex;flex-wrap:wrap;gap:4px;padding:0 12px;border-bottom:1px solid var(--line2)}
 #setupHelp .sh-tabs button{background:none;border:0;border-bottom:2px solid transparent;color:var(--muted);padding:8px 10px;font-size:13px;cursor:pointer}
 #setupHelp .sh-tabs button.on{color:var(--text);border-bottom-color:#2962ff;font-weight:600}
 #setupHelp .sh-body{padding:12px 18px 14px;overflow:auto;font-size:13px;line-height:1.6}
@@ -228,12 +246,26 @@ main.panel-open{grid-template-columns:1fr 330px}
 #ewbar .sbtn{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:3px 8px;font-size:12px;white-space:nowrap;cursor:pointer}
 #ewbar .sbtn.on{border-color:var(--warn);color:var(--warn)}
 #ewbar .sname{color:var(--muted);font-size:12px;margin:0 6px 0 2px;white-space:nowrap}
+#ptbar{position:absolute;bottom:14px;left:12px;z-index:12;display:none;flex-direction:column;align-items:flex-start;gap:5px;max-width:calc(100% - 24px);background:var(--panel);border:1px solid var(--line2);border-radius:6px;padding:4px 6px;box-shadow:0 6px 20px rgba(0,0,0,.45)}
+#ptbar .prow{display:flex;flex-wrap:wrap;align-items:center;gap:4px}
+#ptbar input[type=number]{width:54px;background:var(--bg);color:var(--text);border:1px solid var(--line2);border-radius:4px;padding:3px 4px;font-size:12px}
+#ptbar .sbtn{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:3px 8px;font-size:12px;white-space:nowrap;cursor:pointer}
+#ptbar .sbtn.on{border-color:var(--warn);color:var(--warn)}
+#ptbar .sname{color:var(--muted);font-size:12px;margin:0 6px 0 2px;white-space:nowrap}
+#ptbar .pchip{display:inline-flex;align-items:center;gap:5px;background:var(--bg);border:1px solid var(--line2);color:var(--muted);border-radius:12px;padding:2px 9px;font-size:12px;white-space:nowrap;cursor:pointer}
+#ptbar .pchip i{width:8px;height:8px;border-radius:50%;background:#555;display:inline-block}
+#ptbar .pchip.on{color:var(--text)}#ptbar .pchip.on i{background:#26a69a;box-shadow:0 0 6px #26a69a}
+#ptbar .pchip.cur{border-color:#2962ff}
+#ptbar .pst{color:#26a69a;font-size:12px;white-space:nowrap;margin:0 4px}
+#ptbar .plb{color:var(--muted);font-size:11.5px;white-space:nowrap}
 #swbar{position:absolute;bottom:14px;left:12px;z-index:12;display:none;flex-wrap:nowrap;align-items:center;gap:4px;background:var(--panel);border:1px solid var(--line2);border-radius:6px;padding:4px 6px;box-shadow:0 6px 20px rgba(0,0,0,.45)}
 #swbar select{background:var(--bg);color:var(--text);border:1px solid var(--line2);border-radius:4px;padding:3px 4px;font-size:12px}
 #swbar .sbtn{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:3px 8px;font-size:12px;white-space:nowrap;cursor:pointer}
 #swbar .sbtn.on{border-color:var(--warn);color:var(--warn)}
 #swbar .sname{color:var(--muted);font-size:12px;margin:0 6px 0 2px;white-space:nowrap}
 .fly-item.on::after{content:'●';color:#00E676;margin-left:6px;font-size:9px}
+#selbar.moved{left:var(--sbx)!important;top:var(--sby)!important;transform:none!important}
+#selbar{cursor:move}#selbar button,#selbar select,#selbar input{cursor:pointer}
 #selbar .sw{width:18px;height:18px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0}
 #selbar .sw.cur{border-color:#fff}
 #selbar .sname{color:var(--muted);font-size:12px;margin:0 6px 0 2px;white-space:nowrap}
@@ -247,6 +279,10 @@ main.panel-open{grid-template-columns:1fr 330px}
 #nodata{position:absolute;top:42%;left:calc(50% + 26px);transform:translate(-50%,-50%);z-index:7;display:none;text-align:center;background:var(--panel);border:1px solid var(--line2);border-radius:8px;padding:16px 22px;line-height:1.7;box-shadow:0 10px 30px rgba(0,0,0,.45)}
 #nodata b{font-size:14px}
 #nodata .muted{font-size:12px}
+#volGrip{position:absolute;left:0;height:10px;z-index:7;cursor:row-resize;display:none}
+#volGrip::after{content:'';position:absolute;left:0;right:0;top:4px;border-top:1px dashed transparent}
+#volGrip:hover::after,#volGrip.drag::after{border-top-color:rgba(110,150,255,.85)}
+#volGrip:hover::before,#volGrip.drag::before{content:'⇕ 거래량 높이';position:absolute;left:8px;top:-17px;font-size:11px;color:#9db7ff;background:rgba(20,22,30,.92);padding:1px 6px;border-radius:4px;white-space:nowrap}
 #axPlus{position:absolute;z-index:8;width:24px;height:24px;padding:0;display:none;align-items:center;justify-content:center;border:none;border-radius:4px;background:#3a3a3a;color:#e3e3e3;cursor:pointer}
 #axPlus.joined{border-radius:4px 0 0 4px}
 #axLbl{position:absolute;z-index:8;display:none;height:24px;line-height:24px;padding:0 6px;background:#3a3a3a;color:#fff;font-size:14px;font-weight:600;font-variant-numeric:tabular-nums;border-radius:0 4px 4px 0;pointer-events:none;white-space:nowrap}
@@ -584,6 +620,54 @@ table.out td:first-child{font-size:13px}
 #ckTbl td.c.mk b::after{content:' ✓';color:#2ecc71}
 #ckTbl td.s{font-size:10.5px;color:var(--muted);padding:3px 0}
 .ck-row{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin:8px 0}
+#brTick{position:absolute;inset:0;overflow:hidden;display:flex;align-items:center;pointer-events:none;mask-image:linear-gradient(90deg,transparent 0,#000 24px,#000 calc(100% - 24px),transparent 100%);-webkit-mask-image:linear-gradient(90deg,transparent 0,#000 24px,#000 calc(100% - 24px),transparent 100%)}
+#mddrag{position:relative}
+#ndxInd{flex:none;height:var(--mdtb);display:flex;align-items:center;gap:8px;padding:0 12px;margin:0 6px;border-left:1px solid #2a2a2a;border-right:1px solid #2a2a2a;font:700 12.5px "Segoe UI","Malgun Gothic",sans-serif;color:#cfd3dc;cursor:pointer;white-space:nowrap}
+#ndxInd:hover{background:#1a1a1a}
+#ndxInd .ni-l{color:#9aa0ad;font-weight:600;font-size:12px}
+#ndxInd .ni-b{display:inline-flex;gap:3px;align-items:center}
+#ndxInd .ni-b i{display:block;width:7px;height:16px;border-radius:2px;background:#6b7280}
+#ndxInd .ni-b i.u{background:#089981}#ndxInd .ni-b i.d{background:#f23645}
+#ndxInd .ni-t{padding:3px 10px;border-radius:999px;font-weight:900;font-size:13px;background:#3a3f4b;color:#fff}
+#ndxInd.long .ni-t{background:#089981;color:#fff}#ndxInd.short .ni-t{background:#f23645;color:#fff}
+#ndxInd .ni-n{color:#9aa0ad;font-weight:500;font-size:11.5px}
+#ndxInd .ni-d{padding:2px 8px;border-radius:6px;font-weight:800;font-size:12px;background:#2a2e39;color:#cfd3dc}
+#ndxInd .ni-d.up{color:#4ade80;background:rgba(8,153,129,.2)}#ndxInd .ni-d.dn{color:#ff6b7a;background:rgba(242,54,69,.2)}
+#ndxInd.weak .ni-t{background:transparent!important;box-shadow:inset 0 0 0 2px currentColor}
+#ndxInd.weak.long .ni-t{color:#4ade80}#ndxInd.weak.short .ni-t{color:#ff6b7a}
+#ndxInd.stale{opacity:.75}
+#pmCard{display:none;position:fixed;right:18px;bottom:64px;width:352px;z-index:80;background:#14161c;border:1px solid #3a3f4b;border-left:5px solid #f5c542;border-radius:10px;box-shadow:0 10px 34px rgba(0,0,0,.65);padding:12px 14px;color:#e6e6e6;font:13px/1.45 "Segoe UI","Malgun Gothic",sans-serif;animation:pmIn .25s ease-out}
+#pmCard.long{border-left-color:#089981}#pmCard.short{border-left-color:#f23645}
+@keyframes pmIn{from{transform:translateY(14px);opacity:0}to{transform:none;opacity:1}}
+#pmCard .pm-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+#pmCard .pm-t{font-weight:900;font-size:14.5px}#pmCard .pm-q{font-size:11px;color:#9aa0ad}
+#pmCard .pm-l{font-size:15px;font-weight:700;margin-bottom:2px}#pmCard .pm-l b{color:#f5c542}#pmCard .pm-s{font-size:11.5px;font-weight:500;color:#9aa0ad}
+#pmCard .pm-i{font-size:12px;color:#aab0bd;margin-bottom:8px}#pmCard .pm-i b{color:#fff}
+#pmCard .pm-a{font-weight:700;margin-bottom:6px}
+#pmCard .pm-b{display:block;width:100%;text-align:left;margin-top:5px;padding:7px 10px;border-radius:7px;border:1px solid #3a3f4b;background:#1f232c;color:#e6e6e6;font:inherit;font-weight:700;cursor:pointer}
+#pmCard .pm-b:hover:not(:disabled){background:#2a2f3b}#pmCard .pm-b:disabled{opacity:.45;cursor:default}
+#pmCard .pm-b span{display:block;font-weight:500;font-size:11.5px;color:#9aa0ad;margin-top:1px}
+#pmCard .pm-b.cf,#pmCard .pm-b.cf:hover:not(:disabled){background:#f5c542!important;color:#111!important;border-color:#f5c542!important}
+#pmCard .pm-b.mv{border-color:rgba(8,153,129,.6);background:rgba(8,153,129,.14)}#pmCard .pm-b.cf{background:#f5c542;color:#111;border-color:#f5c542}#pmCard .pm-b.cf span{color:#333}
+#pmCard .pm-row{display:flex;gap:6px;margin-top:5px}#pmCard .pm-row .pm-b{margin-top:0;text-align:center;font-size:12px;padding:6px 4px}
+#pmCard .pm-b.cl{border-color:rgba(242,54,69,.6);color:#ff8f9a}#pmCard .pm-b.cl.cf{color:#111}
+#pmCard .pm-neg{color:#ff6b7a}
+#pmCard .pm-msg{margin-top:6px;font-size:12px;color:#c9c9c9;background:#1f232c;border-radius:6px;padding:6px 8px}
+#pmCard .pm-msg.ok{color:#7ee0a8;font-weight:700;font-size:13px}#pmCard .pm-msg.err{color:#ff8f9a;background:rgba(242,54,69,.14)}
+
+
+.brt-in{display:flex;white-space:nowrap;will-change:transform}
+.brt-in.run{animation:brt-run linear infinite}
+@keyframes brt-run{from{transform:translateX(0)}to{transform:translateX(calc(-1 * var(--w)))}}
+.brt-seg{display:inline-flex;align-items:center;gap:10px;margin-right:70px;font:800 14px/1 "Segoe UI","Malgun Gothic",sans-serif;letter-spacing:-.1px}
+.brt-s{font-size:15px;color:#fff}.brt-n{color:#b8bdc9;font-weight:600;font-size:12.5px}
+.brt-p,.brt-c,.brt-t{color:var(--tc)}
+.brt-c{font-variant-numeric:tabular-nums}
+.brt-pill{padding:3px 10px;border-radius:999px;background:var(--tc);color:#111;font-size:12px}
+.brt-b{color:#7b8190;font-weight:500;font-size:11.5px}
+#brTick.st-dn{--tc:#ff5468}#brTick.st-up{--tc:#2ee6a6}#brTick.st-flat{--tc:#ffd24d}#brTick.st-none{--tc:#8b91a0}
+#brTick.st-dn .brt-seg,#brTick.st-up .brt-seg,#brTick.st-flat .brt-seg{text-shadow:0 0 10px color-mix(in srgb,var(--tc) 45%,transparent)}
+#brTick.st-none .brt-seg{font-weight:600;font-size:12.5px}
 .ck-row select{font-size:12px}
 .ck-p{border:1px solid var(--line);border-radius:8px;padding:9px 10px;margin:8px 0;background:rgba(255,255,255,.02)}
 .ck-p.bottom:not(.none){border-color:#089981;background:rgba(8,153,129,.08)}
@@ -616,7 +700,9 @@ html.embed #chartWrap{min-height:0;flex:1}
 html.embed .rbar{display:flex}
 html.embed #symTxt,html.embed .tfgrp button{white-space:nowrap}
 html.embed .tbtn span:not(.badge){display:none}
-html.embed #btnUndo,html.embed #btnRedo,html.embed #btnHelp,html.embed #instLbl{display:none}
+#btnPatDraw.on{color:#ffb74d}#btnPatDraw.on::after{content:'';position:absolute;top:5px;right:5px;width:7px;height:7px;border-radius:50%;background:#ff9800;box-shadow:0 0 6px #ff9800}
+.rsep{width:26px;height:1px;background:var(--line,#2a2e39);margin:6px 0 2px}
+html.embed #btnUndo,html.embed #btnRedo,html.embed #btnHelp,html.embed #btnScan,html.embed #btnJournal,html.embed #btnEvents,html.embed #btnPatDraw,html.embed #btnSimilar,html.embed #rbar .rsep,html.embed #instLbl{display:none}
 html.embed .tsep{margin:0 2px}
 #brand{position:absolute;left:12px;bottom:38px;z-index:4;display:flex;align-items:center;gap:7px;pointer-events:none;opacity:.6;user-select:none}
 #brand span{font:700 15px/1 "Segoe UI","Malgun Gothic",sans-serif;color:#e3e3e3;letter-spacing:.3px;text-shadow:0 0 4px #0f0f0f}
@@ -685,6 +771,8 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
 .o-item{border:1px solid var(--line);border-radius:6px;padding:8px 10px;margin-bottom:6px;font-size:12px;font-variant-numeric:tabular-nums}
 .oi-h{display:flex;align-items:center;gap:8px;margin-bottom:5px}
 .oi-h b{font-size:13px}
+.oi-g b.oi-be{color:#ffc94d}
+.oi-h b.oi-lk{cursor:pointer;text-decoration:underline;text-decoration-style:dotted;text-underline-offset:3px}.oi-h b.oi-lk:hover{text-decoration-style:solid;filter:brightness(1.25)}
 .oi-h .up,.oi-pnl.up{color:var(--green)} .oi-h .dn,.oi-pnl.dn{color:var(--red)}
 .oi-pnl{margin-left:auto;font-weight:700}
 .oi-h button{margin-left:auto;background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:2px 10px;font-size:12px}
@@ -692,10 +780,22 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
 .oi-g b{color:var(--text);font-weight:500}
 .oi-b{display:flex;gap:6px;margin-top:7px}
 .oi-b button{flex:1;background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:4px;font-size:12px}
+.oi-sp{margin-top:7px;padding:7px;border:1px dashed var(--line2);border-radius:5px;display:flex;flex-direction:column;gap:6px}
+.oi-sp .r{display:flex;gap:6px;align-items:center}.oi-sp select,.oi-sp input{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:4px 6px;font-size:12px;min-width:0}
+.oi-sp input{flex:1}.oi-sp button{background:var(--bg);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:4px 10px;font-size:12px;cursor:pointer}
+.oi-sp button.go{border-color:rgba(255,201,77,.6);color:#ffc94d}.oi-sp .sx{font-size:11.5px;color:var(--muted)}.oi-sp .sx.bad{color:#ff8a94}
 .oi-b button.danger{border-color:rgba(242,54,69,.5);color:#ff8a94}
 .o-empty{color:var(--muted);font-size:12px;text-align:center;padding:14px 0}
 .o-cfg{margin-top:14px;border-top:1px solid var(--line);padding-top:10px;font-size:12px}
 .o-cfg summary{cursor:pointer;color:var(--muted);margin-bottom:8px}
+.pm-set{margin:4px 0 12px;padding:8px 10px;border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.02)}
+.pm-t{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px}
+.pm-sub{font-size:11.5px;font-weight:600;color:var(--muted);margin:10px 0 6px;padding-top:6px;border-top:1px dashed var(--line)}
+.pm-r{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;margin-bottom:7px;font-size:12px;color:var(--text)}
+.pm-r input[type=number],.pm-r input:not([type]){width:84px;flex:none}
+.pm-c{display:inline-flex;gap:5px;align-items:center;color:var(--text);font-size:12px;cursor:pointer}
+.pm-c input{width:auto!important}
+.pm-h{flex-basis:100%;font-size:11px;line-height:1.4;color:var(--muted)}
 .o-cfg-b{display:flex;gap:6px;margin:4px 0 8px}
 .o-cfg-b button{flex:1;background:var(--panel2);border:1px solid var(--line2);color:var(--text);border-radius:4px;padding:6px;font-size:12px}
 .o-help{color:var(--muted);font-size:11px;line-height:1.6}
@@ -762,6 +862,18 @@ html.embed #brand svg{width:24px;height:24px} html.embed #brand span{font-size:1
 #rsiTbl td.warn{background:rgba(242,54,69,.22);color:#ff4d5e;font-weight:800;font-size:1.25em}
 #rsiTbl td.na{color:var(--muted);font-weight:400}
 #rsiTbl.loading td:not(.lb){opacity:.55}
+#rsiTbl .rt-scan{display:none;width:0;min-width:100%;box-sizing:border-box;margin-top:4px;padding:5px 9px;background:rgba(15,15,15,.92);border:1px solid rgba(120,123,134,.5);border-left:4px solid var(--sc,#787b86);pointer-events:auto;cursor:pointer;font-size:12px;line-height:1.35;color:#d1d4dc}
+#rsiTbl .rt-scan.on{display:block}
+#rsiTbl .rt-scan .v{font-weight:900;font-size:13.5px;color:var(--sc,#d1d4dc)}
+#rsiTbl .rt-scan .m{color:#9aa0ad;font-size:11px;margin-top:1px;white-space:normal}
+#rsiTbl .rt-scan .m b{color:#e6e6e6;font-weight:700}
+#rsiTbl .rt-scan .m .bad{color:#ff8fa3;font-weight:700}
+#rsiTbl .rt-scan.short{--sc:#f43f5e}#rsiTbl .rt-scan.long{--sc:#22c55e}#rsiTbl .rt-scan.rebound,#rsiTbl .rt-scan.pullback{--sc:#a78bfa}#rsiTbl .rt-scan.watch{--sc:#f59e0b}
+#rsiTbl .rt-ev{display:none;width:0;min-width:100%;box-sizing:border-box;margin-top:4px;padding:4px 9px;background:rgba(15,15,15,.92);border:1px solid rgba(120,123,134,.5);border-left:4px solid #4ea1ff;pointer-events:auto;cursor:pointer;font-size:11.5px;line-height:1.4;color:#d1d4dc;white-space:normal}
+#rsiTbl .rt-ev.on{display:block}#rsiTbl .rt-ev.hot{border-left-color:#f43f5e}#rsiTbl .rt-ev b{color:#ffc94d}#rsiTbl .rt-ev .d{color:#9aa0ad}
+html.embed #rsiTbl .rt-ev{display:none!important}
+#rsiTbl.sz-s .rt-scan{font-size:10.5px}#rsiTbl.sz-s .rt-scan .v{font-size:12px}#rsiTbl.sz-l .rt-scan{font-size:14px}#rsiTbl.sz-l .rt-scan .v{font-size:16px}
+html.embed #rsiTbl .rt-scan{display:none!important}
 #rsiTbl .rt-msg{display:none;margin-top:4px;padding:5px 9px;background:rgba(242,54,69,.18);border:1px solid rgba(242,54,69,.6);border-left:3px solid #f23645;color:#ff4d5e;font-weight:800;font-size:13px;line-height:1.5;white-space:nowrap;text-align:right}
 #rsiTbl .rt-msg.on{display:block}
 #rsiTbl .rt-memo{display:none;width:0;min-width:100%;box-sizing:border-box;margin-top:4px;padding:5px 9px;background:rgba(15,15,15,.92);border:1px solid rgba(245,197,66,.55);border-left:3px solid #f5c542;pointer-events:auto;cursor:pointer;user-select:none;font-size:12px;line-height:1.5}
@@ -913,8 +1025,10 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
       <div id="swbar"></div>
       <div id="indLgs"></div>
       <div id="ewbar"></div>
+      <div id="ptbar"></div>
       <div id="nodata"></div>
       <div id="cdLbl"></div>
+      <div id="volGrip" title="위아래로 드래그: 거래량 높이 조절 · 더블클릭: 기본 높이"></div>
       <button id="btnRT" title="최신 봉으로 이동">»</button>
       <button id="axPlus" title="이 가격에 알람 · 수평선"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="14" cy="14" r="9"/><path d="M14 9.5v9M9.5 14h9"/></svg></button>
       <div id="axLbl"></div>
@@ -998,12 +1112,26 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
       <div class="o-tabs" id="oTabs"><button data-t="pos">포지션 <span id="oPosN"></span></button><button data-t="ord">미체결 <span id="oOrdN"></span></button><span class="o-all"><label><input type="checkbox" id="oAllSym"> 전체 종목</label></span></div>
       <div class="o-list" id="oList"></div>
       <details class="o-cfg" id="oCfg"><summary>브리지 설정</summary>
+        <div class="o-f"><label>수수료</label><input id="beFee" type="number" step="0.001" min="0" placeholder="테이커 수수료 %"></div>
+        <div class="pm-h" style="margin:-4px 0 10px 60px">% · 손익분기(본절가) 계산용 · 현재 거래소</div>
+        <div class="pm-set">
+          <div class="pm-t">포지션 관리</div>
+          <div class="pm-r"><label class="pm-c"><input id="pmOn" type="checkbox"> 포지션 관리 알림 사용</label><button id="pmTest" class="tbtn" style="padding:2px 10px;font-size:12px;margin-left:auto">미리보기</button></div>
+          <div class="pm-sub">이익 구간</div>
+          <div class="pm-r"><span>본절가 대비</span><input id="pmR1" type="number" step="0.05" min="0.05"><span>% 이익마다 알림</span></div>
+          <div class="pm-r"><span>수익 잠금</span><input id="pmLock" placeholder="50"><span>%</span><div class="pm-h">현재 이익의 몇 %를 지킬지 · 쉼표로 최대 3개 (예: 30, 50, 70)</div></div>
+          <div class="pm-r"><label class="pm-c"><input id="pmRev" type="checkbox"> 이익 반납 알림</label><label class="pm-c"><input id="pmSnd" type="checkbox"> 알림 소리</label></div>
+          <div class="pm-sub">손실 구간</div>
+          <div class="pm-r"><label class="pm-c"><input id="pmLoss" type="checkbox"> 손실 알림 사용</label></div>
+          <div class="pm-r"><span>손절폭의</span><input id="pmLf" placeholder="33.3, 66.7"><span>% 도달 시</span><div class="pm-h">쉼표로 최대 3개 · 손절 주문이 없으면 본절가 대비 0.3%마다 알림</div></div>
+        </div>
         <div class="o-f"><label>주소</label><input id="brUrl" placeholder="http://127.0.0.1:8765"></div>
         <div class="o-f"><label>토큰</label><input id="brTok" type="password" placeholder=".env의 BRIDGE_TOKEN 값"></div>
         <label class="o-chk"><input type="checkbox" id="brAuto"> 주문 패널을 열면 브리지 자동 실행 (orderbridge:// 등록 필요)</label>
-        <div class="o-cfg-b"><button id="brSave">저장 · 연결 확인</button><button id="brRun">브리지 실행</button></div>
+        <div class="o-cfg-b"><button id="brSave">저장 · 연결 확인</button><button id="brRun">브리지 실행</button><button id="brRs" title="실행 중인 브리지를 종료하고 새로 시작 (order_bridge.py 를 갱신한 뒤 필요)">브리지 재시작</button></div>
         <div class="o-help">API 키는 이 페이지에 없고, PC의 <b>order_bridge.py</b>가 <b>.env</b>에서 읽어 주문합니다. 처음 한 번 <b>order_bridge_install.bat</b>를 실행하면 주문 패널을 열 때 브리지가 창 없이 자동 실행되고, 페이지를 닫으면 몇 분 뒤 스스로 종료됩니다. 토큰·주문당 최대 금액·레버리지 한도도 모두 같은 <b>.env</b>의 <b>BRIDGE_TOKEN</b> · <b>BRIDGE_MAX_NOTIONAL_USDT</b> · <b>BRIDGE_MAX_LEVERAGE</b>에서 읽습니다.</div>
       </details>
+    </div>
     </div>
     <div class="pview" id="vCheck">
     <div class="ph"><b>기술적 분석 체크리스트 · <span id="ckName"></span></b><span class="ph-r"><button class="wl-add" id="ckRf" title="다시 불러오기">⟳</button><button class="pclose" title="닫기">✕</button></span></div>
@@ -1058,6 +1186,11 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
     <button class="rb" data-view="check" title="기술적 분석 체크리스트 (이평선 터치)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="6" width="16" height="18" rx="2"/><path d="M11 6V4.5h6V6"/><path d="M10 12.5l1.5 1.5 3-3M10 19l1.5 1.5 3-3"/><path d="M17.5 13h2M17.5 19.5h2"/></svg></button>
     <button class="rb" data-view="order" title="거래 (OKX · Binance · Bitget)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5.5 10h16m0 0l-4-4m4 4l-4 4"/><path d="M22.5 18h-16m0 0l4-4m-4 4l4 4"/></svg></button>
     <button class="rb" data-view="calc" title="포지션 사이즈 계산기"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="4" width="14" height="20" rx="2"/><path d="M10 8h8"/><path d="M10.5 13h1M16.5 13h1M10.5 17h1M16.5 17h1M10.5 21h1M16.5 21h1" stroke-width="2"/></svg></button>
+    <div class="rsep"></div>
+    <button class="rb" id="btnScan" title="스캐너 — 이평 이격도 스캐너 (집중 종목 순위)"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12.5" cy="12.5" r="6.5"/><path d="M17.5 17.5L23 23M9.5 13.5l2-2.5 2 1.5 2.5-3"/></svg></button>
+    <button class="rb" id="btnJournal" title="매매일지 — 진입 시점 조건 · 조건별 성과"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4.5h11a2 2 0 012 2v15a2 2 0 01-2 2H8a2 2 0 01-2-2v-15a2 2 0 012-2z"/><path d="M10 10h7M10 14h7M10 18h4"/></svg></button>
+    <button class="rb" id="btnEvents" title="일정 — FOMC·CPI·실적 등 이벤트 일정"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="6" width="18" height="17" rx="2"/><path d="M5 11h18M10 4v4M18 4v4M10 15h3M15 15h3M10 19h3"/></svg></button>
+    <button class="rb" id="btnSimilar" title="유사 구간 — 현재와 비슷한 과거 이평 배열·이격도 찾기"><svg viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="12" cy="12" r="7"/><path d="M17.5 17.5L24 24M8 13l2.5-3 2.5 2 2.5-4"/></svg></button>
   </nav>
 </main>
 
@@ -1089,7 +1222,7 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
     <li><b>드래그</b> 차트 상하좌우 이동 · <b>휠</b> 시간축 확대/축소</li>
     <li><b>가격축 드래그·휠</b> 세로 확대/축소 · <b>A</b>/가격축 더블클릭 자동 맞춤</li>
     <li><b>롱/숏 포지션 도구</b> 클릭 한 번 → 진입·손절·익절 박스 생성, 선/박스 드래그로 조정</li>
-    <li><b>가격축 ＋ 버튼 / 우클릭</b> 커서 가격에 알람 만들기 · 수평선 그리기 · 주문 추가 (Alt+A · Alt+H · Shift+T) · <b>시간축 ＋ 버튼</b> 해당 시간에 수직선 (Alt+V)</li>
+    <li><b>가격축 ＋ 버튼 / 우클릭</b> 커서 가격에 알람 만들기 · 수평선 그리기 · 주문 추가 (Alt+A · Alt+H · Shift+T) · <b>피보 롱/숏 포지션 계산기</b> (그 가격이 진입점 → 기준점만 클릭) · <b>시간축 ＋ 버튼</b> 해당 시간에 수직선 (Alt+V)</li>
     <li><b>수평선</b> Alt+H (마우스 위치 가격에 바로 그림, 왼쪽 툴바 2번째) · <b>수직선</b> Alt+V (마우스 위치 시간에 바로 그림, 수평선 ▸ 메뉴) · <b>추세선</b> Alt+T (2번째 점 찍을 때 Shift → 수평) · <b>수평 레이</b> Alt+J · <b>피보나치 되돌림</b> Alt+F (2점) · <b>추세 기반 확장</b> Alt+E (3점)</li>
     <li><b>피보 롱/숏 포지션</b> (포지션 도구 ▸ 메뉴) ① 기준점 → ② 진입가 2번 클릭. 진입가가 1.618 레벨에 고정되도록 손절가(0)가 자동 계산되고, 목표가 = 진입가 + (진입가−손절가) × 목표 배수(기본 1). 손절가 점은 좌우로만 이동</li>
     <li><b>피보나치 설정</b> 피보나치 더블클릭 또는 선택 후 ⚙ → 레벨·색·선 스타일·확장·좌표·표시 시간대</li>
@@ -1107,6 +1240,10 @@ aside#panel{padding:0 8px 12px;border-radius:0;border-color:var(--line)}
     <li><b>차트 반전</b> Alt+I 또는 하단 「반전」 — 가격축 위아래를 뒤집어 반대 관점으로 봄 (켜져 있으면 범례에 ⇅ 반전됨 표시, 새로고침하면 해제)</li>
     <li><b>자석</b> 켜면 봉의 시가·고가·저가·종가에 붙음 · <b>Alt+R</b> 차트 초기화</li>
   </ul>
+  <div style="margin-top:10px;font-size:12px;color:var(--text)">렌더링 해상도
+    <select id="gfxSel" style="background:#1e1e1e;color:var(--text);border:1px solid var(--line2);border-radius:5px;padding:2px 6px;margin-left:6px">
+      <option value="auto">자동 (큰 화면은 가볍게)</option><option value="low">항상 가볍게 (1배)</option><option value="full">원본 (가장 선명)</option></select>
+    <span style="color:var(--muted);font-size:11px">큰 모니터에서 차트 조작이 무거우면 「자동」이나 「항상 가볍게」 · 바꾸면 화면이 새로고침됩니다</span></div>
   <div style="margin-top:10px;font-size:11px;color:var(--muted)">차트 엔진: <a href="https://www.tradingview.com/lightweight-charts/" target="_blank" rel="noopener" style="color:var(--muted)">TradingView Lightweight Charts™</a> (Copyright © TradingView, Inc. · Apache-2.0)</div>
 </div>
 <div id="fibDlg">
@@ -1161,6 +1298,17 @@ const MA_DEFAULT = [
   { on:true,  type:'SMA', len:200, color:'#ff7043' }
 ];
 const PALETTE = ['#2962ff','#f23645','#089981','#ff9800','#e040fb','#d1d4dc'];
+/* 선 도구 공통 설정: 새로 그리는 선의 기본 색·굵기(마지막으로 쓴 값을 기억), 연속 그리기 */
+const LINE_TOOLS = ['trend', 'hline', 'vline', 'hray'], LW_OPTS = [1, 1.5, 2, 3, 4, 5, 6];
+const lwBase = t => t === 'trend' ? 1.5 : 1;
+const dDef = () => Object.assign({ color:'#2962ff', lw:null }, store.get('drawDef') || {});
+const dDefSet = o => store.set('drawDef', Object.assign(dDef(), o));
+const chainOn = () => store.get('drawChain') !== false;
+/* 그룹: 연속 그리기로 그린 선들은 같은 d.g 를 가진다 → 선택·이동·색/굵기·삭제를 한꺼번에 */
+let CHAIN_G = null;
+const grpOf = d => d && d.g ? drawings.filter(x => x.g === d.g) : (d ? [d] : []);
+const inSel = d => { if (!sel || typeof sel !== 'string') return false; if (d.id === sel) return true; if (!d.g) return false; const s0 = drawings.find(x => x.id === sel); return !!(s0 && s0.g === d.g); };
+const lwOf = (d, selected) => (d.lw || lwBase(d.type)) + (selected ? .5 : 0);
 /* 피보나치 레벨 목록 (TradingView 순서·색) — 각 그림마다 켜기/값/색을 바꿀 수 있음 */
 const FIB_LV = [[0,'#787b86'],[.236,'#f23645'],[.382,'#ff9800'],[.5,'#4caf50'],[.618,'#089981'],[.786,'#00bcd4'],[1,'#787b86'],[1.618,'#2962ff'],
   [2.618,'#f23645'],[3.618,'#9c27b0'],[4.236,'#e91e63'],[1.272,'#ff9800'],[1.414,'#f23645'],[2.272,'#ff9800'],[2.414,'#4caf50'],[2,'#089981'],
@@ -1208,6 +1356,8 @@ const ICON = {
   eyeOff: I('<path d="M3 14s4-7 11-7 11 7 11 7-4 7-11 7S3 14 3 14z"/><circle cx="14" cy="14" r="3"/><path d="M5 23L23 5"/>'),
   sweep:  I('<path d="M3 10h8" stroke-dasharray="2 2" opacity=".7"/><path d="M4 7l6 10 4-5 6 8"/><path d="M17 20h6" opacity=".6"/><circle cx="10" cy="17" r="1.8" fill="currentColor" stroke="none"/><path d="M20 20l3-4" /><path d="M23 16l-2 .2M23 16l.2 2"/>'),
   elliott:I('<path d="M2 22l4-7 3 3 5-12 3 7 3-3 5-9" stroke-linejoin="round"/><circle cx="6" cy="15" r="1.5" fill="currentColor" stroke="none"/><circle cx="14" cy="6" r="1.5" fill="currentColor" stroke="none"/><circle cx="25" cy="4" r="1.5" fill="currentColor" stroke="none"/>'),
+  dtop:   I('<path d="M2 23L8 9l5 8 5-8 7 14" stroke-linejoin="round"/><path d="M1 9h26" stroke-dasharray="2 2" opacity=".7"/><circle cx="8" cy="9" r="1.7" fill="currentColor" stroke="none"/><circle cx="18" cy="9" r="1.7" fill="currentColor" stroke="none"/>'),
+  mapb:   I('<path d="M2 5l24 8M2 10l24 8" opacity=".55"/><path d="M3 24l5-3 3 3 5-8 3 4 6-3" stroke-linejoin="round"/><circle cx="16" cy="16" r="1.7" fill="currentColor" stroke="none"/><path d="M22 6v7M22 13l-2.5-2.5M22 13l2.5-2.5" stroke="#FF5252" opacity=".9"/>'),
   tri:    I('<path d="M3 5l20 9M3 23l20-9"/><path d="M1 14h26" stroke-dasharray="2 2" opacity=".7"/><path d="M19 12l5-7"/><path d="M24 5l-2.4.4M24 5l.3 2.4"/>'),
   wedge:  I('<path d="M4 6l19 7M4 22l19-7"/><path d="M23 13v2" opacity=".6"/><circle cx="4" cy="6" r="1.8" fill="currentColor" stroke="none"/><circle cx="12" cy="9" r="1.8" fill="currentColor" stroke="none"/><circle cx="4" cy="22" r="1.8" fill="currentColor" stroke="none"/><circle cx="14" cy="18.7" r="1.8" fill="currentColor" stroke="none"/>'),
   trash:  I('<path d="M6 8h16M11 8V5.5h6V8M8 8l1 15h10l1-15M12 12v7M16 12v7"/>'),
@@ -1231,6 +1381,8 @@ const TOOLDEF = {
   elliott:{ name:'엘리엇 파동', tip:'엘리엇 파동 — 추세 전환 뒤 0-1-2-3-4-5 와 A-B-C 를 자동으로 세어 표시 (켜기/끄기)', key:'Alt+G' },
   tri:{ name:'삼수돌 (삼각 수렴 돌파)', tip:'삼수돌 — 고점 2개·저점 2개 캔들을 클릭. 수렴 뒤 강하게 뻗은 끝에서 반대로 진입, 목표는 중심선', key:'Alt+U' },
   wedge:{ name:'웨지 셋업', tip:'웨지 셋업 — 캔들 4개를 클릭하면 상·하단선, 돌파, 목표·손절을 자동 계산', key:'Alt+W' },
+  dtop:{ name:'쌍봉 숏', tip:'쌍봉 숏 — 15분봉 쌍봉 패턴을 왓치리스트에서 감시하고 차트에 표시 (켜기/끄기)', key:'' },
+  mapb:{ name:'역배열 눌림 숏', tip:'역배열 눌림 숏 — 이평선 완전 역배열·우하향에서 60선 근처 강한 음봉을 감시하고 표시 (켜기/끄기)', key:'' },
   long:{ name:'롱 포지션', tip:'롱 포지션', key:'' },
   short:{ name:'숏 포지션', tip:'숏 포지션', key:'' },
   fiblong:{ name:'피보 롱 포지션', tip:'피보 롱 포지션 (기준점→진입가, 진입가=1.618)', key:'' },
@@ -1241,12 +1393,13 @@ const TOOLDEF = {
   alert:{ name:'알람', tip:'알람 (클릭한 가격에 수평선 알람)', key:'Alt+A' }
 };
 /* 왼쪽 도구 막대: 그룹 = 버튼 하나 + ▸ 플라이아웃 (마지막에 쓴 도구가 버튼에 표시됨) */
-const TB_GROUPS = [['cursor'], 'sep', ['hline','vline'], ['trend','hray'], ['text'], ['fibret','fibext'], ['wedge','tri','sweep','elliott'], ['long','short','fiblong','fibshort'], ['measure','prange','drange'], 'sep', ['alert']];
+const TB_GROUPS = [['cursor'], 'sep', ['hline','vline'], ['trend','hray'], ['text'], ['fibret','fibext'], ['wedge','tri','sweep','elliott'], ['dtop','mapb'], ['long','short','fiblong','fibshort'], ['measure','prange','drange'], 'sep', ['alert']];
 const FLY_META = {   // 그룹 첫 도구 기준: 플라이아웃 제목 · 구분선
   hline:  { title:'수평·수직선' },
   trend:  { title:'선' },
   fibret: { title:'피보나치' },
   wedge:  { title:'셋업', sep:['sweep'], foot:'웨지·삼수돌 = 캔들 4개를 클릭해 그리기 · 스윕 반전·엘리엇 파동 = 켜면 자동 표시<br><span class="fly-help">❓ 셋업 도구 사용법 보기</span>' },
+  dtop:   { title:'패턴 감시 (왓치리스트)', foot:'누르면 켜기/끄기 · 켜면 15분봉 마감마다 왓치리스트를 검사해 알림<br><span class="fly-help2">❓ 패턴 감시 사용법 보기</span>' },
   long:   { title:'포지션', sep:['fiblong'] },
   measure:{ title:'측정 도구', sep:['prange'], foot:'측정 = 한 번 재고 사라짐 (Shift+클릭으로도 시작) · 가격 범위·날짜 범위 = 차트에 남는 그림' }
 };
@@ -1261,6 +1414,7 @@ const S = { ticker:'BTC', bar:'15m', tool:'cursor', entry:null, stop:null, targe
 let chart, series, volSeries, overlay, maSeries = [], mas = [];
 let bars = [], ready = false, hasMore = true, loadingOlder = false, hovering = false;
 let alerts = [], alPrev = {}, alTitleTimer = null, audioCtx = null;
+let FPE = null;      // 우클릭 메뉴로 먼저 잡은 피보 포지션 진입점
 let drawings = [], pending = [], sel = null, mouse = null, magnet = false, hideDraw = false, panelOpen = false;
 let drag = null, vDrag = null, manual = null, dragJustEnded = false, down = null;
 let pollTimer = null, loadSeq = 0, prevLast = null, posInfo = null;
@@ -1282,8 +1436,10 @@ function tickSz(){ return S.inst ? +S.inst.tickSz : null; }
 function roundTick(p){ const t = tickSz(); if (!t) return +(+p).toPrecision(8); return +(Math.round(p / t) * t).toFixed(decOf(t)); }
 function floorStep(v, step){ const d = decOf(step); return +(Math.floor(v / step + 1e-9) * step).toFixed(d); }
 function priceDec(){ const t = tickSz(); if (t) return decOf(t); const l = S.last || 1; return l >= 1000 ? 1 : l >= 10 ? 2 : l >= 1 ? 4 : 6; }
-function fP(n){ return n == null || isNaN(n) ? '—' : Number(n).toLocaleString('en-US',{minimumFractionDigits:priceDec(),maximumFractionDigits:priceDec()}); }
-function f(n,d=2){ return n == null || isNaN(n) || !isFinite(n) ? '—' : Number(n).toLocaleString('en-US',{minimumFractionDigits:d,maximumFractionDigits:d}); }
+const NF_CACHE = {};
+const nfOf = d => NF_CACHE[d] || (NF_CACHE[d] = new Intl.NumberFormat('en-US', { minimumFractionDigits:d, maximumFractionDigits:d }));
+function fP(n){ return n == null || isNaN(n) ? '—' : nfOf(priceDec()).format(Number(n)); }
+function f(n,d=2){ return n == null || isNaN(n) || !isFinite(n) ? '—' : nfOf(d).format(Number(n)); }
 function fK(n){ if (n == null || isNaN(n)) return '—'; const a = Math.abs(n); return a >= 1e9 ? f(n/1e9,2)+'B' : a >= 1e6 ? f(n/1e6,2)+'M' : a >= 1e3 ? f(n/1e3,2)+'K' : f(n, a < 10 ? 3 : 1); }
 function fDur(ms){
   const m = Math.round(Math.abs(ms) / 60000), d = Math.floor(m / 1440), h = Math.floor(m % 1440 / 60), mm = m % 60;
@@ -1331,7 +1487,9 @@ const priceAt = y => series.coordinateToPrice(y);
 const yOf = p => p == null ? null : series.priceToCoordinate(p);
 const toXY = pt => ({ x: timeToX(pt.t), y: yOf(pt.p) });
 const paneW = () => chart.timeScale().width();
-const paneH = () => $('chart').clientHeight - chart.timeScale().height();
+let CH_H = 0;
+try { new ResizeObserver(() => { CH_H = 0; }).observe($('chart')); } catch(e){}
+const paneH = () => (CH_H || (CH_H = $('chart').clientHeight)) - chart.timeScale().height();
 
 /* 자석: 커서 아래 봉의 시가/고가/저가/종가 중 가장 가까운 값에 붙임 */
 function snapPrice(x, y){
@@ -1377,7 +1535,7 @@ function buildAxisViews(){
   if (!hideDraw) drawings.forEach(d => {
     if (d.type === 'hline' || d.type === 'hray') add(d.pts[0].p, d.color);
     else if (d.type === 'measure' || d.type === 'prange'){ add(d.pts[0].p, d.color || '#2962ff'); add(d.pts[1].p, d.color || '#2962ff'); }
-    else if (d.id === sel && d.type !== 'image' && d.type !== 'vline') d.pts.forEach(pt => add(pt.p, '#2962ff'));
+    else if (inSel(d) && d.type !== 'image' && d.type !== 'vline') d.pts.forEach(pt => add(pt.p, '#2962ff'));
   });
   alertsHere().forEach(a => add(a.p, a.on ? '#ff9800' : '#5d6680'));
   if (S.entry != null) add(S.entry, '#5d6680');
@@ -1412,8 +1570,26 @@ const LBL = new WeakMap();   // 가격/날짜 범위 그림별 라벨 위치 (�
 let POS_LBL = [];            // 포지션 박스 라벨 위치 (박스가 화면 밖이어도 라벨로 선택)
 
 /* 선택 미니 툴바를 차트 상단(오른쪽)에 고정 — 그림을 가리지 않도록 */
+function placeVolGrip(W, H){
+  const g = $('volGrip'); if (!g) return;
+  if (EMBED || !volOn() || !H || (typeof volDrag !== 'undefined' && volDrag)){ if (!(typeof volDrag !== 'undefined' && volDrag)) g.style.display = 'none'; if (!volDrag) return; }
+  const P = indFrac(), y = H * (1 - P) * (1 - VOL_F);
+  g.style.display = 'block'; g.style.top = Math.round(y - 5) + 'px'; g.style.width = Math.max(0, paneW()) + 'px';
+}
+let volDrag = null;
+(function volGripInit(){
+  const g = $('volGrip'); if (!g) return;
+  g.addEventListener('mousedown', e => {
+    if (e.button !== 0) return; e.preventDefault(); e.stopPropagation(); volDrag = { top: g.offsetParent.getBoundingClientRect().top }; g.classList.add('drag');
+    const mv = ev => { const H = ovH, P = indFrac(); if (!H) return; const y = ev.clientY - volDrag.top; VOL_F = Math.max(.05, Math.min(.6, 1 - y / (H * (1 - P)))); indLayout(); placeVolGrip(ovW, H); };
+    const up = () => { window.removeEventListener('mousemove', mv, true); window.removeEventListener('mouseup', up, true); volDrag = null; g.classList.remove('drag'); try { localStorage.setItem('possize_volFrac', JSON.stringify(+VOL_F.toFixed(3))); } catch(err){} indLayout(); };
+    window.addEventListener('mousemove', mv, true); window.addEventListener('mouseup', up, true);
+  });
+  g.addEventListener('dblclick', e => { VOL_F = .16; try { localStorage.setItem('possize_volFrac', JSON.stringify(VOL_F)); } catch(err){} indLayout(); });
+})();
 function placeSelbar(W, H){
   const bar = $('selbar'); if (bar.style.display === 'none') return;
+  if (bar.classList.contains('moved')){ bar.style.left = ''; bar.style.top = ''; return; }     // 사용자가 옮긴 위치 유지
   const bw = bar.offsetWidth || 160;
   const left = Math.max(bw / 2 + 8, W - bw / 2 - 10);          // TradingView처럼 차트 상단에 고정 (그림을 가리지 않게)
   bar.style.left = left + 'px'; bar.style.top = '8px';
@@ -1422,9 +1598,9 @@ function placeSelbar(W, H){
 let ovW = 9999, ovH = 0;
 function renderOverlay(ctx, W, H){
   ovW = W; ovH = H;
-  { const el = $('rsiTbl'), k = el ? el.offsetTop + ':' + el.offsetHeight + ':' + (el.className || '') + ':' + H : ''; if (k !== renderOverlay._k){ renderOverlay._k = k; setTimeout(() => { try { indLayout(); } catch(e){} }, 0); } }
+  { const el = $('rsiTbl'), g = el ? rsiGeo() : null, k = g ? g.top + ':' + g.h + ':' + g.cls + ':' + H : ''; if (k !== renderOverlay._k){ renderOverlay._k = k; setTimeout(() => { try { indLayout(); } catch(e){} }, 0); } }
   if (!bars.length) return;
-  placeSelbar(W, H); placeCd();
+  placeSelbar(W, H); placeCd(); placeVolGrip(W, H);
   if (axTGuide && axTX != null && !drag){ ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#9598a1'; ctx.lineWidth = 1; const gx = Math.round(axTX) + .5; line(ctx, gx, 0, gx, H); ctx.restore(); }
   if (axGuide && !mouse && axY != null && !drag){ ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#9598a1'; ctx.lineWidth = 1; const gy = Math.round(axY) + .5; line(ctx, 0, gy, W, gy); ctx.restore(); }
   drawPosition(ctx, W, H);
@@ -1433,11 +1609,14 @@ function renderOverlay(ctx, W, H){
   drawSweep(ctx, W, H);
   drawElliott(ctx, W, H);
   drawIndOverlays(ctx, W, H);                       // 볼린저·VWAP·VWMA·거래량 이평은 그림 도구 아래에
-  if (!hideDraw) for (const d of drawings) if (visOn(d)) drawShape(ctx, d, W, d.id === sel, false);
-  if (S.tool === 'vline' && mouse){ const vx = Math.round(mouse.x) + .5; ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = '#2962ff'; ctx.lineWidth = 1; line(ctx, vx, 0, vx, H); ctx.restore(); }
-  if (S.tool !== 'cursor' && NEED[S.tool] > 1 && pending.length){
+  if (!hideDraw) for (const d of drawings) if (visOn(d)) drawShape(ctx, d, W, inSel(d), false);
+  if (!hideDraw && !EMBED && typeof drawPatMarks === 'function'){ drawPatMarks(ctx, W); drawMaMarks(ctx, W); drawGotoMk(ctx, H); }
+  if (!hideDraw && !EMBED && typeof drawPatd === 'function') drawPatd(ctx, H);
+  if (S.tool === 'vline' && mouse){ const vx = Math.round(mouse.x) + .5; ctx.save(); ctx.setLineDash([4, 4]); ctx.strokeStyle = dDef().color; ctx.lineWidth = 1; line(ctx, vx, 0, vx, H); ctx.restore(); }
+  if (FPE && isFP(S.tool)){ const mp = mousePt(); if (mp) drawShape(ctx, { type:S.tool, pts:[mp, FPE], color:'#2962ff' }, W, true, true); }
+  else if (S.tool !== 'cursor' && NEED[S.tool] > 1 && pending.length){
     const mp = mousePt();
-    if (mp) drawShape(ctx, { type:S.tool, pts:[...pending, mp], color:'#2962ff', fib: isFib(S.tool) ? fibTemplate(S.tool) : undefined }, W, true, true);
+    if (mp) drawShape(ctx, { type:S.tool, pts:[...pending, mp], color: LINE_TOOLS.includes(S.tool) ? dDef().color : '#2962ff', lw: LINE_TOOLS.includes(S.tool) ? dDef().lw : null, fib: isFib(S.tool) ? fibTemplate(S.tool) : undefined }, W, true, true);
   }
   drawIndPanes(ctx, W, H);                          // 지표 패널은 맨 위에 (불투명 배경으로 아래쪽 캔들·그림을 가림)
 }
@@ -1448,18 +1627,18 @@ function drawShape(ctx, d, W, selected, preview){
   ctx.save();
   if (d.type === 'hline'){
     const y = Math.round(P[0].y) + .5;
-    ctx.strokeStyle = d.color; ctx.lineWidth = selected ? 2 : 1; line(ctx, 0, y, W, y);
+    ctx.strokeStyle = d.color; ctx.lineWidth = lwOf(d, selected); line(ctx, 0, y, W, y);
     if (selected) handle(ctx, W/2, y, d.color);
   } else if (d.type === 'vline'){
     const vx = Math.round(P[0].x) + .5, vh = ovH || paneH();
-    ctx.strokeStyle = d.color; ctx.lineWidth = selected ? 2 : 1; line(ctx, vx, 0, vx, vh);
+    ctx.strokeStyle = d.color; ctx.lineWidth = lwOf(d, selected); line(ctx, vx, 0, vx, vh);
     if (selected){ handle(ctx, vx, vh / 2, d.color); pill(ctx, P[0].x, vh - 6, [rangeDate(d.pts[0].t)], d.color, '#fff', 'bottom'); }
   } else if (d.type === 'trend'){
-    ctx.strokeStyle = d.color; ctx.lineWidth = selected ? 2 : 1.5; line(ctx, P[0].x, P[0].y, P[1].x, P[1].y);
+    ctx.strokeStyle = d.color; ctx.lineWidth = lwOf(d, selected); line(ctx, P[0].x, P[0].y, P[1].x, P[1].y);
     if (selected || preview) P.forEach(p => handle(ctx, p.x, p.y, d.color));
   } else if (d.type === 'hray'){
     const y = Math.round(P[0].y) + .5;
-    ctx.strokeStyle = d.color; ctx.lineWidth = selected ? 2 : 1; line(ctx, P[0].x, y, W, y);
+    ctx.strokeStyle = d.color; ctx.lineWidth = lwOf(d, selected); line(ctx, P[0].x, y, W, y);
     if (selected) handle(ctx, P[0].x, y, d.color);
   } else if (d.type === 'fibret' || d.type === 'fibext'){
     drawFib(ctx, d, P, selected, W);
@@ -2284,7 +2463,7 @@ function drawElliott(ctx, W, H){
 }
 function ewPlace(){
   const ew = $('ewbar'), sw = $('swbar'); if (!ew) return;
-  ew.style.bottom = (sw && sw.style.display !== 'none' && sw.offsetHeight ? sw.offsetHeight + 22 : 14) + 'px';
+  ew.style.bottom = (sw && sw.style.display !== 'none' && sw.offsetHeight ? sw.offsetHeight + 22 : 14) + 'px'; if (typeof ptPlace === 'function') ptPlace();
 }
 function ewBarRender(){
   const bar = $('ewbar'); if (!bar) return;
@@ -2464,6 +2643,8 @@ const SH_SVG = {
   wedge:`<svg viewBox="0 0 320 120"><path d="M20 20L230 62M20 104L230 80" stroke="#42A5F5" stroke-width="2" fill="none"/><path d="M20 100L55 28 95 96 135 45 170 88 200 58 222 80 240 50 262 30 290 12" stroke="#d1d4dc" fill="none"/><circle cx="55" cy="28" r="4" fill="#42A5F5"/><circle cx="135" cy="45" r="4" fill="#42A5F5"/><circle cx="95" cy="96" r="4" fill="#42A5F5"/><circle cx="170" cy="88" r="4" fill="#42A5F5"/><text x="246" y="62" fill="#00E676" font-size="11">돌파 ▲</text><path d="M240 12H310" stroke="#66BB6A" stroke-dasharray="4 3"/><text x="270" y="24" fill="#66BB6A" font-size="10">목표</text><path d="M240 104H310" stroke="#E57373"/><text x="270" y="116" fill="#E57373" font-size="10">손절</text></svg>`,
   tri:`<svg viewBox="0 0 320 120"><path d="M20 30L150 68M20 106L150 68" stroke="#42A5F5" stroke-width="2" fill="none"/><path d="M10 68H310" stroke="#FFEB3B" stroke-dasharray="6 4"/><path d="M20 102L42 38 64 94 86 50 106 82 124 60 138 54 150 40 166 30 184 14 196 22 210 16 224 34 244 46 262 58 280 68" stroke="#d1d4dc" fill="none"/><circle cx="184" cy="14" r="4" fill="#FFA726"/><text x="120" y="34" fill="#9E9E9E" font-size="10">① 돌파</text><text x="150" y="10" fill="#FFA726" font-size="10">뻗은 끝 = 손절</text><text x="214" y="28" fill="#FF5252" font-size="10">② 꺾임 ▼ 숏</text><text x="234" y="84" fill="#66BB6A" font-size="10">③ 목표 = 중심선</text><text x="14" y="62" fill="#FFEB3B" font-size="10">중심선</text></svg>`,
   sweep:`<svg viewBox="0 0 320 120"><path d="M10 80H150" stroke="#FFA726" stroke-dasharray="5 3"/><text x="12" y="74" fill="#FFA726" font-size="10">큰 시간대 저점</text><path d="M20 40L50 60 70 50 100 76 120 66 140 98 160 70 180 78 200 44 222 62 250 30 300 10" stroke="#d1d4dc" fill="none"/><circle cx="140" cy="98" r="4" fill="#FFA726"/><text x="120" y="114" fill="#FFA726" font-size="10">① 스윕</text><text x="176" y="40" fill="#CE93D8" font-size="10">② 전환(cisd)</text><rect x="196" y="56" width="50" height="12" fill="rgba(128,203,196,.3)" stroke="#80CBC4"/><text x="200" y="82" fill="#80CBC4" font-size="10">③ 되돌림 진입</text><text x="270" y="24" fill="#66BB6A" font-size="10">목표</text></svg>`,
+  dtop:`<svg viewBox="0 0 320 150"><rect width="320" height="150" fill="none"/><path d="M12 128L34 118 52 124 80 62" stroke="#26A69A" stroke-width="2.2" fill="none"/><path d="M80 62L108 96 140 60" stroke="#d1d4dc" stroke-width="2.2" fill="none"/><path d="M140 60L150 66 160 54" stroke="#d1d4dc" stroke-width="2" fill="none"/><path d="M12 62H168" stroke="#FFA726" stroke-dasharray="5 3"/><circle cx="80" cy="62" r="4.5" fill="#FFA726"/><circle cx="140" cy="60" r="4.5" fill="#FFA726"/><circle cx="108" cy="96" r="3.5" fill="#90A4AE"/><circle cx="34" cy="118" r="3.5" fill="#26A69A"/><rect x="162" y="48" width="9" height="40" fill="#EF5350"/><path d="M166.5 40V96" stroke="#EF5350"/><path d="M171 86L214 128 256 138" stroke="#EF5350" stroke-width="2" stroke-dasharray="4 3" fill="none"/><text x="14" y="142" fill="#26A69A" font-size="10">① 저점</text><text x="14" y="98" fill="#26A69A" font-size="10">상승 ≥ 8%</text><path d="M30 112L74 66" stroke="#26A69A" stroke-width="1" stroke-dasharray="2 3"/><text x="64" y="52" fill="#FFA726" font-size="10">② 첫 고점</text><text x="90" y="112" fill="#90A4AE" font-size="10">③ 골</text><text x="100" y="28" fill="#FFA726" font-size="10">④ 두 번째 고점</text><text x="176" y="70" fill="#FFA726" font-size="9.5">두 고점 차 ±1% 이내</text><path d="M166.5 48V38" stroke="#FFA726"/><text x="176" y="100" fill="#EF5350" font-size="10.5" font-weight="600">⑤ 강한 음봉 마감 = ▼ 숏 진입</text><path d="M196 36H262" stroke="#E57373" stroke-dasharray="3 3"/><text x="266" y="39" fill="#E57373" font-size="10">손절</text><path d="M180 128H262" stroke="#26A69A" stroke-dasharray="3 3"/><text x="266" y="131" fill="#26A69A" font-size="10">목표</text></svg>`,
+  mapb:`<svg viewBox="0 0 320 150"><path d="M8 30L312 56" stroke="#9E9E9E" stroke-width="1.6" fill="none"/><path d="M8 50L312 78" stroke="#42A5F5" stroke-width="1.6" fill="none"/><path d="M8 66L312 96" stroke="#FFA726" stroke-width="2.6" fill="none"/><path d="M8 82L312 114" stroke="#AB47BC" stroke-width="1.6" fill="none"/><text x="256" y="48" fill="#9E9E9E" font-size="10">200</text><text x="256" y="72" fill="#42A5F5" font-size="10">100</text><text x="270" y="92" fill="#FFA726" font-size="10.5" font-weight="600">60</text><text x="262" y="112" fill="#AB47BC" font-size="10">20</text><path d="M12 76L40 92 56 86 80 106 96 100 116 118 128 112 140 100 152 96" stroke="#d1d4dc" stroke-width="2" fill="none"/><path d="M152 96L162 84 172 90 182 80" stroke="#d1d4dc" stroke-width="2" fill="none"/><circle cx="182" cy="80" r="4" fill="#FFA726"/><rect x="186" y="76" width="10" height="34" fill="#EF5350"/><path d="M191 70V112" stroke="#EF5350"/><path d="M196 104L240 132" stroke="#EF5350" stroke-width="2" stroke-dasharray="4 3" fill="none"/><text x="12" y="22" fill="#d1d4dc" font-size="10.5">① 완전 역배열: 위에서부터 200 → 100 → 60 → 20, 모두 우하향</text><text x="12" y="146" fill="#90A4AE" font-size="10">② 하락 중 반등</text><text x="100" y="146" fill="#FFA726" font-size="10">③ 60선 ±0.5% 터치</text><text x="196" y="124" fill="#EF5350" font-size="10.5" font-weight="600">④ 강한 음봉 = ▼ 숏</text><path d="M176 62H226" stroke="#E57373" stroke-dasharray="3 3"/><text x="230" y="60" fill="#E57373" font-size="10">손절</text></svg>`,
   elliott:`<svg viewBox="0 0 320 120"><path d="M14 104L60 66 86 86 160 26 190 52 232 10 256 40 282 24 306 56" stroke="#00E676" stroke-width="2" fill="none"/><g font-size="11" fill="#fff"><text x="8" y="116">0</text><text x="56" y="60">1</text><text x="84" y="100">2</text><text x="156" y="20">3</text><text x="188" y="66">4</text><text x="228" y="8" fill="#FFEB3B">5</text><text x="254" y="54">A</text><text x="280" y="18">B</text><text x="304" y="70">C</text></g><path d="M14 104H120" stroke="#FF5252" stroke-dasharray="4 3"/><text x="100" y="116" fill="#FF5252" font-size="10">무효선</text></svg>`
 };
 const SH_DOC = {
@@ -2479,6 +2660,14 @@ const SH_DOC = {
     how:['도구 막대 ▸ 셋업 ▸ <b>스윕 반전</b> (Alt+Q) — 켜고 끄는 스위치입니다', '클릭할 것은 없습니다. 차트에 <b>"대기"</b> 표시와 ENTRY·SL·TP 선이 뜰 때만 보세요', '왼쪽 아래 막대에서 방향·진입 자리·목표를 바꿀 수 있습니다'],
     read:['<b>스윕</b>(주황) — 큰 시간대 고·저점을 넘은 자리, 손절 기준', '<b>cisd</b>(보라) — 방향이 바뀐 확인 지점', '<b>청록 박스</b> — 되돌아오면 들어갈 자리. <b>× 취소</b>는 체결 안 된 신호(무시)', '오른쪽 아래 표 — 과거 신호의 승률·합계 R (R = 손절폭 1배)'],
     warn:'통계는 수수료·슬리피지가 빠진 모의 계산입니다. 손절폭이 아주 좁은 신호는 실전에서 불리합니다.' },
+  dtop:{ name:'쌍봉 숏', one:'오르던 가격이 <b>비슷한 높이에서 두 번 막힌 뒤(쌍봉)</b> 아래로 꺾이는 자리를 15분봉 기준으로 왓치리스트 전체에서 찾아 알려 줍니다. 진입은 숏입니다.',
+    how:['도구 막대 ▸ 셋업 ▸ <b>쌍봉 숏</b> — 켜고 끄는 스위치입니다 (켜면 15분봉으로 바뀝니다)', '15분봉이 마감될 때마다 왓치리스트의 OKX 종목을 검사하고, 신호가 나오면 <b>알림 카드·사이렌</b>이 뜹니다', '왼쪽 아래 막대에서 <b>상승 ≥ %</b>, <b>두 고점 차 ≤ %</b>를 바꾸거나 <b>✏️ 그려서 설정</b>으로 차트에 패턴을 그려 값을 자동으로 넣습니다', '<b>⚙ 설정·백테스트</b>에서 과거 데이터로 승률을 확인하세요'],
+    read:['<b>① 저점 → ② 첫 고점</b> — 최소 상승률(기본 8%) 이상 오른 구간', '<b>③ 골 → ④ 두 번째 고점</b> — 두 고점 높이 차이가 허용 % 이내 (주황 점선)', '<b>⑤ 하락 확인 캔들</b> — 강한 음봉(방식 A) 또는 양봉→음봉→음봉(방식 B)이 마감되면 신호', '차트의 빨간 ▼ = 신호 봉. <b>✓/✗ +R</b>은 이후 목표·손절 결과, 가장 최근 신호에는 진입·손절·목표선이 나옵니다'],
+    warn:'앱(차트 창)이 켜져 있는 동안에만 감시합니다. 꺼져 있던 동안의 신호는 소급하지 않습니다.' },
+  mapb:{ name:'역배열 눌림 숏', one:'이평선이 <b>완전 역배열(20 < 60 < 100 < 200)로 우하향</b>하는 종목이 <b>60선 근처까지 반등한 뒤 강한 음봉</b>을 만들면, 하락이 이어진다고 보고 숏 진입 신호를 냅니다.',
+    how:['도구 막대 ▸ 셋업 ▸ <b>역배열 눌림 숏</b> — 켜고 끄는 스위치입니다 (켜면 15분봉으로 바뀝니다)', '15분봉이 마감될 때마다 왓치리스트의 OKX 종목을 검사하고, 신호가 나오면 알림 카드·사이렌이 뜹니다', '왼쪽 아래 막대에서 <b>60선 ± %</b>(근처 범위), <b>음봉 ≥ %</b>(몸통), <b>목표 R</b>을 조절합니다', '<b>⚙ 설정·백테스트</b>에서 모든 조건과 과거 성과를 확인하세요'],
+    read:['<b>이평선 순서</b> — 위에서부터 200·100·60·20 (주황 = 60선). 모두 아래로 기울어야 합니다', '<b>③ 60선 터치</b> — 반등 봉의 고가가 60선 ±범위 안, 종가는 60선 아래', '<b>④ 강한 음봉</b> — 몸통이 기준(기본 0.6%) 이상인 음봉 마감 = ▼ 숏 진입', '손절 = 최근 3봉 고점(또는 60선) 위 0.2%, 목표 = 손절폭 × 2 (기본). 손절폭이 2.5%를 넘으면 신호를 건너뜁니다'],
+    warn:'60선 위로 마감하거나 이평선이 엉키기 시작하면 추세가 끝나는 중일 수 있습니다. 백테스트로 근처 범위·몸통 기준을 종목군에 맞게 조정하세요.' },
   elliott:{ name:'엘리엇 파동', one:'추세가 <b>1-2-3-4-5</b>로 가고 <b>A-B-C</b>로 쉬는 모양을 자동으로 세어 번호를 붙입니다. 신호가 아니라 "지금 어디쯤인지" 보는 지도입니다.',
     how:['도구 막대 ▸ 셋업 ▸ <b>엘리엇 파동</b> (Alt+G) — 켜고 끄는 스위치입니다', '오른쪽 위 표에서 <b>지금 몇 파인지, 방향, 무효 가격</b>을 확인', '복잡하면 왼쪽 아래 막대에서 "예상 경로"·"피보 격자"를 끄세요'],
     read:['<b>번호 0~5, A·B·C</b> — 확정된 파동 (~ 붙으면 정석 구간을 벗어남)', '<b>노란 박스</b> — 다음 번호가 나올 만한 구간 (2·4번 박스 = 눌림 매수 후보)', '<b>빨간 무효선</b> — 깨지면 이 카운트는 폐기 = 손절 기준', '<b>회색 점선 2? 3?</b> — 예시 경로일 뿐 예측이 아닙니다'],
@@ -2491,7 +2680,7 @@ function openSetupHelp(tab){
     el.addEventListener('mousedown', e => { e.stopPropagation(); if (e.target === el) el.style.display = 'none'; });
     document.addEventListener('keydown', e => { if (e.key === 'Escape' && el.style.display === 'flex'){ el.style.display = 'none'; e.stopPropagation(); } }, true);
   }
-  const order = ['wedge', 'tri', 'sweep', 'elliott']; tab = order.includes(tab) ? tab : (store.get('shTab') || 'wedge'); store.set('shTab', tab);
+  const order = ['wedge', 'tri', 'sweep', 'elliott', 'dtop', 'mapb']; tab = order.includes(tab) ? tab : (store.get('shTab') || 'wedge'); store.set('shTab', tab);
   const D = SH_DOC[tab], li = a => a.map(x => `<li>${x}</li>`).join('');
   el.innerHTML = `<div class="sh-box"><div class="sh-head"><b>셋업 도구 사용법</b><button class="sh-x" title="닫기 (Esc)">✕</button></div>` +
     `<div class="sh-tabs">${order.map(k => `<button data-k="${k}" class="${k === tab ? 'on' : ''}">${SH_DOC[k].name.replace(/ \(.*/, '')}</button>`).join('')}</div>` +
@@ -2574,12 +2763,19 @@ const indOvs = () => EMBED ? [] : inds.filter(x => !x.hide && IND_DEFS[x.type].o
 const indLg = x => { const d = IND_DEFS[x.type], p = indParams(x); return d.lg ? d.lg(p) : d.params.map(([k]) => p[k]).join(' '); };
 const indFrac = () => Math.min(IND_MAXF, indPanes().length * IND_PANE);
 const indPx = H => Math.round((H == null ? ovH : H) * indFrac());
-const mBot = () => { const P = indFrac(); return P + MARGIN_BOT * (1 - P); };
+let VOL_F = (() => { try { const v = +JSON.parse(localStorage.getItem('possize_volFrac')); return v >= .05 && v <= .6 ? v : .16; } catch(e){ return .16; } })();   // 거래량 영역 높이(차트 높이 대비). 드래그로 조절
+const volOn = () => EMBED || inds.some(x => x.type === 'vol' && !x.hide);
+const mBot = () => { const P = indFrac(); return P + Math.max(MARGIN_BOT, volOn() ? VOL_F + .04 : 0) * (1 - P); };
 /* RSI 표·메모란이 차지하는 만큼 캔들 영역의 위(또는 아래) 여백을 늘려 캔들과 겹치지 않게 한다 */
+let RSIG = { t:0, top:0, h:0, cls:'' };
+function rsiGeo(){                         // 0.4초에 한 번만 실제 레이아웃 값을 읽음
+  const n = performance.now(); if (n - RSIG.t < 400) return RSIG;
+  const el = $('rsiTbl'); RSIG = { t:n, top: el ? el.offsetTop : 0, h: el ? el.offsetHeight : 0, cls: el ? el.className || '' : '' }; return RSIG;
+}
 function edgeMg(){
   let t = MARGIN_TOP, b = mBot(); const el = $('rsiTbl');
-  try { const c = rtCfg(); if (el && c.on && !EMBED && ovH > 150 && el.offsetHeight){
-    const top = el.offsetTop, h = el.offsetHeight;
+  try { const c = rtCfg(); if (el && c.on && !EMBED && ovH > 150 && rsiGeo().h){
+    const g = rsiGeo(), top = g.top, h = g.h;
     if (c.pos === 'tr' || c.pos === 'tl') t = Math.max(t, Math.min(.55, (top + h + 12) / ovH)); else b = Math.max(b, Math.min(.55, (ovH - top + 12) / ovH));
   } } catch(e){}
   return { top: t, bottom: b };
@@ -2587,7 +2783,7 @@ function edgeMg(){
 function indLayout(){                                   // 패널 자리만큼 캔들·거래량을 위로 올림
   if (!chart) return; const P = indFrac();
   { const em = edgeMg(); chart.priceScale('right').applyOptions({ scaleMargins:{ top:em.top, bottom:em.bottom } }); }
-  chart.priceScale('vol').applyOptions({ scaleMargins:{ top:1 - P - .16 * (1 - P), bottom:P } });
+  chart.priceScale('vol').applyOptions({ scaleMargins:{ top:1 - P - VOL_F * (1 - P), bottom:P } });
   if (volSeries) volSeries.applyOptions({ visible: EMBED || inds.some(x => x.type === 'vol' && !x.hide) });   // 거래량 막대는 '거래량' 지표를 켜 둔 동안만 표시
   indLegends(); overlay && overlay.update();
 }
@@ -2687,7 +2883,7 @@ let indPosKey = '';
 function indLegendPos(tops, H){
   const px = tops.length ? indPx(H) : 0, key = tops.map(t => Math.round(t)).join(',') + '|' + px; if (key === indPosKey) return; indPosKey = key;
   indPanes().forEach((x, i) => { const el = $('indlg_' + x.id); if (el && tops[i] != null) el.style.top = (Math.round(tops[i]) + 4) + 'px'; });
-  ['swbar', 'ewbar', 'btnRT', 'brand'].forEach(id => { const el = $(id); if (el) el.style.marginBottom = px ? px + 'px' : ''; });
+  ['swbar', 'ewbar', 'ptbar', 'btnRT', 'brand'].forEach(id => { const el = $(id); if (el) el.style.marginBottom = px ? px + 'px' : ''; });
 }
 /* ── 지표 창 ── */
 let indDlgTab = 'all';
@@ -3145,8 +3341,10 @@ function initChart(){
 function lockChart(on){ chart.applyOptions(on ? { handleScroll:false, handleScale:false } : { handleScroll:HANDLE_SCROLL, handleScale:HANDLE_SCALE }); }
 
 function bindMouse(el){
-  const relY = e => e.clientY - el.getBoundingClientRect().top;
-  const relX = e => e.clientX - el.getBoundingClientRect().left;
+  let rcT = 0, rcR = null;
+  const rc = () => { const n = performance.now(); if (!rcR || n - rcT > 250){ rcR = el.getBoundingClientRect(); rcT = n; } return rcR; };
+  const relY = e => e.clientY - rc().top;
+  const relX = e => e.clientX - rc().left;
 
   el.addEventListener('mousedown', e => {
     if (e.button !== 0) return;
@@ -3171,6 +3369,11 @@ function bindMouse(el){
         drag = { h, x0:x, y0:y, p0:priceAt(y), l0:chart.timeScale().coordinateToLogical(x),
                  snapPos:{ entry:S.entry, stop:S.stop, target:S.target, entryTime:S.entryTime },
                  snapPts: h.d ? h.d.pts.map(p => ({ ...p })) : null, alP: h.a ? h.a.p : null };
+        if (h.d && h.d.g){
+          const gm = grpOf(h.d);
+          if (h.kind === 'move') drag.snapGrp = gm.map(x => ({ d:x, pts:x.pts.map(q => ({ ...q })) }));
+          else if (h.kind === 'pt'){ const c = h.d.pts[h.j]; drag.links = []; gm.forEach(x => { if (x !== h.d) x.pts.forEach((q, j) => { if (q.t === c.t && q.p === c.p) drag.links.push({ d:x, j }); }); }); }   // 공유 꼭짓점은 같이 움직임
+        }
         lockChart(true);
         e.preventDefault(); e.stopPropagation();
         return;
@@ -3218,6 +3421,7 @@ function bindMouse(el){
     const x = relX(e), y = relY(e);
     if (x > paneW() || y > paneH() || !bars.length) return;
     e.preventDefault();
+    if (S.tool !== 'cursor' && pending.length){ setTool('cursor'); return; }       // 그리는 중 우클릭 = 종료
     const p = snapPrice(x, y); if (p == null) return;
     axOpen(p, x, y, false);
   });
@@ -3295,16 +3499,17 @@ function doDrag(x, y){
     const q = toXY(h.d.pts[0]); if (q.x == null) return;
     h.d.w = Math.max(40, x - q.x); h.d.h = h.d.w / (h.d.ar || 1);
   } else if (h.kind === 'pt'){
-    const sp = snapPrice(x, y); if (sp != null) h.d.pts[h.j] = { t: xToTime(x), p: sp };
+    const sp = snapPrice(x, y); if (sp != null){ const np = { t: xToTime(x), p: sp }; h.d.pts[h.j] = np; (drag.links || []).forEach(l => { l.d.pts[l.j] = { ...np }; }); }
     if (h.d.type === 'fibpos') fpSync(h.d);
   } else if (h.kind === 'move'){
-    h.d.pts = drag.snapPts.map(q => ({ t: h.d.type === 'hline' ? q.t : shiftT(q.t, dl), p: h.d.type === 'vline' ? q.p : roundTick(q.p + dp) }));
+    (drag.snapGrp || [{ d:h.d, pts:drag.snapPts }]).forEach(m => { m.d.pts = m.pts.map(q => ({ t: m.d.type === 'hline' ? q.t : shiftT(q.t, dl), p: m.d.type === 'vline' ? q.p : roundTick(q.p + dp) })); });
     if (h.d.type === 'fibpos') fpSync(h.d);
   }
   overlay.update();
 }
 
 function placePoint(x, y){
+  if (S.tool === 'patdraw'){ patdPlace(x); return; }
   const p = snapPrice(x, y); if (p == null) return;
   const pt = { t: xToTime(x), p };
   const tool = S.tool;
@@ -3316,7 +3521,8 @@ function placePoint(x, y){
     return;
   }
   if (tool === 'trend' && shiftDown && pending.length) pt.p = pending[pending.length - 1].p;
-  pending.push(pt);
+  if (isFP(tool) && FPE){ pending = [pt, FPE]; FPE = null; }       // 메뉴에서 진입점을 먼저 잡은 경우: 지금 클릭이 기준점
+  else pending.push(pt);
   if (isFP(tool) && pending.length >= 2){
     const old = fpCur(); if (old) drawings = drawings.filter(x => x !== old);     // 포지션은 하나 → 이전 피보 포지션 교체
     const d = { id: uid(), type:'fibpos', want: tool === 'fiblong' ? 'long' : 'short', ratio: fpDefRatio(), k: fpDefK(), pts: pending.slice(), color:'#2962ff' };
@@ -3325,14 +3531,19 @@ function placePoint(x, y){
     sel = d.id; refreshSel(); openPanel(true); overlay.update();
     return;
   }
+  if (tool === 'trend' && pending.length >= 2 && pending[0].t === pending[1].t && pending[0].p === pending[1].p){ pending.pop(); return; }   // 같은 점을 또 클릭 → 길이 0 선 방지
   if (pending.length >= NEED[tool]){
-    const d = { id: uid(), type: tool, pts: pending.slice(), color: ['hline','vline','trend','hray','prange','drange'].includes(tool) ? '#2962ff' : '#787b86' };
+    const isLn = LINE_TOOLS.includes(tool), dd = dDef();
+    const d = { id: uid(), type: tool, pts: pending.slice(), color: isLn ? dd.color : ['prange','drange'].includes(tool) ? '#2962ff' : '#787b86' };
+    if (isLn && dd.lw) d.lw = dd.lw;
+    if (tool === 'trend' && chainOn()) d.g = CHAIN_G = CHAIN_G || uid();       // 연속 그리기로 이어진 선 = 한 그룹
     if (tool === 'measure') d.ephemeral = true;
     if (isFib(tool)) d.fib = JSON.parse(JSON.stringify(fibTemplate(tool)));
     drawings.push(d);
-    pending = [];
-    setTool('cursor');
-    if (!d.ephemeral){ sel = d.id; saveDrawings(); }
+    const keep = isLn && chainOn();                      // 연속 그리기: 도구 유지, 추세선은 끝점이 다음 선의 시작점
+    pending = keep && tool === 'trend' ? [d.pts[1]] : [];
+    if (!keep) setTool('cursor');
+    if (!d.ephemeral){ sel = keep ? null : d.id; saveDrawings(); }
     refreshSel();
   }
   overlay.update();
@@ -3356,7 +3567,7 @@ function axMove(){
   if (p == null || !isFinite(p)){ axHide(); return; }
   axP = p;
   const top = Math.max(0, Math.min(paneH() - 24, axY - 12));
-  b.style.display = 'flex'; b.style.left = (paneW() - 25) + 'px'; b.style.top = top + 'px';
+  { const k = (paneW() - 25) + ':' + top; if (b._k !== k){ b._k = k; b.style.display = 'flex'; b.style.left = (paneW() - 25) + 'px'; b.style.top = top + 'px'; } else if (b.style.display !== 'flex') b.style.display = 'flex'; }
   b.classList.toggle('joined', !mouse);
   if (!mouse){                     // 차트 안에선 기본 십자선 라벨이 있으므로 가격축 위일 때만 라벨 표시
     lb.textContent = fP(p); lb.style.display = 'block'; lb.style.left = (paneW() + 1) + 'px'; lb.style.top = top + 'px';
@@ -3420,10 +3631,12 @@ function axOpen(p, ax, ay, fromBtn){
     (EMBED ? '' : `<div class="ax-sep"></div><div class="ax-i" data-a="order">${AX_IC.order}<span>${esc(nm)}에 ${px} 주문 추가…</span><span class="key">Shift + T</span></div>`) +
     (EMBED ? '' : `<div class="ax-sep"></div><div class="ax-i" data-a="watch">${AX_STAR}<span>${wlWhere(S.ticker).length ? `${esc(nm)} 관심종목 위치 변경·제거…` : `${esc(nm)} 을(를) 관심종목에 추가…`}</span></div>`) +
     `<div class="ax-sep"></div><div class="ax-i" data-a="hline">${ICON.hline}<span>${px}에 수평선 그리기</span><span class="key">Alt + H</span></div>` +
-    `<div class="ax-i" data-a="vline">${ICON.vline}<span>${axTm != null ? rangeDate(axTm) + '에 ' : ''}수직선 그리기</span><span class="key">Alt + V</span></div>`;
+    `<div class="ax-i" data-a="vline">${ICON.vline}<span>${axTm != null ? rangeDate(axTm) + '에 ' : ''}수직선 그리기</span><span class="key">Alt + V</span></div>` +
+    `<div class="ax-sep"></div><div class="ax-i" data-a="fiblong">${ICON.fiblong}<span>${px}를 진입점으로 피보 롱 포지션 계산기</span></div>` +
+    `<div class="ax-i" data-a="fibshort">${ICON.fibshort}<span>${px}를 진입점으로 피보 숏 포지션 계산기</span></div>`;
   m.querySelectorAll('.ax-i').forEach(it => it.onclick = () => {
     const a = it.dataset.a, price = axP, tm = axTm; axClose();
-    if (a === 'alert') alertAt(price); else if (a === 'watch') wlPick(S.ticker); else if (a === 'hline') hlineAt(price); else if (a === 'vline') vlineAt(tm); else orderAt(price);
+    if (a === 'alert') alertAt(price); else if (a === 'watch') wlPick(S.ticker); else if (a === 'hline') hlineAt(price); else if (a === 'vline') vlineAt(tm); else if (a === 'fiblong' || a === 'fibshort') fibPosAt(a, price, tm); else orderAt(price);
   });
   m.classList.add('open');
   const W = $('chartWrap').clientWidth, H = $('chartWrap').clientHeight, mw = m.offsetWidth, mh = m.offsetHeight;
@@ -3470,7 +3683,8 @@ function alertAt(p){
 function hlineAt(p){
   if (p == null) return;
   const lb = lastBar(), t = mouse ? xToTime(mouse.x) : (lb ? cTime(lb) : 0);
-  const d = { id: uid(), type:'hline', pts:[{ t, p: roundTick(p) }], color:'#2962ff' };
+  const d = { id: uid(), type:'hline', pts:[{ t, p: roundTick(p) }], color: dDef().color };
+  if (dDef().lw) d.lw = dDef().lw;
   drawings.push(d); saveDrawings();
   if (hideDraw){ hideDraw = false; refreshToolbar(); }
   setTool('cursor'); sel = d.id; refreshSel(); overlay.update();
@@ -3479,11 +3693,20 @@ function hlineAt(p){
 function vlineAt(t){
   if (t == null) return;
   const lb = lastBar();
-  const d = { id: uid(), type:'vline', pts:[{ t, p: S.last || (lb ? lb.c : 0) }], color:'#2962ff' };
+  const d = { id: uid(), type:'vline', pts:[{ t, p: S.last || (lb ? lb.c : 0) }], color: dDef().color };
+  if (dDef().lw) d.lw = dDef().lw;
   drawings.push(d); saveDrawings();
   if (hideDraw){ hideDraw = false; refreshToolbar(); }
   setTool('cursor'); sel = d.id; refreshSel(); overlay.update();
   toast(`${rangeDate(t)}에 수직선을 그렸습니다`);
+}
+function fibPosAt(tool, p, t){          // 메뉴에서 시작: 이 가격이 진입점 → 차트에서 기준점(손절 쪽)만 클릭하면 계산기가 열린다
+  if (p == null) return;
+  if (hideDraw){ hideDraw = false; refreshToolbar(); }
+  setTool(tool);
+  FPE = { t: t != null ? t : (lastBar() ? cTime(lastBar()) : 0), p: roundTick(p) };
+  overlay.update();
+  toast(`진입점 ${fP(p)} — 차트에서 기준점을 클릭하세요 (Esc 취소)`);
 }
 function orderAt(p){
   if (p == null || EMBED) return;
@@ -3562,6 +3785,7 @@ function refreshSel(){
     bar.style.display = 'flex'; overlay && overlay.update(); return;
   }
   const d = drawings.find(x => x.id === sel);
+  if (!d && LINE_TOOLS.includes(S.tool) && !sel){ toolOptsBar(bar); return; }
   if (!d){ bar.style.display = 'none'; overlay && overlay.update(); return; }
   if (d.type === 'fibpos'){
     const lg = fpDir(d) === 'long';
@@ -3641,8 +3865,11 @@ function refreshSel(){
     $('selDel').onclick = deleteSelected;
     bar.style.display = 'flex'; overlay.update(); return;
   }
-  bar.innerHTML = `<span class="sname">${TYPE_NAME[d.type] || ''}</span>` +
+  const isLn = LINE_TOOLS.includes(d.type), GM = grpOf(d), isG = GM.length > 1;
+  bar.innerHTML = `<span class="sname">${TYPE_NAME[d.type] || ''}${isG ? ` 그룹 (${GM.length}개)` : ''}</span>` +
     PALETTE.map(c => `<button class="sw ${d.color === c ? 'cur' : ''}" data-c="${c}" style="background:${c}"></button>`).join('') +
+    (isLn ? lwSelect('sbLw', d.lw || lwBase(d.type)) : '') +
+    (isG ? `<button class="sbtn" id="sbUngrp" title="그룹을 풀어 각각 독립된 선으로 만듭니다">그룹 해제</button>` : '') +
     (d.type === 'hline' ? `<button class="tb" id="selBell" title="이 수평선에 알람 걸기">${ICON.bell}</button>` : '') +
     `<button class="tb" id="selDel" title="삭제 (Delete)">${ICON.trash}</button>`;
   if (d.type === 'hline') $('selBell').onclick = () => {
@@ -3650,16 +3877,59 @@ function refreshSel(){
     drawings = drawings.filter(x => x.id !== d.id); saveDrawings();
     sel = 'al:' + a.id; refreshSel();
   };
-  bar.querySelectorAll('.sw').forEach(b => b.onclick = () => { d.color = b.dataset.c; saveDrawings(); refreshSel(); });
+  bar.querySelectorAll('.sw').forEach(b => b.onclick = () => { GM.forEach(x => { x.color = b.dataset.c; }); if (isLn) dDefSet({ color: d.color }); saveDrawings(); refreshSel(); });
+  if (isLn) $('sbLw').onchange = e => { GM.forEach(x => { x.lw = +e.target.value; }); dDefSet({ lw: +e.target.value }); saveDrawings(); refreshSel(); };
+  if (isG) $('sbUngrp').onclick = () => { GM.forEach(x => { delete x.g; }); saveDrawings(); refreshSel(); toast('그룹을 해제했습니다'); };
   $('selDel').onclick = deleteSelected;
   bar.style.display = 'flex';
   overlay.update();
+}
+/* 선택/도구 옵션 막대: 빈 곳(이름 글자·여백)을 잡고 끌어서 원하는 위치로 이동 — 위치 기억, 더블클릭으로 초기화 */
+function selbarPlace(){
+  const bar = $('selbar'), pr = bar.offsetParent || bar.parentElement, o = store.get('selbarPos');
+  if (!o || !pr){ bar.classList.remove('moved'); return; }
+  const mx = Math.max(0, pr.clientWidth - 60), my = Math.max(0, pr.clientHeight - 40);
+  bar.style.setProperty('--sbx', Math.max(0, Math.min(mx, o.x)) + 'px'); bar.style.setProperty('--sby', Math.max(0, Math.min(my, o.y)) + 'px');
+  bar.classList.add('moved');
+}
+function selbarDragInit(){
+  const bar = $('selbar'); let st = null;
+  bar.title = '끌어서 이동 · 더블클릭: 위치 초기화';
+  bar.addEventListener('pointerdown', e => {
+    if (e.button !== 0 || e.target.closest('button,select,input')) return;
+    const r = bar.getBoundingClientRect(), pr = (bar.offsetParent || bar.parentElement).getBoundingClientRect();
+    st = { dx: e.clientX - r.left, dy: e.clientY - r.top, px: pr.left, py: pr.top, pw: pr.width, ph: pr.height, w: r.width };
+    bar.setPointerCapture(e.pointerId); e.preventDefault(); e.stopPropagation();
+  });
+  bar.addEventListener('pointermove', e => {
+    if (!st) return;
+    const x = Math.max(0, Math.min(st.pw - st.w, e.clientX - st.dx - st.px)), y = Math.max(0, Math.min(st.ph - 36, e.clientY - st.dy - st.py));
+    store.set('selbarPos', { x, y }); selbarPlace();
+  });
+  const end = () => { st = null; };
+  bar.addEventListener('pointerup', end); bar.addEventListener('pointercancel', end);
+  bar.addEventListener('dblclick', e => { if (e.target.closest('button,select,input')) return; store.set('selbarPos', null); selbarPlace(); });
+  bar.addEventListener('mousedown', e => e.stopPropagation());
+  window.addEventListener('resize', selbarPlace); selbarPlace();
+}
+const lwSelect = (id, cur) => `<select id="${id}" title="선 굵기">${LW_OPTS.map(v => `<option value="${v}" ${v === cur ? 'selected' : ''}>굵기 ${v}px</option>`).join('')}</select>`;
+/* 선 그리기 도구를 고른 동안(선택된 그림이 없을 때) 위쪽에 뜨는 옵션 막대: 색·굵기·연속 그리기 */
+function toolOptsBar(bar){
+  const dd = dDef(), t = S.tool, cur = dd.lw || lwBase(t);
+  bar.innerHTML = `<span class="sname">${TYPE_NAME[t]} 그리기</span>` +
+    PALETTE.map(c => `<button class="sw ${dd.color === c ? 'cur' : ''}" data-c="${c}" style="background:${c}"></button>`).join('') +
+    lwSelect('sbLw', cur) +
+    `<button class="sbtn ${chainOn() ? 'on' : ''}" id="sbChain" title="${t === 'trend' ? '켜면 선을 그린 뒤 끝점에서 다음 선이 이어집니다 (Esc·우클릭으로 종료)' : '켜면 한 번 그린 뒤에도 도구가 유지됩니다 (Esc로 종료)'}">⛓ 연속 그리기</button>`;
+  bar.querySelectorAll('.sw').forEach(b => b.onclick = () => { dDefSet({ color: b.dataset.c }); refreshSel(); overlay.update(); });
+  $('sbLw').onchange = e => { dDefSet({ lw: +e.target.value }); overlay.update(); };
+  $('sbChain').onclick = () => { store.set('drawChain', !chainOn()); if (!chainOn()) pending = []; refreshSel(); overlay.update(); };
+  bar.style.display = 'flex'; overlay && overlay.update();
 }
 function deleteSelected(){
   if (!sel) return;
   if (sel === 'pos'){ reset(); openPanel(false); toast('포지션을 삭제했습니다'); }
   else if (sel.startsWith('al:')){ alerts = alerts.filter(a => 'al:' + a.id !== sel); saveAlerts(); }
-  else { const fp = sel === S.fpId; drawings = drawings.filter(d => d.id !== sel); saveDrawings(); if (fp){ reset(); } }
+  else { const fp = sel === S.fpId; const s0 = drawings.find(d => d.id === sel), gid = s0 && s0.g; drawings = drawings.filter(d => d.id !== sel && !(gid && d.g === gid)); saveDrawings(); if (fp){ reset(); } }
   sel = null; refreshSel();
 }
 
@@ -3671,7 +3941,7 @@ function buildToolbar(){
     groupCur[gi] = groupCur[gi] || g[0];
     const wrap = document.createElement('div'); wrap.className = 'tbg'; wrap.dataset.g = gi;
     const main = document.createElement('button'); main.className = 'tb'; main.dataset.g = gi;
-    main.onclick = () => { if (groupCur[gi] === 'sweep') return toggleSweep(); if (groupCur[gi] === 'elliott') return toggleElliott(); setTool(S.tool === groupCur[gi] && groupCur[gi] !== 'cursor' ? 'cursor' : groupCur[gi]); };
+    main.onclick = () => { if (groupCur[gi] === 'sweep') return toggleSweep(); if (groupCur[gi] === 'elliott') return toggleElliott(); if (groupCur[gi] === 'dtop') return patToggle('dt'); if (groupCur[gi] === 'mapb') return patToggle('ma'); setTool(S.tool === groupCur[gi] && groupCur[gi] !== 'cursor' ? 'cursor' : groupCur[gi]); };
     wrap.appendChild(main);
     if (g.length > 1){
       const ar = document.createElement('button'); ar.className = 'tb-arrow'; ar.innerHTML = ICON.arrow;
@@ -3682,7 +3952,7 @@ function buildToolbar(){
           `<div class="fly-item" data-t="${t}" title="${TOOLDEF[t].tip}">${ICON[t]}<span>${TOOLDEF[t].name || TOOLDEF[t].tip}</span><span class="key">${TOOLDEF[t].key}</span></div>`).join('') +
         (meta.foot ? `<div class="fly-sep"></div><div class="fly-h" style="font-size:11px;padding-bottom:6px">${meta.foot}</div>` : '');
       ar.onclick = e => { e.stopPropagation(); const open = !fly.classList.contains('open'); closeFlyouts(); if (open){ const r = wrap.getBoundingClientRect(); fly.style.left = (r.right + 6) + 'px'; fly.style.top = Math.max(4, Math.min(r.top - 4, window.innerHeight - fly.offsetHeight - 8 - (fly.offsetHeight ? 0 : 200))) + 'px'; } fly.classList.toggle('open', open); if (open){ const fh = fly.offsetHeight, r = wrap.getBoundingClientRect(); fly.style.top = Math.max(4, Math.min(r.top - 4, window.innerHeight - fh - 8)) + 'px'; } hideTip(); };
-      fly.querySelectorAll('.fly-item').forEach(it => it.onclick = e => { e.stopPropagation(); groupCur[gi] = it.dataset.t; closeFlyouts(); if (it.dataset.t === 'sweep'){ toggleSweep(); return; } if (it.dataset.t === 'elliott'){ toggleElliott(); return; } setTool(it.dataset.t); });
+      fly.querySelectorAll('.fly-item').forEach(it => it.onclick = e => { e.stopPropagation(); groupCur[gi] = it.dataset.t; closeFlyouts(); if (it.dataset.t === 'sweep'){ toggleSweep(); return; } if (it.dataset.t === 'elliott'){ toggleElliott(); return; } if (it.dataset.t === 'dtop'){ patToggle('dt'); return; } if (it.dataset.t === 'mapb'){ patToggle('ma'); return; } setTool(it.dataset.t); });
       wrap.appendChild(ar); wrap.appendChild(fly);
     }
     tb.appendChild(wrap);
@@ -3708,10 +3978,10 @@ function buildToolbar(){
   };
   $('tbCalc').onclick = () => openPanel(!panelOpen);
 
-  tb.addEventListener('click', e => { if (e.target.closest('.fly-help')){ closeFlyouts(); openSetupHelp(groupCur[Object.keys(groupCur).find(k => Array.isArray(TB_GROUPS[k]) && TB_GROUPS[k].includes('wedge'))]); } });
+  tb.addEventListener('click', e => { if (e.target.closest('.fly-help2')){ closeFlyouts(); openSetupHelp('dtop'); return; } if (e.target.closest('.fly-help')){ closeFlyouts(); openSetupHelp(groupCur[Object.keys(groupCur).find(k => Array.isArray(TB_GROUPS[k]) && TB_GROUPS[k].includes('wedge'))]); } });
   tb.addEventListener('mousedown', e => e.stopPropagation());
   tb.addEventListener('scroll', closeFlyouts); window.addEventListener('resize', closeFlyouts);   // 플라이아웃 클릭이 문서 mousedown에 닫히지 않게
-  $('selbar').addEventListener('mousedown', e => e.stopPropagation()); $('swbar').addEventListener('mousedown', e => e.stopPropagation()); $('ewbar').addEventListener('mousedown', e => e.stopPropagation());
+  $('selbar').addEventListener('mousedown', e => e.stopPropagation()); $('swbar').addEventListener('mousedown', e => e.stopPropagation()); $('ptbar').addEventListener('mousedown', e => e.stopPropagation()); $('ewbar').addEventListener('mousedown', e => e.stopPropagation());
   // 툴팁
   tb.addEventListener('mouseover', e => {
     const b = e.target.closest('.tb'); if (!b || !tb.contains(b)) return;
@@ -3727,9 +3997,9 @@ function refreshToolbar(){
   document.querySelectorAll('.toolbar .tb[data-g]').forEach(b => {
     const t = groupCur[b.dataset.g];
     b.innerHTML = ICON[t];
-    b.classList.toggle('active', t === 'sweep' ? SW.on : t === 'elliott' ? EW.on : S.tool === t);
+    b.classList.toggle('active', t === 'sweep' ? SW.on : t === 'elliott' ? EW.on : t === 'dtop' || t === 'mapb' ? !!(patCfg().on || maCfg().on) : S.tool === t);
     const fly = b.parentElement.querySelector('.flyout');
-    if (fly) fly.querySelectorAll('.fly-item').forEach(it => { it.classList.toggle('cur', it.dataset.t === t); if (it.dataset.t === 'sweep') it.classList.toggle('on', SW.on); if (it.dataset.t === 'elliott') it.classList.toggle('on', EW.on); });
+    if (fly) fly.querySelectorAll('.fly-item').forEach(it => { it.classList.toggle('cur', it.dataset.t === t); if (it.dataset.t === 'sweep') it.classList.toggle('on', SW.on); if (it.dataset.t === 'elliott') it.classList.toggle('on', EW.on); if (it.dataset.t === 'dtop') it.classList.toggle('on', !!patCfg().on); if (it.dataset.t === 'mapb') it.classList.toggle('on', !!maCfg().on); });
   });
   $('tbMagnet').classList.toggle('active', magnet);
   $('tbHide').innerHTML = hideDraw ? ICON.eyeOff : ICON.eye;
@@ -3745,12 +4015,14 @@ function hideTip(){ $('tip').style.display = 'none'; }
 function closeFlyouts(){ document.querySelectorAll('.flyout.open').forEach(f => f.classList.remove('open')); }
 
 function setTool(t){
-  S.tool = t; pending = [];
+  S.tool = t; pending = []; FPE = null; CHAIN_G = null;
   if (t !== 'cursor' && sel){ sel = null; refreshSel(); }   // 그리기 도구를 고르면 선택 해제 (미니 막대가 클릭을 가리지 않게)
   TB_GROUPS.forEach((g, gi) => { if (Array.isArray(g) && g.includes(t)) groupCur[gi] = t; });
   if (t === 'long' || t === 'short' || isFP(t)) openPanel(true);
+  if (t !== 'patdraw' && typeof PATD !== 'undefined' && !PATD.res && PATD.pts.length){ PATD.pts = []; }
   $('chart').dataset.cur = t === 'cursor' ? '' : 'cross';
-  refreshToolbar(); overlay && overlay.update();
+  if (typeof patdUI === 'function') patdUI();
+  refreshToolbar(); refreshSel(); overlay && overlay.update();
 }
 
 let panelView = null;
@@ -3767,6 +4039,812 @@ function showPanel(v){
   if (panelView === 'order') ordOpen();
   if (panelView === 'check') ckOpen();
   refreshToolbar();
+}
+
+/* ── 종목 시황: D:\\MarketDesk\\watchlist_brief.html 을 읽어 현재 종목 줄만 표시 ── */
+const BRF = { G:null, meta:'', ts:0, err:'' };
+const BR_ALIAS = { SKHY:'000660', SKHYNIX:'000660', HYNIX:'000660', GC:'XAU', XAUT:'XAU', PAXG:'XAU', GOLD:'XAU', WTI:'CL', USOIL:'CL', USO:'CL', CRUDE:'CL', QQQM:'QQQ', NDX:'QQQ', SPX:'SPY' };
+function brKeys(tk){
+  const p = parseKey(tk); let b = String(p.base || p.sym || tk).toUpperCase();
+  b = b.replace(/^.*:/, '').replace(/\.P$/, '').replace(/[-_]?(USDT|USDC|USD|PERP|SWAP)$/, '').replace(/\.(KS|KQ)$/, '').replace(/=F$/, '');
+  return [b, BR_ALIAS[b]].filter(Boolean);
+}
+async function brLoad(force){
+  if (!force && BRF.G && Date.now() - BRF.ts < 20000) return true;
+  try {
+    const r = await fetch('watchlist_brief.html?_=' + Date.now(), { cache:'no-store' });
+    if (!r.ok) throw new Error(r.status === 404 ? '시황 파일(watchlist_brief.html)이 MarketDesk 폴더에 없습니다' : 'HTTP ' + r.status);
+    const t = await r.text(), m = t.match(/const\s+G\s*=\s*(\[[\s\S]*?\n\s*\]);/);
+    if (!m) throw new Error('시황 파일에서 종목 데이터(G)를 찾지 못했습니다');
+    BRF.G = Function('"use strict";return ' + m[1])();
+    const e = t.match(/<div class="eyebrow">([\s\S]*?)<\/div>/); BRF.meta = e ? e[1].replace(/<[^>]+>/g, '').trim() : '';
+    BRF.ts = Date.now(); BRF.err = ''; return true;
+  } catch(e){ BRF.err = String(e.message || e); return false; }
+}
+function brFind(tk){
+  if (!BRF.G) return null; const keys = brKeys(tk);
+  for (const g of BRF.G) for (const r of g.rows){ const a = String(r.s || '').toUpperCase(), b = String(r.s2 || '').toUpperCase(); if (keys.includes(a) || (b && keys.includes(b))) return { g, r }; }
+  return null;
+}
+
+/* ── 나스닥 15분봉 최근 5개 → 제목줄 고정 인디케이터 (음봉 3개 이상=숏 유리 · 양봉 3개 이상=롱 유리) ── */
+const NDX_SRC = [['US100-USDT-SWAP', 'OKX US100'], ['QQQ-USDT-SWAP', 'OKX QQQ']];
+const NDI = { el:null, ts:0, busy:false, data:null };
+function ndiMount(){
+  if (NDI.el && document.body.contains(NDI.el)) return true;
+  const w = document.querySelector('#mdtb .mdwin'); if (!w) return false;
+  let el = document.getElementById('ndxInd'); if (!el){ el = document.createElement('div'); el.id = 'ndxInd'; w.parentNode.insertBefore(el, w); el.onclick = () => { const d = NDI.data, sym = NDX_SRC[d && d.used != null ? d.used : ndiIdx()][0]; const tk = sym.replace(/-USDT-SWAP$/, ''); if (tk !== S.ticker) switchTicker(tk); };      // 클릭 → 해당 종목 차트로 이동
+    el.oncontextmenu = e => { e.preventDefault(); const i = (ndiIdx() + 1) % NDX_SRC.length; store.set('ndxSrc', NDX_SRC[i][0]); NDI.ts = 0; NDI.data = null; ndiPaint(); ndiLoad(); }; }      // 우클릭 → US100 ↔ QQQ 전환
+  NDI.el = el; return true;
+}
+function ndiIdx(){ const k = store.get('ndxSrc'); const i = NDX_SRC.findIndex(x => x[0] === k); return i < 0 ? 0 : i; }
+function ndiCalc(d){
+  const b = d.bars, up = b.filter(x => x.c > x.o).length, dn = b.filter(x => x.c < x.o).length;
+  const s15 = dn >= 3 ? 'short' : up >= 3 ? 'long' : 'neutral';
+  /* 12시간봉(UTC 기준 진행 중인 봉)의 현재 상태: 시가 대비 현재가 */
+  const dy = d.day, dDir = dy ? (dy.c > dy.o ? 'up' : dy.c < dy.o ? 'dn' : 'flat') : null, dPct = dy ? (dy.c / dy.o - 1) * 100 : null;
+  /* 조합: 15분봉 방향과 12시간봉 방향이 같으면 '유리'(강), 서로 반대면 '약함'(단기 역행), 15분봉이 중립이면 중립 */
+  const agree = (s15 === 'short' && dDir === 'dn') || (s15 === 'long' && dDir === 'up'), conflict = (s15 === 'short' && dDir === 'up') || (s15 === 'long' && dDir === 'dn');
+  const side = s15 === 'short' ? '숏' : s15 === 'long' ? '롱' : '';
+  const txt = s15 === 'neutral' ? '중립' : agree ? side + ' 유리' : conflict ? side + ' 약함' : side + ' 유리';
+  const cnt = s15 === 'short' ? `음봉 ${dn}/${b.length}` : s15 === 'long' ? `양봉 ${up}/${b.length}` : `양 ${up} · 음 ${dn}`;
+  const note = s15 === 'neutral' ? '' : agree ? ' · 12시간봉 일치' : conflict ? ' · 12시간봉 역행' : (dy ? '' : ' · 12시간봉 없음');
+  const age = Date.now() - b[b.length - 1].t, stale = age > 40 * 60e3;
+  return { b, up, dn, s15, dy, dDir, dPct, agree, conflict, side, txt, cnt, note, stale };
+}
+function ndiPaint(){
+  if (!ndiMount()) return; const el = NDI.el, d = NDI.data, [sym, nm] = NDX_SRC[d && d.used != null ? d.used : ndiIdx()];
+  if (!d){ el.className = 'neutral'; el.innerHTML = `<span class="ni-l">${esc(nm)} 15m</span><span class="ni-t">불러오는 중…</span>`; el.title = '클릭: 차트 보기 · 우클릭: US100/QQQ 전환'; return; }
+  if (d.err){ el.className = 'neutral stale'; el.innerHTML = `<span class="ni-l">${esc(nm)} 15m</span><span class="ni-t">조회 실패</span><span class="ni-n">${esc(String(d.err).slice(0, 46))}</span>`; el.title = d.err + '\\n10초 후 자동 재시도 · 클릭: 차트 보기 · 우클릭: 종목 전환'; return; }
+  const { b, up, dn, s15, dy, dDir, dPct, agree, conflict, txt, cnt, note, stale } = ndiCalc(d);
+  el.className = s15 + (conflict ? ' weak' : '') + (stale ? ' stale' : '');
+  const dTxt = dy ? `<span class="ni-d ${dDir}">12시간봉 ${dDir === 'up' ? '양봉' : dDir === 'dn' ? '음봉' : '보합'} ${dPct >= 0 ? '+' : '−'}${Math.abs(dPct).toFixed(2)}%</span>` : `<span class="ni-d flat">12시간봉 —</span>`;
+  el.innerHTML = `<span class="ni-l">${esc(nm)}</span><span class="ni-b">${b.map(x => `<i class="${x.c > x.o ? 'u' : x.c < x.o ? 'd' : 'f'}"></i>`).join('')}</span>${dTxt}<span class="ni-t">${txt}</span><span class="ni-n">${cnt}${note}${stale ? ' · 휴장/지연' : ''}</span>`;
+  el.title = `${sym} — 15분봉 최근 ${b.length}개(진행 중인 봉 포함) + 12시간봉(UTC 기준 진행 중) 조합\n` + b.map(x => new Date(x.t).toLocaleTimeString('ko-KR', { hour:'2-digit', minute:'2-digit', hour12:false }) + '  ' + (x.c > x.o ? '양봉' : x.c < x.o ? '음봉' : '보합') + '  ' + x.o.toFixed(2) + ' → ' + x.c.toFixed(2)).join('\n')
+    + (dy ? `\n12시간봉  시가 ${dy.o.toFixed(2)} → 현재 ${dy.c.toFixed(2)} (${dPct >= 0 ? '+' : '−'}${Math.abs(dPct).toFixed(2)}%)` : '\n12시간봉 조회 실패')
+    + '\n규칙: 15분봉 음봉3+ & 12시간봉 음봉 = 숏 유리 · 양봉3+ & 12시간봉 양봉 = 롱 유리 · 서로 반대면 "약함"(단기 역행)\n클릭: 종목 변경 (US100 ↔ QQQ)';
+}
+async function ndiLoad(){
+  if (NDI.busy) return; NDI.busy = true;
+  const first = ndiIdx(), errs = [];
+  let got = null;
+  for (let k = 0; k < NDX_SRC.length && !got; k++){
+    const i = (first + k) % NDX_SRC.length, sym = NDX_SRC[i][0];
+    try {
+      const [j, jd] = await Promise.all([
+        getJ(`${API}/api/v5/market/candles?instId=${sym}&bar=15m&limit=8`),
+        getJ(`${API}/api/v5/market/candles?instId=${sym}&bar=12Hutc&limit=2`).catch(() => null)
+      ]);
+      if (j.code && j.code !== '0') throw new Error(j.msg || ('code ' + j.code));
+      const bs = (j.data || []).map(rawBar).reverse();
+      const day = jd && jd.code === '0' && jd.data && jd.data.length ? rawBar(jd.data[0]) : null;   // 가장 최근(진행 중) 12시간봉
+      if (bs.length) got = { bars:bs.slice(-5), used:i, day };
+      else errs.push(NDX_SRC[i][1] + ': 데이터 없음');
+    } catch(e){ errs.push(NDX_SRC[i][1] + ': ' + String(e.message || e)); }
+  }
+  NDI.data = got || { err: errs.join(' / ') };
+  NDI.busy = false; NDI.ts = got ? Date.now() : Date.now() - 10000; ndiPaint();
+}
+document.addEventListener('click', e => {
+  if (!(e.target.closest && e.target.closest('#btnScan'))) return;
+  const a = window.pywebview && window.pywebview.api;
+  if (a && a.open_scanner){ try { a.open_scanner(); return; } catch(err){} }
+  window.open('MarketDesk_Scanner.html', 'mdScanner', 'width=1400,height=900');   // 앱 창이 아니면 새 브라우저 창
+});
+document.addEventListener('click', e => {
+  if (!(e.target.closest && e.target.closest('#btnJournal'))) return;
+  const a = window.pywebview && window.pywebview.api;
+  if (a && a.open_journal){ try { a.open_journal(); return; } catch(err){} }
+  window.open('MarketDesk_Journal.html', 'mdJournal', 'width=1300,height=900');
+});
+document.addEventListener('click', e => {
+  if (!(e.target.closest && e.target.closest('#btnEvents'))) return;
+  const a = window.pywebview && window.pywebview.api;
+  if (a && a.open_events){ try { a.open_events(); return; } catch(err){} }
+  window.open('MarketDesk_Events.html', 'mdEvents', 'width=1200,height=900');
+});
+function patOpenWin(){
+  const a = window.pywebview && window.pywebview.api;
+  if (a && a.open_pattern){ try { a.open_pattern(); return; } catch(err){} }
+  window.open('MarketDesk_Pattern.html', 'mdPattern', 'width=1300,height=900');
+}
+document.addEventListener('click', e => {
+  if (e.target.closest && e.target.closest('#btnPatDraw')){ patDrawStart(); return; }
+  if (e.target.closest && e.target.closest('#btnSimilar')){
+    const a = window.pywebview && window.pywebview.api;
+    if (a && a.open_similar){ try { a.open_similar(); return; } catch(err){} }
+    window.open('MarketDesk_Similar.html', 'mdSimilar', 'width=1250,height=900'); return;
+  }
+});
+/* 스캐너 창에서 종목을 누르면 이 차트 창이 해당 종목 15분봉으로 이동 (로컬 서버 경유) */
+(function gfxInit(){
+  const sel = document.getElementById('gfxSel'); if (!sel) return;
+  sel.value = localStorage.getItem('possize_gfx') || 'auto';
+  sel.onchange = () => { try { localStorage.setItem('possize_gfx', sel.value); } catch(e){} location.reload(); };
+})();
+function gotoInit(){
+  if (EMBED || !YF_OK) return;
+  setInterval(async () => {
+    if (document.hidden && !(window.pywebview)) return;
+    try {
+      const j = await getJ('/api/goto/poll');
+      if (!j || !j.focus) return;
+      const a = window.pywebview && window.pywebview.api; if (a && a.focus_main) a.focus_main(); else window.focus();
+      if (j.t){
+        let tk = String(j.t).replace(/^(okx|binance|bitget|coinbase):/i, (m0, e) => e.toLowerCase() === 'okx' ? '' : e.toUpperCase() + ':');
+        if (!tk.includes(':')) tk = tk.toUpperCase();
+        if (j.bar && BARS.includes(j.bar) && j.bar !== S.bar) await setBar(j.bar);
+        if (tk !== S.ticker) await switchTicker(tk);
+      }
+      if (j.ts && /^\d+$/.test(j.ts)) await gotoTime(+j.ts);
+      if (j.cmd === 'patdraw') await patDrawStart();
+    } catch(e){}
+  }, 1000);
+}
+/* 유사 구간 창 등에서 특정 시각으로 이동: 필요한 만큼 과거 봉을 더 불러온 뒤 그 시점을 가운데 보이게 하고 세로선 표시 */
+let GOTO_MK = null;
+async function gotoTime(ms){
+  if (!bars.length) return;
+  for (let i = 0; i < 60 && hasMore && bars[0].t > ms - 150 * BAR_MS[S.bar]; i++){
+    if (loadingOlder){ await sleep(200); continue; }
+    const n = bars.length; await loadOlder(); if (bars.length === n) break;
+  }
+  const l = timeToLogical(Math.floor(ms / 1000) + KST); if (l == null) return;
+  setManual(null); GOTO_MK = { t:ms, exp:Date.now() + 10 * 60e3 };
+  chart.timeScale().setVisibleLogicalRange({ from:l - 60, to:l + 90 });
+}
+function drawGotoMk(ctx, H){
+  if (!GOTO_MK || Date.now() > GOTO_MK.exp){ GOTO_MK = null; return; }
+  const x = timeToX(Math.floor(GOTO_MK.t / 1000) + KST); if (x == null) return;
+  ctx.save(); ctx.strokeStyle = 'rgba(255,193,7,.85)'; ctx.setLineDash([5, 4]); ctx.lineWidth = 1.4; ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke(); ctx.setLineDash([]);
+  ctx.fillStyle = '#ffc107'; ctx.font = '700 12px "Malgun Gothic",sans-serif'; ctx.textAlign = 'left'; ctx.fillText('◀ 선택한 시점', x + 6, 18); ctx.restore();
+}
+function ndiInit(){ setInterval(() => { if (!ndiMount()) return; if (!NDI.data) ndiPaint(); if (Date.now() - NDI.ts > 20000 && !document.hidden) ndiLoad(); }, 2000); }
+
+/* ── 스캐너 판정: MarketDesk_Scanner.html 의 계산·판정 코드를 읽어와(파싱) 현재 종목에 그대로 적용 → RSI 표 아래 표시 ── */
+const SCN = { core:null, err:'', loading:false, map:new Map(), busy:false, tk:null };
+async function scnCore(){
+  if (SCN.core) return SCN.core; if (SCN.loading) return null; SCN.loading = true;
+  try {
+    const r = await fetch('MarketDesk_Scanner.html?_=' + Date.now()); if (!r.ok) throw new Error('스캐너 파일 없음 (HTTP ' + r.status + ')');
+    const h = await r.text(), a = h.indexOf('const TFS='), a2 = h.indexOf('const TOP_N'), b = h.indexOf('const sma='), b2 = h.indexOf('/* ── 표시');
+    if (a < 0 || a2 < a || b < 0 || b2 < b) throw new Error('스캐너 형식을 읽지 못했습니다');
+    const mk = new Function('"use strict";' + h.slice(a, a2) + h.slice(b, b2) + ';return { analyze, TFS };');
+    SCN.core = mk(); SCN.err = '';
+  } catch(e){ SCN.err = String(e.message || e); }
+  SCN.loading = false; return SCN.core;
+}
+async function scnFetch(inst, bar){
+  for (let i = 0; i < 3; i++){
+    try {
+      const j = await getJ(`${API}/api/v5/market/candles?instId=${inst}&bar=${bar}&limit=300`);
+      if (j.code === '0') return (j.data || []).map(c => ({ t:+c[0], o:+c[1], h:+c[2], l:+c[3], c:+c[4] })).reverse();
+      if (j.code !== '50011') return null;
+    } catch(e){}
+    await new Promise(r => setTimeout(r, 600 * (i + 1)));
+  }
+  return null;
+}
+const SCN_TFN = { D:'일봉', '12H':'12시간', '4H':'4시간', '1H':'1시간' };
+const scnPx = p => p == null ? '—' : p >= 1000 ? p.toLocaleString('en-US', { maximumFractionDigits:1 }) : p >= 100 ? p.toFixed(2) : p >= 10 ? p.toFixed(3) : p >= 1 ? p.toFixed(3) : p.toFixed(4);
+function scnPaint(){
+  const el = $('rtScan'); if (!el || EMBED) return;
+  const tk = S.ticker, pk = parseKey(tk), ent = SCN.map.get(tk);
+  if (pk.ex !== 'okx' || !ent || !ent.r || !ent.r.ok){
+    el.classList.remove('on'); el.className = el.className.replace(/\b(short|long|rebound|pullback|watch|none)\b/g, '').trim();
+    if (pk.ex === 'okx' && SCN.err && ent && ent.err){ el.className = 'rt-scan on'; el.innerHTML = `<div class="m">스캐너 판정을 불러오지 못했습니다 · ${esc(SCN.err)}</div>`; }
+    return;
+  }
+  const r = ent.r, lvl = r.key ? `${r.side === 'below' ? '저항' : '지지'} <b>${scnPx(r.key.m)}</b>` : '';
+  const hot = r.hot.slice(0, 2).map(c => `${SCN_TFN[c.tf]} MA${c.L} <b>${c.d >= 0 ? '+' : '−'}${Math.abs(c.d).toFixed(2)}%</b> ${c.st === 'touch' ? '터치' : '근접'}`).join(' · ');
+  const fl = r.flags.map(x => `<span class="${x[1] ? 'bad' : ''}">${esc(x[0])}</span>`).join(' · ');
+  el.className = 'rt-scan on ' + r.type;
+  el.title = '스캐너 판정 (일·12H·4H·1H 이평 20/60/100/200 기준) — 클릭하면 스캐너 창이 열립니다';
+  el.innerHTML = `<div class="v">🔎 ${esc(r.label)}</div><div class="m">${[lvl, hot].filter(Boolean).join(' · ')}${(lvl || hot) && fl ? '<br>' : ''}${fl}</div>`;
+}
+async function scnUpdate(force){
+  if (EMBED || SCN.busy) return; const tk = S.ticker, pk = parseKey(tk); if (pk.ex !== 'okx'){ scnPaint(); return; }
+  const ent = SCN.map.get(tk); if (!force && ent && Date.now() - ent.ts < 180000){ scnPaint(); return; }
+  SCN.busy = true;
+  try {
+    const core = await scnCore(); if (!core){ SCN.map.set(tk, { ts:Date.now() - 150000, err:1 }); return; }
+    const inst = pk.sym || (pk.base + '-USDT-SWAP'), raw = {};
+    await Promise.all(core.TFS.map(async tf => { raw[tf.k] = await scnFetch(inst, tf.bar); }));
+    SCN.map.set(tk, { ts:Date.now(), r:core.analyze(pk.base || tk, raw) });
+  } catch(e){ SCN.err = String(e.message || e); SCN.map.set(tk, { ts:Date.now() - 150000, err:1 }); }
+  finally { SCN.busy = false; if (S.ticker === tk) scnPaint(); }
+}
+/* ── 쌍봉 숏 패턴 감시 (엔진: md_pattern.js · 설정/검증: MarketDesk_Pattern.html) ──
+   · 왓치리스트(OKX) 종목을 15분봉 마감 직후마다 스캔 → 신호가 나오면 알림 카드·소리
+   · 현재 차트(15분봉)에는 감지된 과거 신호도 표시 (설정에서 끌 수 있음) */
+const PAT = { bar:null, cfg:null, cfgTs:0, mcfg:null, mcfgTs:0, mk:null, mmk:null, busy:false, done:0, tries:0, ts:0, bad:{}, seen:null, st:'' };
+const patCfg = () => { if (!PAT.cfg || Date.now() - PAT.cfgTs > 1500){ PAT.cfg = window.MDPat ? MDPat.cfgOf(store.get('patCfg')) : {}; PAT.cfgTs = Date.now(); } return PAT.cfg; };
+const maCfg = () => { if (!PAT.mcfg || Date.now() - PAT.mcfgTs > 1500){ PAT.mcfg = window.MDPat ? MDPat.cfgOfMA(store.get('maCfg')) : {}; PAT.mcfgTs = Date.now(); } return PAT.mcfg; };
+async function patFetch(inst){
+  for (let i = 0; i < 2; i++){
+    try {
+      const j = await getJ(`${API}/api/v5/market/candles?instId=${inst}&bar=15m&limit=300`);
+      if (j.code === '0') return (j.data || []).filter(c => c[8] === '1').map(c => ({ t:+c[0], o:+c[1], h:+c[2], l:+c[3], c:+c[4] })).reverse();
+      if (j.code === '51001') return 'bad';
+      if (j.code !== '50011') return null;
+    } catch(e){}
+    await new Promise(r => setTimeout(r, 700 * (i + 1)));
+  }
+  return null;
+}
+async function patScan(force){
+  if (EMBED || PAT.busy || !window.MDPat) return;
+  const cfg = patCfg(), mcf = maCfg(); if (!cfg.on && !mcf.on && !force) return;
+  const bnd = Math.floor(Date.now() / 900e3) * 900e3;                 // 현재 진행 중인 15분봉의 시작 = 직전 봉의 마감 시각
+  if (!force && (PAT.done === bnd || Date.now() - bnd < 4000)) return;
+  PAT.busy = true; let fail = 0, n = 0;
+  try {
+    const keys = [...new Set((wlLists || []).flatMap(l => Object.values(l.sec || {}).flat()))].filter(k => parseKey(k).ex === 'okx');
+    let qi = 0;
+    const worker = async () => {
+      while (qi < keys.length){
+        const k = keys[qi++], inst = parseKey(k).sym;
+        if (PAT.bad[inst] && Date.now() - PAT.bad[inst] < 864e5) continue;
+        const arr = await patFetch(inst);
+        if (arr === 'bad'){ PAT.bad[inst] = Date.now(); continue; }
+        if (!arr || arr.length < 60){ fail++; continue; }
+        n++;
+        if (cfg.on) MDPat.detect(arr, cfg, arr.length - 2).forEach(sg => patRegister(k, sg));
+        if (mcf.on && arr.length >= 230) MDPat.detectMA(arr, mcf, arr.length - 2).forEach(sg => patRegister(k, sg));
+        await new Promise(r => setTimeout(r, 120));
+      }
+    };
+    await Promise.all([worker(), worker(), worker()]);
+    PAT.ts = Date.now(); PAT.st = `${n}종목 스캔`;
+    if (!fail || ++PAT.tries >= 3){ PAT.done = bnd; PAT.tries = 0; }
+  } catch(e){ PAT.st = '스캔 오류: ' + (e.message || e); }
+  finally { PAT.busy = false; patBtn(); }
+}
+function patRegister(tk, sg){
+  const seen = PAT.seen || (PAT.seen = store.get('patSeen') || {}), key = `${tk}|${sg.mode}|${sg.key || sg.p2.t}`;
+  if (seen[key]) return false;
+  seen[key] = Date.now(); for (const k in seen) if (Date.now() - seen[k] > 3 * 864e5) delete seen[k]; store.set('patSeen', seen);
+  const rec = { tk, mode:sg.mode, time:sg.time, entry:sg.entry, stop:sg.stop, target:sg.target, riskPct:sg.riskPct, rewardPct:sg.rewardPct, rr:sg.rr, rise:sg.rise, diff:sg.diff, gap:sg.gap, retrace:sg.retrace, p2:sg.p2.p, ts:Date.now() };
+  if (sg.mode === 'M') Object.assign(rec, { kind:'ma', dist:sg.dist, slope60:sg.slope60, body:sg.body });
+  const list = store.get('patSigs') || []; list.unshift(rec); store.set('patSigs', list.slice(0, 300));
+  patNotify(rec); return true;
+}
+function patNotify(r){
+  const isM = r.mode === 'M', nm = r.mode === 'A' ? 'A · 강한 음봉' : 'B · 양봉→음봉→음봉', title = isM ? `🔻 역배열 눌림 숏 — ${parseKey(r.tk).base}` : `🔻 쌍봉 숏 ${nm} — ${parseKey(r.tk).base}`;
+  const body = `진입 ${scnPx(r.entry)} · 손절 ${scnPx(r.stop)} (${r.riskPct.toFixed(2)}%) · 목표 ${scnPx(r.target)} (${r.rewardPct.toFixed(1)}%) · R:R ${r.rr.toFixed(1)}`;
+  const sub = isM ? `SMA60 ${r.dist >= 0 ? '+' : ''}${r.dist.toFixed(2)}% 터치 · 음봉 -${r.body.toFixed(2)}% · SMA60 기울기 ${r.slope60.toFixed(1)}% · 15분봉 ${hms(r.time + 900e3)} 마감` : `상승 +${r.rise.toFixed(1)}% · 두 고점 차 ${r.diff >= 0 ? '+' : ''}${r.diff.toFixed(2)}% · 간격 ${r.gap}봉 · 되돌림 ${r.retrace.toFixed(0)}% · 15분봉 ${hms(r.time + 900e3)} 마감`;
+  const card = document.createElement('div'); card.className = 'al-card';
+  card.innerHTML = `<button class="x">✕</button><b>${esc(title)}</b><div class="t">${esc(body)}<br>${esc(sub)}</div><button class="go">${esc(parseKey(r.tk).base)} 15분봉 보기</button>`;
+  let stopSnd = null; const closeCard = () => { if (stopSnd) stopSnd(); card.remove(); };
+  card.querySelector('.x').onclick = closeCard;
+  card.querySelector('.go').onclick = async () => { if (S.bar !== '15m') await setBar('15m'); if (r.tk !== S.ticker) await switchTicker(r.tk); closeCard(); };
+  $('alarmStack').prepend(card); while ($('alarmStack').children.length > 5) $('alarmStack').lastChild.remove();
+  if (SND.on && (isM ? maCfg() : patCfg()).sound !== false){
+    stopSnd = playAlarm(() => { const b = card.querySelector('.stop'); if (b) b.remove(); }, { type:'siren' });
+    const sb = document.createElement('button'); sb.className = 'stop'; sb.textContent = '🔇 소리 끄기'; sb.onclick = () => { stopSnd(); sb.remove(); }; card.appendChild(sb);
+  }
+  try { if ('Notification' in window && Notification.permission === 'granted') new Notification(title, { body, tag:'pat' + r.tk + r.time }); } catch(e){}
+  flashTitle(title);
+}
+function patBtn(){ refreshToolbar(); ptBarRender(); }
+function patSet(kind, patch){
+  if (kind === 'dt'){ const c = Object.assign({}, patCfg(), patch); store.set('patCfg', c); PAT.cfg = null; }
+  else { const c = Object.assign({}, maCfg(), patch); store.set('maCfg', c); PAT.mcfg = null; PAT.mmk = null; }
+  PAT.mk = null; PAT.mmk = null;
+}
+function patToggle(kind, v){
+  if (EMBED) return;
+  const cur = kind === 'dt' ? !!patCfg().on : !!maCfg().on, on = v == null ? !cur : !!v;
+  patSet(kind, { on });
+  if (on){
+    PAT.bar = kind; if (S.bar !== '15m') setBar('15m').then(() => toast('패턴 감시는 15분봉 기준이라 15분봉으로 바꿨어요'));
+    toast((kind === 'dt' ? '쌍봉 숏' : '역배열 눌림 숏') + ' 감시 켜짐 — 15분봉이 마감될 때마다 왓치리스트(OKX)를 검사해 알려드려요');
+    patScan();
+  } else if (PAT.bar === kind) PAT.bar = (kind === 'dt' ? (maCfg().on ? 'ma' : null) : (patCfg().on ? 'dt' : null));
+  patBtn(); overlay && overlay.update();
+}
+function patWin(kind){ store.set('patTab', kind); patOpenWin(); }
+function ptStatus(){
+  const el = $('ptSt'); if (!el) return;
+  const now = Date.now(), nxt = (Math.floor(now / 900e3) + 1) * 900e3 + 4000, left = Math.max(0, Math.round((nxt - now) / 1000)), mm = String(Math.floor(left / 60)).padStart(2, '0'), ss = String(left % 60).padStart(2, '0');
+  el.textContent = PAT.busy ? '● 스캔 중…' : `● 감시 중 · ${PAT.ts ? '마지막 ' + hms(PAT.ts) + ' (' + PAT.st + ') · ' : ''}다음 스캔 ${mm}:${ss}`;
+}
+setInterval(ptStatus, 1000);
+function ptPlace(){
+  const bar = $('ptbar'); if (!bar) return;
+  let b = 14; ['swbar', 'ewbar'].forEach(id => { const el = $(id); if (el && el.style.display !== 'none' && el.offsetHeight) b += el.offsetHeight + 8; });
+  bar.style.bottom = b + 'px';
+}
+function ptBarRender(){
+  const bar = $('ptbar'); if (!bar) return;
+  const dtOn = !!patCfg().on, maOn = !!maCfg().on;
+  if (EMBED || (!dtOn && !maOn)){ bar.style.display = 'none'; return; }
+  const num = (cfg, k, lb, st, tt) => `<span class="plb" title="${tt}">${lb}</span><input type="number" data-k="${k}" step="${st}" value="${cfg[k]}" title="${tt}">`;
+  const row = (kind, nm, on) => {
+    const cfg = kind === 'dt' ? patCfg() : maCfg();
+    let h = `<div class="prow" data-kind="${kind}"><span class="pchip ${on ? 'on' : ''}" data-c="${kind}" title="${nm} — ${on ? '켜짐 · 누르면 끄기' : '꺼짐 · 누르면 켜기'}"><i></i>${nm} ${on ? 'ON' : 'OFF'}</span>`;
+    if (on){
+      h += (kind === 'dt'
+        ? num(cfg, 'riseMin', '상승 ≥', 0.5, '상승률 최소 (%) — 저점에서 첫 고점까지') + '<span class="plb">%</span>' + num(cfg, 'topDiff', '두 고점 차 ≤', 0.1, '두 고점 가격 차이 허용 (%)') + '<span class="plb">%</span><button class="sbtn" data-a="draw" title="차트에서 패턴을 직접 그려 설정값 자동 추출">✏️ 그려서 설정</button>'
+        : num(cfg, 'near', '60선 ±', 0.1, '봉 고가가 SMA60에서 이 % 이내') + '<span class="plb">%</span>' + num(cfg, 'bodyMin', '음봉 ≥', 0.1, '음봉 몸통 최소 (%)') + '<span class="plb">%</span>' + num(cfg, 'rr', '목표', 0.5, '목표 = 손절폭의 몇 배') + '<span class="plb">R</span>') +
+        `<button class="sbtn ${cfg.show !== false ? 'on' : ''}" data-a="show" title="차트에 신호 표시">표시</button><button class="sbtn ${cfg.sound !== false ? 'on' : ''}" data-a="snd" title="알림 소리">🔔</button><button class="sbtn" data-a="win" title="전체 설정 · 과거 데이터 백테스트 · 감지 기록">⚙ 설정·백테스트</button><button class="sbtn" data-a="help" title="사용법">❓</button>`;
+    }
+    return h + '</div>';
+  };
+  bar.innerHTML = `<div class="prow"><span class="pst" id="ptSt"></span></div>` + row('dt', '쌍봉 숏', dtOn) + row('ma', '역배열 눌림 숏', maOn);
+  bar.querySelectorAll('.prow[data-kind]').forEach(r => {
+    const kind = r.dataset.kind, cfg = kind === 'dt' ? patCfg() : maCfg();
+    r.querySelector('.pchip').onclick = () => patToggle(kind);
+    r.querySelectorAll('input[data-k]').forEach(e => e.onchange = () => { const v = parseFloat(e.value); if (isFinite(v)) patSet(kind, { [e.dataset.k]: v }); overlay && overlay.update(); });
+    r.querySelectorAll('[data-a]').forEach(b => b.onclick = () => {
+      const a = b.dataset.a;
+      if (a === 'show'){ patSet(kind, { show: cfg.show === false }); ptBarRender(); overlay && overlay.update(); }
+      else if (a === 'snd'){ patSet(kind, { sound: cfg.sound === false }); ptBarRender(); }
+      else if (a === 'win') patWin(kind);
+      else if (a === 'draw') patDrawStart();
+      else if (a === 'help') openSetupHelp(kind === 'dt' ? 'dtop' : 'mapb');
+    });
+  });
+  ptStatus(); bar.style.display = 'flex'; ptPlace();
+}
+function patInit(){
+  if (EMBED) return; patBtn(); setTimeout(patBtn, 1500);
+  setInterval(() => { patBtn(); if (!document.hidden || window.pywebview) patScan(); }, 10000);
+  setTimeout(patScan, 9000);
+}
+/* 현재 차트(15분봉)에서 감지되는 신호 — 로드된 봉 전체를 같은 엔진으로 검사해 표시 */
+function patMarks(){
+  if (EMBED || S.bar !== '15m' || !window.MDPat || !patCfg().show || bars.length < 60) return [];
+  const n = bars.length, nc = wgClosed(n - 1) ? n : n - 1, cfg = patCfg();
+  const key = S.ticker + '|' + nc + '|' + (bars[nc - 1] || {}).t + '|' + bars[0].t + '|' + JSON.stringify(cfg);
+  if (PAT.mk && PAT.mk.key === key) return PAT.mk.list;
+  const arr = bars.slice(0, nc);
+  const list = MDPat.detect(arr, cfg).map(sg => Object.assign(sg, { hi: arr[sg.idx].h, o: MDPat.outcome(arr, sg, cfg) }));
+  PAT.mk = { key, list }; return list;
+}
+
+/* 역배열 눌림 숏 신호 — 현재 차트(15분봉)에서 같은 엔진으로 검사해 표시: 고가 위 ▼ 화살표 + 결과 */
+function maMarks(){
+  if (EMBED || S.bar !== '15m' || !window.MDPat || !maCfg().show || bars.length < 230) return [];
+  const n = bars.length, nc = wgClosed(n - 1) ? n : n - 1, cfg = maCfg();
+  const key = S.ticker + '|' + nc + '|' + (bars[nc - 1] || {}).t + '|' + bars[0].t + '|' + JSON.stringify(cfg);
+  if (PAT.mmk && PAT.mmk.key === key) return PAT.mmk.list;
+  const arr = bars.slice(0, nc);
+  const list = MDPat.detectMA(arr, cfg).map(sg => Object.assign(sg, { hi: arr[sg.idx].h, o: MDPat.outcome(arr, sg, cfg) }));
+  PAT.mmk = { key, list }; return list;
+}
+function drawMaMarks(ctx, W){
+  const list = maMarks(); if (!list.length) return;
+  const X = t => timeToX(Math.floor(t / 1000) + KST);
+  ctx.save(); ctx.font = '600 11px "Segoe UI","Malgun Gothic",sans-serif'; ctx.textBaseline = 'middle';
+  list.forEach((sg, li) => {
+    const tx = X(sg.time), ty = yOf(sg.hi); if (tx == null || ty == null || tx < -80 || tx > W + 80) return;
+    const col = !sg.o || sg.o.res === 'open' ? '#ff5252' : sg.o.res === 'win' ? '#26a69a' : sg.o.res === 'loss' ? '#9aa0ad' : '#ffb74d';
+    ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(tx, ty - 4); ctx.lineTo(tx - 6, ty - 17); ctx.lineTo(tx + 6, ty - 17); ctx.closePath(); ctx.fill();
+    ctx.fillRect(tx - 2, ty - 30, 4, 14);
+    const tag = '역배열숏' + (sg.o && sg.o.res !== 'open' ? (sg.o.res === 'win' ? ' ✓' : sg.o.res === 'loss' ? ' ✗' : ' ·') + ` ${sg.o.r >= 0 ? '+' : ''}${sg.o.r.toFixed(1)}R` : ' 진행중');
+    ctx.fillStyle = col; ctx.textAlign = 'center'; ctx.fillText(tag, tx, ty - 38);
+    if (li === list.length - 1){
+      const bw = X(sg.time + 900e3) - tx, x2 = tx + bw * 24;
+      [[sg.entry, '#ffb74d', '진입'], [sg.stop, '#ef5350', '손절'], [sg.target, '#26a69a', '목표']].forEach(([p, c, nm]) => {
+        const y = yOf(p); if (y == null) return; ctx.strokeStyle = c; ctx.lineWidth = 1; ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(tx, y); ctx.lineTo(x2, y); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = c; ctx.textAlign = 'left'; ctx.fillText(`${nm} ${scnPx(p)}`, x2 + 4, y);
+      });
+    }
+  });
+  ctx.restore();
+}
+function drawPatMarks(ctx, W){
+  const list = patMarks(); if (!list.length) return;
+  const X = t => timeToX(Math.floor(t / 1000) + KST);
+  ctx.save(); ctx.font = '600 11px "Segoe UI","Malgun Gothic",sans-serif'; ctx.textBaseline = 'middle';
+  list.forEach((sg, li) => {
+    const tx = X(sg.time), ty = yOf(sg.hi), pts = [sg.low0, sg.p1, sg.trough, sg.p2].map(q => ({ x:X(q.t), y:yOf(q.p) }));
+    if (tx == null || ty == null || pts.some(q => q.x == null || q.y == null)) return;
+    if (tx < -80 || pts[0].x > W + 80) return;
+    ctx.setLineDash([4, 3]); ctx.lineWidth = 1.3; ctx.strokeStyle = 'rgba(255,152,0,.8)'; ctx.beginPath();
+    pts.forEach((q, i) => i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y)); ctx.lineTo(tx, yOf(sg.entry)); ctx.stroke(); ctx.setLineDash([]);
+    const col = !sg.o || sg.o.res === 'open' ? '#ffb74d' : sg.o.res === 'win' ? '#26a69a' : sg.o.res === 'loss' ? '#ef5350' : '#9aa0ad';
+    ctx.fillStyle = col; ctx.beginPath(); ctx.moveTo(tx, ty - 3); ctx.lineTo(tx - 6, ty - 14); ctx.lineTo(tx + 6, ty - 14); ctx.closePath(); ctx.fill();
+    const tag = sg.mode + (sg.o && sg.o.res !== 'open' ? (sg.o.res === 'win' ? ' ✓' : sg.o.res === 'loss' ? ' ✗' : ' ·') + ` ${sg.o.r >= 0 ? '+' : ''}${sg.o.r.toFixed(1)}R` : ' 진행중');
+    ctx.textAlign = 'center'; ctx.fillText('쌍봉숏 ' + tag, tx, ty - 22 - (li % 2) * 14);
+    if (li === list.length - 1){                                        // 가장 최근 신호만 진입·손절·목표선도 표시
+      const bw = X(sg.time + 900e3) - tx, x2 = tx + bw * 24;
+      [[sg.entry, '#ffb74d', '진입'], [sg.stop, '#ef5350', '손절'], [sg.target, '#26a69a', '목표']].forEach(([p, c, nm]) => {
+        const y = yOf(p); if (y == null) return; ctx.strokeStyle = c; ctx.lineWidth = 1; ctx.setLineDash([2, 3]); ctx.beginPath(); ctx.moveTo(tx, y); ctx.lineTo(x2, y); ctx.stroke(); ctx.setLineDash([]);
+        ctx.fillStyle = c; ctx.textAlign = 'left'; ctx.fillText(`${nm} ${scnPx(p)}`, x2 + 4, y);
+      });
+    }
+  });
+  ctx.restore();
+}
+/* ── 쌍봉 패턴을 차트에 직접 그려서 설정값 추출 ──
+   점 4개(① 상승 시작 저점 → ② 첫 고점 → ③ 중간 골 → ④ 두 번째 고점)를 찍으면
+   각 점을 근처 봉의 고가/저가에 맞추고, 상승률·두 고점 차이·간격·골 깊이·되돌림을 계산해 감시 설정에 넣어 준다. */
+const PATD = { pts:[], res:null, tol:20, el:null };
+const PATD_LB = ['① 상승이 시작된 저점', '② 첫 번째 고점', '③ 두 고점 사이의 골(저점)', '④ 두 번째 고점'];
+(function(){ const st = document.createElement('style'); st.textContent = `
+#patdPanel{position:fixed;left:84px;top:92px;z-index:40;width:330px;background:#181b22;border:1px solid #3a3f4c;border-radius:12px;padding:12px 14px;color:#eef0f4;font:13px/1.45 "Malgun Gothic","Segoe UI",sans-serif;box-shadow:0 8px 28px rgba(0,0,0,.5)}
+#patdPanel h4{font-size:14px;margin-bottom:6px}#patdPanel .sm{color:#9aa2b1;font-size:12px}
+#patdPanel table{width:100%;border-collapse:collapse;margin:8px 0;font-variant-numeric:tabular-nums}
+#patdPanel td,#patdPanel th{padding:3px 4px;border-bottom:1px solid #2a2e38;font-size:12.5px;text-align:right}#patdPanel td:first-child,#patdPanel th:first-child{text-align:left}
+#patdPanel th{color:#9aa2b1;font-weight:600}#patdPanel .ap{color:#ffb74d;font-weight:800}
+#patdPanel .bt{display:flex;gap:6px;margin-top:8px}#patdPanel button{flex:1;background:#1e222c;color:#eef0f4;border:1px solid #2a2e38;border-radius:8px;padding:7px 4px;font-size:12.5px;font-weight:700;cursor:pointer}
+#patdPanel button.pri{background:#4ea1ff;color:#0f1115;border-color:#4ea1ff}#patdPanel select{background:#1e222c;color:#eef0f4;border:1px solid #2a2e38;border-radius:6px;padding:2px 4px}
+`; document.head.appendChild(st); })();
+const r1 = v => Math.round(v * 10) / 10;
+async function patDrawStart(){
+  if (EMBED) return;
+  if (S.bar !== '15m'){ await setBar('15m'); toast('패턴 감시는 15분봉 기준이라 15분봉으로 바꿨어요'); }
+  PATD.pts = []; PATD.res = null; setTool('patdraw'); patdUI();
+}
+function patdCancel(){ PATD.pts = []; PATD.res = null; if (S.tool === 'patdraw') setTool('cursor'); patdUI(); overlay && overlay.update(); }
+function patdSnap(x, k){          // 클릭한 곳 주변 ±2봉 중 가장 극단(고점이면 최고가, 저점이면 최저가)인 봉에 맞춤
+  const i0 = Math.round(chart.timeScale().coordinateToLogical(x)); let bi = null;
+  for (let i = i0 - 2; i <= i0 + 2; i++){ const b = bars[i]; if (!b) continue; if (bi == null || (k === 'H' ? b.h > bars[bi].h : b.l < bars[bi].l)) bi = i; }
+  if (bi == null) return null;
+  return { i:bi, t:bars[bi].t, p: k === 'H' ? bars[bi].h : bars[bi].l };
+}
+function patdPlace(x){
+  const n = PATD.pts.length, k = n % 2 === 0 ? 'L' : 'H', pt = patdSnap(x, k); if (!pt) return;
+  if (n && pt.i <= PATD.pts[n - 1].i){ toast('앞 점보다 오른쪽(최근 쪽)을 클릭하세요'); return; }
+  if (n === 1 && pt.p <= PATD.pts[0].p){ toast('첫 고점은 시작 저점보다 높아야 해요'); return; }
+  PATD.pts.push(pt);
+  if (PATD.pts.length === 4){ PATD.res = patdCalc(PATD.pts); setTool('cursor'); }
+  patdUI(); overlay.update();
+}
+function patdCalc(P){
+  const [a, b, c, d] = P, lo = Math.min(b.p, d.p);
+  return { rise:(b.p - a.p) / a.p * 100, riseBars:b.i - a.i, diff:(d.p - b.p) / b.p * 100, gap:d.i - b.i, depth:(lo - c.p) / lo * 100, retrace:(b.p - c.p) / (b.p - a.p) * 100 };
+}
+function patdApply(m, tol){     // 측정값 → 설정값 (여유율 tol: 비슷한 패턴도 잡히도록 조금 느슨하게)
+  const t = tol / 100, ad = Math.abs(m.diff);
+  return {
+    riseMin: Math.max(0.5, r1(m.rise * (1 - t))), riseBars: Math.max(6, Math.ceil(m.riseBars * (1 + t))),
+    topDiff: r1(Math.max(ad * (1 + t), ad + 0.3)),
+    gapMin: Math.max(2, Math.floor(m.gap * (1 - t))), gapMax: Math.max(4, Math.ceil(m.gap * (1 + t))),
+    troughMin: Math.max(0.3, r1(m.depth * (1 - t))), retraceMax: Math.min(100, Math.ceil(m.retrace * (1 + t)))
+  };
+}
+function patdUI(){
+  let el = PATD.el; if (!el){ el = PATD.el = document.createElement('div'); el.id = 'patdPanel'; document.body.appendChild(el); }
+  if (S.tool !== 'patdraw' && !PATD.res){ el.style.display = 'none'; return; }
+  el.style.display = 'block';
+  if (!PATD.res){
+    const n = PATD.pts.length;
+    el.innerHTML = `<h4>🔻 쌍봉 패턴 그려서 설정</h4><div>차트에서 <b>${PATD_LB[n]}</b>을 클릭하세요 <span class="sm">(${n + 1}/4)</span></div><div class="sm" style="margin-top:4px">점은 근처 봉의 고가/저가에 자동으로 맞춰집니다 · 앞 점의 오른쪽만 클릭 가능 · Esc 취소</div><div class="bt"><button id="pdC">취소</button><button id="pdW">⚙ 설정 창</button></div>`;
+    el.querySelector('#pdW').onclick = patOpenWin;
+    el.querySelector('#pdC').onclick = patdCancel; return;
+  }
+  const m = PATD.res, ap = patdApply(m, PATD.tol), cfg = window.MDPat ? MDPat.cfgOf(store.get('patCfg')) : {}, f = (v, d = 1) => v.toFixed(d);
+  el.innerHTML = `<h4>🔻 측정 결과 · ${esc(parseKey(S.ticker).base)} 15분봉</h4>
+  <table><tr><th></th><th>그린 패턴</th><th>설정값</th></tr>
+  <tr><td>상승률</td><td>+${f(m.rise)}%</td><td class="ap">≥ ${ap.riseMin}%</td></tr>
+  <tr><td>상승 구간</td><td>${m.riseBars}봉</td><td class="ap">${ap.riseBars}봉 이내</td></tr>
+  <tr><td>두 고점 차이</td><td>${m.diff >= 0 ? '+' : ''}${f(m.diff, 2)}%</td><td class="ap">±${ap.topDiff}%</td></tr>
+  <tr><td>두 고점 사이</td><td>${m.gap}봉</td><td class="ap">${ap.gapMin}~${ap.gapMax}봉</td></tr>
+  <tr><td>중간 골 깊이</td><td>${f(m.depth)}%</td><td class="ap">≥ ${ap.troughMin}%</td></tr>
+  <tr><td>되돌림</td><td>${f(m.retrace, 0)}%</td><td class="ap">≤ ${ap.retraceMax}%</td></tr></table>
+  <div class="sm">여유율 <select id="pdT">${[0, 10, 20, 30, 50].map(v => `<option value="${v}"${v === PATD.tol ? ' selected' : ''}>${v}%</option>`).join('')}</select> — 클수록 느슨하게(비슷한 패턴을 더 많이) 잡습니다</div>
+  <label class="sm" style="display:flex;gap:6px;align-items:center;margin-top:6px"><input type="checkbox" id="pdOn" ${cfg.on ? 'checked' : ''}> 왓치리스트 실시간 감시 켜기</label>
+  <div class="bt"><button class="pri" id="pdA">설정에 적용</button><button id="pdR">다시 그리기</button><button id="pdX">닫기</button></div>
+  <div class="bt"><button id="pdW">⚙ 감시 설정 · 과거 검증 · 신호 목록 창</button></div>`;
+  el.querySelector('#pdW').onclick = patOpenWin;
+  el.querySelector('#pdT').onchange = e => { PATD.tol = +e.target.value; patdUI(); };
+  el.querySelector('#pdA').onclick = () => {
+    const c = Object.assign(window.MDPat ? MDPat.cfgOf(store.get('patCfg')) : {}, patdApply(PATD.res, PATD.tol), { on: el.querySelector('#pdOn').checked });
+    store.set('patCfg', c); PAT.cfg = null; PAT.mk = null; patBtn(); overlay.update();
+    toast('감시 설정에 적용했어요 · 차트에 감지되는 과거 신호가 바로 표시됩니다'); PATD.pts = []; PATD.res = null; patdUI();
+  };
+  el.querySelector('#pdR').onclick = patDrawStart; el.querySelector('#pdX').onclick = patdCancel;
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape' && (S.tool === 'patdraw' || PATD.res) && !e.target.closest('input,select,textarea')) patdCancel(); });
+function drawPatd(ctx, H){
+  const P = PATD.pts; if (!P.length && !(S.tool === 'patdraw' && mouse)) return;
+  const X = t => timeToX(Math.floor(t / 1000) + KST), pts = P.map(q => ({ x:X(q.t), y:yOf(q.p), q }));
+  if (pts.some(q => q.x == null || q.y == null)) return;
+  ctx.save(); ctx.lineJoin = ctx.lineCap = 'round';
+  ctx.strokeStyle = 'rgba(255,82,82,.9)'; ctx.lineWidth = 3; ctx.beginPath();
+  pts.forEach((q, i) => i ? ctx.lineTo(q.x, q.y) : ctx.moveTo(q.x, q.y));
+  if (S.tool === 'patdraw' && mouse && pts.length && pts.length < 4){ ctx.setLineDash([6, 5]); ctx.lineTo(mouse.x, mouse.y); }
+  ctx.stroke(); ctx.setLineDash([]);
+  pts.forEach((q, i) => { ctx.fillStyle = '#ff5252'; ctx.beginPath(); ctx.arc(q.x, q.y, 5, 0, 7); ctx.fill(); ctx.fillStyle = '#fff'; ctx.font = '700 11px "Malgun Gothic",sans-serif'; ctx.textAlign = 'center'; ctx.fillText(i + 1, q.x, q.y + 4 - 0); });
+  const m = PATD.res;
+  if (m){
+    const lab = (txt, x, y) => { ctx.font = '700 12px "Malgun Gothic",sans-serif'; const w = ctx.measureText(txt).width + 10; ctx.fillStyle = 'rgba(24,27,34,.92)'; ctx.fillRect(x - w / 2, y - 10, w, 20); ctx.fillStyle = '#ffb74d'; ctx.textAlign = 'center'; ctx.textBaseline = 'middle'; ctx.fillText(txt, x, y); };
+    lab(`+${m.rise.toFixed(1)}% · ${m.riseBars}봉`, (pts[0].x + pts[1].x) / 2 - 34, (pts[0].y + pts[1].y) / 2);
+    lab(`고점차 ${m.diff >= 0 ? '+' : ''}${m.diff.toFixed(2)}% · ${m.gap}봉`, (pts[1].x + pts[3].x) / 2, Math.min(pts[1].y, pts[3].y) - 16);
+    lab(`골 -${m.depth.toFixed(1)}%`, pts[2].x, pts[2].y + 20);
+    ctx.setLineDash([3, 4]); ctx.strokeStyle = 'rgba(255,183,77,.7)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(pts[1].x, pts[1].y); ctx.lineTo(pts[3].x, pts[3].y); ctx.stroke(); ctx.setLineDash([]);
+  }
+  ctx.restore();
+}
+/* ── 이벤트 일정: event_schedule.js 를 읽어 현재 종목의 다가오는 일정을 RSI 표 아래에 표시 ── */
+const EVT = { list: [], ts: 0, busy: false };
+async function evtLoad(){
+  if (EMBED || EVT.busy || Date.now() - EVT.ts < 300000) return; EVT.busy = true;
+  try {
+    const r = await fetch('event_schedule.js?_=' + Date.now(), { cache:'no-store' }); if (!r.ok) throw 0;
+    const S = new Function('window', (await r.text()) + '\n;return window.SeptSchedule;')({});
+    EVT.list = (S.SEPTEMBER_2026_SCHEDULE || []).map(e => ({ ms: Date.parse(`${e.dateKST}T${e.timeKST || '00:00'}:00+09:00`), allDay: !e.timeKST, t: String(e.event || '').replace(/\s*\((일정 경과|결과 확정)\)\s*/g, ' ').trim(), tk: e.tickers || [], imp: e.importance || 0 })).filter(e => isFinite(e.ms)).sort((a, b) => a.ms - b.ms);
+    EVT.ts = Date.now();
+  } catch(e){ EVT.ts = Date.now() - 240000; } finally { EVT.busy = false; }
+  evtPaint();
+}
+function evtPaint(){
+  const el = $('rtEv'); if (!el || EMBED) return;
+  const pk = parseKey(S.ticker), base = String(pk.base || '').toUpperCase(), now = Date.now();
+  const up = EVT.list.filter(e => e.tk.includes(base) && e.imp >= 3 && (e.allDay ? e.ms + 86400e3 > now : e.ms > now - 1800e3)).slice(0, 2);
+  if (!up.length){ el.className = 'rt-ev'; return; }
+  const fmt = e => { const d = new Date(e.ms + 9 * 3600e3), diff = e.ms - now, h = diff / 3600e3;
+    const when = e.allDay ? `${d.getUTCMonth() + 1}/${d.getUTCDate()} 종일` : `${d.getUTCMonth() + 1}/${d.getUTCDate()} ${String(d.getUTCHours()).padStart(2, '0')}:${String(d.getUTCMinutes()).padStart(2, '0')}`;
+    const left = diff < 0 ? '진행중' : h < 24 ? (h < 1 ? Math.round(diff / 60000) + '분 후' : Math.floor(h) + '시간 후') : Math.floor(h / 24) + '일 후';
+    return `<div>📅 <b>${when}</b> <span class="d">(${left})</span> ${'★'.repeat(e.imp)} ${esc(e.t)}</div>`; };
+  const hot = up.some(e => !e.allDay && e.ms - now < 6 * 3600e3 && e.imp >= 4);
+  el.className = 'rt-ev on' + (hot ? ' hot' : ''); el.title = '이벤트 일정 (event_schedule.js) — 클릭하면 일정 창이 열립니다';
+  el.innerHTML = up.map(fmt).join('');
+}
+function evtInit(){
+  if (EMBED) return; const el = $('rtEv');
+  if (el) el.onclick = () => { const a = window.pywebview && window.pywebview.api; if (a && a.open_events){ try { a.open_events(); return; } catch(e){} } window.open('MarketDesk_Events.html?t=' + encodeURIComponent(parseKey(S.ticker).base || ''), 'mdEvents', 'width=1200,height=900'); };
+  setInterval(() => { if (!document.hidden){ evtLoad(); evtPaint(); } }, 20000); evtLoad();
+}
+function scnInit(){
+  if (EMBED) return; const el = $('rtScan');
+  if (el) el.onclick = () => { const a = window.pywebview && window.pywebview.api; if (a && a.open_scanner){ try { a.open_scanner(); return; } catch(e){} } window.open('MarketDesk_Scanner.html', 'mdScanner', 'width=1400,height=900'); };
+  setInterval(() => { if (!document.hidden){ scnUpdate(false); if (typeof evtPaint === 'function') evtPaint(); } }, 3000); scnUpdate(false);
+}
+
+/* ── 포지션 관리 알림: 이익 구간(+1R, +2R …)에 들어가거나 이익이 반납되기 시작하면 알려주고, 손절 이동·청산을 물어본다 ── */
+const PM = { st: store.get('pmState') || {}, q: [], cur: null, busy: false, ac: null };
+const pmCfg = () => { const c = store.get('pmCfg') || {}; const lk = (Array.isArray(c.lock) ? c.lock : [50]).map(Number).filter(x => x > 0 && x < 100).slice(0, 3);
+  const ct = (Array.isArray(c.cut) ? c.cut : [50]).map(Number).filter(x => x > 0 && x < 100).slice(0, 3);
+  const lf = (Array.isArray(c.lfr) ? c.lfr : [33.3, 66.7]).map(Number).filter(x => x > 0 && x < 100).sort((a, b) => a - b).slice(0, 3);
+  return { on: c.on !== false, step: +c.step > 0 ? +c.step : 0.5, lock: lk.length ? lk : [50], rev: c.rev !== false, sound: c.sound !== false,
+           loss: c.loss !== false, lstep: +c.lstep > 0 ? +c.lstep : 0.3, cut: ct.length ? ct : [50], lfr: lf.length ? lf : [33.3, 66.7] }; };
+async function pmPoll(){
+  const c = pmCfg(); if (!c.on || PM.busy || EMBED) return; PM.busy = true;
+  try {
+    if (!BR.status){ try { const j = await brFetch('/status', { timeout:3000 }); if (j.ok) BR.status = j; } catch(e){} }
+    if (!BR.status) return;
+    const exs = OEX.filter(e => BR.status.exchanges && BR.status.exchanges[e] && BR.status.exchanges[e].configured);
+    for (const ex of exs){
+      const [p, o] = await Promise.all(['/positions', '/orders'].map(u => brFetch(`${u}?ex=${ex}`, { timeout:8000 }).catch(() => ({ ok:false }))));
+      if (p.ok) pmEval(ex, p.positions || [], o.ok ? (o.orders || []) : null);
+    }
+    jrFlush();
+  } catch(e){} finally { PM.busy = false; }
+}
+/* 기준 = 본절가(BREAK EVEN PRICE, 진입가 ± 수수료)에서 얼마나 이익 쪽으로 벗어났나(%) — 본절가 대비 +step% 마다 알림 */
+function pmEval(ex, poss, ords){
+  const c = pmCfg(), seen = new Set(); let dirty = false;
+  for (const p of poss){
+    if (!(p.entry > 0) || !(p.mark > 0) || !(p.qty > 0)) continue;
+    const long = p.side === 'long', key = `${ex}|${p.base}|${p.side}|${p.entry}`; seen.add(key);
+    const stops = ords ? ords.filter(o => o.base === p.base && o.cancel && o.sl > 0 && (o.pos ? o.pos === p.side : o.side === (long ? 'sell' : 'buy'))) : null;
+    if (!stops && !PM.st[key]) continue;          // 주문 목록을 못 읽었고 처음 보는 포지션이면 다음 기회에
+    const curSL = stops && stops.length ? (long ? Math.max(...stops.map(o => o.sl)) : Math.min(...stops.map(o => o.sl))) : null;
+    const be = beCalc(p, ex) || p.entry;
+    let st = PM.st[key];
+    if (!st || st.v !== 2){ st = PM.st[key] = { v:2, n:0, maxP:0, rev:0, off:0, t:Date.now() }; dirty = true;
+      if (PM.seen && PM.seen[ex] && !(p.opened && Date.now() - p.opened > 180000)) jrDetect(ex, p, curSL); }          // 새 포지션 → 진입 조건 기록 (앱 시작 직후 첫 조회에서 보이는 기존 포지션은 제외)
+    if (st.off) continue;
+    const gain = (long ? (p.mark - be) / be : (be - p.mark) / be) * 100;          // 본절가 대비 이익폭 %
+    if (gain > st.maxP){ st.maxP = gain; dirty = true; }
+    const it = { key, ex, p, be, gain, maxGain: st.maxP, stops: stops || [], curSL };
+    if (c.loss){                                                    // ── 손실 구간 관리 ──
+      const Lnow = curSL != null ? (long ? (be - curSL) / be : (curSL - be) / be) * 100 : 0;          // 본절가 → 손절가 거리(%) = 최대 손절폭
+      if (Lnow > 0 && Lnow > (st.L0 || 0)){ st.L0 = Lnow; dirty = true; }                           // 손절을 당겨도 최초 손절폭을 기준으로 유지
+      const L = st.L0 > 0 ? st.L0 : 0, th = c.lfr.map(x => x / 100), f = L > 0 && gain < 0 ? -gain / L : 0;
+      let ml;
+      if (L > 0){ if (st.ln && f < th[0] / 2){ st.ln = 0; dirty = true; } ml = th.filter(x => f >= x - 1e-9).length; }       // 손절폭의 1/3, 2/3 … 도달
+      else { if (gain >= c.lstep / 2 && st.ln){ st.ln = 0; dirty = true; } ml = gain < 0 ? Math.floor(-gain / c.lstep + 1e-9) : 0; }   // 손절 주문이 없으면 본절가 대비 lstep% 마다
+      if (ml > (st.ln || 0)){ st.ln = ml; dirty = true; if (ml <= 3){ const b = pmBuild({ ...it, type:'loss', stage: ml, nst: L > 0 ? th.length : 0, f, L }); if (b) pmEnqueue(b); } }
+      if (st.watchBE && gain >= 0){ st.watchBE = 0; dirty = true; const b = pmBuild({ ...it, type:'recover' }); if (b) pmEnqueue(b); }
+    }
+    const m = gain >= c.step ? Math.floor(gain / c.step + 1e-9) : 0;
+    if (m > st.n){ st.n = m; dirty = true; const b = pmBuild({ ...it, type:'up', T: m * c.step, step: c.step }); if (b) pmEnqueue(b); }
+    else if (c.rev && !st.rev && st.maxP >= c.step && gain < Math.min(.3 * c.step, .3 * st.maxP)){ st.rev = 1; dirty = true; const b = pmBuild({ ...it, type:'rev', step: c.step }); if (b) pmEnqueue(b); }
+  }
+  for (const k of Object.keys(PM.st)) if (k.startsWith(ex + '|') && !seen.has(k)){ delete PM.st[k]; dirty = true; }
+  (PM.seen = PM.seen || {})[ex] = true;
+  if (dirty) store.set('pmState', PM.st);
+}
+function pmBuild(it){
+  const { p, be } = it, long = p.side === 'long', cand = [];
+  const at = g => be * (1 + (long ? 1 : -1) * g / 100);                              // 본절가에서 g% 이익 쪽 가격
+  const r2 = x => Math.round(x * 1000) / 1000;
+  cand.push({ g:0, px:be, tag:'본절 (수수료 포함)' });
+  if (it.type === 'up') pmCfg().lock.slice().sort((x, y) => x - y).forEach(pc => { const g = r2(it.gain * pc / 100); if (g > 0) cand.push({ g, px:at(g), tag:`이익의 ${pc}% 잠금 (본절 +${g}%)` }); });   // 현재 이익(본절가 대비)의 pc%를 지키는 손절가
+  if (it.type === 'loss' || it.type === 'recover'){
+    cand.length = 0;
+    if (it.type === 'loss' && it.curSL != null) pmCfg().cut.slice().sort((x, y) => x - y).forEach(pc => {
+      const px = long ? p.mark - (p.mark - it.curSL) * (1 - pc / 100) : p.mark + (it.curSL - p.mark) * (1 - pc / 100);       // 현재가~기존 손절 거리의 pc%를 줄인 손절가
+      cand.push({ g:0, px, tag:`손절 앞당기기 (남은 손실폭 ${pc}% 줄임)` });
+    });
+  }
+  const seenPx = new Set(), opts = cand.filter(o => {
+    const ok = it.curSL != null && (long ? o.px > it.curSL * 1.00005 : o.px < it.curSL * .99995) && (long ? o.px < p.mark * .999 : o.px > p.mark * 1.001) && !seenPx.has(o.px.toFixed(8));
+    if (ok) seenPx.add(o.px.toFixed(8)); return ok;
+  });
+  if (it.type === 'up' && it.curSL != null && !opts.length) return null;      // 이미 그만큼 이익을 잠가둔 경우엔 묻지 않음
+  return { ...it, opts, confirm:null, msg:'' };
+}
+function pmEnqueue(it){
+  if (PM.cur && PM.cur.key === it.key && PM.cur.type === it.type) return;
+  PM.q = PM.q.filter(x => !(x.key === it.key && x.type === it.type)); PM.q.push(it); pmShow();
+}
+function pmBeep(){
+  if (!pmCfg().sound) return;
+  try { const A = window.AudioContext || window.webkitAudioContext, x = PM.ac || (PM.ac = new A());
+    [880, 1175].forEach((fr, i) => { const o = x.createOscillator(), g = x.createGain(), t = x.currentTime + i * .18; o.frequency.value = fr; o.connect(g); g.connect(x.destination);
+      g.gain.setValueAtTime(.0001, t); g.gain.exponentialRampToValueAtTime(.25, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + .16); o.start(t); o.stop(t + .18); }); } catch(e){}
+}
+function pmShow(){
+  if (PM.cur || !PM.q.length) return; PM.cur = PM.q.shift(); pmRender(); pmBeep();
+  toast(`🔔 ${PM.cur.p.base} 포지션 관리 알림`, 2500);
+}
+function pmDone(msg, ms){ const c = PM.cur; if (!c) return; c.msg = msg; c.fin = true; pmRender(); setTimeout(() => { if (PM.cur === c){ PM.cur = null; pmRender(); setTimeout(pmShow, 400); } }, ms || 2600); }
+function pmRender(){
+  let el = $('pmCard'); if (!el){ el = document.createElement('div'); el.id = 'pmCard'; document.body.appendChild(el); el.addEventListener('click', pmClick); }
+  const it = PM.cur; if (!it){ el.style.display = 'none'; return; }
+  const p = it.p, long = p.side === 'long', d = oDec(p.entry), q = PM.q.length;
+  const pct = v => (long ? (v / p.entry - 1) : (1 - v / p.entry)) * 100, sg = v => (v >= 0 ? '+' : '−') + Math.abs(v).toFixed(2) + '%';
+  const exOk = true;
+  const head = it.type === 'loss' ? `본절가 대비 <b class="pm-neg">−${Math.abs(it.gain).toFixed(2)}%</b> 손실 구간입니다 <span class="pm-s">(${it.nst ? `최대 손절폭의 ${Math.round(it.f * 100)}% · ${it.stage}/${it.nst}단계` : `${it.stage}단계`})</span>`
+    : it.type === 'recover' ? `본절가로 <b>돌아왔습니다</b> <span class="pm-s">(본절가 대비 ${it.gain >= 0 ? '+' : '−'}${Math.abs(it.gain).toFixed(2)}%)</span>`
+    : it.type === 'up' ? `본절가 대비 <b>+${it.gain.toFixed(2)}%</b> 이익 구간입니다` : `이익이 <b>반납되고 있습니다</b> <span class="pm-s">(본절가 대비 최고 +${it.maxGain.toFixed(2)}% → 현재 ${it.gain >= 0 ? '+' : '−'}${Math.abs(it.gain).toFixed(2)}%)</span>`;
+  const ask = it.type === 'loss' ? '손실이 더 커지기 전에 어떻게 할까요?' : it.type === 'recover' ? '손실이 사라졌습니다. 본절 근처에서 정리할까요?' : it.type === 'up' ? '손절을 이익 쪽으로 옮겨서 지킬까요?' : '아직 본절 위라면 손절을 본절로 옮기는 게 좋습니다.';
+  let body;
+  if (it.fin) body = `<div class="pm-msg ok">${it.msg}</div>`;
+  else {
+    const btns = it.opts.map((o, i) => `<button class="pm-b mv${it.confirm === 'o' + i ? ' cf' : ''}" data-a="o${i}" ${it.busy || !exOk ? 'disabled' : ''}>${it.confirm === 'o' + i ? '한 번 더 누르면 실행 →' : '손절 → ' + o.tag}<span>${oFmt(o.px, d)} · ${pct(o.px) >= 0 ? '수익' : '손실'} ${sg(pct(o.px))}</span></button>`).join('');
+    const note = !exOk ? `<div class="pm-msg">이 거래소는 손절 이동을 아직 지원하지 않습니다 — 거래소에서 직접 수정하세요.</div>`
+      : it.type === 'recover' ? ''
+      : it.curSL == null ? `<div class="pm-msg">연결된 손절 주문을 찾지 못했습니다 — 주문 패널에서 손절을 새로 걸어주세요.</div>`
+      : it.type === 'loss' && !it.opts.length ? `<div class="pm-msg">손절이 이미 현재가에 가까워서 더 앞당길 수 없습니다.</div>`
+      : !it.opts.length ? `<div class="pm-msg">현재가가 본절과 너무 가깝거나 아래라서 손절을 옮길 수 없습니다 (즉시 체결될 수 있음).</div>` : '';
+    body = `${btns}${note}<div class="pm-row"><button class="pm-b cl${it.confirm === 'c' ? ' cf' : ''}" data-a="c" ${it.busy || it.demo ? 'disabled' : ''}>${it.confirm === 'c' ? '한 번 더 누르면 시장가 청산' : '전량 청산'}</button>${it.type === 'loss' ? `<button class="pm-b" data-a="be" title="본절가로 돌아오면 알림">복귀 알림</button>` : ''}<button class="pm-b" data-a="skip">나중에</button><button class="pm-b" data-a="off" title="이 포지션은 더 이상 알리지 않음">알림 끄기</button></div>${it.msg ? `<div class="pm-msg err">${it.msg}</div>` : ''}`;
+  }
+  el.className = long ? 'long' : 'short'; el.style.display = 'block';
+  el.innerHTML = `<div class="pm-h"><span class="pm-t">🔔 ${esc(p.base)} ${long ? '롱' : '숏'}${it.demo ? ' · 미리보기' : ''}</span>${q ? `<span class="pm-q">대기 ${q}</span>` : ''}</div>
+    <div class="pm-l">${head}</div>
+    <div class="pm-i">진입 ${oFmt(p.entry, d)} → 현재 ${oFmt(p.mark, d)} · ${sg(pct(p.mark))}<br>본절가 <b>${oFmt(it.be, d)}</b> · 현재 손절 <b>${it.curSL != null ? oFmt(it.curSL, d) : '없음'}</b></div>
+    ${it.fin ? '' : `<div class="pm-a">${ask}</div>`}${body}`;
+}
+async function pmClick(e){
+  const b = e.target.closest('button[data-a]'); const it = PM.cur; if (!b || !it || it.busy || it.fin) return; const a = b.dataset.a;
+  if (a === 'skip') return pmDone('알겠습니다 — 다음 단계에서 다시 알립니다.', 1200);
+  if (a === 'be'){ const s1 = PM.st[it.key]; if (s1){ s1.watchBE = 1; store.set('pmState', PM.st); } return pmDone('가격이 본절가로 돌아오면 알려드립니다.', 1600); }
+  if (a === 'off'){ const s0 = PM.st[it.key]; if (s0){ s0.off = 1; store.set('pmState', PM.st); } return pmDone('이 포지션은 더 이상 알리지 않습니다.', 1400); }
+  if (it.confirm !== a){ it.confirm = a; pmRender(); clearTimeout(it._cf); it._cf = setTimeout(() => { if (PM.cur === it && !it.busy){ it.confirm = null; pmRender(); } }, 4000); return; }
+  it.confirm = null; it.busy = true; it.msg = ''; pmRender();
+  if (it.demo){ it.busy = false; return pmDone('미리보기입니다 — 실제 주문은 나가지 않았습니다.', 1800); }
+  if (a === 'c'){
+    const j = await brPost('/close', { exchange: it.ex, close: it.p.close }, 20000).catch(() => ({ ok:false, error:'브리지 연결 실패' }));
+    it.busy = false; if (j.ok){ toast(`${it.p.base} 청산 요청 완료`); return pmDone(`✅ ${esc(it.p.base)} 시장가 청산을 요청했습니다.`); }
+    it.msg = '❌ 청산 실패: ' + esc(j.error || ''); return pmRender();
+  }
+  const opt = it.opts[+a.slice(1)], long = it.p.side === 'long', errs = []; let ok = 0;
+  for (const o of it.stops){
+    if (long ? !(opt.px > o.sl) : !(opt.px < o.sl)) continue;                    // 이미 더 이익 쪽인 손절은 건드리지 않음
+    const j = await brPost('/amend_sl', { exchange: it.ex, amend: { ...o.cancel, sl: opt.px } }, 20000).catch(() => ({ ok:false, error:'브리지 연결 실패' }));
+    if (j.ok) ok++; else errs.push(j.error || '실패');
+  }
+  it.busy = false;
+  if (ok && !errs.length){ toast(`${it.p.base} 손절 → ${oFmt(opt.px, oDec(it.p.entry))}`); return pmDone(`✅ 손절을 ${oFmt(opt.px, oDec(it.p.entry))} 로 옮겼습니다.`); }
+  const old = errs.some(x => /없는 경로/.test(x));
+  it.msg = '❌ ' + esc(errs[0] || '이동할 손절 주문이 없습니다') + (old ? '<br>order_bridge.py 를 새 버전으로 교체한 뒤 브리지를 재시작하세요.' : '') + (ok ? '<br>(일부만 이동됨 — 거래소에서 확인하세요)' : '');
+  pmRender();
+}
+function pmDemo(){
+  const p = { base:'DEMO', side:'long', entry:100, mark:100.9, qty:1, close:{} }, be = 100.07;
+  const it = { key:'demo', ex:'okx', p, be, gain:0.83, maxGain:0.83, step:0.5, stops:[], curSL:99, type:'up', T:0.5, demo:true, confirm:null, msg:'',
+    opts:[{ g:0, px:be, tag:'본절 (수수료 포함)' }, { g:.415, px:be * 1.00415, tag:'이익의 50% 잠금 (본절 +0.415%)' }] };
+  PM.cur = null; PM.q = []; PM.cur = it; pmRender(); pmBeep();
+}
+function pmInit(){
+  if (EMBED) return; const c = pmCfg();
+  const on = $('pmOn'), r1 = $('pmR1'), test = $('pmTest'), lk = $('pmLock'), rv = $('pmRev'), sd = $('pmSnd');
+  if (lk){ lk.value = c.lock.join(', '); lk.onchange = () => { const v = lk.value.split(/[ ,]+/).map(Number).filter(x => x > 0 && x < 100).slice(0, 3); store.set('pmCfg', { ...pmCfg(), lock: v.length ? v : [50] }); lk.value = pmCfg().lock.join(', '); }; }
+  { const ls = $('pmLoss'), lst = $('pmLs'), cut = $('pmCut'), lf = $('pmLf');
+    if (lf){ lf.value = c.lfr.join(', '); lf.onchange = () => { const v = lf.value.split(/[ ,]+/).map(Number).filter(x => x > 0 && x < 100).sort((a, b) => a - b).slice(0, 3); store.set('pmCfg', { ...pmCfg(), lfr: v.length ? v : [33.3, 66.7] }); lf.value = pmCfg().lfr.join(', '); }; }
+    if (ls){ ls.checked = c.loss; ls.onchange = () => store.set('pmCfg', { ...pmCfg(), loss: ls.checked }); }
+    if (lst){ lst.value = c.lstep; lst.onchange = () => { const v = parseFloat(lst.value); store.set('pmCfg', { ...pmCfg(), lstep: v > 0 ? v : 0.3 }); }; }
+    if (cut){ cut.value = c.cut.join(', '); cut.onchange = () => { const v = cut.value.split(/[ ,]+/).map(Number).filter(x => x > 0 && x < 100).slice(0, 3); store.set('pmCfg', { ...pmCfg(), cut: v.length ? v : [50] }); cut.value = pmCfg().cut.join(', '); }; } }
+  if (rv){ rv.checked = c.rev; rv.onchange = () => store.set('pmCfg', { ...pmCfg(), rev: rv.checked }); }
+  if (sd){ sd.checked = c.sound; sd.onchange = () => store.set('pmCfg', { ...pmCfg(), sound: sd.checked }); }
+  if (on){ on.checked = c.on; on.onchange = () => store.set('pmCfg', { ...pmCfg(), on:on.checked }); }
+  if (r1){ r1.value = c.step; r1.onchange = () => { const v = parseFloat(r1.value); store.set('pmCfg', { ...pmCfg(), step: v > 0 ? v : 0.5 }); }; }
+  if (test) test.onclick = pmDemo;
+  setTimeout(pmPoll, 4000); setInterval(pmPoll, 6000);
+}
+
+/* ── 매매일지: 진입 시점 조건 스냅샷 (스캐너 판정 · 나스닥 판정 · RSI · 종목 시황 · 주문 계획) ──
+   앱에서 낸 주문(order)과, 앱이 켜진 동안 새로 생긴 포지션(detect)을 브리지(/journal_entry)가 journal_entries.jsonl 에 한 줄씩 저장.
+   MarketDesk_Journal.html 이 진입시각이 가까운 기록을 각 거래에 붙여서 보여준다. */
+const JR = { q: store.get('jrQ') || [], recent: store.get('jrRecent') || [] };
+const jrSave = () => { JR.recent = JR.recent.filter(r => Date.now() - r.ts < 86400e3).slice(-40); store.set('jrRecent', JR.recent); store.set('jrQ', JR.q.slice(-60)); };
+const jrKey = (ex, base, side) => `${String(ex).toUpperCase()}|${base}|${side}`;
+function jrNdx(){
+  const d = NDI.data; if (!d || d.err || !d.bars || !d.bars.length) return null;
+  const C = ndiCalc(d);
+  return { src: NDX_SRC[d.used != null ? d.used : ndiIdx()][1], s15:C.s15, up:C.up, dn:C.dn, n:C.b.length, day: C.dy ? { dir:C.dDir, pct:+C.dPct.toFixed(2) } : null,
+           verdict:C.txt, agree:C.agree, conflict:C.conflict, stale:C.stale };
+}
+async function jrScan(base){
+  try {
+    const ent = SCN.map.get(base); let r = ent && ent.r && ent.r.ok && Date.now() - ent.ts < 120000 ? ent.r : null;
+    if (!r){
+      const core = await scnCore(); if (!core) return null;
+      const raw = {}; await Promise.all(core.TFS.map(async tf => { raw[tf.k] = await scnFetch(base + '-USDT-SWAP', tf.bar); }));
+      const a = core.analyze(base, raw); if (a && a.ok) r = a;
+    }
+    if (!r) return null;
+    const rn = (v, n = 2) => v == null || !isFinite(v) ? null : +(+v).toFixed(n);
+    return { type:r.type, label:r.label, dir: r.type === 'long' ? 'long' : r.type === 'short' ? 'short' : r.type === 'rebound' ? 'long' : r.type === 'pullback' ? 'short' : null,
+             trend:r.trend, rsiD:rn(r.rsiD, 1), rsi4:rn(r.rsi4, 1), ext:rn(r.ext), atr:rn(r.atr), d1:rn(r.d1), d5:rn(r.d5),
+             key: r.key ? { tf:r.key.tf, L:r.key.L, d:rn(r.key.d), st:r.key.st, side:r.side } : null,
+             hot: r.hot.slice(0, 3).map(c => ({ tf:c.tf, L:c.L, d:rn(c.d), st:c.st })), flags: r.flags.map(x => [x[0], x[1] ? 1 : 0]) };
+  } catch(e){ return null; }
+}
+async function jrSnap(ex, base, side, extra){
+  const e = { v:1, ts:Date.now(), ex:String(ex).toUpperCase(), base, side, ...(extra || {}) };
+  if (!NDI.data || Date.now() - NDI.ts > 60000){ try { await Promise.race([ndiLoad(), new Promise(r => setTimeout(r, 5000))]); } catch(_){} }
+  e.ndx = jrNdx();
+  e.scan = await jrScan(base);
+  try { if (parseKey(S.ticker).base === base && RT.key === S.ticker){ const v = {}; Object.keys(RT.vals).forEach(k => { if (RT.vals[k] != null) v[k] = +(+RT.vals[k]).toFixed(1); }); if (Object.keys(v).length) e.rsi = v; } } catch(_){}
+  try { if (await brLoad(false)){ const f = brFind(base); if (f) e.brief = { st:f.r.st || null, chg: f.r.chg == null ? null : f.r.chg, note: String(f.r.note || '').slice(0, 120) }; } } catch(_){}
+  e.bar = S.bar; return e;
+}
+async function jrSend(e){ try { const j = await brPost('/journal_entry', { entry:e }, 8000); return !!(j && j.ok); } catch(_){ return false; } }
+async function jrRecord(src, e){ e.src = src; if (!(await jrSend(e))) JR.q.push(e); jrSave(); }
+async function jrFlush(){ if (!JR.q.length) return; const q = JR.q.slice(); JR.q = []; for (const e of q) if (!(await jrSend(e))) JR.q.push(e); jrSave(); }
+function jrDetect(ex, p, curSL){         // 앱이 켜진 동안 새로 생긴 포지션 (앱 밖에서 진입했거나 지정가가 체결된 경우)
+  const k = jrKey(ex, p.base, p.side), o = JR.recent.find(r => r.key === k && r.src === 'order' && !r.used && Date.now() - r.ts < 12 * 3600e3);
+  if (o){ o.used = true; jrSave(); return; }       // 앱에서 낸 주문이면 주문 시점 기록이 이미 있음
+  jrSnap(ex, p.base, p.side, { plan:{ ref:p.entry, lev:p.lev || null, qty:p.qty, sl:curSL || null } }).then(e => jrRecord('detect', e)).catch(() => {});
+}
+
+/* 제목줄(빈 공간)에 전광판처럼 흐르는 현재 종목 시황 */
+const BRT = { tk:null, sig:'', el:null };
+function brtMount(){
+  if (BRT.el && document.body.contains(BRT.el)) return true;
+  const d = document.getElementById('mddrag'); if (!d) return false;
+  let el = document.getElementById('brTick'); if (!el){ el = document.createElement('div'); el.id = 'brTick'; d.appendChild(el); }
+  BRT.el = el; BRT.sig = ''; return true;
+}
+async function brtRender(force){
+  if (!brtMount()) return;
+  const ok = await brLoad(force), el = BRT.el; let html = '', cls = 'none';
+  if (!ok){ html = `<span class="brt-t">시황 파일을 읽지 못했습니다 · ${esc(BRF.err)}</span>`; }
+  else {
+    const f = brFind(S.ticker);
+    if (!f){ html = `<span class="brt-t">${esc(dispName(S.ticker))} — 시황 파일에 없는 종목</span>`; }
+    else {
+      const { r } = f, name = r.s2 || r.s, nm = r.s2 ? 'SK하이닉스' : (r.n || ''), pill = { dn:'약세', flat:'보합권', up:'강세' }[r.st] || '';
+      const chg = r.chg == null ? '' : (r.chg > 0 ? '▲ +' : '▼ ') + (Math.abs(r.chg) < 10 && !Number.isInteger(r.chg) ? Math.abs(r.chg).toFixed(2) : String(+Math.abs(r.chg).toFixed(1))) + '%' + (r.c ? ' (' + r.c + ')' : '');
+      const basis = (BRF.meta.split('·')[0] || '').trim();
+      cls = r.st || 'flat';
+      html = `<span class="brt-s">${esc(name)}</span>${nm ? `<span class="brt-n">${esc(nm)}</span>` : ''}<span class="brt-p">${esc(r.px || '')}</span>${chg ? `<span class="brt-c">${esc(chg)}</span>` : ''}${pill ? `<span class="brt-pill">${pill}</span>` : ''}<span class="brt-t">${esc(r.note || '')}</span>${basis ? `<span class="brt-b">${esc(basis)}</span>` : ''}`;
+    }
+  }
+  const sig = cls + '|' + html; if (!force && sig === BRT.sig) return; BRT.sig = sig;
+  el.className = 'st-' + cls; el.innerHTML = `<div class="brt-in"><span class="brt-seg">${html}</span></div>`;
+  const inn = el.firstChild, seg = inn.firstChild, w = seg.getBoundingClientRect().width + 70, cw = el.clientWidth || 600;
+  if (cls === 'none' || w < 40) return;
+  const n = Math.max(2, Math.ceil(cw / w) + 1);
+  inn.innerHTML = Array(n).fill(`<span class="brt-seg">${html}</span>`).join('');
+  inn.style.setProperty('--w', w + 'px'); inn.style.animationDuration = Math.max(12, w / 60) + 's';   // 초당 약 60px
+  inn.classList.add('run');
+}
+function brtInit(){
+  setInterval(() => {
+    const mounted = brtMount();
+    if (!mounted) return;
+    if (BRT.tk !== S.ticker){ BRT.tk = S.ticker; brtRender(false); }
+    else if (Date.now() - BRF.ts > 60000) brtRender(true);
+  }, 1200);
 }
 function openPanel(open){ if (open) showPanel('calc'); else if (panelView === 'calc') showPanel(null); }
 
@@ -3890,18 +4968,20 @@ function renderLegend(b, mv){
   const chg = (b.c - b.o) / b.o * 100, col = b.c >= b.o ? C_UP : C_DN;
   const ct = S.inst ? +S.inst.ctVal : 1, ccy = S.inst ? S.inst.ctValCcy : '';
   const dAbs = b.c - b.o;
-  $('lgOHLC').innerHTML =
+  const ohlcHtml =
     `<span class="k">시</span><span style="color:${col}">${fP(b.o)}</span>` +
     `<span class="k">고</span><span style="color:${col}">${fP(b.h)}</span>` +
     `<span class="k">저</span><span style="color:${col}">${fP(b.l)}</span>` +
     `<span class="k">종</span><span style="color:${col}">${fP(b.c)}</span>` +
     `<span style="color:${col};margin-left:8px">${dAbs >= 0 ? '+' : '−'}${fP(Math.abs(dAbs))} (${chg >= 0 ? '+' : ''}${f(chg,2)}%)</span>` +
     (b.v != null ? `<span class="k">볼륨</span><span style="color:${col}">${fK(b.v * ct)}</span> <span class="muted">${ccy}</span>` : '');
+  { const o = $('lgOHLC'); if (o._h !== ohlcHtml){ o.innerHTML = ohlcHtml; o._h = ohlcHtml; } }
   const coll = $('lgMA').classList.contains('collapsed');
-  $('lgMA').innerHTML = mas.map((m, i) => `<div class="lg-ma${m.on ? '' : ' off'}" data-i="${i}" title="클릭: 설정">
+  const maHtml = mas.map((m, i) => `<div class="lg-ma${m.on ? '' : ' off'}" data-i="${i}" title="클릭: 설정">
       <span class="nm">${maLabel(m)}</span><span class="vl" style="color:${m.color}">${m.on ? fP(mv && mv[i]) : ''}</span>
       <span class="lg-tools"><i data-eye="${i}" title="${m.on ? '숨기기' : '보이기'}">${m.on ? '👁' : '◌'}</i><i data-set="${i}" title="설정">⚙</i><i data-del="${i}" title="삭제">✕</i></span></div>`).join('') +
     `<div class="lg-foot"><span class="lg-coll" title="${coll ? '지표 펼치기' : '지표 접기'}">${coll ? '▾ 지표 ' + mas.length : '▴'}</span><span class="lg-gear" title="이동평균선 추가/설정">＋ 지표</span></div>`;
+  { const o = $('lgMA'); if (o._h !== maHtml){ o.innerHTML = maHtml; o._h = maHtml; } }
 }
 function tickCountdown(){
   const lb = lastBar(), el = $('cdLbl');
@@ -3920,11 +5000,11 @@ function placeCd(){
   if (!lb || !chart){ el.style.display = 'none'; return; }
   const y = yOf(lb.c), H = paneH();
   if (y == null || y < 0 || y > H - 12){ el.style.display = 'none'; return; }
-  el.style.display = 'block';
-  el.style.width = chart.priceScale('right').width() + 'px';
-  el.style.top = (y - 9) + 'px';
-  const col = (chartType === 'line' || chartType === 'area') ? '#2962ff' : lb.c >= lb.o ? C_UP : C_DN;
-  el.style.background = col;
+  const w = chart.priceScale('right').width() + 'px', tp = (y - 9) + 'px', col = (chartType === 'line' || chartType === 'area') ? '#2962ff' : lb.c >= lb.o ? C_UP : C_DN;
+  if (el.style.display !== 'block') el.style.display = 'block';
+  if (el.style.width !== w) el.style.width = w;
+  if (el.style.top !== tp) el.style.top = tp;
+  if (el._c !== col){ el._c = col; el.style.background = col; }
   const html = `<b>${fP(lb.c)}</b><span>${el.dataset.cd || ''}</span>`;
   if (el._h !== html){ el.innerHTML = html; el._h = html; }
 }
@@ -5047,11 +6127,18 @@ function calc(){
 /* ═══════════════ 거래소 주문 (로컬 브리지 경유, 실거래) ═══════════════
    브라우저는 API 키를 갖지 않습니다. PC에서 실행되는 order_bridge.py(127.0.0.1)가 .env 키로 서명해 주문합니다.
    포지션 사이즈 계산기와는 연동하지 않는 독립 주문창입니다. */
+const BE_FEE = { okx:0.05, binance:0.05, bitget:0.06 };   // 일반 등급 테이커 수수료(%) 기본값 — 설정에서 변경
+const beFee = ex => { const v = parseFloat(store.get('beFee_' + ex)); return isFinite(v) && v >= 0 ? v : (BE_FEE[ex] != null ? BE_FEE[ex] : 0.05); };
+/* 손익분기가: 진입·청산 모두 테이커 수수료를 낸다고 보고 계산 (펀딩비·슬리피지 제외) */
+function beCalc(p, ex){
+  const f = beFee(ex) / 100; if (!(p.entry > 0)) return null;
+  return p.side === 'long' ? p.entry * (1 + f) / (1 - f) : p.entry * (1 - f) / (1 + f);
+}
 const OEX = ['okx', 'binance', 'bitget'], OEX_NAME = { okx:'OKX', binance:'Binance', bitget:'Bitget' };
 const BR = { url: store.get('brUrl') || LOC.bridgeUrl || 'http://127.0.0.1:8765', token: LOC.bridgeToken || store.get('brTok') || '', status: null, err: '' };
 const BR_AUTO = () => store.get('brAuto') !== false;
 const ORD = { ex: store.get('ordEx') || 'okx', type: store.get('ordType') || 'limit', mm: store.get('ordMm') || 'cross',
-              lev: store.get('ordLev') || 10, unit: store.get('ordUnit') || 'coin', tab: 'pos', all: !!store.get('ordAll'),
+              lev: store.get('ordLev') || 10, unit: (store.get('ordUnitV2') ? store.get('ordUnit') : 'usdt') || 'usdt', tab: 'pos', all: !!store.get('ordAll'),
               base: null, bal: null, pos: [], ords: [], busy: false, pending: null, timer: null, launched: false, lastPxSet: null };
 async function brFetch(path, opt = {}){
   const ctl = new AbortController(), to = setTimeout(() => ctl.abort(), opt.timeout || 10000);
@@ -5069,6 +6156,17 @@ async function brCheck(){
   catch(e){ BR.status = null; BR.err = '브리지 꺼짐'; }
   ordRender();
   return !!BR.status;
+}
+async function restartBridge(){
+  toast('브리지를 재시작합니다…'); BR.status = null; BR.err = '브리지 재시작 중…'; ordRender();
+  try {
+    const j = await (await fetch('/api/bridge/restart', { cache:'no-store' })).json();
+    if (!j.ok){ BR.err = j.error || '재시작 실패'; ordMsg('err', '❌ ' + esc(BR.err)); toast('브리지 재시작 실패'); ordRender(); return; }
+    toast(j.killed && j.killed.length ? '브리지를 재시작했습니다' : '브리지를 시작했습니다');
+  } catch(e){ BR.err = '앱 서버에 연결하지 못했습니다 (Market Desk 앱 창에서만 동작)'; ordMsg('err', '❌ ' + BR.err); ordRender(); return; }
+  for (let i = 0; i < 8 && !BR.status; i++){ await new Promise(r => setTimeout(r, 800)); await brCheck(); }
+  if (BR.status){ ordMsg('ok', '✅ 브리지 재시작 완료'); ordRefresh(true); } else ordMsg('err', '❌ 브리지가 응답하지 않습니다 — order_bridge.out.log 를 확인하세요');
+  ordRender();
 }
 function launchBridge(manual){
   ORD.launched = true;
@@ -5151,6 +6249,7 @@ function ordRender(){
   $('oPriceRow').style.display = ORD.type === 'limit' ? '' : 'none';
   if (document.activeElement !== $('oLev')) $('oLev').value = ORD.lev;
   $('oUnit').value = ORD.unit;
+  { const bf = $('beFee'); if (bf && document.activeElement !== bf) bf.value = beFee(ORD.ex); }
   $('oTpslBox').style.display = $('oTpsl').checked ? '' : 'none';
   const red = $('oReduce').checked;
   $('oBuy').textContent = red ? '매수 (숏 청산)' : '매수 / 롱'; $('oSell').textContent = red ? '매도 (롱 청산)' : '매도 / 숏';
@@ -5181,20 +6280,32 @@ function ordRender(){
   else if (ORD.listErr) html = `<div class="o-empty o-bad">${ORD.listErr}</div>`;
   else if (ORD.tab === 'pos'){
     html = pos.length ? pos.map((p, i) => `<div class="o-item">
-      <div class="oi-h"><b class="${p.side === 'long' ? 'up' : 'dn'}">${p.base} ${p.side === 'long' ? '롱' : '숏'} ${p.lev ? p.lev + 'x' : ''}</b><span class="muted">${p.margin === 'isolated' ? '격리' : '교차'}</span>
+      <div class="oi-h"><b data-go="${p.base}" title="${p.base} 차트로 이동" class="oi-lk ${p.side === 'long' ? 'up' : 'dn'}">${p.base} ${p.side === 'long' ? '롱' : '숏'} ${p.lev ? p.lev + 'x' : ''}</b><span class="muted">${p.margin === 'isolated' ? '격리' : '교차'}</span>
         <span class="oi-pnl ${p.pnl >= 0 ? 'up' : 'dn'}">${p.pnl >= 0 ? '+' : ''}${oFmt(p.pnl, 2)} (${p.roe >= 0 ? '+' : ''}${oFmt(p.roe, 2)}%)</span></div>
-      <div class="oi-g"><span>수량</span><b>${oFmt(p.qty, 6)}</b><span>진입가</span><b>${oFmt(p.entry, oDec(p.entry))}</b><span>시장가</span><b>${oFmt(p.mark, oDec(p.mark))}</b><span>청산가</span><b>${p.liq ? oFmt(p.liq, oDec(p.liq)) : '—'}</b></div>
-      <div class="oi-b"><button data-go="${p.base}">차트</button><button data-close="${i}" class="danger">${ORD.confirmClose === p.key ? '확인 — 시장가 청산' : '시장가 청산'}</button></div></div>`).join('')
+      <div class="oi-g"><span>수량</span><b>${oFmt(p.qty, 6)}</b><span>진입가</span><b>${oFmt(p.entry, oDec(p.entry))}</b><span>크기</span><b title="수량 × 시장가 (명목 금액)">${oFmt(p.qty * (p.mark || p.entry), 2)} USDT</b><span>시장가</span><b>${oFmt(p.mark, oDec(p.mark))}</b><span>증거금</span><b title="크기 ÷ 레버리지 (근사)">${p.lev ? oFmt(p.qty * (p.mark || p.entry) / p.lev, 2) + ' USDT' : '—'}</b><span>청산가</span><b>${p.liq ? oFmt(p.liq, oDec(p.liq)) : '—'}</b><span>손익분기</span><b class="oi-be" title="진입·청산 테이커 수수료 ${beFee(ORD.ex)}%×2 포함 (펀딩비 제외)">${oFmt(beCalc(p, ORD.ex), oDec(p.entry))}</b><span>수수료</span><b class="muted" style="font-weight:500">${beFee(ORD.ex)}%×2</b></div>
+      <div class="oi-b"><button data-go="${p.base}">차트</button><button data-stop="${i}">${ORD.stopFor === p.key ? '주문창 닫기' : '손절/익절 주문'}</button><button data-close="${i}" class="danger">${ORD.confirmClose === p.key ? '확인 — 시장가 청산' : '시장가 청산'}</button></div>${ORD.stopFor === p.key ? `<div class="oi-sp" data-sp="${i}">
+        <div class="r"><select class="sp-k"><option value="sl"${ORD.stopKind === 'sl' ? ' selected' : ''}>손절 (STOP)</option><option value="tp"${ORD.stopKind === 'tp' ? ' selected' : ''}>익절 (TP)</option></select><input class="sp-p" type="number" step="any" inputmode="decimal" placeholder="트리거 가격" value="${ORD.stopPx || ''}"><button class="go sp-go">${ORD.stopConfirm === p.key ? '확인 — 주문 전송' : '주문'}</button></div>
+        <div class="sx sp-x">트리거 도달 시 시장가로 포지션 전체 청산 · 현재가 ${oFmt(p.mark, oDec(p.mark))}</div></div>` : ''}</div>`).join('')
       : `<div class="o-empty">${ORD.all ? '' : ORD.base + ' '}보유 포지션 없음</div>`;
   } else {
     html = ords.length ? ords.map((o, i) => `<div class="o-item o-ord">
-      <div class="oi-h"><b class="${o.side === 'buy' ? 'up' : 'dn'}">${o.base} ${o.side === 'buy' ? '매수' : '매도'}</b><span class="muted">${o.type}${o.reduce ? ' · 청산' : ''}</span>
+      <div class="oi-h"><b data-go="${o.base}" title="${o.base} 차트로 이동" class="oi-lk ${o.side === 'buy' ? 'up' : 'dn'}">${o.base} ${o.side === 'buy' ? '매수' : '매도'}</b><span class="muted">${o.type}${o.reduce ? ' · 청산' : ''}</span>
         <button data-cancel="${i}">취소</button></div>
       <div class="oi-g"><span>${o.trigger ? '트리거' : '가격'}</span><b>${o.price ? oFmt(o.price, oDec(o.price)) : '시장가'}</b><span>수량</span><b>${oFmt(o.qty, 6)}</b>${o.filled ? `<span>체결</span><b>${oFmt(o.filled, 6)}</b>` : ''}</div></div>`).join('')
       : `<div class="o-empty">미체결 주문 없음</div>`;
   }
-  $('oList').innerHTML = html;
+  const typing = document.activeElement && document.activeElement.tagName === 'INPUT' && document.activeElement.closest && document.activeElement.closest('#oList');
+  if (!typing) $('oList').innerHTML = html;       // 입력 중에는 목록을 다시 그리지 않음 (입력값·커서 유지)
   $('oList').querySelectorAll('[data-go]').forEach(x => x.onclick = () => switchTicker(ORD.ex === 'okx' ? x.dataset.go : `${ORD.ex.toUpperCase()}:${x.dataset.go}USDT`));
+  $('oList').querySelectorAll('[data-stop]').forEach(x => x.onclick = () => { const p = pos[+x.dataset.stop]; if (!p) return;
+    ORD.stopFor = ORD.stopFor === p.key ? null : p.key; ORD.stopConfirm = null; ORD.stopPx = ''; ORD.stopKind = ORD.stopKind || 'sl'; ordRender(); });
+  $('oList').querySelectorAll('.oi-sp').forEach(bx => { const p = pos[+bx.dataset.sp], kS = bx.querySelector('.sp-k'), pI = bx.querySelector('.sp-p'), xx = bx.querySelector('.sp-x'), go = bx.querySelector('.sp-go');
+    const upd = (init) => { ORD.stopKind = kS.value; ORD.stopPx = pI.value; if (init !== 1){ ORD.stopConfirm = null; go.textContent = '주문'; } const v = +pI.value, d = p.side === 'long' ? 1 : -1;
+      if (!(v > 0)){ xx.className = 'sx sp-x'; xx.textContent = `트리거 도달 시 시장가로 포지션 전체 청산 · 현재가 ${oFmt(p.mark, oDec(p.mark))}`; return; }
+      const below = (kS.value === 'sl') === (p.side === 'long'), bad = below ? v >= p.mark : v <= p.mark, pnl = (v - p.entry) * p.qty * d;
+      xx.className = 'sx sp-x' + (bad ? ' bad' : ''); xx.textContent = bad ? `⚠ ${kS.value === 'sl' ? '손절' : '익절'}가는 현재가보다 ${below ? '낮아야' : '높아야'} 합니다` : `예상 손익 ${pnl >= 0 ? '+' : ''}${oFmt(pnl, 2)} USDT (${oFmt((v / p.entry - 1) * 100 * d, 2)}%, 수수료 제외)`; };
+    kS.onchange = () => upd(); pI.oninput = () => upd(); if (+pI.value > 0) upd(1);
+    go.onclick = () => ordStop(p, kS.value, +pI.value); });
   $('oList').querySelectorAll('[data-close]').forEach(x => x.onclick = () => ordClose(pos[+x.dataset.close]));
   $('oList').querySelectorAll('[data-cancel]').forEach(x => x.onclick = () => ordCancel(ords[+x.dataset.cancel], x));
   ordEst();
@@ -5219,9 +6330,11 @@ function ordPrepare(side){
 async function ordSend(){
   const o = ORD.pending; if (!o || ORD.busy) return;
   ORD.busy = true; ordRender();
+  const jrSide = o.side === 'buy' ? 'long' : 'short', jrPre = o.reduceOnly ? null : jrSnap(o.exchange, o.base, jrSide, { plan:{ type:o.type, price:o.price, ref:o.refPrice, qty:o.qty, lev:o.leverage, sl:o.sl || null, tp:o.tp || null } }).catch(() => null);   // 주문 전 조건 스냅샷 (주문과 동시에 수집)
   try {
     const j = await brPost('/order', o, 20000);
     if (j.ok){
+      if (jrPre){ JR.recent.push({ key:jrKey(o.exchange, o.base, jrSide), ts:Date.now(), src:'order', used:false }); jrSave(); jrPre.then(e => e && jrRecord('order', e)); }
       const r = j.result || {};
       ordMsg('ok', `✅ 주문 접수 — ${r.symbol} ${o.side === 'buy' ? '매수' : '매도'} ${r.qty} @ ${r.price}<br><span class="muted">주문번호 ${r.orderId || '—'} · ${r.posMode || ''}</span>` + (j.notes || []).map(n => `<br>· ${n}`).join(''));
       toast(`${OEX_NAME[o.exchange]} 주문 접수: ${o.base} ${o.side === 'buy' ? '매수' : '매도'}`);
@@ -5240,6 +6353,20 @@ async function ordClose(p){
   else ordMsg('err', '❌ 청산 실패: ' + j.error);
   setTimeout(() => ordRefresh(true), 700);
 }
+async function ordStop(p, kind, px){
+  if (!(px > 0)) return ordMsg('err', '트리거 가격을 입력하세요');
+  const below = (kind === 'sl') === (p.side === 'long');
+  if (below ? px >= p.mark : px <= p.mark) return ordMsg('err', `${kind === 'sl' ? '손절' : '익절'}가는 현재가(${oFmt(p.mark, oDec(p.mark))})보다 ${below ? '낮아야' : '높아야'} 합니다`);
+  if (ORD.stopConfirm !== p.key){ ORD.stopConfirm = p.key; ordRender(); const b = $('oList').querySelector('.sp-go'); if (b) b.textContent = '확인 — 주문 전송'; clearTimeout(ORD._sc); ORD._sc = setTimeout(() => { ORD.stopConfirm = null; const b2 = $('oList').querySelector('.sp-go'); if (b2) b2.textContent = '주문'; }, 4000); return; }
+  ORD.stopConfirm = null;
+  const j = await brPost('/stop', { exchange: ORD.ex, stop: { kind, price: px, base: p.base, side: p.side, close: p.close } }, 20000).catch(() => ({ ok:false, error:'브리지 연결 실패' }));
+  if (j.ok){ const r = j.result || {}; ordMsg('ok', `✅ ${p.base} ${p.side === 'long' ? '롱' : '숏'} ${kind === 'sl' ? '손절' : '익절'} 조건주문 등록 @ ${r.price}`); toast(`${p.base} ${kind === 'sl' ? '손절' : '익절'} 주문 등록`); ORD.stopFor = null; ORD.stopPx = ''; }
+  else {
+    ordMsg('err', '❌ 주문 실패: ' + esc(j.error) + (/없는 경로/.test(j.error || '') ? '<br>브리지가 옛 버전입니다 — <button id="brFix" style="margin-top:4px">브리지 재시작</button>' : ''));
+    const f = $('brFix'); if (f) f.onclick = restartBridge;
+  }
+  setTimeout(() => ordRefresh(true), 700); ordRender();
+}
 async function ordCancel(o, btn){
   if (!o) return; btn.disabled = true; btn.textContent = '…';
   const j = await brPost('/cancel', { exchange: ORD.ex, cancel: o.cancel }).catch(() => ({ ok:false, error:'브리지 연결 실패' }));
@@ -5252,10 +6379,9 @@ function ordFromCalc(){
   if (!c) return toast('먼저 포지션 도구로 진입가·손절가를 정하세요');
   showPanel('order');
   ORD.type = 'limit'; store.set('ordType', 'limit');
-  ORD.unit = 'coin'; store.set('ordUnit', 'coin');
   ORD.lev = Math.max(1, Math.round(c.lev)); store.set('ordLev', ORD.lev);
   $('oPrice').value = +(+c.e).toPrecision(10);
-  $('oQty').value = +(+c.qty).toPrecision(10);
+  $('oQty').value = +(ORD.unit === 'usdt' ? +c.qty * +c.e : +c.qty).toPrecision(10);   // 수량 단위가 USDT면 진입가×수량(명목 금액)으로 넘김
   $('oTpsl').checked = true;
   $('oSl').value = +(+c.s).toPrecision(10);
   $('oTp').value = c.t ? +(+c.t).toPrecision(10) : '';
@@ -5273,10 +6399,11 @@ function initOrder(){
   $('oLev').onchange = () => setLev(+$('oLev').value); $('oLev').oninput = ordEst;
   $('oPxNow').onclick = () => { const px = oPxNow(); if (px){ $('oPrice').value = +px.toPrecision(10); ordEst(); } };
   ['oPrice', 'oQty', 'oTp', 'oSl'].forEach(id => $(id).oninput = () => { ORD.pending = null; $('oConfirm').style.display = 'none'; ordEst(); });
+  $('beFee').onchange = () => { const v = parseFloat($('beFee').value); if (isFinite(v) && v >= 0) store.set('beFee_' + ORD.ex, v); else store.set('beFee_' + ORD.ex, null); ordRender(); };
   $('oUnit').onchange = () => {
     const px = ORD.type === 'limit' ? oNum('oPrice') : oPxNow(), q = oNum('oQty');
     if (q && px) $('oQty').value = +(($('oUnit').value === 'usdt') ? q * px : q / px).toPrecision(8);
-    ORD.unit = $('oUnit').value; store.set('ordUnit', ORD.unit); ordEst();
+    ORD.unit = $('oUnit').value; store.set('ordUnit', ORD.unit); store.set('ordUnitV2', 1); ordEst();
   };
   $('oPct').querySelectorAll('button').forEach(b => b.onclick = () => {
     const px = ORD.type === 'limit' ? oNum('oPrice') : oPxNow();
@@ -5298,6 +6425,7 @@ function initOrder(){
   };
   $('brAuto').onchange = () => store.set('brAuto', $('brAuto').checked);
   $('brRun').onclick = () => launchBridge(true);
+  $('brRs').onclick = restartBridge;
   // 패널 안에서 친 키는 차트 단축키로 가지 않게
   $('vOrder').addEventListener('keydown', e => e.stopPropagation());
 }
@@ -5330,7 +6458,7 @@ function buildUI(){
   $('ranges').querySelectorAll('button').forEach(b => b.onclick = () => applyRange(b.dataset.r));
   // 심볼 검색 / 오른쪽 패널 / 되돌리기
   $('symBtn').onclick = () => openSymSearch('');
-  document.querySelectorAll('.rb').forEach(b => b.onclick = () => {
+  document.querySelectorAll('.rb[data-view]').forEach(b => b.onclick = () => {
     const v = b.dataset.view;
     if (v === 'alerts'){ openAlertPop(); return; }
     showPanel(panelView === v ? null : v);
@@ -6066,7 +7194,7 @@ function rtCfg(){
 function rtSave(){ store.set(EMBED ? 'rsiTblE' : 'rsiTbl', RT.cfg); }
 function rtInit(){
   const c = rtCfg(), box = document.createElement('div'); box.id = 'rsiTbl';
-  box.innerHTML = `<table><tr><th>TF</th>${RT_TF.map(([, n]) => `<th>${n}</th>`).join('')}</tr><tr><td class="lb">RSI</td>${RT_TF.map(([k]) => `<td data-tf="${k}" class="na">—</td>`).join('')}</tr></table><div class="rt-msg" id="rtMsg"></div><div class="rt-memo" id="rtMemo"></div>`;
+  box.innerHTML = `<table><tr><th>TF</th>${RT_TF.map(([, n]) => `<th>${n}</th>`).join('')}</tr><tr><td class="lb">RSI</td>${RT_TF.map(([k]) => `<td data-tf="${k}" class="na">—</td>`).join('')}</tr></table><div class="rt-scan" id="rtScan"></div><div class="rt-ev" id="rtEv"></div><div class="rt-msg" id="rtMsg"></div><div class="rt-memo" id="rtMemo"></div>`;
   $('chartWrap').appendChild(box); box.title = '더블클릭: RSI 테이블 설정'; box.ondblclick = e => { e.stopPropagation(); togglePop('popRt', box); };
   $('rtMemo').ondblclick = e => { e.stopPropagation(); showPanel('check'); setTimeout(() => { const t = $('ckMemo'); if (t){ t.focus(); t.setSelectionRange(t.value.length, t.value.length); } }, 120); };
   $('rtOn').checked = c.on; $('rtLen').value = c.len; $('rtOB').value = c.ob; $('rtOS').value = c.os; $('rtPos').value = c.pos; $('rtSz').value = c.sz;
@@ -7128,6 +8256,7 @@ function ckInit(){
   $('ckRf').onclick = () => { ckLoad(); toast('다시 불러오는 중…'); };
   $('vCheck').addEventListener('keydown', e => e.stopPropagation());
   // 워치리스트 속 작은 차트(EMBED)는 요청이 몰리지 않게 시작·주기를 분산하고 15분봉(패턴용)은 받지 않음
+  brtInit(); ndiInit(); gotoInit(); scnInit(); evtInit(); patInit(); pmInit();
   setInterval(() => { if ((panelView === 'check' || CK.mark) && !document.hidden) ckLoad(); }, EMBED ? 90000 + Math.random() * 30000 : 60000);   // 패널이 닫혀 있어도 감지 표시가 켜져 있으면 1분마다 갱신
   $('ckMark').checked = CK.mark;
   const mkc = ckMk(); $('ckMkSt').value = mkc.st;
@@ -7152,7 +8281,7 @@ function ckInit(){
   S.bar = qs.get('bar') || cfg.bar || '15m';
   if (!BARS.includes(S.bar)) S.bar = '15m';
 
-  swLoad(); ewLoad(); indLoad(); buildUI(); buildToolbar(); swBarRender(); ewBarRender(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); ckInit(); rtInit(); initAxPlus(); initSnap();
+  swLoad(); ewLoad(); indLoad(); buildUI(); buildToolbar(); selbarDragInit(); swBarRender(); ewBarRender(); buildMAUI(); markBar(); initChart(); initAlerts(); initOrder(); initFibDlg(); ckInit(); rtInit(); initAxPlus(); initSnap();
   wlLoad(); if (!EMBED){ wlFetch(); wlTimer = setInterval(wlFetch, 10000); }
   { const pv = store.get('pview'); showPanel(EMBED ? null : pv || (store.get('pvInit') ? null : 'watch')); if (!EMBED) store.set('pvInit', 1); }
   setInterval(tickCountdown, 1000);

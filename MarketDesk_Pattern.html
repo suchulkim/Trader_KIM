@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>Market Desk · 쌍봉 숏 패턴 감시</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0f1115;--card:#181b22;--card2:#1e222c;--text:#eef0f4;--soft:#9aa2b1;--muted:#6b7280;--bd:#2a2e38;--ac:#4ea1ff;--win:#5fd188;--loss:#ff6b6b;--warn:#f7931a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:13.5px/1.5 -apple-system,"Malgun Gothic","Segoe UI",sans-serif}
+.tabs{display:flex;gap:6px;margin-bottom:12px}.tabs button{padding:8px 18px;font-size:14px;border-radius:10px 10px 0 0}.tabs button.on{background:var(--ac);color:#0f1115;border-color:var(--ac)}
+.wrap{max-width:1180px;margin:0 auto;padding:16px 14px 60px}
+h1{font-size:22px;font-weight:900}.sub{color:var(--soft);font-size:12.5px;margin:2px 0 12px}
+h2{font-size:15px;font-weight:800;color:var(--ac);margin:20px 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px 14px}
+.f label{display:block;font-size:12.5px;font-weight:700}.f small{display:block;color:var(--muted);font-size:11.5px;margin-bottom:3px}
+.f input[type=number]{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--bd);border-radius:7px;padding:6px 8px;font-size:13.5px}
+.f input:focus{outline:none;border-color:var(--ac)}
+.sec{grid-column:1/-1;font-size:12px;color:var(--warn);font-weight:800;border-bottom:1px solid var(--bd);padding-bottom:3px;margin-top:4px}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+button{background:var(--card2);color:var(--text);border:1px solid var(--bd);border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;font-weight:700}
+button:hover{border-color:var(--ac)}button.pri{background:var(--ac);color:#0f1115;border-color:var(--ac)}button:disabled{opacity:.5;cursor:default}
+.sw{display:inline-flex;gap:7px;align-items:center;cursor:pointer;font-weight:700}
+.note{color:var(--soft);font-size:12px}.err{color:var(--loss)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th{color:var(--soft);font-weight:700;position:sticky;top:0;background:var(--card)}
+td:first-child,th:first-child,td.l,th.l{text-align:left}
+tr.go{cursor:pointer}tr.go:hover td{background:var(--card2)}
+.w{color:var(--win)}.l2{color:var(--loss)}.m{color:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.st b{font-size:18px}.st .k{color:var(--soft);font-size:12px}
+.scroll{max-height:460px;overflow:auto}
+#prog{height:5px;background:var(--card2);border-radius:3px;margin-top:8px;overflow:hidden}#prog i{display:block;height:100%;width:0;background:var(--ac)}
+.tag{display:inline-block;padding:0 6px;border-radius:5px;font-weight:800;font-size:11.5px;background:rgba(255,152,0,.18);color:#ffb74d}
+</style></head><body><div class="wrap">
+<div class="tabs" id="tabs"><button data-s="dt">쌍봉 숏</button><button data-s="ma">역배열 눌림 숏</button></div>
+<h1 id="ttl">🔻 쌍봉 숏 패턴 감시</h1>
+<div class="sub" id="sub"></div>
+
+<div class="card">
+  <div class="row" style="margin:0 0 10px"><label class="sw"><input type="checkbox" id="on"> 왓치리스트 실시간 감시 켜기 <span class="note">(앱이 켜져 있는 동안 15분봉 마감마다 OKX 종목을 검사해 알림)</span></label></div>
+  <div class="row" id="drawRow" style="margin:0 0 12px;padding:10px 12px;background:var(--card2);border:1px solid var(--bd);border-radius:10px">
+    <button class="pri" id="draw">✏️ 차트에서 패턴을 그려서 설정</button>
+    <span class="note">차트에서 저점 → 첫 고점 → 골 → 두 번째 고점 4곳을 클릭하면 상승률·두 고점 차이·간격 등을 자동으로 계산해 아래 값에 넣어 줍니다.</span>
+  </div>
+  <div class="grid" id="form"></div>
+  <div class="row"><button id="rst">기본값으로</button><span class="note" id="saved"></span></div>
+</div>
+
+<h2>과거 데이터 검증 (백테스트)</h2>
+<div class="card">
+  <div class="grid">
+    <div class="f"><label>종목 범위</label><small>왓치리스트에 있는 OKX 종목</small>
+      <select id="bl" style="width:100%;background:var(--card2);color:var(--text);border:1px solid var(--bd);border-radius:7px;padding:6px 8px"></select></div>
+    <div class="f"><label>검증 기간(일)</label><small>15분봉 · 1일 = 96봉 · 최대 90일 (역배열 전략은 이평 200봉 필요)</small><input type="number" id="days" min="3" max="90" step="1" value="14"></div>
+  </div>
+  <div class="row"><button class="pri" id="run">검증 실행</button><button id="stop" disabled>중지</button><span class="note" id="msg"></span></div>
+  <div id="prog"><i></i></div>
+</div>
+<div id="res"></div>
+
+<h2>최근 감지된 신호 <small class="note">(실시간 감시에서 울린 알림 기록 · 두 전략 공통 · 클릭하면 차트로 이동)</small></h2>
+<div class="card scroll" id="live"></div>
+</div>
+<script src="md_pattern.js"></script>
+<script>
+const $=id=>document.getElementById(id), esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LS=k=>{try{return JSON.parse(localStorage.getItem('possize_'+k))}catch(e){return null}}, LSET=(k,v)=>localStorage.setItem('possize_'+k,JSON.stringify(v));
+const FIELDS_DT=[
+ ['① 상승',null],
+ ['riseMin','상승률 최소 (%)','쌍봉 첫 고점 직전의 상승폭 (저점→첫 고점)',0.5],
+ ['riseBars','상승 탐색 구간 (봉)','첫 고점 앞 몇 봉 안에서 저점을 찾을지',1],
+ ['② 쌍봉',null],
+ ['topDiff','두 고점 차이 허용 (%)','쌍봉으로 인정할 고점 높이 차이',0.1],
+ ['gapMin','두 고점 사이 최소 봉 수 (N)','15분봉 기준. 너무 가까우면 쌍봉이 아님',1],
+ ['gapMax','두 고점 사이 최대 봉 수','너무 멀면 별개의 움직임',1],
+ ['troughMin','중간 골 깊이 최소 (%)','두 고점 사이가 얼마나 내려와야 하는지',0.1],
+ ['retraceMax','되돌림 최대 (%)','상승폭 대비 첫 고점 후 하락 비율. 너무 크면 추세 반전',1],
+ ['③ 진입 조건',null],
+ ['modeA','A: 고점에서 강한 음봉','체크하면 사용',-1],
+ ['bodyMin','A 음봉 몸통 최소 (%)','시가→종가 하락률',0.1],
+ ['modeB','B: 양봉 → 음봉 → 음봉','체크하면 사용',-1],
+ ['twoMin','B 두 음봉 합산 하락 최소 (%)','첫 음봉 시가→둘째 음봉 종가',0.1],
+ ['nearTop','진입 캔들 시가가 고점에서 (%) 이내','고점 근처에서 시작한 하락만',0.1],
+ ['④ 손절·목표·기타',null],
+ ['stopBuf','손절 여유 (%)','두 번째 고점 위에 둘 여유',0.05],
+ ['riskMax','최대 손절폭 (%)','이보다 크면 신호 제외 (0 = 제한 없음)',0.1],
+ ['cooldown','같은 방식 재신호 대기 (봉)','',1],
+ ['holdMax','검증 시 최대 보유 (봉)','초과하면 종가 청산',1],
+ ['표시·알림',null],
+ ['show','차트에 신호 표시','15분봉 차트에 마커·진입/손절/목표선',-1],
+ ['sound','알림 소리','',-1],
+];
+const FIELDS_MA=[
+ ['① 추세 조건 (15분봉 이평선)',null],
+ ['alignFull','이평 완전 역배열 (20 < 60 < 100 < 200)','체크하면 4개 이평선이 이 순서로 정렬된 종목만',-1],
+ ['allFalling','네 이평선 모두 하락 중','같은 구간 동안 20·60·100·200이 모두 내려갈 것',-1],
+ ['slopeBars','기울기 보는 구간 (봉)','24봉 = 6시간. 이 구간 동안의 변화로 우하향 판단',1],
+ ['slope60Min','SMA60 하락폭 최소 (%)','위 구간 동안 60선이 이 % 이상 내려가야 우하향으로 인정',0.1],
+ ['② 진입 조건 (60선 근처 강한 음봉)',null],
+ ['near','60선 근처 범위 (%)','봉 고가가 SMA60의 ±이 % 이내 (터치·근접)',0.1],
+ ['closeBelow','종가가 SMA60 아래','되밀림 확인: 60선 위에서 마감한 봉은 제외',-1],
+ ['bodyMin','음봉 몸통 최소 (%)','시가→종가 하락률. 강한 음봉의 기준',0.1],
+ ['③ 손절·목표·기타',null],
+ ['stopBuf','손절 여유 (%)','손절 = 최근 3봉 고점(또는 SMA60) 위로 이 %',0.05],
+ ['rr','목표 배수 (손익비)','목표 = 진입가 − (손절폭 × 이 값)',0.5],
+ ['riskMax','최대 손절폭 (%)','이보다 크면 신호 제외 (0 = 제한 없음)',0.1],
+ ['cooldown','재신호 대기 (봉)','같은 종목 신호 사이 최소 간격',1],
+ ['holdMax','검증 시 최대 보유 (봉)','초과하면 종가 청산',1],
+ ['표시·알림',null],
+ ['show','차트에 신호 표시','15분봉 차트에 ▼ 화살표·진입/손절/목표선',-1],
+ ['sound','알림 소리','',-1],
+];
+const STR={
+ dt:{key:'patCfg',title:'🔻 쌍봉 숏 패턴 감시',sub:'15분봉 · 상승 후 쌍봉이 만들어지고 고점에서 하락 확인 캔들이 나오면 신호 · 진입 방식 A(강한 음봉) / B(양봉→음봉→음봉) · 설정은 저장 즉시 차트 앱에 적용됩니다.',
+   fields:FIELDS_DT,defs:MDPat.DEFAULTS,cfgOf:MDPat.cfgOf,detect:MDPat.detect,need:c=>60+c.riseBars+c.gapMax,min:80,
+   empty:'감지된 신호가 없습니다. 조건(상승률·고점 차이·간격 등)을 조금 완화해서 다시 해보세요.',
+   boxes:rows=>statBox('전체',rows)+statBox('A · 강한 음봉',rows.filter(r=>r.sg.mode==='A'))+statBox('B · 양봉→음봉→음봉',rows.filter(r=>r.sg.mode==='B')),
+   head:'<th>방식</th>',cell:s=>`<td><span class="tag">${s.mode}</span></td>`,
+   head2:'<th>상승</th><th>고점차</th><th>간격</th>',cell2:s=>`<td>+${s.rise.toFixed(1)}%</td><td>${s.diff>=0?'+':''}${s.diff.toFixed(2)}%</td><td>${s.gap}봉</td>`},
+ ma:{key:'maCfg',title:'🔻 역배열 눌림 숏 감시',sub:'15분봉 · 이평선이 완전 역배열(20<60<100<200)이고 우하향인 종목이 SMA60 근처까지 반등한 뒤 강한 음봉이 마감되면 숏 진입 신호 · 설정은 저장 즉시 차트 앱에 적용됩니다.',
+   fields:FIELDS_MA,defs:MDPat.MA_DEFAULTS,cfgOf:MDPat.cfgOfMA,detect:MDPat.detectMA,need:c=>240+c.slopeBars,min:260,
+   empty:'감지된 신호가 없습니다. 60선 근처 범위(%)를 넓히거나 음봉 몸통·하락폭 기준을 낮춰 보세요.',
+   boxes:rows=>statBox('전체',rows),
+   head:'',cell:()=>'',
+   head2:'<th>60선 이격</th><th>음봉</th><th>60선 기울기</th>',cell2:s=>`<td>${s.dist>=0?'+':''}${s.dist.toFixed(2)}%</td><td>-${s.body.toFixed(2)}%</td><td>${s.slope60.toFixed(1)}%</td>`}
+};
+let CUR=(new URLSearchParams(location.search).get('tab')||LS('patTab')||'dt'); if(!STR[CUR])CUR='dt';
+const S_=()=>STR[CUR];
+const cfg=()=>S_().cfgOf(LS(S_().key));
+function setTab(t){
+  CUR=t; LSET('patTab',t); document.querySelectorAll('#tabs button').forEach(b=>b.classList.toggle('on',b.dataset.s===t));
+  $('ttl').textContent=S_().title; $('sub').textContent=S_().sub; $('drawRow').style.display=t==='dt'?'flex':'none';
+  $('res').innerHTML=''; $('msg').textContent=''; $('prog').firstChild.style.width='0'; ROWS=[]; build();
+}
+
+function build(){
+  const c=cfg(); let h='';
+  for(const f of S_().fields){
+    if(f[1]===null){h+=`<div class="sec">${f[0]}</div>`;continue}
+    const [k,l,d,st]=f;
+    if(st===-1) h+=`<div class="f"><label class="sw"><input type="checkbox" data-k="${k}" ${c[k]?'checked':''}> ${l}</label><small>${d}</small></div>`;
+    else h+=`<div class="f"><label>${l}</label><small>${d}</small><input type="number" data-k="${k}" step="${st}" value="${c[k]}"></div>`;
+  }
+  $('form').innerHTML=h; $('on').checked=!!c.on;
+}
+function save(){
+  const c=cfg();
+  document.querySelectorAll('#form [data-k]').forEach(e=>{const k=e.dataset.k; c[k]= e.type==='checkbox'?e.checked:(isFinite(parseFloat(e.value))?parseFloat(e.value):S_().defs[k])});
+  c.on=$('on').checked; LSET(S_().key,c); $('saved').textContent='저장됨 '+new Date().toLocaleTimeString('ko-KR');
+}
+$('form').addEventListener('change',save); $('on').addEventListener('change',save);
+$('draw').onclick=()=>{fetch('/api/goto?cmd=patdraw').then(()=>{$('saved').textContent='차트 창으로 이동했어요 — 차트에서 4곳을 클릭하세요'}).catch(()=>{$('saved').textContent='차트 앱이 실행 중인지 확인하세요'})};
+window.addEventListener('storage',e=>{if(e.key==='possize_patTab'){try{const v=JSON.parse(e.newValue);if(STR[v]&&v!==CUR)setTab(v)}catch(_){}}});
+window.addEventListener('storage',e=>{if(e.key==='possize_'+S_().key){build();$('saved').textContent='차트에서 적용된 값으로 갱신됨 '+new Date().toLocaleTimeString('ko-KR')}});
+$('rst').onclick=()=>{const on=$('on').checked;LSET(S_().key,Object.assign({},S_().defs,{on}));build();$('saved').textContent='기본값으로 되돌림'};
+
+/* 종목 목록 */
+function lists(){return LS('wlLists')||[]}
+const keyBase=k=>{const i=String(k).indexOf(':');return i<0?k:String(k).slice(i+1).replace(/-?(USDT|USDC|USD)(-SWAP)?$/,'')};
+const keyOkx=k=>{k=String(k);const i=k.indexOf(':');return i<0?k+'-USDT-SWAP':(k.slice(0,i).toLowerCase()==='okx'?k.slice(i+1):null)};
+function fillLists(){
+  const L=lists(); let h='<option value="*">모든 리스트 (OKX 종목)</option>';
+  L.forEach(l=>{const n=Object.values(l.sec||{}).flat().filter(k=>keyOkx(k)).length;h+=`<option value="${esc(l.id)}">${esc(l.name)} (${n}종목)</option>`});
+  $('bl').innerHTML=h;
+}
+function pickKeys(){
+  const v=$('bl').value,L=lists().filter(l=>v==='*'||l.id===v);
+  return [...new Set(L.flatMap(l=>Object.values(l.sec||{}).flat()))].filter(k=>keyOkx(k));
+}
+
+/* OKX 과거 캔들 (history-candles 를 after 로 페이지 넘김) */
+let ABORT=false;
+async function jget(u){const r=await fetch(u);return r.json()}
+async function histBars(inst,need){
+  const out=[];let after='';
+  while(out.length<need&&!ABORT){
+    let j=null;
+    for(let i=0;i<4;i++){
+      try{j=await jget(`https://www.okx.com/api/v5/market/history-candles?instId=${inst}&bar=15m&limit=100${after?'&after='+after:''}`);
+        if(j.code==='0')break; if(j.code==='51001')return null; }catch(e){j=null}
+      await new Promise(r=>setTimeout(r,500*(i+1)));
+    }
+    if(!j||j.code!=='0')break;
+    const d=j.data||[]; if(!d.length)break;
+    d.forEach(c=>{if(c[8]==='1')out.push({t:+c[0],o:+c[1],h:+c[2],l:+c[3],c:+c[4]})});
+    after=d[d.length-1][0];
+    await new Promise(r=>setTimeout(r,110));
+  }
+  return out.sort((a,b)=>a.t-b.t);
+}
+const pf=(p)=>p==null?'—':p>=1000?p.toLocaleString('en-US',{maximumFractionDigits:1}):p>=100?p.toFixed(2):p>=10?p.toFixed(3):p>=1?p.toFixed(3):p.toFixed(4);
+const kst=t=>{const d=new Date(t+9*3600e3),p=x=>String(x).padStart(2,'0');return `${p(d.getUTCMonth()+1)}/${p(d.getUTCDate())} ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`};
+const RESN={win:'목표 도달',loss:'손절',timeout:'시간 청산',open:'진행중'};
+let ROWS=[];
+async function run(){
+  save(); const c=cfg(), keys=pickKeys(), days=Math.max(3,Math.min(90,parseInt($('days').value)||14));
+  if(!keys.length){$('msg').innerHTML='<span class="err">왓치리스트에 OKX 종목이 없습니다. 차트 앱에서 먼저 종목을 추가하세요.</span>';return}
+  ABORT=false;$('run').disabled=true;$('stop').disabled=false;ROWS=[];$('res').innerHTML='';
+  const need=days*96+S_().need(c), t0=Date.now()-days*864e5; let done=0,bad=0,q=0;
+  const worker=async()=>{
+    while(q<keys.length&&!ABORT){
+      const k=keys[q++],inst=keyOkx(k);
+      $('msg').textContent=`${done}/${keys.length} · ${keyBase(k)} 불러오는 중…`;
+      const arr=await histBars(inst,need);
+      if(!arr||arr.length<S_().min){bad++}
+      else{
+        const from=Math.max(0,arr.findIndex(b=>b.t>=t0));
+        S_().detect(arr,c,from<0?0:from).forEach(sg=>{const o=MDPat.outcome(arr,sg,c);ROWS.push({k,tk:keyBase(k),sg,o})});
+      }
+      done++;$('prog').firstChild.style.width=(done/keys.length*100)+'%';
+    }
+  };
+  await Promise.all([worker(),worker(),worker()]);
+  $('run').disabled=false;$('stop').disabled=true;
+  $('msg').innerHTML=`완료 · ${done-bad}종목 · 신호 ${ROWS.length}건`+(bad?` <span class="err">(${bad}종목은 데이터를 못 불러옴)</span>`:'')+(ABORT?' · 중지됨':'');
+  render();
+}
+$('run').onclick=run;$('stop').onclick=()=>{ABORT=true};
+function statBox(nm,rows){
+  const s=MDPat.stats(rows);
+  if(!s.n)return `<div class="card st"><div class="k">${nm}</div><b class="m">신호 없음</b></div>`;
+  const wr=s.winRate==null?'—':s.winRate.toFixed(0)+'%';
+  return `<div class="card st"><div class="k">${nm}</div><b>${s.n}건</b> <span class="m">진행 ${s.open}</span><br>
+  승률 <b class="${s.winRate>=50?'w':'l2'}">${wr}</b> <span class="m">(목표 ${s.win} · 손절 ${s.loss} · 시간청산 ${s.timeout})</span><br>
+  평균 <b class="${s.avgR>=0?'w':'l2'}">${s.avgR==null?'—':(s.avgR>=0?'+':'')+s.avgR.toFixed(2)+'R'}</b> <span class="m">/ 건당 ${s.avgPct==null?'—':(s.avgPct>=0?'+':'')+s.avgPct.toFixed(2)+'%'}</span></div>`;
+}
+function render(){
+  const St=S_();
+  if(!ROWS.length){$('res').innerHTML=`<div class="card note" style="margin-top:10px">${St.empty}</div>`;return}
+  const sorted=[...ROWS].sort((a,b)=>b.sg.time-a.sg.time);
+  let h=`<div class="stats" style="margin-top:10px">${St.boxes(ROWS)}</div>
+  <div class="card scroll" style="margin-top:10px"><table><thead><tr><th class="l">시각(KST)</th><th class="l">종목</th>${St.head}<th>진입</th><th>손절</th><th>목표</th><th>손절폭</th><th>R:R</th>${St.head2}<th>결과</th><th>수익</th><th>MFE/MAE</th></tr></thead><tbody>`;
+  sorted.slice(0,500).forEach((r,i)=>{const s=r.sg,o=r.o,cl=o.res==='win'?'w':o.res==='loss'?'l2':'m';
+    h+=`<tr class="go" data-i="${i}"><td class="l">${kst(s.time)}</td><td class="l"><b>${esc(r.tk)}</b></td>${St.cell(s)}<td>${pf(s.entry)}</td><td>${pf(s.stop)}</td><td>${pf(s.target)}</td><td>${s.riskPct.toFixed(2)}%</td><td>${s.rr.toFixed(1)}</td>${St.cell2(s)}<td class="${cl}">${RESN[o.res]}</td><td class="${cl}">${o.res==='open'?'—':(o.r>=0?'+':'')+o.r.toFixed(2)+'R'}</td><td class="m">${o.mfe.toFixed(1)}/${o.mae.toFixed(1)}%</td></tr>`});
+  h+='</tbody></table></div><div class="note" style="margin-top:6px">수익 R = 손절폭 대비 손익(손절 = -1R). 수수료·슬리피지 미반영. 한 봉 안에서 손절과 목표가 모두 닿으면 손절로 계산(보수적). 행을 누르면 차트가 해당 종목 15분봉으로 이동합니다.</div>';
+  $('res').innerHTML=h;
+  $('res').querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>goto(sorted[+tr.dataset.i].k,sorted[+tr.dataset.i].sg.time));
+}
+function goto(k,ts){const t=String(k).indexOf(':')<0?k:String(k).replace(/^okx:/i,'');fetch('/api/goto?t='+encodeURIComponent(t)+'&bar=15m'+(ts?'&ts='+ts:'')).catch(()=>{})}
+
+/* 실시간 감시 기록 */
+function live(){
+  const L=LS('patSigs')||[];
+  if(!L.length){$('live').innerHTML='<div class="note">아직 감지된 신호가 없습니다. 위에서 실시간 감시를 켜 두세요.</div>';return}
+  const nm=r=>r.mode==='M'?'역배열 눌림':'쌍봉 '+r.mode;
+  const cond=r=>r.mode==='M'?`60선 ${r.dist>=0?'+':''}${(+r.dist).toFixed(2)}% · 음봉 -${(+r.body).toFixed(2)}% · 기울기 ${(+r.slope60).toFixed(1)}%`:`상승 +${(+r.rise).toFixed(1)}% · 고점차 ${r.diff>=0?'+':''}${(+r.diff).toFixed(2)}% · 간격 ${r.gap}봉`;
+  let h='<table><thead><tr><th class="l">마감 시각(KST)</th><th class="l">종목</th><th class="l">전략</th><th>진입</th><th>손절</th><th>목표</th><th>손절폭</th><th>R:R</th><th class="l">조건</th></tr></thead><tbody>';
+  L.forEach((r,i)=>{h+=`<tr class="go" data-i="${i}"><td class="l">${kst(r.time+900e3)}</td><td class="l"><b>${esc(keyBase(r.tk))}</b></td><td class="l"><span class="tag">${nm(r)}</span></td><td>${pf(r.entry)}</td><td>${pf(r.stop)}</td><td>${pf(r.target)}</td><td>${r.riskPct.toFixed(2)}%</td><td>${r.rr.toFixed(1)}</td><td class="l m">${cond(r)}</td></tr>`});
+  $('live').innerHTML=h+'</tbody></table>';
+  $('live').querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>goto(L[+tr.dataset.i].tk,L[+tr.dataset.i].time));
+}
+document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>setTab(b.dataset.s));
+setTab(CUR);fillLists();live();setInterval(live,5000);
+window.addEventListener('storage',e=>{if(e.key==='possize_wlLists')fillLists()});
+</script></body></html>

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8"><title>Market Desk · 유사 구간 찾기</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#0f1115;--card:#181b22;--card2:#1e222c;--text:#eef0f4;--soft:#9aa2b1;--muted:#6b7280;--bd:#2a2e38;--ac:#4ea1ff;--win:#5fd188;--loss:#ff6b6b;--warn:#f7931a}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font:13.5px/1.5 -apple-system,"Malgun Gothic","Segoe UI",sans-serif}
+.wrap{max-width:1200px;margin:0 auto;padding:16px 14px 60px}
+h1{font-size:22px;font-weight:900}.sub{color:var(--soft);font-size:12.5px;margin:2px 0 12px}
+h2{font-size:15px;font-weight:800;color:var(--ac);margin:20px 0 8px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:12px 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px 14px}
+.f label{display:block;font-size:12.5px;font-weight:700}.f small{display:block;color:var(--muted);font-size:11.5px;margin-bottom:3px}
+input[type=number],input[type=text],select{width:100%;background:var(--card2);color:var(--text);border:1px solid var(--bd);border-radius:7px;padding:6px 8px;font-size:13.5px}
+input:focus{outline:none;border-color:var(--ac)}
+.row{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:10px}
+button{background:var(--card2);color:var(--text);border:1px solid var(--bd);border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer;font-weight:700}
+button:hover{border-color:var(--ac)}button.pri{background:var(--ac);color:#0f1115;border-color:var(--ac)}button:disabled{opacity:.5}
+.sw{display:inline-flex;gap:6px;align-items:center;cursor:pointer;font-weight:600}
+.note{color:var(--soft);font-size:12px}.err{color:var(--loss)}.w{color:var(--win)}.l2{color:var(--loss)}.m{color:var(--soft)}
+table{width:100%;border-collapse:collapse;font-size:12.5px;font-variant-numeric:tabular-nums}
+th,td{padding:5px 8px;border-bottom:1px solid var(--bd);text-align:right;white-space:nowrap}
+th{color:var(--soft);font-weight:700;position:sticky;top:0;background:var(--card)}
+td.l,th.l{text-align:left}tr.go{cursor:pointer}tr.go:hover td{background:var(--card2)}tr.cur td{background:rgba(78,161,255,.12);font-weight:800}
+.scroll{max-height:520px;overflow:auto}
+#prog{height:5px;background:var(--card2);border-radius:3px;margin-top:8px;overflow:hidden}#prog i{display:block;height:100%;width:0;background:var(--ac)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px;margin-top:10px}.st .k{color:var(--soft);font-size:12px}.st b{font-size:17px}
+</style></head><body><div class="wrap">
+<h1>🔎 유사 구간 찾기</h1>
+<div class="sub">현재(마지막 마감 봉)의 <b>가격 위치 · 이평선 배열 · 이격도 · 이평 기울기</b>와 비슷했던 과거 지점을 찾고, 그 뒤 가격이 어떻게 움직였는지 보여줍니다. 행을 누르면 차트가 그 시점으로 이동합니다.</div>
+<div class="card">
+ <div class="grid">
+  <div class="f"><label>종목</label><small>OKX 무기한 (예: MSFT, BTC)</small><input type="text" id="sym" list="wl"><datalist id="wl"></datalist></div>
+  <div class="f"><label>봉 단위</label><small>현재 상태와 과거를 같은 봉 단위로 비교</small><select id="tf"><option value="15m">15분봉</option><option value="1H">1시간봉</option><option value="4H">4시간봉</option><option value="12H">12시간봉</option><option value="1D">일봉</option></select></div>
+  <div class="f"><label>검색 기간 (일)</label><small id="dayHint">과거 몇 일치에서 찾을지</small><input type="number" id="days" min="10" max="3650" value="120"></div>
+  <div class="f"><label>이평선 (SMA 4개)</label><small>차트와 같게 20 / 60 / 100 / 200</small><input type="text" id="mas" value="20,60,100,200"></div>
+  <div class="f"><label>결과 개수</label><small>서로 겹치지 않는 지점만</small><input type="number" id="topn" min="3" max="100" value="20"></div>
+  <div class="f"><label>최소 간격 (봉)</label><small id="gapHint">같은 구간 중복 제거</small><input type="number" id="gap" min="1" value="16"></div>
+ </div>
+ <div class="row">
+  <label class="sw"><input type="checkbox" id="ord" checked> 이평 배열 순서(가격·20·60·100·200의 위아래)가 같은 지점만</label>
+  <label class="sw"><input type="checkbox" id="vol"> 변동성 보정 (ATR 대비 이격으로 비교)</label>
+ </div>
+ <div class="row"><button class="pri" id="run">유사 구간 찾기</button><button id="stop" disabled>중지</button><span class="note" id="msg"></span></div>
+ <div id="prog"><i></i></div>
+</div>
+<div id="out"></div>
+</div>
+<script>
+const $=id=>document.getElementById(id),esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const LS=k=>{try{return JSON.parse(localStorage.getItem('possize_'+k))}catch(e){return null}};
+const baseOf=k=>{k=String(k||'');const i=k.indexOf(':');return (i<0?k:k.slice(i+1)).replace(/-?(USDT|USDC|USD)(-SWAP)?(\.P)?$/i,'').toUpperCase()};
+const okxKey=k=>{k=String(k||'');const i=k.indexOf(':');return i<0||k.slice(0,i).toLowerCase()==='okx'};
+(function init(){
+  const c=LS('cfg')||{}; if(c.ticker&&okxKey(c.ticker))$('sym').value=baseOf(c.ticker);
+  const set=new Set();(LS('wlLists')||[]).forEach(l=>Object.values(l.sec||{}).flat().forEach(k=>okxKey(k)&&set.add(baseOf(k))));
+  $('wl').innerHTML=[...set].map(s=>`<option value="${esc(s)}">`).join('');
+  const p=LS('simCfg');if(p){['tf','days','mas','topn','gap'].forEach(k=>p[k]!=null&&($(k).value=p[k]));$('ord').checked=p.ord!==false;$('vol').checked=!!p.vol}
+})();
+const TF={'15m':{ms:9e5,nm:'15분봉',days:120,gap:16,hz:[[4,'1시간'],[16,'4시간'],[48,'12시간'],[96,'1일']]},
+ '1H':{ms:36e5,nm:'1시간봉',days:180,gap:8,hz:[[4,'4시간'],[12,'12시간'],[24,'1일'],[72,'3일']]},
+ '4H':{ms:144e5,nm:'4시간봉',days:365,gap:6,hz:[[3,'12시간'],[6,'1일'],[18,'3일'],[42,'7일']]},
+ '12H':{ms:432e5,nm:'12시간봉',days:730,gap:4,hz:[[2,'1일'],[6,'3일'],[14,'7일'],[30,'15일']]},
+ '1D':{ms:864e5,nm:'일봉',days:1500,gap:5,hz:[[3,'3일'],[7,'7일'],[14,'14일'],[30,'30일']]}};
+const tfCfg=()=>TF[$('tf').value]||TF['15m'];
+function tfHint(){const t=tfCfg();$('gapHint').textContent=`같은 구간 중복 제거 (${t.gap}봉 = ${fmtDur(t.gap*t.ms)})`;$('dayHint').textContent=`과거 몇 일치 ${t.nm}에서 찾을지 (최대 3650)`}
+const fmtDur=ms=>ms>=864e5?(ms/864e5)+'일':(ms/36e5)+'시간';
+$('tf').onchange=()=>{const t=tfCfg();$('days').value=t.days;$('gap').value=t.gap;tfHint()};
+let ABORT=false;
+async function hist(inst,need,onp,bar){
+  const out=[];let after='';
+  while(out.length<need&&!ABORT){
+    let j=null;
+    for(let i=0;i<4;i++){
+      try{j=await (await fetch(`https://www.okx.com/api/v5/market/history-candles?instId=${inst}&bar=${bar}&limit=100${after?'&after='+after:''}`)).json();
+        if(j.code==='0')break;if(j.code==='51001')return null}catch(e){j=null}
+      await new Promise(r=>setTimeout(r,600*(i+1)));
+    }
+    if(!j||j.code!=='0')break;const d=j.data||[];if(!d.length)break;
+    d.forEach(c=>{if(c[8]==='1')out.push({t:+c[0],o:+c[1],h:+c[2],l:+c[3],c:+c[4]})});
+    after=d[d.length-1][0];onp(out.length/need);await new Promise(r=>setTimeout(r,150));
+  }
+  return out.sort((a,b)=>a.t-b.t);
+}
+const sma=(c,n)=>{const o=new Array(c.length).fill(null);let s=0;for(let i=0;i<c.length;i++){s+=c[i];if(i>=n)s-=c[i-n];if(i>=n-1)o[i]=s/n}return o};
+/* 특징: [종가/SMA_k-1 (×4), SMA간 이격 (×3), SMA 기울기 (×2)] · 단위 %  + 배열 순서 */
+function featurize(bars,P,useAtr){
+  const c=bars.map(b=>b.c),S=P.map(n=>sma(c,n)),n=bars.length,F=new Array(n).fill(null),ORD=new Array(n).fill('');
+  const atr=new Array(n).fill(null);let a=0;for(let i=0;i<n;i++){const tr=(bars[i].h-bars[i].l)/bars[i].c*100;a+=tr;if(i>=14)a-=(bars[i-14].h-bars[i-14].l)/bars[i-14].c*100;if(i>=13)atr[i]=a/14}
+  const slope=Math.max(4,Math.round(P[0]/2));
+  for(let i=Math.max(...P)+slope;i<n;i++){
+    const s=S.map(x=>x[i]);if(s.some(x=>x==null))continue;
+    const f=[];s.forEach(v=>f.push((c[i]/v-1)*100));
+    for(let k=0;k<s.length-1;k++)f.push((s[k]/s[k+1]-1)*100);
+    f.push((s[0]/S[0][i-slope]-1)*100,(s[1]/S[1][i-slope]-1)*100);
+    if(useAtr){const d=atr[i]||1e-9;for(let k=0;k<f.length;k++)f[k]/=d}
+    F[i]=f;
+    const items=[['c',c[i]],...s.map((v,k)=>['s'+k,v])].sort((x,y)=>y[1]-x[1]);ORD[i]=items.map(x=>x[0]).join('>');
+  }
+  return{F,ORD,S};
+}
+const W=[1,1,1,1, 1,1,1, .5,.5];   // 가격 이격 4 · MA 간 이격 3 · 기울기 2
+async function run(){
+  const base=baseOf($('sym').value);if(!base){$('msg').innerHTML='<span class="err">종목을 입력하세요</span>';return}
+  const P=$('mas').value.split(/[ ,]+/).map(Number).filter(x=>x>1);if(P.length!==4){$('msg').innerHTML='<span class="err">이평선은 4개를 쉼표로 (예: 20,60,100,200)</span>';return}
+  const T=tfCfg(),days=Math.max(10,Math.min(3650,parseInt($('days').value)||T.days)),topn=Math.max(3,Math.min(100,parseInt($('topn').value)||20)),gap=Math.max(1,parseInt($('gap').value)||16);
+  localStorage.setItem('possize_simCfg',JSON.stringify({tf:$('tf').value,days,mas:$('mas').value,topn,gap,ord:$('ord').checked,vol:$('vol').checked}));
+  ABORT=false;$('run').disabled=true;$('stop').disabled=false;$('out').innerHTML='';$('prog').firstChild.style.width='0';
+  const inst=base+'-USDT-SWAP',need=Math.min(60000,Math.ceil(days*864e5/T.ms))+Math.max(...P)+60;
+  $('msg').textContent=inst+' '+T.nm+' 불러오는 중…';
+  const bars=await hist(inst,need,p=>{$('prog').firstChild.style.width=Math.min(100,p*100)+'%';$('msg').textContent=`${inst} ${T.nm} 불러오는 중… ${Math.round(Math.min(1,p)*100)}%`},$('tf').value);
+  $('run').disabled=false;$('stop').disabled=true;
+  if(bars===null){$('msg').innerHTML=`<span class="err">${inst} 는 OKX에 없는 종목입니다</span>`;return}
+  if(!bars||bars.length<Math.max(...P)+120){$('msg').innerHTML=`<span class="err">데이터가 부족합니다 (${bars?bars.length:0}봉). 상장 후 기간이 짧거나 네트워크 문제일 수 있습니다.</span>`;return}
+  if(ABORT){$('msg').textContent='중지됨';return}
+  const n=bars.length,{F,ORD}=featurize(bars,P,$('vol').checked),cur=n-1;
+  if(!F[cur]){$('msg').innerHTML='<span class="err">현재 지표를 계산할 데이터가 부족합니다</span>';return}
+  // 특징별 표준편차로 정규화 (스케일이 다른 항목을 같은 비중으로)
+  const nf=F[cur].length,sd=new Array(nf).fill(0),mu=new Array(nf).fill(0);let cnt=0;
+  for(let i=0;i<n;i++)if(F[i]){cnt++;for(let k=0;k<nf;k++)mu[k]+=F[i][k]}
+  mu.forEach((_,k)=>mu[k]/=cnt);for(let i=0;i<n;i++)if(F[i])for(let k=0;k<nf;k++)sd[k]+=(F[i][k]-mu[k])**2;
+  sd.forEach((_,k)=>sd[k]=Math.sqrt(sd[k]/cnt)||1e-9);
+  const needOrd=$('ord').checked,co=ORD[cur],cand=[];
+  for(let i=0;i<n-1;i++){ if(!F[i]||cur-i<Math.max(12,Math.round(48*9e5/T.ms)))continue; if(needOrd&&ORD[i]!==co)continue;
+    let d=0;for(let k=0;k<nf;k++){const z=(F[i][k]-F[cur][k])/sd[k];d+=W[k]*z*z}
+    cand.push({i,d:Math.sqrt(d/W.reduce((a,b)=>a+b,0))}); }
+  cand.sort((a,b)=>a.d-b.d);
+  const pick=[];for(const c of cand){if(pick.length>=topn)break;if(pick.every(p=>Math.abs(p.i-c.i)>=gap))pick.push(c)}
+  render({bars,F,ORD,cur,pick,P,base,cand:cand.length,co,needOrd,days,n,T});
+}
+const fwd=(bars,i,h)=>i+h<bars.length?(bars[i+h].c/bars[i].c-1)*100:null;
+const kst=(t,d1)=>{const d=new Date(t+9*3600e3),p=x=>String(x).padStart(2,'0');return `${d.getUTCFullYear()%100}/${p(d.getUTCMonth()+1)}/${p(d.getUTCDate())}`+(TFNOW==='1D'?'':` ${p(d.getUTCHours())}:${p(d.getUTCMinutes())}`)};
+let TFNOW='15m';
+const pc=(v,d=2)=>v==null?'—':(v>=0?'+':'')+v.toFixed(d)+'%';
+const cl=v=>v==null?'m':v>=0?'w':'l2';
+const NM={c:'가격'};
+const ordTxt=o=>o.split('>').map(x=>x==='c'?'가격':'SMA'+PNOW[+x.slice(1)]).join(' > ');
+let PNOW=[20,60,100,200],ROWS=[],SYM='';
+function render(R){
+  const{bars,F,cur,pick,P,base,cand,co,needOrd,days,n,T}=R;PNOW=P;SYM=base;ROWS=pick;TFNOW=$('tf').value;const HZ=T.hz;
+  const med=a=>{a=a.filter(x=>x!=null).sort((x,y)=>x-y);return a.length?(a.length%2?a[(a.length-1)/2]:(a[a.length/2-1]+a[a.length/2])/2):null};
+  const avg=a=>{a=a.filter(x=>x!=null);return a.length?a.reduce((x,y)=>x+y,0)/a.length:null};
+  let h=`<h2>현재 상태 · ${T.nm} <small class="note">${kst(bars[cur].t+T.ms)} 마감 기준 · ${T.nm} ${n.toLocaleString()}개 (${days}일) 검색</small></h2><div class="card">
+   <div><b>배열</b> ${esc(ordTxt(co))}</div><div class="note" style="margin-top:3px">가격 이격: ${P.map((p,k)=>`SMA${p} <b class="${cl(F[cur][k])}">${pc(F[cur][k])}</b>`).join(' · ')}<br>이평 간 이격: ${[0,1,2].map(k=>`SMA${P[k]}/${P[k+1]} <b class="${cl(F[cur][4+k])}">${pc(F[cur][4+k])}</b>`).join(' · ')}</div>
+   <div class="note" style="margin-top:3px">${needOrd?'배열이 같은 지점 '+cand.toLocaleString()+'개 중에서 ':''}비슷한 순으로 ${pick.length}곳을 골랐습니다 (거리 0 = 완전 일치).</div></div>`;
+  if(!pick.length){h+='<div class="card note" style="margin-top:10px">조건에 맞는 지점이 없습니다. "배열 순서 같은 지점만"을 끄거나 검색 기간을 늘려 보세요.</div>';$('out').innerHTML=h;$('msg').textContent='완료 · 일치 없음';return}
+  h+=`<h2>이후 움직임 통계 <small class="note">(선택된 ${pick.length}곳, 그 지점 종가 대비)</small></h2><div class="stats">`;
+  HZ.forEach(([hh,nm])=>{const v=pick.map(p=>fwd(bars,p.i,hh)),ok=v.filter(x=>x!=null),up=ok.filter(x=>x>0).length;
+    h+=`<div class="card st"><div class="k">${nm} 후 (${hh}봉)</div><b class="${cl(avg(v))}">${ok.length?pc(avg(v)):'—'}</b> <span class="m">평균</span><br><span class="m">중앙값 ${pc(med(v))} · 상승 ${ok.length?up+'/'+ok.length+' ('+Math.round(up/ok.length*100)+'%)':'—'}</span></div>`});
+  h+=`</div><h2>비슷한 지점 목록 <small class="note">행을 누르면 차트가 그 시점으로 이동</small></h2><div class="card scroll"><table><thead><tr><th>#</th><th class="l">시각(KST)</th><th>거리</th>${P.map(p=>`<th>SMA${p} 이격</th>`).join('')}${HZ.map(([,nm])=>`<th>${nm} 후</th>`).join('')}</tr></thead><tbody>
+   <tr class="cur"><td>현재</td><td class="l">${kst(bars[cur].t)}</td><td>0</td>${P.map((_,k)=>`<td>${pc(F[cur][k])}</td>`).join('')}${HZ.map(()=>'<td>—</td>').join('')}</tr>`;
+  pick.forEach((p,r)=>{h+=`<tr class="go" data-r="${r}"><td>${r+1}</td><td class="l">${kst(bars[p.i].t)}</td><td>${p.d.toFixed(2)}</td>${P.map((_,k)=>`<td>${pc(F[p.i][k])}</td>`).join('')}${HZ.map(([hh])=>{const v=fwd(bars,p.i,hh);return `<td class="${cl(v)}">${pc(v)}</td>`}).join('')}</tr>`});
+  h+=`</tbody></table></div><div class="note" style="margin-top:6px">비슷한 모양이었다는 것이 같은 결과를 보장하지는 않습니다. 통계는 표본 수가 적으니 참고용으로 보세요. 시각은 해당 봉의 시작 시각입니다.</div>`;
+  $('out').innerHTML=h;$('msg').textContent=`완료 · ${pick.length}곳`;
+  $('out').querySelectorAll('tr.go').forEach(tr=>tr.onclick=()=>{const p=ROWS[+tr.dataset.r];fetch(`/api/goto?t=${encodeURIComponent(SYM)}&bar=${TFNOW}&ts=${bars[p.i].t}`).catch(()=>{})});
+}
+$('run').onclick=run;$('stop').onclick=()=>{ABORT=true};
+tfHint();
+</script></body></html>

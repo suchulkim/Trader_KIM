@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>이벤트 일정 · Market Desk</title>
+<style>
+  :root{
+    --bg:#0f1115; --card:#181b22; --card-2:#1e222c; --text:#eef0f4; --soft:#9aa2b1; --muted:#6b7280;
+    --border:#2a2e38; --accent:#4ea1ff; --gold:#ffc94d;
+    --win:#5fd188; --win-bg:rgba(95,209,136,.13); --loss:#ff6b6b; --loss-bg:rgba(255,107,107,.13); --warn:#f7931a; --warn-bg:rgba(247,147,26,.13);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--text);line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic","Segoe UI",Roboto,sans-serif;}
+  .wrap{max-width:1100px;margin:0 auto;padding:18px 14px 60px;}
+  .head{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;}
+  .back{font-size:13px;font-weight:700;color:var(--soft);text-decoration:none;border:1px solid var(--border);border-radius:8px;padding:6px 12px;}
+  .back:hover{border-color:var(--accent);color:var(--text);}
+  h1{font-size:24px;font-weight:900;letter-spacing:-.3px;}
+  .clock{margin-left:auto;font-size:13px;color:var(--soft);font-variant-numeric:tabular-nums;text-align:right;}
+  .clock b{color:var(--text);font-size:15px;}
+  .sub{color:var(--soft);font-size:12.5px;margin-top:2px;}
+  .banner{margin-top:10px;padding:9px 13px;border-radius:10px;font-size:12.5px;background:var(--warn-bg);color:var(--warn);border:1px solid rgba(247,147,26,.4);}
+  .banner.err{background:var(--loss-bg);color:var(--loss);border-color:rgba(255,107,107,.4);}
+
+  .kpis{display:grid;grid-template-columns:2fr 1fr 1fr;gap:10px;margin-top:14px;}
+  .kpi{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:11px 14px;min-width:0;}
+  .kpi .l{font-size:12px;color:var(--soft);}
+  .kpi .v{font-size:17px;font-weight:800;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  .kpi .d{font-size:12px;color:var(--soft);margin-top:1px;}
+  .kpi.next{cursor:default;}
+  .kpi .cd{color:var(--gold);font-variant-numeric:tabular-nums;font-weight:900;}
+
+  .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px;padding:10px 12px;background:var(--card);border:1px solid var(--border);border-radius:12px;}
+  .toolbar .grp{display:flex;gap:4px;flex-wrap:wrap;}
+  .toolbar button,.toolbar select,.toolbar input[type=search]{background:var(--card-2);color:var(--soft);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12.5px;cursor:pointer;font-family:inherit;}
+  .toolbar button.on{background:var(--accent);color:#0f1115;border-color:var(--accent);font-weight:800;}
+  .toolbar input[type=search]{cursor:text;color:var(--text);width:150px;}
+  .toolbar label{font-size:12.5px;color:var(--soft);display:inline-flex;gap:5px;align-items:center;cursor:pointer;}
+  .toolbar .sp{flex:1;}
+
+  h2{font-size:15px;font-weight:800;color:var(--accent);margin:22px 0 8px;display:flex;align-items:center;gap:8px;}
+  h2 small{font-size:11.5px;font-weight:500;color:var(--muted);}
+
+  .macro{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:6px 10px;overflow-x:auto;}
+  .macro table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  .macro th,.macro td{padding:6px 7px;border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;font-variant-numeric:tabular-nums;}
+  .macro th{color:var(--soft);font-weight:600;font-size:11.5px;}
+  .macro tr:last-child td{border-bottom:none;}
+  .macro td.ev{white-space:normal;min-width:200px;}
+  .macro td.dt{white-space:normal;color:var(--soft);font-size:11.5px;min-width:160px;max-width:380px;}
+  .macro tr.past{opacity:.45;} .macro tr.soon{background:rgba(255,201,77,.08);}
+  .macro .num{text-align:right;}
+
+  .day{position:sticky;top:0;z-index:2;background:var(--bg);padding:12px 2px 6px;font-size:14px;font-weight:800;border-bottom:1px solid var(--border);margin-bottom:8px;}
+  .day .rel{font-weight:600;font-size:12px;color:var(--soft);margin-left:8px;}
+  .day.today{color:var(--gold);}
+  .list{display:flex;flex-direction:column;gap:7px;margin-bottom:6px;}
+  .ev{background:var(--card);border:1px solid var(--border);border-left:4px solid var(--border);border-radius:12px;padding:9px 12px;display:grid;grid-template-columns:78px 1fr;gap:2px 12px;}
+  .ev.i5{border-left-color:var(--loss);} .ev.i4{border-left-color:var(--warn);} .ev.i3{border-left-color:var(--accent);}
+  .ev.past{opacity:.5;}
+  .ev.soon{box-shadow:inset 0 0 0 1px rgba(255,201,77,.45);}
+  .ev .tm{font-variant-numeric:tabular-nums;font-weight:800;font-size:14px;}
+  .ev .tm small{display:block;font-size:11px;font-weight:600;color:var(--soft);}
+  .ev .tm .st{display:block;font-size:11px;letter-spacing:-1px;margin-top:1px;}
+  .st.s5{color:var(--loss);} .st.s4{color:var(--warn);} .st.s3{color:var(--accent);} .st.s2,.st.s1{color:var(--muted);}
+  .ev .tt{font-size:14px;font-weight:700;}
+  .ev .bd{font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:5px;border:1px solid var(--border);color:var(--soft);margin-left:6px;vertical-align:1px;}
+  .ev .bd.ok{color:var(--win);border-color:rgba(95,209,136,.45);background:var(--win-bg);}
+  .tks{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+  .tk{font-size:11.5px;font-weight:700;padding:1px 8px;border-radius:999px;border:1px solid var(--border);background:var(--card-2);color:var(--soft);cursor:pointer;text-decoration:none;}
+  .tk:hover{border-color:var(--accent);color:var(--text);}
+  .tk.sel{background:var(--accent);color:#0f1115;border-color:var(--accent);}
+  .note{grid-column:2;font-size:12.5px;color:var(--soft);margin-top:3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer;white-space:pre-wrap;}
+  .note.open{display:block;}
+  .empty{padding:26px;text-align:center;color:var(--muted);font-size:13px;}
+  footer{margin-top:30px;padding-top:12px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.7;}
+  @media (max-width:760px){ .kpis{grid-template-columns:1fr;} .ev{grid-template-columns:64px 1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <a class="back" href="#" id="backChart">← Market Desk 차트 창</a>
+    <h1>이벤트 일정</h1>
+    <div class="clock"><b id="now">—</b><div id="nowSub">KST</div></div>
+  </div>
+  <div class="sub" id="upd"></div>
+  <div id="banner"></div>
+
+  <div class="kpis" id="kpis"></div>
+
+  <div class="toolbar">
+    <div class="grp" id="period">
+      <button data-p="past7">지난 7일</button><button data-p="today">오늘</button><button data-p="tomorrow">내일</button><button data-p="d3">3일</button><button data-p="d7" class="on">7일</button><button data-p="d30">30일</button><button data-p="all">전체</button>
+    </div>
+    <select id="impSel" title="중요도">
+      <option value="1">★1 이상</option><option value="2">★2 이상</option><option value="3" selected>★3 이상</option><option value="4">★4 이상</option><option value="5">★5만</option>
+    </select>
+    <select id="tkSel" title="종목"><option value="">전체 종목</option></select>
+    <input type="search" id="q" placeholder="검색 (예: FOMC, 실적)">
+    <label><input type="checkbox" id="pastChk"> 지난 일정 포함</label>
+    <span class="sp"></span>
+    <button id="reload" title="event_schedule.js 다시 읽기">↻ 새로고침</button>
+  </div>
+
+  <div id="macroBox"></div>
+  <div id="list"></div>
+
+  <footer>
+    ※ 일정은 <b>D:\MarketDesk\event_schedule.js</b> 를 읽어서 보여줍니다(5분마다, 또는 새로고침). 파일을 갱신하면 이 창과 차트의 "이 종목 일정"에 자동 반영됩니다. 모든 시각은 한국시간(KST)이며, 시각이 없는 일정은 "종일"로 표시합니다.<br>
+    ※ 종목 태그를 누르면 Market Desk 차트가 그 종목으로 이동합니다. 굵은 왼쪽 선: 빨강 ★5 · 주황 ★4 · 파랑 ★3.
+  </footer>
+</div>
+
+<script>
+const KST = 9 * 3600e3, DAY = 86400e3, WD = ["일","월","화","수","목","금","토"];
+const $ = id => document.getElementById(id);
+const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c]));
+const pad = n => String(n).padStart(2, "0");
+const kd = ms => new Date(ms + KST);                                            // UTC getter = KST 값
+const todayStart = () => { const d = kd(Date.now()); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - KST; };
+const dayStartOf = ms => { const d = kd(ms); return Date.UTC(d.getUTCFullYear(), d.getUTCMonth(), d.getUTCDate()) - KST; };
+const dayLabel = ms => { const d = kd(ms); return `${d.getUTCMonth() + 1}월 ${d.getUTCDate()}일 (${WD[d.getUTCDay()]})`; };
+const hm = ms => { const d = kd(ms); return `${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}`; };
+const stars = n => "★".repeat(Math.max(0, Math.min(5, n || 0)));
+const dur = ms => { const m = Math.round(Math.abs(ms) / 60000); if (m < 60) return `${m}분`; const h = Math.floor(m / 60); if (h < 24) return `${h}시간${m % 60 ? " " + (m % 60) + "분" : ""}`; const d = Math.floor(h / 24); return `${d}일${h % 24 ? " " + (h % 24) + "시간" : ""}`; };
+const rel = e => {
+  if (e.allDay){ const dd = Math.round((e.ds - todayStart()) / DAY); return dd === 0 ? "오늘" : dd === 1 ? "내일" : dd > 0 ? `${dd}일 후` : `${-dd}일 전`; }
+  const diff = e.ms - Date.now(); return diff >= 0 ? `${dur(diff)} 후` : `${dur(diff)} 전`;
+};
+
+let EV = [], DAILY = [], PER = "d7", UPDATED = "", LOADERR = "", LASTLOAD = 0;
+const TAG_RE = /\s*\((일정 경과|결과 확정)\)\s*/g;
+
+function norm(e){
+  const t = e.timeKST || null, ms = Date.parse(`${e.dateKST}T${t || "00:00"}:00+09:00`);
+  const tags = []; (e.event || "").replace(TAG_RE, (m0, g) => { tags.push(g); return " "; });
+  return { ms, ds: dayStartOf(ms), allDay: !t, time: t, title: String(e.event || "").replace(TAG_RE, " ").replace(/\s+/g, " ").trim(), tags,
+           tickers: Array.isArray(e.tickers) ? e.tickers : [], imp: e.importance || 0, note: e.note || e.detail || "",
+           country: e.country || "", forecast: e.forecast || "", previous: e.previous || "" };
+}
+const isPast = e => e.allDay ? e.ds < todayStart() : e.ms < Date.now() - 3600e3;
+
+async function load(){
+  try {
+    const r = await fetch("event_schedule.js?_=" + Date.now(), { cache: "no-store" });
+    if (!r.ok) throw new Error("event_schedule.js 를 찾을 수 없습니다 (HTTP " + r.status + ")");
+    const txt = await r.text();
+    const S = new Function("window", txt + "\n;return window.SeptSchedule;")({});            // const 재선언 오류를 피하려고 함수 안에서 실행
+    if (!S || !Array.isArray(S.SEPTEMBER_2026_SCHEDULE)) throw new Error("일정 배열(SEPTEMBER_2026_SCHEDULE)이 없습니다");
+    EV = S.SEPTEMBER_2026_SCHEDULE.map(norm).filter(e => isFinite(e.ms)).sort((a, b) => a.ms - b.ms);
+    DAILY = (S.DAILY_SCHEDULE || []).map(norm).filter(e => isFinite(e.ms)).sort((a, b) => a.ms - b.ms);
+    const m = txt.match(/마지막 업데이트:\s*([^—\n]+)/); UPDATED = m ? m[1].trim() : "";
+    LOADERR = ""; LASTLOAD = Date.now();
+    const tks = {}; EV.forEach(e => e.tickers.forEach(t => tks[t] = (tks[t] || 0) + 1));
+    const sel = $("tkSel"), cur = sel.value;
+    sel.innerHTML = `<option value="">전체 종목</option>` + Object.keys(tks).sort((a, b) => tks[b] - tks[a]).map(t => `<option value="${esc(t)}">${esc(t)} (${tks[t]})</option>`).join("");
+    sel.value = cur;
+  } catch(err){ LOADERR = String(err.message || err); }
+  render();
+}
+
+function filtered(){
+  const t0 = todayStart(), q = $("q").value.trim().toLowerCase(), imp = +$("impSel").value, tk = $("tkSel").value, past = $("pastChk").checked;
+  const R = { past7:[t0 - 7 * DAY, t0], today:[t0, t0 + DAY], tomorrow:[t0 + DAY, t0 + 2 * DAY], d3:[t0, t0 + 3 * DAY], d7:[t0, t0 + 7 * DAY], d30:[t0, t0 + 30 * DAY], all:[-Infinity, Infinity] }[PER];
+  return EV.filter(e => e.ms >= R[0] && e.ms < R[1] && e.imp >= imp && (!tk || e.tickers.includes(tk))
+    && (!q || (e.title + " " + e.note + " " + e.tickers.join(" ")).toLowerCase().includes(q)) && (past || PER === "past7" || !isPast(e)));
+}
+
+function renderKpis(){
+  const now = Date.now(), t0 = todayStart();
+  const up = EV.filter(e => !isPast(e) && (e.allDay ? true : e.ms >= now));
+  const nextBig = up.find(e => e.imp >= 4);
+  const today = EV.filter(e => e.ds === t0), todayBig = today.filter(e => e.imp >= 4).length;
+  const wk = EV.filter(e => e.ds >= t0 && e.ds < t0 + 7 * DAY && e.imp >= 4).length;
+  $("kpis").innerHTML =
+    `<div class="kpi next"><div class="l">다음 주요 일정 (★4 이상)</div>${nextBig ? `<div class="v" title="${esc(nextBig.title)}">${stars(nextBig.imp)} ${esc(nextBig.title)}</div><div class="d">${dayLabel(nextBig.ms)} ${nextBig.allDay ? "종일" : hm(nextBig.ms)} · <span class="cd">${esc(rel(nextBig))}</span></div>` : `<div class="v">—</div><div class="d">앞으로 ★4 이상 일정 없음</div>`}</div>` +
+    `<div class="kpi"><div class="l">오늘</div><div class="v">${today.length}건</div><div class="d">★4 이상 ${todayBig}건</div></div>` +
+    `<div class="kpi"><div class="l">앞으로 7일</div><div class="v">★4 이상 ${wk}건</div><div class="d">일정 ${EV.filter(e => e.ds >= t0 && e.ds < t0 + 7 * DAY).length}건</div></div>`;
+}
+
+function renderMacro(){
+  const now = Date.now(), rows = DAILY.filter(e => e.ms > now - 6 * 3600e3 && e.ms < now + 36 * 3600e3);
+  const box = $("macroBox");
+  if (!DAILY.length){ box.innerHTML = ""; return; }
+  if (!rows.length){
+    const last = DAILY[DAILY.length - 1];
+    box.innerHTML = `<h2>오늘의 경제지표 <small>DAILY_SCHEDULE</small></h2><div class="macro"><div class="empty">일간 지표 일정이 지났습니다 (마지막 ${dayLabel(last.ms)} ${last.allDay ? "" : hm(last.ms)}) — event_schedule.js 의 DAILY_SCHEDULE 갱신이 필요합니다.</div></div>`; return;
+  }
+  box.innerHTML = `<h2>오늘의 경제지표 <small>앞으로 36시간 · DAILY_SCHEDULE</small></h2><div class="macro"><table><thead><tr><th>시각(KST)</th><th>국가</th><th>지표</th><th class="num">예상</th><th class="num">이전</th><th>비고</th></tr></thead><tbody>${
+    rows.map(e => `<tr class="${isPast(e) ? "past" : ""} ${!isPast(e) && e.ms - now < 2 * 3600e3 ? "soon" : ""}"><td><b>${e.allDay ? "종일" : hm(e.ms)}</b> <span style="color:var(--muted)">${dayLabel(e.ms).replace(/\s*\(.\)/, "")}</span></td><td>${esc(e.country)}</td><td class="ev"><span class="st s${e.imp}">${stars(e.imp)}</span> ${esc(e.title)}</td><td class="num">${esc(e.forecast) || "—"}</td><td class="num">${esc(e.previous) || "—"}</td><td class="dt">${esc(e.note)}</td></tr>`).join("")
+  }</tbody></table></div>`;
+}
+
+function evHTML(e){
+  const past = isPast(e), soon = !past && !e.allDay && e.ms - Date.now() < 3 * 3600e3 && e.ms >= Date.now();
+  return `<div class="ev i${e.imp} ${past ? "past" : ""} ${soon ? "soon" : ""}">
+    <div class="tm">${e.allDay ? "종일" : esc(hm(e.ms))}<small>${esc(rel(e))}</small><span class="st s${e.imp}">${stars(e.imp)}</span></div>
+    <div><span class="tt">${esc(e.title)}</span>${e.tags.map(t => `<span class="bd ${t === "결과 확정" ? "ok" : ""}">${esc(t)}</span>`).join("")}
+      ${e.tickers.length ? `<div class="tks">${e.tickers.map(t => `<a class="tk ${$("tkSel").value === t ? "sel" : ""}" href="#" data-goto="${esc(t)}" title="Market Desk 차트에서 ${esc(t)} 열기">${esc(t)}</a>`).join("")}</div>` : ""}</div>
+    ${e.note ? `<div class="note" title="클릭하면 펼칩니다">${esc(e.note)}</div>` : ""}
+  </div>`;
+}
+
+function renderList(){
+  const list = filtered(), t0 = todayStart();
+  if (!list.length){ $("list").innerHTML = `<div class="empty">조건에 맞는 일정이 없습니다. 기간·중요도·종목 필터를 바꿔 보세요.</div>`; return; }
+  let h = "", cur = null;
+  list.forEach(e => {
+    if (e.ds !== cur){
+      if (cur !== null) h += `</div>`;
+      cur = e.ds; const dd = Math.round((e.ds - t0) / DAY);
+      h += `<div class="day ${dd === 0 ? "today" : ""}">${dayLabel(e.ds)}<span class="rel">${dd === 0 ? "오늘" : dd === 1 ? "내일" : dd > 0 ? dd + "일 후" : -dd + "일 전"}</span></div><div class="list">`;
+    }
+    h += evHTML(e);
+  });
+  $("list").innerHTML = h + `</div>`;
+}
+
+function render(){
+  const n = kd(Date.now());
+  $("now").textContent = `${pad(n.getUTCHours())}:${pad(n.getUTCMinutes())}:${pad(n.getUTCSeconds())}`;
+  $("nowSub").textContent = `${n.getUTCMonth() + 1}월 ${n.getUTCDate()}일 (${WD[n.getUTCDay()]}) KST`;
+  let b = "";
+  if (LOADERR) b = `<div class="banner err">⚠️ 일정 파일을 읽지 못했습니다 — ${esc(LOADERR)}<br>D:\\MarketDesk\\event_schedule.js 가 있는지 확인하세요.</div>`;
+  else if (UPDATED){
+    const m = UPDATED.match(/(\d{4})-(\d{2})-(\d{2})/);
+    const age = m ? (Date.now() - Date.parse(`${m[1]}-${m[2]}-${m[3]}T00:00:00+09:00`)) / DAY : 0;
+    if (age > 8) b = `<div class="banner">⚠️ 일정 데이터가 ${Math.floor(age)}일 전(${esc(UPDATED)})에 갱신된 것입니다. 정기 점검이 밀렸는지 확인하세요.</div>`;
+  }
+  $("banner").innerHTML = b;
+  $("upd").textContent = LOADERR ? "" : `일정 데이터 갱신: ${UPDATED || "?"} · 총 ${EV.length}건 · 이 화면 ${new Date(LASTLOAD).toLocaleTimeString("ko-KR", { hour12:false })} 에 읽음`;
+  renderKpis(); renderMacro(); renderList();
+}
+
+/* ── 이벤트 연결 ── */
+$("period").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return;
+  document.querySelectorAll("#period button").forEach(x => x.classList.toggle("on", x === b)); PER = b.dataset.p; render(); });
+["impSel", "tkSel", "pastChk"].forEach(id => $(id).onchange = render);
+$("q").oninput = render;
+$("reload").onclick = load;
+$("backChart").onclick = e => { e.preventDefault(); fetch("/api/goto?t=").catch(() => {}); };
+$("list").addEventListener("click", e => {
+  const g = e.target.closest("[data-goto]");
+  if (g){ e.preventDefault(); fetch("/api/goto?t=" + encodeURIComponent(g.dataset.goto)).catch(() => {}); return; }
+  const n = e.target.closest(".note"); if (n) n.classList.toggle("open");
+});
+const qt = new URLSearchParams(location.search).get("t"); if (qt) setTimeout(() => { $("tkSel").value = qt.toUpperCase(); render(); }, 600);
+load();
+setInterval(render, 30000);                                  // 남은 시간 갱신
+setInterval(load, 5 * 60000);                                // 파일 다시 읽기
+</script>
+</body>
+</html>
